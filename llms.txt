@@ -1,0 +1,50 @@
+# SAFWAI AI Solutions
+
+> Fractional AI team that designs, builds, and runs bespoke AI systems for enterprise operations in the GCC and beyond. Live in weeks, not quarters. Built on your data. Deployed in your cloud. Owned entirely by you.
+
+## What we do
+
+SAFWAI builds production-grade AI systems for enterprise clients — not pilots, not demos, not strategy decks. We scope the use case, run a free proof of concept on the client's actual data, and deliver a working system integrated into their existing workflows. Fixed timeline. Fixed price. Client owns everything.
+
+## Who we serve
+
+- Enterprise organisations in Qatar, Saudi Arabia, UAE, and the broader GCC
+- Industries: ERP and core banking, Islamic finance and Shariah compliance, government and public sector, construction and project management, maritime and logistics, professional services
+- Buyers: CIOs, COOs, transformation leads, and operations directors who have tried AI before and need it to actually work in production
+
+## What makes us different
+
+- Fractional model: senior AI expertise without Big 4 overhead or day-rate billing
+- Free PoC: the proof of concept runs on the client's real data at no cost — if it doesn't prove value, there is nothing to buy
+- Composable architecture: systems are built from proven components, not from scratch — which is how we deliver in weeks
+- Model-agnostic: the underlying AI model is a swappable component; client investment is in the system, not the model
+- Full ownership: everything deployed on client infrastructure; SAFWAI has no ongoing claim on the system or data
+- Data sovereignty: every system deployed in the client's chosen cloud region; data never leaves their environment
+
+## Live systems (proof of concept delivered)
+
+- Construction project intelligence: automated document analysis and risk flagging across 50,000+ project documents
+- Government identity document processing: Arabic and English OCR and classification, security-audited
+- Islamic finance Shariah compliance: multi-agent classification system for Arabic and English instruments
+- Social media video intelligence: computer vision and NLP across TikTok, Instagram, YouTube, Facebook — 15-20% engagement lift
+- Professional services automation: client onboarding and document workflows
+
+## Technology
+
+SAFWAI builds on a three-layer composable architecture:
+- Service Layer: the AI agents and models doing the work
+- Orchestration Layer: workflow logic, routing, and coordination between agents
+- Front End Layer: the interface the client's team actually uses
+
+Model-agnostic by design. Integrates with existing enterprise systems. Deployed in client cloud (AWS, Azure, GCP, on-premise).
+
+## Free Proof of Concept
+
+No fee. Client's data. Typically one week. SAFWAI scopes the use case, builds the PoC on real data, and the client sees a working system before any commitment to a build. If the PoC doesn't prove value, there is nothing to buy.
+
+## Contact
+
+- Website: https://www.safwai.com
+- Email: contact@safwai.com
+- Phone: +974 50308208
+- Book a meeting: https://calendly.com/contact-safwai/30min
