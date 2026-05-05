@@ -1,0 +1,2506 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAFWAI AI Solutions — AI that actually runs your business</title>
+<meta name="description" content="From pilot to production — AI systems built for enterprise operations in the GCC and beyond.">
+
+<!-- Open Graph -->
+<meta property="og:title" content="SAFWAI AI Solutions">
+<meta property="og:description" content="From pilot to production — AI that actually runs your business.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://safwai.ai">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   BRAND TOKENS — do not hardcode hex values below this block
+   ============================================================ */
+:root {
+  /* Raw palette */
+  --deep-teal:   #0E5C4D;
+  --warm-gold:   #D4AF37;
+  --deep-navy:   #002D49;
+  --off-white:   #F7F6F3;
+  --light-mint:  #7BC9A3;
+  --beige-sand:  #E8DCC4;
+  --sage-green:  #ABC5A5;
+
+  /* Semantic tokens — components reference these */
+  --bg-primary:        #002D49;
+  --bg-card:           #0E3D52;
+  --bg-accent:         #0E5C4D;
+  --text-primary:      #F7F6F3;
+  --text-secondary:    #ABC5A5;
+  --accent-primary:    #D4AF37;
+  --accent-secondary:  #7BC9A3;
+  --border:            #1A4A5C;
+  --status-production: #7BC9A3;
+  --status-poc:        #D4AF37;
+  --status-future:     #ABC5A5;
+
+  /* Layout */
+  --section-padding: 128px 0;
+  --content-max:     1100px;
+  --nav-height:      72px;
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  font-size: 17px;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Poppins', 'Open Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   TYPOGRAPHY HELPERS
+   ============================================================ */
+h1, h2, h3, h4 {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--accent-primary);
+  line-height: 1.2;
+}
+
+h1 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; }
+h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 700; }
+h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight: 600; }
+h4 { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
+
+p { color: rgba(247,246,243,0.9); }
+
+a { color: var(--accent-primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ============================================================
+   LAYOUT HELPERS
+   ============================================================ */
+.container {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+section { padding: var(--section-padding); }
+
+.section-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-secondary);
+  margin-bottom: 20px;
+  display: block;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-block;
+  padding: 14px 28px;
+  border-radius: 4px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  border: none;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn:hover { opacity: 0.88; transform: translateY(-1px); text-decoration: none; }
+
+.btn-primary {
+  background: var(--accent-primary);
+  color: var(--deep-navy);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border: 2px solid var(--border);
+}
+.btn-secondary:hover { border-color: var(--accent-secondary); color: var(--accent-secondary); }
+
+/* ============================================================
+   STATUS BADGES
+   ============================================================ */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.badge-production {
+  color: var(--status-production);
+  background: rgba(123,201,163,0.12);
+  border: 1px solid rgba(123,201,163,0.3);
+}
+.badge-poc {
+  color: var(--status-poc);
+  background: rgba(212,175,55,0.12);
+  border: 1px solid rgba(212,175,55,0.3);
+}
+.badge-future {
+  color: var(--status-future);
+  background: rgba(171,197,165,0.1);
+  border: 1px solid rgba(171,197,165,0.25);
+}
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+.card {
+  background: var(--bg-card);
+  border-radius: 6px;
+  border-left: 4px solid var(--accent-primary);
+  padding: 28px 28px 28px 24px;
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  background: rgba(247,246,243,0.96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(14,92,77,0.15);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+}
+
+nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.nav-logo img {
+  height: 30px;
+  width: auto;
+  display: block;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(0,45,73,0.7);
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--bg-accent); text-decoration: none; }
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--bg-accent);
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.2s;
+}
+
+/* ============================================================
+   MAIN CONTENT OFFSET for fixed nav
+   ============================================================ */
+main { padding-top: var(--nav-height); }
+
+/* ============================================================
+   PLACEHOLDER SECTIONS — Sprint 2 & 3 still use these
+   ============================================================ */
+.placeholder-section {
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px dashed var(--border);
+}
+.placeholder-section .placeholder-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--border);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
+  padding: 48px 0;
+  text-align: center;
+}
+
+footer p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 2;
+}
+
+footer a { color: var(--accent-secondary); }
+
+/* ============================================================
+   SPRINT 1 — HERO
+   ============================================================ */
+#hero {
+  min-height: calc(100vh - var(--nav-height));
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  background:
+    radial-gradient(ellipse at 15% 60%, rgba(14,92,77,0.22) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 20%, rgba(14,61,82,0.4) 0%, transparent 50%),
+    var(--bg-primary);
+  position: relative;
+}
+
+.hero-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 72px;
+  padding-bottom: 56px;
+}
+
+.hero-content {
+  max-width: 800px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 48px;
+}
+
+.hero-content h1 {
+  font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+  line-height: 1.1;
+  margin-bottom: 28px;
+  letter-spacing: -0.01em;
+}
+
+.hero-sub {
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  color: rgba(247,246,243,0.82);
+  max-width: 640px;
+  margin-bottom: 44px;
+  line-height: 1.75;
+}
+
+.hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.hero-ctas .btn-primary {
+  font-size: 0.95rem;
+  padding: 16px 32px;
+}
+
+.hero-ctas .btn-secondary {
+  font-size: 0.9rem;
+}
+
+.proof-bar {
+  border-top: 1px solid var(--border);
+  padding-top: 32px;
+}
+
+.proof-bar-label {
+  margin-bottom: 14px;
+  display: block;
+}
+
+.proof-bar-items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 0;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+.proof-bar-items .proof-sector {
+  padding: 0 16px;
+}
+
+.proof-bar-items .proof-sep {
+  color: var(--border);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.proof-bar-items .proof-sector:first-child {
+  padding-left: 0;
+}
+
+/* ============================================================
+   SPRINT 1 — THE PROBLEM
+   ============================================================ */
+#problem {
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border);
+}
+
+#problem h2 {
+  max-width: 820px;
+  margin-bottom: 72px;
+  line-height: 1.25;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 48px 32px;
+  border-top: 3px solid var(--accent-primary);
+  text-align: center;
+}
+
+.stat-number {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  color: var(--accent-primary);
+  line-height: 1.1;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+
+.stat-label {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.stat-source {
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  opacity: 0.65;
+  margin-bottom: 72px;
+  line-height: 1.6;
+}
+
+.pull-quote {
+  border-left: 4px solid var(--accent-primary);
+  padding: 24px 36px;
+  background: rgba(212,175,55,0.06);
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 36px;
+  max-width: 820px;
+}
+
+.pull-quote p {
+  font-size: 1.08rem;
+  font-style: italic;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+  line-height: 1.65;
+}
+
+.pull-quote cite {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-style: normal;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 0.03em;
+}
+
+.problem-body {
+  max-width: 760px;
+  margin-bottom: 52px;
+  line-height: 1.8;
+  color: rgba(247,246,243,0.82);
+}
+
+.gcc-callout {
+  background: var(--bg-accent);
+  border-left: 4px solid var(--accent-primary);
+  border-radius: 0 8px 8px 0;
+  padding: 36px 40px;
+  margin-bottom: 52px;
+  max-width: 900px;
+}
+
+.gcc-callout p {
+  margin-top: 12px;
+  line-height: 1.75;
+  color: rgba(247,246,243,0.88);
+}
+
+.problem-close {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-secondary);
+  font-style: italic;
+}
+
+/* ============================================================
+   SPRINT 1 — THE SOLUTION
+   ============================================================ */
+#solution {
+  background: rgba(14,61,82,0.25);
+  border-bottom: 1px solid var(--border);
+}
+
+#solution h2 {
+  max-width: 820px;
+  margin-bottom: 64px;
+  line-height: 1.25;
+}
+
+.is-isnot-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-bottom: 88px;
+}
+
+.is-not-card {
+  border-left: 4px solid var(--border);
+  border-top: 3px solid var(--border);
+}
+
+.is-not-card .col-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  display: block;
+}
+
+.is-card {
+  border-top: 3px solid var(--accent-primary);
+}
+
+.is-card .col-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 24px;
+  display: block;
+}
+
+.is-isnot-grid ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.is-not-card li {
+  color: var(--text-secondary);
+  padding-left: 22px;
+  position: relative;
+  font-size: 0.93rem;
+  line-height: 1.5;
+}
+
+.is-not-card li::before {
+  content: '×';
+  position: absolute;
+  left: 0;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  font-weight: 600;
+}
+
+.is-card li {
+  color: var(--text-primary);
+  padding-left: 22px;
+  position: relative;
+  font-size: 0.93rem;
+  line-height: 1.5;
+}
+
+.is-card li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--accent-primary);
+  font-weight: 600;
+}
+
+.phase-section-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 28px;
+  display: block;
+}
+
+.phase-grid {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr 40px 1fr;
+  gap: 0;
+  margin-bottom: 72px;
+  align-items: start;
+}
+
+.phase-card {
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 40px 32px;
+  height: 100%;
+}
+
+.phase-connector {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 52px;
+  color: var(--accent-primary);
+  font-size: 1.5rem;
+  font-weight: 300;
+  opacity: 0.6;
+}
+
+.phase-number {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: rgba(26,74,92,0.8);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.phase-badge {
+  margin-bottom: 16px;
+}
+
+.phase-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+
+.phase-card > p {
+  font-size: 0.87rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.solution-cta-block {
+  text-align: center;
+  padding: 60px 48px;
+  background: var(--bg-card);
+  border-radius: 8px;
+  border: 1px solid rgba(212,175,55,0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.solution-cta-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent-primary);
+}
+
+.solution-cta-block h3 {
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: var(--accent-primary);
+}
+
+.solution-cta-block p {
+  color: var(--text-secondary);
+  margin-bottom: 36px;
+  font-size: 0.98rem;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ============================================================
+   RESPONSIVE — Sprint 1 sections
+   ============================================================ */
+@media (max-width: 900px) {
+  .phase-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .phase-connector {
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 32px;
+    align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .stat-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .is-isnot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-ctas {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero-ctas .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .proof-bar-items .proof-sep {
+    display: none;
+  }
+
+  .proof-bar-items .proof-sector {
+    padding: 2px 12px 2px 0;
+  }
+
+  .gcc-callout {
+    padding: 28px 24px;
+  }
+
+  .solution-cta-block {
+    padding: 40px 24px;
+  }
+
+  .pull-quote {
+    padding: 20px 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-toggle {
+    display: flex;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: rgba(247,246,243,0.98);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(14,92,77,0.15);
+    padding: 8px 0;
+    gap: 0;
+  }
+
+  nav.nav-open .nav-links {
+    display: flex;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 13px 32px;
+    font-size: 0.9rem;
+    border-bottom: 1px solid rgba(14,92,77,0.1);
+  }
+
+  .nav-links li:last-child a {
+    border-bottom: none;
+  }
+
+  nav.nav-open .nav-toggle span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  nav.nav-open .nav-toggle span:nth-child(2) {
+    opacity: 0;
+  }
+
+  nav.nav-open .nav-toggle span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 20px;
+  }
+
+  section {
+    padding: 72px 0;
+  }
+
+  #hero {
+    padding: 0;
+  }
+}
+
+/* ============================================================
+   SPRINT 2 — WHERE SAFWAI SITS (Positioning)
+   ============================================================ */
+#positioning {
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border);
+}
+
+#positioning h2 {
+  max-width: 820px;
+  margin-bottom: 32px;
+  line-height: 1.25;
+}
+
+.positioning-intro {
+  max-width: 760px;
+  margin-bottom: 64px;
+  color: rgba(247,246,243,0.82);
+  line-height: 1.8;
+}
+
+.lane-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  margin-bottom: 64px;
+}
+
+.lane-card {
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-top: 2px solid var(--border);
+}
+
+.lane-we-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+}
+
+.lane-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.lane-examples {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.lane-problem {
+  font-size: 0.8rem;
+  color: rgba(247,246,243,0.72);
+  line-height: 1.65;
+  flex: 1;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.positioning-close {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--accent-secondary);
+  font-style: italic;
+}
+
+/* ============================================================
+   SPRINT 2 — WHY THIS IS STRUCTURALLY DIFFERENT
+   ============================================================ */
+#differentiators {
+  background: rgba(14,61,82,0.25);
+  border-bottom: 1px solid var(--border);
+}
+
+#differentiators h2 {
+  max-width: 820px;
+  margin-bottom: 64px;
+  line-height: 1.25;
+}
+
+.diff-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 64px;
+}
+
+.diff-grid .diff-card:nth-child(5) {
+  grid-column: 1 / -1;
+}
+
+.diff-card {
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 40px 36px;
+  border-left: 4px solid var(--accent-primary);
+}
+
+.diff-number {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  opacity: 0.6;
+  margin-bottom: 14px;
+}
+
+.diff-claim {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+.diff-mechanism {
+  font-size: 0.87rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+.trust-block {
+  background: var(--bg-accent);
+  border-radius: 10px;
+  padding: 56px 52px;
+}
+
+.trust-block .section-label {
+  margin-bottom: 32px;
+}
+
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px 56px;
+  margin-bottom: 36px;
+}
+
+.trust-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.trust-checkmark {
+  color: var(--accent-secondary);
+  font-weight: 700;
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.trust-item-text {
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.trust-note {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.7;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 22px;
+}
+
+/* ============================================================
+   SPRINT 2 — SYSTEMS IN PRODUCTION (Proof)
+   ============================================================ */
+#proof {
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border);
+}
+
+#proof h2 {
+  margin-bottom: 16px;
+}
+
+.proof-sub {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 64px;
+  max-width: 640px;
+  line-height: 1.7;
+}
+
+.proof-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.proof-card {
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 36px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.proof-card.production {
+  border-left: 4px solid var(--status-production);
+}
+
+.proof-card.poc {
+  border-left: 4px solid var(--status-poc);
+}
+
+.proof-card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.badge-sector {
+  color: var(--text-secondary);
+  background: rgba(171,197,165,0.08);
+  border: 1px solid rgba(171,197,165,0.2);
+  font-size: 0.65rem;
+  padding: 2px 8px;
+}
+
+.proof-metric {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(1.3rem, 2.2vw, 1.75rem);
+  font-weight: 700;
+  color: var(--accent-primary);
+  line-height: 1.15;
+}
+
+.proof-metric-label {
+  font-size: 0.79rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.proof-system-name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+}
+
+.proof-brief {
+  font-size: 0.81rem;
+  color: rgba(247,246,243,0.68);
+  line-height: 1.65;
+  flex: 1;
+}
+
+.proof-card-link {
+  font-size: 0.81rem;
+  color: var(--accent-secondary);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.proof-card-link:hover {
+  color: var(--accent-primary);
+  text-decoration: none;
+}
+
+/* ============================================================
+   RESPONSIVE — Sprint 2
+   ============================================================ */
+@media (max-width: 1024px) {
+  .lane-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .proof-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .lane-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .diff-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .diff-grid .diff-card:nth-child(5) {
+    grid-column: auto;
+  }
+
+  .trust-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .trust-block {
+    padding: 40px 28px;
+  }
+}
+
+@media (max-width: 540px) {
+  .lane-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   SPRINT 3 — THE PLATFORM
+   ============================================================ */
+#platform {
+  background: rgba(14,61,82,0.2);
+  border-bottom: 1px solid var(--border);
+}
+
+#platform h2 {
+  max-width: 820px;
+  margin-bottom: 24px;
+}
+
+.platform-intro {
+  max-width: 760px;
+  color: rgba(247,246,243,0.82);
+  line-height: 1.8;
+  margin-bottom: 64px;
+}
+
+.layers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 64px;
+}
+
+.layer-card {
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 40px 32px;
+  border-top: 3px solid var(--accent-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.layer-number {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  opacity: 0.65;
+}
+
+.layer-name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.layer-desc {
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.layer-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.layer-bullets li {
+  font-size: 0.82rem;
+  color: rgba(247,246,243,0.72);
+  line-height: 1.5;
+  padding-left: 16px;
+  position: relative;
+}
+
+.layer-bullets li::before {
+  content: '–';
+  position: absolute;
+  left: 0;
+  color: var(--accent-secondary);
+  font-weight: 600;
+}
+
+.platform-tabs {
+  margin-bottom: 64px;
+}
+
+.tab-nav {
+  display: flex;
+  border-bottom: 2px solid var(--border);
+  overflow-x: auto;
+}
+
+.tab-btn {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.tab-btn:hover { color: var(--text-primary); }
+.tab-btn.active {
+  color: var(--accent-primary);
+  border-bottom-color: var(--accent-primary);
+}
+
+.tab-panel {
+  display: none;
+  background: var(--bg-card);
+  border-radius: 0 0 8px 8px;
+  padding: 40px;
+}
+
+.tab-panel.active { display: block; }
+
+.tab-content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.tab-description {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.85;
+}
+
+.tab-capabilities {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tab-capabilities li {
+  font-size: 0.84rem;
+  color: rgba(247,246,243,0.8);
+  line-height: 1.55;
+  padding-left: 18px;
+  position: relative;
+}
+
+.tab-capabilities li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--accent-secondary);
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.guardrail-block {
+  background: var(--bg-card);
+  border-radius: 10px;
+  padding: 48px 52px;
+  margin-bottom: 48px;
+  border-left: 4px solid var(--accent-secondary);
+}
+
+.guardrail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px 48px;
+  margin-top: 28px;
+}
+
+.guardrail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.guardrail-number {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--accent-secondary);
+  opacity: 0.45;
+  flex-shrink: 0;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.guardrail-text {
+  font-size: 0.83rem;
+  color: rgba(247,246,243,0.8);
+  line-height: 1.6;
+}
+
+.deployment-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.deploy-item {
+  background: var(--bg-card);
+  border-radius: 6px;
+  padding: 28px 22px;
+  border-top: 2px solid var(--accent-secondary);
+  text-align: center;
+}
+
+.deploy-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent-secondary);
+  margin-bottom: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.deploy-desc {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+/* ============================================================
+   SPRINT 3 — USE CASES BY SECTOR
+   ============================================================ */
+#sectors {
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border);
+}
+
+#sectors h2 {
+  max-width: 820px;
+  margin-bottom: 16px;
+}
+
+.sectors-sub {
+  max-width: 680px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin-bottom: 64px;
+}
+
+.sector-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+
+.sector-card {
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 40px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  border-left: 4px solid var(--border);
+}
+
+.sector-card.first-mover {
+  border-left-color: var(--accent-primary);
+}
+
+.sector-card.in-production {
+  border-left-color: var(--status-production);
+}
+
+.sector-card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sector-card h3 {
+  font-size: clamp(0.98rem, 1.6vw, 1.15rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.sector-brief {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  flex: 1;
+}
+
+.sector-impact {
+  background: rgba(14,92,77,0.2);
+  border-radius: 6px;
+  padding: 16px 20px;
+  border-left: 3px solid var(--accent-secondary);
+}
+
+.sector-impact-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-secondary);
+  margin-bottom: 8px;
+}
+
+.sector-impact p {
+  font-size: 0.8rem;
+  color: rgba(247,246,243,0.8);
+  line-height: 1.6;
+}
+
+.sector-cta {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+  line-height: 1.55;
+}
+
+.sector-cta a {
+  color: var(--accent-secondary);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+/* ============================================================
+   SPRINT 3 — OBJECTIONS / FAQ
+   ============================================================ */
+#objections {
+  background: rgba(14,61,82,0.2);
+  border-bottom: 1px solid var(--border);
+}
+
+#objections h2 {
+  max-width: 820px;
+  margin-bottom: 64px;
+  line-height: 1.25;
+}
+
+.faq-list {
+  max-width: 900px;
+  border-top: 1px solid var(--border);
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--border);
+}
+
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 26px 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.faq-q-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.45;
+}
+
+.faq-icon {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-primary);
+  font-size: 1.2rem;
+  font-weight: 300;
+  line-height: 1;
+  transition: transform 0.25s, background 0.2s;
+  margin-top: 1px;
+}
+
+.faq-item.open .faq-icon {
+  transform: rotate(45deg);
+  background: rgba(212,175,55,0.15);
+}
+
+.faq-answer {
+  display: none;
+  padding: 0 56px 28px 0;
+  font-size: 0.87rem;
+  color: var(--text-secondary);
+  line-height: 1.9;
+}
+
+.faq-item.open .faq-answer {
+  display: block;
+}
+
+/* ============================================================
+   SPRINT 3 — FINAL CTA BLOCK
+   ============================================================ */
+#cta {
+  background: var(--bg-accent);
+  position: relative;
+  overflow: hidden;
+}
+
+#cta::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--accent-primary);
+}
+
+.cta-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+#cta .section-label {
+  color: rgba(212,175,55,0.7);
+}
+
+.cta-headline {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 700;
+  color: var(--accent-primary);
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1.15;
+  margin-bottom: 28px;
+}
+
+.cta-body {
+  font-size: 1rem;
+  color: rgba(247,246,243,0.85);
+  line-height: 1.85;
+  margin-bottom: 48px;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.cta-micro {
+  font-size: 0.79rem;
+  color: rgba(247,246,243,0.45);
+  font-style: italic;
+  margin-bottom: 48px;
+}
+
+.cta-contact {
+  font-size: 0.83rem;
+  color: rgba(247,246,243,0.5);
+  line-height: 2.1;
+}
+
+.cta-contact a {
+  color: var(--accent-secondary);
+}
+
+.first-mover-callout {
+  background: rgba(0,45,73,0.55);
+  border-radius: 8px;
+  padding: 44px 52px;
+  border: 1px solid rgba(212,175,55,0.2);
+  text-align: left;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.first-mover-positions {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+  letter-spacing: 0.02em;
+}
+
+.first-mover-body {
+  font-size: 0.87rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* ============================================================
+   RESPONSIVE — Sprint 3
+   ============================================================ */
+@media (max-width: 1024px) {
+  .deployment-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .layers-grid { grid-template-columns: 1fr; }
+  .guardrail-grid { grid-template-columns: repeat(2, 1fr); }
+  .tab-content-grid { grid-template-columns: 1fr; gap: 24px; }
+}
+
+@media (max-width: 768px) {
+  .sector-grid { grid-template-columns: 1fr; }
+  .guardrail-block { padding: 36px 28px; }
+  .first-mover-callout { padding: 36px 28px; }
+  .faq-answer { padding-right: 0; }
+  .tab-panel { padding: 32px 24px; }
+}
+
+@media (max-width: 540px) {
+  .guardrail-grid { grid-template-columns: 1fr; }
+  .deployment-grid { grid-template-columns: 1fr; }
+  .cta-buttons { flex-direction: column; align-items: stretch; }
+  .cta-buttons .btn { text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAV — horizontal logo left · anchor links · CTA right
+     ============================================================ -->
+<nav id="site-nav">
+  <div class="container">
+    <a class="nav-logo" href="#hero" aria-label="SAFWAI AI Solutions"><img class="nav-logo-img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMjgzMiIgem9vbUFuZFBhbj0ibWFnbmlmeSIgdmlld0JveD0iMCAwIDIxMjQgNjM3LjQ5OTk4NiIgaGVpZ2h0PSI4NTAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiIHZlcnNpb249IjEuMCI+PGRlZnM+PGcvPjxjbGlwUGF0aCBpZD0iZjZmMmYyZTMyOCI+PHBhdGggZD0iTSAyMDcwLjA1NDY4OCAzOTEuOTY0ODQ0IEwgMjEyMi41MTE3MTkgMzkxLjk2NDg0NCBMIDIxMjIuNTExNzE5IDU2NC4zMjgxMjUgTCAyMDcwLjA1NDY4OCA1NjQuMzI4MTI1IFogTSAyMDcwLjA1NDY4OCAzOTEuOTY0ODQ0ICIgY2xpcC1ydWxlPSJub256ZXJvIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9Ijc0N2JiOGJlOTYiPjxwYXRoIGQ9Ik0gMC4wNTQ2ODc1IDAuOTY0ODQ0IEwgNTIuNTExNzE5IDAuOTY0ODQ0IEwgNTIuNTExNzE5IDE3My4zMjgxMjUgTCAwLjA1NDY4NzUgMTczLjMyODEyNSBaIE0gMC4wNTQ2ODc1IDAuOTY0ODQ0ICIgY2xpcC1ydWxlPSJub256ZXJvIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9ImRiODUyNmU2OTQiPjxyZWN0IHg9IjAiIHdpZHRoPSI1MyIgeT0iMCIgaGVpZ2h0PSIxNzQiLz48L2NsaXBQYXRoPjxjbGlwUGF0aCBpZD0iY2IxYWVhMDBiMCI+PHBhdGggZD0iTSAxODQ5Ljc0NjA5NCAzOTEuNDg4MjgxIEwgMjEyMi41MTU2MjUgMzkxLjQ4ODI4MSBMIDIxMjIuNTE1NjI1IDQ0My45NDUzMTIgTCAxODQ5Ljc0NjA5NCA0NDMuOTQ1MzEyIFogTSAxODQ5Ljc0NjA5NCAzOTEuNDg4MjgxICIgY2xpcC1ydWxlPSJub256ZXJvIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9ImZkYTczZTY0ZGQiPjxwYXRoIGQ9Ik0gMC43NDYwOTQgMC40ODgyODEgTCAyNzMuNTE1NjI1IDAuNDg4MjgxIEwgMjczLjUxNTYyNSA1Mi45NDUzMTIgTCAwLjc0NjA5NCA1Mi45NDUzMTIgWiBNIDAuNzQ2MDk0IDAuNDg4MjgxICIgY2xpcC1ydWxlPSJub256ZXJvIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9IjMyNjFlNGI1ZWUiPjxyZWN0IHg9IjAiIHdpZHRoPSIyNzQiIHk9IjAiIGhlaWdodD0iNTMiLz48L2NsaXBQYXRoPjxjbGlwUGF0aCBpZD0iMjNiNjA5MDBhNCI+PHBhdGggZD0iTSAxNzE0IDM5MiBMIDE4ODcgMzkyIEwgMTg4NyA1NjUgTCAxNzE0IDU2NSBaIE0gMTcxNCAzOTIgIiBjbGlwLXJ1bGU9Im5vbnplcm8iLz48L2NsaXBQYXRoPjxjbGlwUGF0aCBpZD0iOGZkMjI2Yjk2NiI+PHBhdGggZD0iTSAxNzUxLjgxNjQwNiA1NjQuMzI4MTI1IEwgMTcxNC43MjI2NTYgNTI3LjIzNDM3NSBMIDE4NDkuODUxNTYyIDM5Mi4xMDkzNzUgTCAxODg2Ljk0NTMxMiA0MjkuMjAzMTI1IFogTSAxNzUxLjgxNjQwNiA1NjQuMzI4MTI1ICIgY2xpcC1ydWxlPSJub256ZXJvIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9IjhiNjI1YTFiYzIiPjxwYXRoIGQ9Ik0gMC41MjczNDQgMC4wOTM3NSBMIDE3Mi45NTMxMjUgMC4wOTM3NSBMIDE3Mi45NTMxMjUgMTcyLjUxNTYyNSBMIDAuNTI3MzQ0IDE3Mi41MTU2MjUgWiBNIDAuNTI3MzQ0IDAuMDkzNzUgIiBjbGlwLXJ1bGU9Im5vbnplcm8iLz48L2NsaXBQYXRoPjxjbGlwUGF0aCBpZD0iYjg3NmY5NzY5ZCI+PHBhdGggZD0iTSAzNy44MTY0MDYgMTcyLjMyODEyNSBMIDAuNzIyNjU2IDEzNS4yMzQzNzUgTCAxMzUuODUxNTYyIDAuMTA5Mzc1IEwgMTcyLjk0NTMxMiAzNy4yMDMxMjUgWiBNIDM3LjgxNjQwNiAxNzIuMzI4MTI1ICIgY2xpcC1ydWxlPSJub256ZXJvIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9IjBkZjhmYjFiYjkiPjxyZWN0IHg9IjAiIHdpZHRoPSIxNzMiIHk9IjAiIGhlaWdodD0iMTczIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9IjRlZGY0NjQ1NGEiPjxwYXRoIGQ9Ik0gMTY5OS4wOTc2NTYgMTUyLjE1MjM0NCBMIDE3NTEuNTU0Njg4IDE1Mi4xNTIzNDQgTCAxNzUxLjU1NDY4OCA1NjQuMzI4MTI1IEwgMTY5OS4wOTc2NTYgNTY0LjMyODEyNSBaIE0gMTY5OS4wOTc2NTYgMTUyLjE1MjM0NCAiIGNsaXAtcnVsZT0ibm9uemVybyIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSIxZWUzNzI5NTIwIj48cGF0aCBkPSJNIDAuMDk3NjU2MiAwLjE1MjM0NCBMIDUyLjU1NDY4OCAwLjE1MjM0NCBMIDUyLjU1NDY4OCA0MTIuMzI4MTI1IEwgMC4wOTc2NTYyIDQxMi4zMjgxMjUgWiBNIDAuMDk3NjU2MiAwLjE1MjM0NCAiIGNsaXAtcnVsZT0ibm9uemVybyIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSJhNWY5NDNiZjgxIj48cmVjdCB4PSIwIiB3aWR0aD0iNTMiIHk9IjAiIGhlaWdodD0iNDEzIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9IjJkNWQ2ZjQ2NzIiPjxwYXRoIGQ9Ik0gMTQ5OSAxNTIgTCAxNzM2IDE1MiBMIDE3MzYgMzg5IEwgMTQ5OSAzODkgWiBNIDE0OTkgMTUyICIgY2xpcC1ydWxlPSJub256ZXJvIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9IjlhZGZmOWE2MGYiPjxwYXRoIGQ9Ik0gMTUzNy4wNTA3ODEgMzg4LjAxNTYyNSBMIDE0OTkuOTU3MDMxIDM1MC45MjE4NzUgTCAxNjk4LjcyNjU2MiAxNTIuMTUyMzQ0IEwgMTczNS44MjAzMTIgMTg5LjI0NjA5NCBaIE0gMTUzNy4wNTA3ODEgMzg4LjAxNTYyNSAiIGNsaXAtcnVsZT0ibm9uemVybyIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSIwMTQwOWQ5YTFmIj48cGF0aCBkPSJNIDAuODk0NTMxIDAuMDM5MDYyNSBMIDIzNi44NzEwOTQgMC4wMzkwNjI1IEwgMjM2Ljg3MTA5NCAyMzYuMDE1NjI1IEwgMC44OTQ1MzEgMjM2LjAxNTYyNSBaIE0gMC44OTQ1MzEgMC4wMzkwNjI1ICIgY2xpcC1ydWxlPSJub256ZXJvIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9IjI4YWI1NmRhMTciPjxwYXRoIGQ9Ik0gMzguMDUwNzgxIDIzNi4wMTU2MjUgTCAwLjk1NzAzMSAxOTguOTIxODc1IEwgMTk5LjcyNjU2MiAwLjE1MjM0NCBMIDIzNi44MjAzMTIgMzcuMjQ2MDk0IFogTSAzOC4wNTA3ODEgMjM2LjAxNTYyNSAiIGNsaXAtcnVsZT0ibm9uemVybyIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSI1M2M4NTNjMTQxIj48cmVjdCB4PSIwIiB3aWR0aD0iMjM3IiB5PSIwIiBoZWlnaHQ9IjIzNyIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSIwM2I5YThmODEwIj48cGF0aCBkPSJNIDEzMzYgMTUxIEwgMTU3NCAxNTEgTCAxNTc0IDM4OSBMIDEzMzYgMzg5IFogTSAxMzM2IDE1MSAiIGNsaXAtcnVsZT0ibm9uemVybyIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSI5YmU3YjhhYmFjIj48cGF0aCBkPSJNIDE1NzMuMzM1OTM4IDM1MC45MjE4NzUgTCAxNTM2LjI0MjE4OCAzODguMDE1NjI1IEwgMTMzNi4zNzg5MDYgMTg4LjE1MjM0NCBMIDEzNzMuNDcyNjU2IDE1MS4wNTg1OTQgWiBNIDE1NzMuMzM1OTM4IDM1MC45MjE4NzUgIiBjbGlwLXJ1bGU9Im5vbnplcm8iLz48L2NsaXBQYXRoPjxjbGlwUGF0aCBpZD0iOTk5NTFlNTJlMiI+PHBhdGggZD0iTSAwLjM0Mzc1IDAgTCAyMzcuNTE5NTMxIDAgTCAyMzcuNTE5NTMxIDIzNy4wMTU2MjUgTCAwLjM0Mzc1IDIzNy4wMTU2MjUgWiBNIDAuMzQzNzUgMCAiIGNsaXAtcnVsZT0ibm9uemVybyIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSIzMzdiM2RiOWZkIj48cGF0aCBkPSJNIDIzNy4zMzU5MzggMTk5LjkyMTg3NSBMIDIwMC4yNDIxODggMjM3LjAxNTYyNSBMIDAuMzc4OTA2IDM3LjE1MjM0NCBMIDM3LjQ3MjY1NiAwLjA1ODU5MzggWiBNIDIzNy4zMzU5MzggMTk5LjkyMTg3NSAiIGNsaXAtcnVsZT0ibm9uemVybyIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSJjYTIxOWQ4OTcwIj48cmVjdCB4PSIwIiB3aWR0aD0iMjM4IiB5PSIwIiBoZWlnaHQ9IjIzOCIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSI3N2U1NmE1NDg3Ij48cGF0aCBkPSJNIDEzMjAuNjQ0NTMxIDE1MS4wNTg1OTQgTCAxMzczLjEwMTU2MiAxNTEuMDU4NTk0IEwgMTM3My4xMDE1NjIgNTYzLjIzODI4MSBMIDEzMjAuNjQ0NTMxIDU2My4yMzgyODEgWiBNIDEzMjAuNjQ0NTMxIDE1MS4wNTg1OTQgIiBjbGlwLXJ1bGU9Im5vbnplcm8iLz48L2NsaXBQYXRoPjxjbGlwUGF0aCBpZD0iNzEyNWVjZjlmYyI+PHBhdGggZD0iTSAwLjY0NDUzMSAwLjA1ODU5MzggTCA1My4xMDE1NjIgMC4wNTg1OTM4IEwgNTMuMTAxNTYyIDQxMi4yMzgyODEgTCAwLjY0NDUzMSA0MTIuMjM4MjgxIFogTSAwLjY0NDUzMSAwLjA1ODU5MzggIiBjbGlwLXJ1bGU9Im5vbnplcm8iLz48L2NsaXBQYXRoPjxjbGlwUGF0aCBpZD0iNzc3MzNjNDk2OCI+PHJlY3QgeD0iMCIgd2lkdGg9IjU0IiB5PSIwIiBoZWlnaHQ9IjQxMyIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSI4MjI5NzlmMDZjIj48cGF0aCBkPSJNIDExODUgMzkxIEwgMTM1OCAzOTEgTCAxMzU4IDU2NCBMIDExODUgNTY0IFogTSAxMTg1IDM5MSAiIGNsaXAtcnVsZT0ibm9uemVybyIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSIzZjRlNGZjMDM0Ij48cGF0aCBkPSJNIDEzNTcuMzYzMjgxIDUyNi4xNDQ1MzEgTCAxMzIwLjI2OTUzMSA1NjMuMjM4MjgxIEwgMTE4NS4xNDQ1MzEgNDI4LjEwOTM3NSBMIDEyMjIuMjM4MjgxIDM5MS4wMTU2MjUgWiBNIDEzNTcuMzYzMjgxIDUyNi4xNDQ1MzEgIiBjbGlwLXJ1bGU9Im5vbnplcm8iLz48L2NsaXBQYXRoPjxjbGlwUGF0aCBpZD0iNzIyMzJkYjg1ZiI+PHBhdGggZD0iTSAwLjAyMzQzNzUgMCBMIDE3Mi40NDkyMTkgMCBMIDE3Mi40NDkyMTkgMTcyLjMxNjQwNiBMIDAuMDIzNDM3NSAxNzIuMzE2NDA2IFogTSAwLjAyMzQzNzUgMCAiIGNsaXAtcnVsZT0ibm9uemVybyIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSJhODliYWI0ODJlIj48cGF0aCBkPSJNIDE3Mi4zNjMyODEgMTM1LjE0NDUzMSBMIDEzNS4yNjk1MzEgMTcyLjIzODI4MSBMIDAuMTQ0NTMxIDM3LjEwOTM3NSBMIDM3LjIzODI4MSAwLjAxNTYyNSBaIE0gMTcyLjM2MzI4MSAxMzUuMTQ0NTMxICIgY2xpcC1ydWxlPSJub256ZXJvIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9IjRiZmJkYmY5MjMiPjxyZWN0IHg9IjAiIHdpZHRoPSIxNzMiIHk9IjAiIGhlaWdodD0iMTczIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9IjkxNGVjZDYyNjciPjxwYXRoIGQ9Ik0gOTQ5LjcwNzAzMSAzOTEuNDg4MjgxIEwgMTIyMi40NzI2NTYgMzkxLjQ4ODI4MSBMIDEyMjIuNDcyNjU2IDQ0My45NDUzMTIgTCA5NDkuNzA3MDMxIDQ0My45NDUzMTIgWiBNIDk0OS43MDcwMzEgMzkxLjQ4ODI4MSAiIGNsaXAtcnVsZT0ibm9uemVybyIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSI5YWM3MDA3NjdiIj48cGF0aCBkPSJNIDAuNzA3MDMxIDAuNDg4MjgxIEwgMjczLjQ3MjY1NiAwLjQ4ODI4MSBMIDI3My40NzI2NTYgNTIuOTQ1MzEyIEwgMC43MDcwMzEgNTIuOTQ1MzEyIFogTSAwLjcwNzAzMSAwLjQ4ODI4MSAiIGNsaXAtcnVsZT0ibm9uemVybyIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSJhZjY1YTBhMjc5Ij48cmVjdCB4PSIwIiB3aWR0aD0iMjc0IiB5PSIwIiBoZWlnaHQ9IjUzIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9ImIzZGMwMzNhMjUiPjxwYXRoIGQ9Ik0gOTQ5LjgyODEyNSAzOTIuMTA5Mzc1IEwgMTAwMi4yODUxNTYgMzkyLjEwOTM3NSBMIDEwMDIuMjg1MTU2IDU2NC40NzI2NTYgTCA5NDkuODI4MTI1IDU2NC40NzI2NTYgWiBNIDk0OS44MjgxMjUgMzkyLjEwOTM3NSAiIGNsaXAtcnVsZT0ibm9uemVybyIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSJhYjBmZDcxZGY3Ij48cGF0aCBkPSJNIDAuODI4MTI1IDAuMTA5Mzc1IEwgNTMuMjg1MTU2IDAuMTA5Mzc1IEwgNTMuMjg1MTU2IDE3Mi40NzI2NTYgTCAwLjgyODEyNSAxNzIuNDcyNjU2IFogTSAwLjgyODEyNSAwLjEwOTM3NSAiIGNsaXAtcnVsZT0ibm9uemVybyIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSIyYTI1ZTUxMTVmIj48cmVjdCB4PSIwIiB3aWR0aD0iNTQiIHk9IjAiIGhlaWdodD0iMTczIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9IjBiOWM0YjI0YWEiPjxwYXRoIGQ9Ik0gMTUwOC43NDIxODggMTg0Ljk3MjY1NiBMIDE1NjIuNzAzMTI1IDE4NC45NzI2NTYgTCAxNTYyLjcwMzEyNSA1NjQuNDY4NzUgTCAxNTA4Ljc0MjE4OCA1NjQuNDY4NzUgWiBNIDE1MDguNzQyMTg4IDE4NC45NzI2NTYgIiBjbGlwLXJ1bGU9Im5vbnplcm8iLz48L2NsaXBQYXRoPjxjbGlwUGF0aCBpZD0iNmIyYWZkMTFlNiI+PHBhdGggZD0iTSAwLjc0MjE4OCAwLjk3MjY1NiBMIDU0LjcwMzEyNSAwLjk3MjY1NiBMIDU0LjcwMzEyNSAzODAuNDY4NzUgTCAwLjc0MjE4OCAzODAuNDY4NzUgWiBNIDAuNzQyMTg4IDAuOTcyNjU2ICIgY2xpcC1ydWxlPSJub256ZXJvIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9IjcxZWE2ZmE4NDIiPjxyZWN0IHg9IjAiIHdpZHRoPSI1NSIgeT0iMCIgaGVpZ2h0PSIzODEiLz48L2NsaXBQYXRoPjxjbGlwUGF0aCBpZD0iNDRkM2Y2NWViZSI+PHBhdGggZD0iTSAxNDYzLjc4MTI1IDQ5Mi41MjczNDQgTCAxNjA3LjY2Nzk2OSA0OTIuNTI3MzQ0IEwgMTYwNy42Njc5NjkgNjM2LjQxNzk2OSBMIDE0NjMuNzgxMjUgNjM2LjQxNzk2OSBaIE0gMTQ2My43ODEyNSA0OTIuNTI3MzQ0ICIgY2xpcC1ydWxlPSJub256ZXJvIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9ImQzMWM4YWY4ZTIiPjxwYXRoIGQ9Ik0gMTUzNS43MjY1NjIgNDkyLjUyNzM0NCBDIDE0OTUuOTkyMTg4IDQ5Mi41MjczNDQgMTQ2My43ODEyNSA1MjQuNzM4MjgxIDE0NjMuNzgxMjUgNTY0LjQ3MjY1NiBDIDE0NjMuNzgxMjUgNjA0LjIwNzAzMSAxNDk1Ljk5MjE4OCA2MzYuNDE3OTY5IDE1MzUuNzI2NTYyIDYzNi40MTc5NjkgQyAxNTc1LjQ1NzAzMSA2MzYuNDE3OTY5IDE2MDcuNjY3OTY5IDYwNC4yMDcwMzEgMTYwNy42Njc5NjkgNTY0LjQ3MjY1NiBDIDE2MDcuNjY3OTY5IDUyNC43MzgyODEgMTU3NS40NTcwMzEgNDkyLjUyNzM0NCAxNTM1LjcyNjU2MiA0OTIuNTI3MzQ0IFogTSAxNTM1LjcyNjU2MiA0OTIuNTI3MzQ0ICIgY2xpcC1ydWxlPSJub256ZXJvIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9ImQ0NWQyZjY2MjciPjxwYXRoIGQ9Ik0gMC43ODEyNSAwLjUyNzM0NCBMIDE0NC42Njc5NjkgMC41MjczNDQgTCAxNDQuNjY3OTY5IDE0NC40MTc5NjkgTCAwLjc4MTI1IDE0NC40MTc5NjkgWiBNIDAuNzgxMjUgMC41MjczNDQgIiBjbGlwLXJ1bGU9Im5vbnplcm8iLz48L2NsaXBQYXRoPjxjbGlwUGF0aCBpZD0iYzI3N2NlZDExNyI+PHBhdGggZD0iTSA3Mi43MjY1NjIgMC41MjczNDQgQyAzMi45OTIxODggMC41MjczNDQgMC43ODEyNSAzMi43MzgyODEgMC43ODEyNSA3Mi40NzI2NTYgQyAwLjc4MTI1IDExMi4yMDcwMzEgMzIuOTkyMTg4IDE0NC40MTc5NjkgNzIuNzI2NTYyIDE0NC40MTc5NjkgQyAxMTIuNDU3MDMxIDE0NC40MTc5NjkgMTQ0LjY2Nzk2OSAxMTIuMjA3MDMxIDE0NC42Njc5NjkgNzIuNDcyNjU2IEMgMTQ0LjY2Nzk2OSAzMi43MzgyODEgMTEyLjQ1NzAzMSAwLjUyNzM0NCA3Mi43MjY1NjIgMC41MjczNDQgWiBNIDcyLjcyNjU2MiAwLjUyNzM0NCAiIGNsaXAtcnVsZT0ibm9uemVybyIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSJmZTk0ZTVmZjM4Ij48cmVjdCB4PSIwIiB3aWR0aD0iMTQ1IiB5PSIwIiBoZWlnaHQ9IjE0NSIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSJhZTc3YWU4N2ZmIj48cGF0aCBkPSJNIDE0NjQuMTY0MDYyIDc5LjExNzE4OCBMIDE2MDguMDUwNzgxIDc5LjExNzE4OCBMIDE2MDguMDUwNzgxIDIyMy4wMDM5MDYgTCAxNDY0LjE2NDA2MiAyMjMuMDAzOTA2IFogTSAxNDY0LjE2NDA2MiA3OS4xMTcxODggIiBjbGlwLXJ1bGU9Im5vbnplcm8iLz48L2NsaXBQYXRoPjxjbGlwUGF0aCBpZD0iMzA5ZTdhYjI5YSI+PHBhdGggZD0iTSAxNTM2LjEwOTM3NSA3OS4xMTcxODggQyAxNDk2LjM3NSA3OS4xMTcxODggMTQ2NC4xNjQwNjIgMTExLjMyODEyNSAxNDY0LjE2NDA2MiAxNTEuMDU4NTk0IEMgMTQ2NC4xNjQwNjIgMTkwLjc5Mjk2OSAxNDk2LjM3NSAyMjMuMDAzOTA2IDE1MzYuMTA5Mzc1IDIyMy4wMDM5MDYgQyAxNTc1LjgzOTg0NCAyMjMuMDAzOTA2IDE2MDguMDUwNzgxIDE5MC43OTI5NjkgMTYwOC4wNTA3ODEgMTUxLjA1ODU5NCBDIDE2MDguMDUwNzgxIDExMS4zMjgxMjUgMTU3NS44Mzk4NDQgNzkuMTE3MTg4IDE1MzYuMTA5Mzc1IDc5LjExNzE4OCBaIE0gMTUzNi4xMDkzNzUgNzkuMTE3MTg4ICIgY2xpcC1ydWxlPSJub256ZXJvIi8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9ImQ3ZGJmMDhlNWIiPjxwYXRoIGQ9Ik0gMC4xNjQwNjIgMC4xMTcxODggTCAxNDQuMDUwNzgxIDAuMTE3MTg4IEwgMTQ0LjA1MDc4MSAxNDQuMDAzOTA2IEwgMC4xNjQwNjIgMTQ0LjAwMzkwNiBaIE0gMC4xNjQwNjIgMC4xMTcxODggIiBjbGlwLXJ1bGU9Im5vbnplcm8iLz48L2NsaXBQYXRoPjxjbGlwUGF0aCBpZD0iNTNiMTMzZjM3ZCI+PHBhdGggZD0iTSA3Mi4xMDkzNzUgMC4xMTcxODggQyAzMi4zNzUgMC4xMTcxODggMC4xNjQwNjIgMzIuMzI4MTI1IDAuMTY0MDYyIDcyLjA1ODU5NCBDIDAuMTY0MDYyIDExMS43OTI5NjkgMzIuMzc1IDE0NC4wMDM5MDYgNzIuMTA5Mzc1IDE0NC4wMDM5MDYgQyAxMTEuODM5ODQ0IDE0NC4wMDM5MDYgMTQ0LjA1MDc4MSAxMTEuNzkyOTY5IDE0NC4wNTA3ODEgNzIuMDU4NTk0IEMgMTQ0LjA1MDc4MSAzMi4zMjgxMjUgMTExLjgzOTg0NCAwLjExNzE4OCA3Mi4xMDkzNzUgMC4xMTcxODggWiBNIDcyLjEwOTM3NSAwLjExNzE4OCAiIGNsaXAtcnVsZT0ibm9uemVybyIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSI3YmI1MDRmOWI5Ij48cmVjdCB4PSIwIiB3aWR0aD0iMTQ1IiB5PSIwIiBoZWlnaHQ9IjE0NSIvPjwvY2xpcFBhdGg+PGNsaXBQYXRoIGlkPSJhMzFiOGNjMDVjIj48cmVjdCB4PSIwIiB3aWR0aD0iMTE2NyIgeT0iMCIgaGVpZ2h0PSIzMzQiLz48L2NsaXBQYXRoPjwvZGVmcz48ZyBjbGlwLXBhdGg9InVybCgjZjZmMmYyZTMyOCkiPjxnIHRyYW5zZm9ybT0ibWF0cml4KDEsIDAsIDAsIDEsIDIwNzAsIDM5MSkiPjxnIGNsaXAtcGF0aD0idXJsKCNkYjg1MjZlNjk0KSI+PGcgY2xpcC1wYXRoPSJ1cmwoIzc0N2JiOGJlOTYpIj48cGF0aCBmaWxsPSIjMGU1YzRkIiBkPSJNIDAuMDU0Njg3NSAwLjk2NDg0NCBMIDUyLjUxMTcxOSAwLjk2NDg0NCBMIDUyLjUxMTcxOSAxNzMuMzAwNzgxIEwgMC4wNTQ2ODc1IDE3My4zMDA3ODEgWiBNIDAuMDU0Njg3NSAwLjk2NDg0NCAiIGZpbGwtb3BhY2l0eT0iMSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PC9nPjwvZz48L2c+PC9nPjxnIGNsaXAtcGF0aD0idXJsKCNjYjFhZWEwMGIwKSI+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMSwgMCwgMCwgMSwgMTg0OSwgMzkxKSI+PGcgY2xpcC1wYXRoPSJ1cmwoIzMyNjFlNGI1ZWUpIj48ZyBjbGlwLXBhdGg9InVybCgjZmRhNzNlNjRkZCkiPjxwYXRoIGZpbGw9IiMwZTVjNGQiIGQ9Ik0gMC43NDYwOTQgNTIuOTQ1MzEyIEwgMC43NDYwOTQgMC40ODgyODEgTCAyNzMuNDkyMTg4IDAuNDg4MjgxIEwgMjczLjQ5MjE4OCA1Mi45NDUzMTIgWiBNIDAuNzQ2MDk0IDUyLjk0NTMxMiAiIGZpbGwtb3BhY2l0eT0iMSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PC9nPjwvZz48L2c+PC9nPjxnIGNsaXAtcGF0aD0idXJsKCMyM2I2MDkwMGE0KSI+PGcgY2xpcC1wYXRoPSJ1cmwoIzhmZDIyNmI5NjYpIj48ZyB0cmFuc2Zvcm09Im1hdHJpeCgxLCAwLCAwLCAxLCAxNzE0LCAzOTIpIj48ZyBjbGlwLXBhdGg9InVybCgjMGRmOGZiMWJiOSkiPjxnIGNsaXAtcGF0aD0idXJsKCM4YjYyNWExYmMyKSI+PGcgY2xpcC1wYXRoPSJ1cmwoI2I4NzZmOTc2OWQpIj48cGF0aCBmaWxsPSIjMGU1YzRkIiBkPSJNIDM3LjgxNjQwNiAxNzIuMzI4MTI1IEwgMC43MjI2NTYgMTM1LjIzNDM3NSBMIDEzNS45MTAxNTYgMC4wNDY4NzUgTCAxNzMuMDA3ODEyIDM3LjE0MDYyNSBaIE0gMzcuODE2NDA2IDE3Mi4zMjgxMjUgIiBmaWxsLW9wYWNpdHk9IjEiIGZpbGwtcnVsZT0ibm9uemVybyIvPjwvZz48L2c+PC9nPjwvZz48L2c+PC9nPjxnIGNsaXAtcGF0aD0idXJsKCM0ZWRmNDY0NTRhKSI+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMSwgMCwgMCwgMSwgMTY5OSwgMTUyKSI+PGcgY2xpcC1wYXRoPSJ1cmwoI2E1Zjk0M2JmODEpIj48ZyBjbGlwLXBhdGg9InVybCgjMWVlMzcyOTUyMCkiPjxwYXRoIGZpbGw9IiMwZTVjNGQiIGQ9Ik0gMC4wOTc2NTYyIDAuMTUyMzQ0IEwgNTIuNTU0Njg4IDAuMTUyMzQ0IEwgNTIuNTU0Njg4IDQxMi4yNDIxODggTCAwLjA5NzY1NjIgNDEyLjI0MjE4OCBaIE0gMC4wOTc2NTYyIDAuMTUyMzQ0ICIgZmlsbC1vcGFjaXR5PSIxIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48L2c+PC9nPjwvZz48L2c+PGcgY2xpcC1wYXRoPSJ1cmwoIzJkNWQ2ZjQ2NzIpIj48ZyBjbGlwLXBhdGg9InVybCgjOWFkZmY5YTYwZikiPjxnIHRyYW5zZm9ybT0ibWF0cml4KDEsIDAsIDAsIDEsIDE0OTksIDE1MikiPjxnIGNsaXAtcGF0aD0idXJsKCM1M2M4NTNjMTQxKSI+PGcgY2xpcC1wYXRoPSJ1cmwoIzAxNDA5ZDlhMWYpIj48ZyBjbGlwLXBhdGg9InVybCgjMjhhYjU2ZGExNykiPjxwYXRoIGZpbGw9IiMwZTVjNGQiIGQ9Ik0gMzguMDUwNzgxIDIzNi4wMTU2MjUgTCAwLjk1NzAzMSAxOTguOTIxODc1IEwgMTk5Ljc1NzgxMiAwLjEyMTA5NCBMIDIzNi44NTE1NjIgMzcuMjE0ODQ0IFogTSAzOC4wNTA3ODEgMjM2LjAxNTYyNSAiIGZpbGwtb3BhY2l0eT0iMSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PC9nPjwvZz48L2c+PC9nPjwvZz48L2c+PGcgY2xpcC1wYXRoPSJ1cmwoIzAzYjlhOGY4MTApIj48ZyBjbGlwLXBhdGg9InVybCgjOWJlN2I4YWJhYykiPjxnIHRyYW5zZm9ybT0ibWF0cml4KDEsIDAsIDAsIDEsIDEzMzYsIDE1MSkiPjxnIGNsaXAtcGF0aD0idXJsKCNjYTIxOWQ4OTcwKSI+PGcgY2xpcC1wYXRoPSJ1cmwoIzk5OTUxZTUyZTIpIj48ZyBjbGlwLXBhdGg9InVybCgjMzM3YjNkYjlmZCkiPjxwYXRoIGZpbGw9IiMwZTVjNGQiIGQ9Ik0gMjM3LjMzNTkzOCAxOTkuOTIxODc1IEwgMjAwLjI0MjE4OCAyMzcuMDE1NjI1IEwgMC40Mjk2ODggMzcuMTk5MjE5IEwgMzcuNTIzNDM4IDAuMTA1NDY5IFogTSAyMzcuMzM1OTM4IDE5OS45MjE4NzUgIiBmaWxsLW9wYWNpdHk9IjEiIGZpbGwtcnVsZT0ibm9uemVybyIvPjwvZz48L2c+PC9nPjwvZz48L2c+PC9nPjxnIGNsaXAtcGF0aD0idXJsKCM3N2U1NmE1NDg3KSI+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMSwgMCwgMCwgMSwgMTMyMCwgMTUxKSI+PGcgY2xpcC1wYXRoPSJ1cmwoIzc3NzMzYzQ5NjgpIj48ZyBjbGlwLXBhdGg9InVybCgjNzEyNWVjZjlmYykiPjxwYXRoIGZpbGw9IiMwZTVjNGQiIGQ9Ik0gMC42NDQ1MzEgMC4wNTg1OTM4IEwgNTMuMTAxNTYyIDAuMDU4NTkzOCBMIDUzLjEwMTU2MiA0MTIuMTQ4NDM4IEwgMC42NDQ1MzEgNDEyLjE0ODQzOCBaIE0gMC42NDQ1MzEgMC4wNTg1OTM4ICIgZmlsbC1vcGFjaXR5PSIxIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48L2c+PC9nPjwvZz48L2c+PGcgY2xpcC1wYXRoPSJ1cmwoIzgyMjk3OWYwNmMpIj48ZyBjbGlwLXBhdGg9InVybCgjM2Y0ZTRmYzAzNCkiPjxnIHRyYW5zZm9ybT0ibWF0cml4KDEsIDAsIDAsIDEsIDExODUsIDM5MSkiPjxnIGNsaXAtcGF0aD0idXJsKCM0YmZiZGJmOTIzKSI+PGcgY2xpcC1wYXRoPSJ1cmwoIzcyMjMyZGI4NWYpIj48ZyBjbGlwLXBhdGg9InVybCgjYTg5YmFiNDgyZSkiPjxwYXRoIGZpbGw9IiMwZTVjNGQiIGQ9Ik0gMTcyLjM2MzI4MSAxMzUuMTQ0NTMxIEwgMTM1LjI2OTUzMSAxNzIuMjM4MjgxIEwgMC4wODIwMzEyIDM3LjA0Njg3NSBMIDM3LjE3NTc4MSAtMC4wNDY4NzUgWiBNIDE3Mi4zNjMyODEgMTM1LjE0NDUzMSAiIGZpbGwtb3BhY2l0eT0iMSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PC9nPjwvZz48L2c+PC9nPjwvZz48L2c+PGcgY2xpcC1wYXRoPSJ1cmwoIzkxNGVjZDYyNjcpIj48ZyB0cmFuc2Zvcm09Im1hdHJpeCgxLCAwLCAwLCAxLCA5NDksIDM5MSkiPjxnIGNsaXAtcGF0aD0idXJsKCNhZjY1YTBhMjc5KSI+PGcgY2xpcC1wYXRoPSJ1cmwoIzlhYzcwMDc2N2IpIj48cGF0aCBmaWxsPSIjMGU1YzRkIiBkPSJNIDAuNzA3MDMxIDUyLjk0NTMxMiBMIDAuNzA3MDMxIDAuNDg4MjgxIEwgMjczLjQ0OTIxOSAwLjQ4ODI4MSBMIDI3My40NDkyMTkgNTIuOTQ1MzEyIFogTSAwLjcwNzAzMSA1Mi45NDUzMTIgIiBmaWxsLW9wYWNpdHk9IjEiIGZpbGwtcnVsZT0ibm9uemVybyIvPjwvZz48L2c+PC9nPjwvZz48ZyBjbGlwLXBhdGg9InVybCgjYjNkYzAzM2EyNSkiPjxnIHRyYW5zZm9ybT0ibWF0cml4KDEsIDAsIDAsIDEsIDk0OSwgMzkyKSI+PGcgY2xpcC1wYXRoPSJ1cmwoIzJhMjVlNTExNWYpIj48ZyBjbGlwLXBhdGg9InVybCgjYWIwZmQ3MWRmNykiPjxwYXRoIGZpbGw9IiMwZTVjNGQiIGQ9Ik0gMC44MjgxMjUgMC4xMDkzNzUgTCA1My4yODUxNTYgMC4xMDkzNzUgTCA1My4yODUxNTYgMTcyLjQ0MTQwNiBMIDAuODI4MTI1IDE3Mi40NDE0MDYgWiBNIDAuODI4MTI1IDAuMTA5Mzc1ICIgZmlsbC1vcGFjaXR5PSIxIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48L2c+PC9nPjwvZz48L2c+PGcgY2xpcC1wYXRoPSJ1cmwoIzBiOWM0YjI0YWEpIj48ZyB0cmFuc2Zvcm09Im1hdHJpeCgxLCAwLCAwLCAxLCAxNTA4LCAxODQpIj48ZyBjbGlwLXBhdGg9InVybCgjNzFlYTZmYTg0MikiPjxnIGNsaXAtcGF0aD0idXJsKCM2YjJhZmQxMWU2KSI+PHBhdGggZmlsbD0iI2Q0YWYzNyIgZD0iTSAwLjc0MjE4OCAzODAuNDY4NzUgTCAwLjc0MjE4OCAwLjg3MTA5NCBMIDU0LjcwMzEyNSAwLjg3MTA5NCBMIDU0LjcwMzEyNSAzODAuNDY4NzUgWiBNIDAuNzQyMTg4IDM4MC40Njg3NSAiIGZpbGwtb3BhY2l0eT0iMSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PC9nPjwvZz48L2c+PC9nPjxnIGNsaXAtcGF0aD0idXJsKCM0NGQzZjY1ZWJlKSI+PGcgY2xpcC1wYXRoPSJ1cmwoI2QzMWM4YWY4ZTIpIj48ZyB0cmFuc2Zvcm09Im1hdHJpeCgxLCAwLCAwLCAxLCAxNDYzLCA0OTIpIj48ZyBjbGlwLXBhdGg9InVybCgjZmU5NGU1ZmYzOCkiPjxnIGNsaXAtcGF0aD0idXJsKCNkNDVkMmY2NjI3KSI+PGcgY2xpcC1wYXRoPSJ1cmwoI2MyNzdjZWQxMTcpIj48cGF0aCBmaWxsPSIjZDRhZjM3IiBkPSJNIDAuNzgxMjUgMC41MjczNDQgTCAxNDQuNjY3OTY5IDAuNTI3MzQ0IEwgMTQ0LjY2Nzk2OSAxNDQuNDE3OTY5IEwgMC43ODEyNSAxNDQuNDE3OTY5IFogTSAwLjc4MTI1IDAuNTI3MzQ0ICIgZmlsbC1vcGFjaXR5PSIxIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48L2c+PC9nPjwvZz48L2c+PC9nPjwvZz48ZyBjbGlwLXBhdGg9InVybCgjYWU3N2FlODdmZikiPjxnIGNsaXAtcGF0aD0idXJsKCMzMDllN2FiMjlhKSI+PGcgdHJhbnNmb3JtPSJtYXRyaXgoMSwgMCwgMCwgMSwgMTQ2NCwgNzkpIj48ZyBjbGlwLXBhdGg9InVybCgjN2JiNTA0ZjliOSkiPjxnIGNsaXAtcGF0aD0idXJsKCNkN2RiZjA4ZTViKSI+PGcgY2xpcC1wYXRoPSJ1cmwoIzUzYjEzM2YzN2QpIj48cGF0aCBmaWxsPSIjZDRhZjM3IiBkPSJNIDAuMTY0MDYyIDAuMTE3MTg4IEwgMTQ0LjA1MDc4MSAwLjExNzE4OCBMIDE0NC4wNTA3ODEgMTQ0LjAwMzkwNiBMIDAuMTY0MDYyIDE0NC4wMDM5MDYgWiBNIDAuMTY0MDYyIDAuMTE3MTg4ICIgZmlsbC1vcGFjaXR5PSIxIiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48L2c+PC9nPjwvZz48L2c+PC9nPjwvZz48ZyB0cmFuc2Zvcm09Im1hdHJpeCgxLCAwLCAwLCAxLCA4MCwgNzYpIj48ZyBjbGlwLXBhdGg9InVybCgjYTMxYjhjYzA1YykiPjxnIGZpbGw9IiMwZTVjNGQiIGZpbGwtb3BhY2l0eT0iMSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMC45MzgwMDMsIDI2My45ODY5NzIpIj48Zz48cGF0aCBkPSJNIDg1LjUzMTI1IDMuMjgxMjUgQyA3MC40MTQwNjIgMy4yODEyNSA1NS43OTY4NzUgMS4yMzQzNzUgNDEuNjcxODc1IC0yLjg1OTM3NSBDIDI3LjU1NDY4OCAtNi45NjA5MzggMTYuMjE4NzUgLTEyLjI5Njg3NSA3LjY1NjI1IC0xOC44NTkzNzUgTCAyMi42ODc1IC01Mi4yMDMxMjUgQyAzMC44ODI4MTIgLTQ2LjE3OTY4OCA0MC42Mjg5MDYgLTQxLjM0NzY1NiA1MS45MjE4NzUgLTM3LjcwMzEyNSBDIDYzLjIxMDkzOCAtMzQuMDY2NDA2IDc0LjUwNzgxMiAtMzIuMjUgODUuODEyNSAtMzIuMjUgQyA5OC4zODI4MTIgLTMyLjI1IDEwNy42NzU3ODEgLTM0LjExMzI4MSAxMTMuNjg3NSAtMzcuODQzNzUgQyAxMTkuNjk1MzEyIC00MS41ODIwMzEgMTIyLjcwMzEyNSAtNDYuNTUwNzgxIDEyMi43MDMxMjUgLTUyLjc1IEMgMTIyLjcwMzEyNSAtNTcuMzAwNzgxIDEyMC45MjU3ODEgLTYxLjA3ODEyNSAxMTcuMzc1IC02NC4wNzgxMjUgQyAxMTMuODIwMzEyIC02Ny4wODU5MzggMTA5LjI2NTYyNSAtNjkuNTAzOTA2IDEwMy43MDMxMjUgLTcxLjMyODEyNSBDIDk4LjE0ODQzOCAtNzMuMTQ4NDM4IDkwLjY0MDYyNSAtNzUuMTU2MjUgODEuMTcxODc1IC03Ny4zNDM3NSBDIDY2LjU4NTkzOCAtODAuODAwNzgxIDU0LjY0ODQzOCAtODQuMjU3ODEyIDQ1LjM1OTM3NSAtODcuNzE4NzUgQyAzNi4wNjY0MDYgLTkxLjE4NzUgMjguMDk3NjU2IC05Ni43NDIxODggMjEuNDUzMTI1IC0xMDQuMzkwNjI1IEMgMTQuODA0Njg4IC0xMTIuMDQ2ODc1IDExLjQ4NDM3NSAtMTIyLjI1IDExLjQ4NDM3NSAtMTM1IEMgMTEuNDg0Mzc1IC0xNDYuMTEzMjgxIDE0LjQ4ODI4MSAtMTU2LjE3NTc4MSAyMC41IC0xNjUuMTg3NSBDIDI2LjUwNzgxMiAtMTc0LjIwNzAzMSAzNS41NzAzMTIgLTE4MS4zNTkzNzUgNDcuNjg3NSAtMTg2LjY0MDYyNSBDIDU5LjgwMDc4MSAtMTkxLjkyOTY4OCA3NC42MDE1NjIgLTE5NC41NzgxMjUgOTIuMDkzNzUgLTE5NC41NzgxMjUgQyAxMDQuMzAwNzgxIC0xOTQuNTc4MTI1IDExNi4yMzQzNzUgLTE5My4xMTcxODggMTI3Ljg5MDYyNSAtMTkwLjIwMzEyNSBDIDEzOS41NTQ2ODggLTE4Ny4yODUxNTYgMTQ5Ljc1NzgxMiAtMTgzLjA5NzY1NiAxNTguNSAtMTc3LjY0MDYyNSBMIDE0NC44NDM3NSAtMTQ0LjAxNTYyNSBDIDEyNy4xNjQwNjIgLTE1NC4wMzUxNTYgMTA5LjQ5MjE4OCAtMTU5LjA0Njg3NSA5MS44MjgxMjUgLTE1OS4wNDY4NzUgQyA3OS40Mjk2ODggLTE1OS4wNDY4NzUgNzAuMjY5NTMxIC0xNTcuMDM5MDYyIDY0LjM0Mzc1IC0xNTMuMDMxMjUgQyA1OC40MjU3ODEgLTE0OS4wMzEyNSA1NS40Njg3NSAtMTQzLjc1IDU1LjQ2ODc1IC0xMzcuMTg3NSBDIDU1LjQ2ODc1IC0xMzAuNjI1IDU4Ljg4MjgxMiAtMTI1Ljc1IDY1LjcxODc1IC0xMjIuNTYyNSBDIDcyLjU1MDc4MSAtMTE5LjM3NSA4Mi45ODQzNzUgLTExNi4yMzQzNzUgOTcuMDE1NjI1IC0xMTMuMTQwNjI1IEMgMTExLjU4NTkzOCAtMTA5LjY3OTY4OCAxMjMuNTE5NTMxIC0xMDYuMjE4NzUgMTMyLjgxMjUgLTEwMi43NSBDIDE0Mi4xMDE1NjIgLTk5LjI4OTA2MiAxNTAuMDcwMzEyIC05My44MjgxMjUgMTU2LjcxODc1IC04Ni4zNTkzNzUgQyAxNjMuMzc1IC03OC44OTA2MjUgMTY2LjcwMzEyNSAtNjguNzczNDM4IDE2Ni43MDMxMjUgLTU2LjAxNTYyNSBDIDE2Ni43MDMxMjUgLTQ1LjA4NTkzOCAxNjMuNjQ4NDM4IC0zNS4xMTMyODEgMTU3LjU0Njg3NSAtMjYuMDkzNzUgQyAxNTEuNDQxNDA2IC0xNy4wODIwMzEgMTQyLjI4NTE1NiAtOS45Mjk2ODggMTMwLjA3ODEyNSAtNC42NDA2MjUgQyAxMTcuODY3MTg4IDAuNjQwNjI1IDEwMy4wMTk1MzEgMy4yODEyNSA4NS41MzEyNSAzLjI4MTI1IFogTSA4NS41MzEyNSAzLjI4MTI1ICIvPjwvZz48L2c+PC9nPjxnIGZpbGw9IiMwZTVjNGQiIGZpbGwtb3BhY2l0eT0iMSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTc1LjI5MjA1LCAyNjMuOTg2OTcyKSI+PGc+PHBhdGggZD0iTSAxNDguNjcxODc1IC00MSBMIDU5Ljg0Mzc1IC00MSBMIDQyLjkwNjI1IDAgTCAtMi40NTMxMjUgMCBMIDgyLjc5Njg3NSAtMTkxLjI5Njg3NSBMIDEyNi41MzEyNSAtMTkxLjI5Njg3NSBMIDIxMi4wNjI1IDAgTCAxNjUuNjA5Mzc1IDAgWiBNIDEzNC43MzQzNzUgLTc0LjYwOTM3NSBMIDEwNC4zOTA2MjUgLTE0Ny44NDM3NSBMIDc0LjA2MjUgLTc0LjYwOTM3NSBaIE0gMTM0LjczNDM3NSAtNzQuNjA5Mzc1ICIvPjwvZz48L2c+PC9nPjxnIGZpbGw9IiMwZTVjNGQiIGZpbGwtb3BhY2l0eT0iMSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMzg0LjYyNjI0NiwgMjYzLjk4Njk3MikiPjxnPjxwYXRoIGQ9Ik0gNjYuOTUzMTI1IC0xNTUuNzY1NjI1IEwgNjYuOTUzMTI1IC0xMDUuMjE4NzUgTCAxNTUuNSAtMTA1LjIxODc1IEwgMTU1LjUgLTY5LjY4NzUgTCA2Ni45NTMxMjUgLTY5LjY4NzUgTCA2Ni45NTMxMjUgMCBMIDIyLjY4NzUgMCBMIDIyLjY4NzUgLTE5MS4yOTY4NzUgTCAxNjcuMjUgLTE5MS4yOTY4NzUgTCAxNjcuMjUgLTE1NS43NjU2MjUgWiBNIDY2Ljk1MzEyNSAtMTU1Ljc2NTYyNSAiLz48L2c+PC9nPjwvZz48ZyBmaWxsPSIjMGU1YzRkIiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDU1OS4yNTM1ODIsIDI2My45ODY5NzIpIj48Zz48cGF0aCBkPSJNIDMxMS44MTI1IC0xOTEuMjk2ODc1IEwgMjQ5LjIzNDM3NSAwIEwgMjAxLjY4NzUgMCBMIDE1OS41OTM3NSAtMTI5LjUzMTI1IEwgMTE2LjE0MDYyNSAwIEwgNjguODU5Mzc1IDAgTCA2LjAxNTYyNSAtMTkxLjI5Njg3NSBMIDUxLjkyMTg3NSAtMTkxLjI5Njg3NSBMIDk1LjEwOTM3NSAtNTYuODQzNzUgTCAxNDAuMTg3NSAtMTkxLjI5Njg3NSBMIDE4MS4xODc1IC0xOTEuMjk2ODc1IEwgMjI0LjkwNjI1IC01NS43NSBMIDI2OS40NTMxMjUgLTE5MS4yOTY4NzUgWiBNIDMxMS44MTI1IC0xOTEuMjk2ODc1ICIvPjwvZz48L2c+PC9nPjxnIGZpbGw9IiNkNGFmMzciIGZpbGwtb3BhY2l0eT0iMSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoODY2LjY5ODc2OCwgMjYzLjk4Njk3MikiPjxnPjxwYXRoIGQ9Ik0gMTQ4LjY3MTg3NSAtNDEgTCA1OS44NDM3NSAtNDEgTCA0Mi45MDYyNSAwIEwgLTIuNDUzMTI1IDAgTCA4Mi43OTY4NzUgLTE5MS4yOTY4NzUgTCAxMjYuNTMxMjUgLTE5MS4yOTY4NzUgTCAyMTIuMDYyNSAwIEwgMTY1LjYwOTM3NSAwIFogTSAxMzQuNzM0Mzc1IC03NC42MDkzNzUgTCAxMDQuMzkwNjI1IC0xNDcuODQzNzUgTCA3NC4wNjI1IC03NC42MDkzNzUgWiBNIDEzNC43MzQzNzUgLTc0LjYwOTM3NSAiLz48L2c+PC9nPjwvZz48ZyBmaWxsPSIjZDRhZjM3IiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwNzYuMDMyOTQxLCAyNjMuOTg2OTcyKSI+PGc+PHBhdGggZD0iTSAyMi42ODc1IC0xOTEuMjk2ODc1IEwgNjYuOTUzMTI1IC0xOTEuMjk2ODc1IEwgNjYuOTUzMTI1IDAgTCAyMi42ODc1IDAgWiBNIDIyLjY4NzUgLTE5MS4yOTY4NzUgIi8+PC9nPjwvZz48L2c+PC9nPjwvZz48L3N2Zz4=" alt="SAFWAI AI Solutions"></a>
+
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#problem">The Problem</a></li>
+      <li><a href="#solution">The Solution</a></li>
+      <li><a href="#positioning">Where We Sit</a></li>
+      <li><a href="#differentiators">Why Different</a></li>
+      <li><a href="#proof">Proof</a></li>
+      <li><a href="#platform">Platform</a></li>
+      <li><a href="#sectors">Sectors</a></li>
+      <li><a href="#objections">FAQ</a></li>
+    </ul>
+
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ============================================================
+       HERO — Sprint 1
+       ============================================================ -->
+  <section id="hero">
+    <div class="hero-inner container">
+
+      <div class="hero-content">
+        <h1>The AI your pilots never became.</h1>
+        <p class="hero-sub">A fractional AI team that designs, builds, and runs bespoke AI systems — live in weeks, not quarters. Built on your data. Deployed in your cloud. Owned entirely by you.</p>
+        <div class="hero-ctas">
+          <a href="https://calendly.com/contact-safwai/30min" target="_blank" rel="noopener" class="btn btn-primary">Book your free PoC</a>
+        </div>
+      </div>
+
+      <div class="proof-bar">
+        <span class="proof-bar-label section-label">Systems in production across</span>
+        <div class="proof-bar-items">
+          <span class="proof-sector">Construction / EPC</span>
+          <span class="proof-sep" aria-hidden="true">·</span>
+          <span class="proof-sector">Professional Services</span>
+          <span class="proof-sep" aria-hidden="true">·</span>
+          <span class="proof-sector">Maritime</span>
+          <span class="proof-sep" aria-hidden="true">·</span>
+          <span class="proof-sector">Logistics</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       THE PROBLEM — Sprint 1
+       ============================================================ -->
+  <section id="problem">
+    <div class="container">
+
+      <p class="section-label">The Problem</p>
+      <h2>Most enterprise AI investments impress in the demo and die before they change anything real.</h2>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-number">95%</div>
+          <div class="stat-label">of enterprise AI pilots delivered zero measurable P&L impact</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">60→20→5%</div>
+          <div class="stat-label">of firms evaluated → reached pilot → went to production</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">$30–40B</div>
+          <div class="stat-label">invested globally — most yet to deliver full value</div>
+        </div>
+      </div>
+
+      <p class="stat-source">MIT NANDA Lab — GenAI Divide: State of AI in Business 2025. 52 executive interviews, 153 leader surveys, 300 public deployments.</p>
+
+      <blockquote class="pull-quote">
+        <p>"The hype on LinkedIn says everything has changed, but in our operations, nothing fundamental has shifted."</p>
+        <cite>— Manufacturing COO, MIT NANDA study</cite>
+      </blockquote>
+
+      <p class="problem-body">The root causes are documented: unclear objectives, incomplete workflow integration, unprepared data, misaligned stakeholders, and teams without the capability to cross from proof-of-concept to live system. The technology is not the problem. The transition is.</p>
+
+      <div class="gcc-callout">
+        <p class="section-label" style="margin-bottom:0;">In the GCC, the gap is wider</p>
+        <p>Data sovereignty mandates, Arabic language requirements, regulated industries — Islamic banking, government, healthcare — and a relationship-first buying culture mean generic Western AI tools fail faster here. The technology gap is not the issue. A partner who understands the context is.</p>
+      </div>
+
+      <p class="problem-close">The gap is not in the technology. It never was.</p>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       THE SOLUTION — Sprint 1
+       ============================================================ -->
+  <section id="solution">
+    <div class="container">
+
+      <p class="section-label">The Solution</p>
+      <h2>A fractional AI team that designs, builds, and runs the system — so you own working AI, not a roadmap.</h2>
+
+      <div class="is-isnot-grid">
+        <div class="card is-not-card">
+          <span class="col-label">SAFWAI is not</span>
+          <ul>
+            <li>A platform vendor</li>
+            <li>A Big 4 advisory team</li>
+            <li>A software reseller</li>
+            <li>A pilot factory</li>
+          </ul>
+        </div>
+        <div class="card is-card">
+          <span class="col-label">SAFWAI is</span>
+          <ul>
+            <li>A standing fractional AI capability — embedded in your business problem</li>
+            <li>Delivering working systems, not presentations</li>
+            <li>Building on your data, in your cloud</li>
+            <li>Leaving you with a system you own outright</li>
+          </ul>
+        </div>
+      </div>
+
+      <span class="phase-section-label">How an engagement works — three phases</span>
+
+      <div class="phase-grid">
+
+        <div class="phase-card">
+          <div class="phase-badge"><span class="badge badge-production">Free</span></div>
+          <div class="phase-number">01</div>
+          <h3>See it work before you commit</h3>
+          <p>Built on your actual data. Typically one week. You see a working system running on your own information — not a demo on clean data, not a slide deck about what we might build. No fee. No obligation. If it doesn't prove value, there's nothing to buy.</p>
+        </div>
+
+        <div class="phase-connector" aria-hidden="true">→</div>
+
+        <div class="phase-card">
+          <div class="phase-badge"><span class="badge badge-poc">Fixed Scope · Fixed Price</span></div>
+          <div class="phase-number">02</div>
+          <h3>Full working system, delivered</h3>
+          <p>A complete AI system, scoped precisely, built and deployed. You know the scope and the price before a single line is written. The speed comes from composable architecture — the platform we've already built becomes the foundation of yours.</p>
+        </div>
+
+        <div class="phase-connector" aria-hidden="true">→</div>
+
+        <div class="phase-card">
+          <div class="phase-badge"><span class="badge badge-future">Faster · Cheaper Each Time</span></div>
+          <div class="phase-number">03</div>
+          <h3>Add use cases. Expand users.</h3>
+          <p>Each subsequent build draws on components already built. The more you build, the faster and cheaper each new capability becomes. You own everything — the system runs without you managing it.</p>
+        </div>
+
+      </div>
+
+      <div class="solution-cta-block">
+        <h3>The PoC is free. The proof is real.</h3>
+        <p>No fee. Your data. Typically one week. See it work before you commit to anything.</p>
+        <a href="https://calendly.com/contact-safwai/30min" target="_blank" rel="noopener" class="btn btn-primary">Book your free PoC</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       WHERE SAFWAI SITS — Sprint 2
+       ============================================================ -->
+  <section id="positioning">
+    <div class="container">
+
+      <p class="section-label">Where SAFWAI Sits</p>
+      <h2>You've evaluated the market. Here's how it's actually structured — and where SAFWAI fits.</h2>
+
+      <p class="positioning-intro">Every buyer in this space has already tried something. A platform vendor. An advisory firm. An internal build. Maybe all three. Before we explain what SAFWAI does, it's worth being precise about what it isn't.</p>
+
+      <div class="lane-grid">
+
+        <div class="lane-card">
+          <div class="lane-we-label">We use them</div>
+          <div class="lane-title">Raw AI Primitives</div>
+          <div class="lane-examples">OpenAI API · Anthropic API · Llama · DeepSeek · Groq</div>
+          <p class="lane-problem">Just a model behind an API. You build everything else — orchestration, retrieval, audit, UI — months of engineering before any business value. You need a working system, not a toolbox.</p>
+        </div>
+
+        <div class="lane-card">
+          <div class="lane-we-label">We do what they can't</div>
+          <div class="lane-title">Single-Vendor AI Ecosystems</div>
+          <div class="lane-examples">Microsoft Copilot · Google Agentspace · AWS Bedrock · OpenAI Operator</div>
+          <p class="lane-problem">One vendor, one stack. You inherit their model, their pricing, their data residency rules. A vendor strategy shift becomes your strategy shift. You need sovereignty over your data and the freedom to swap models.</p>
+        </div>
+
+        <div class="lane-card">
+          <div class="lane-we-label">We out-compose them</div>
+          <div class="lane-title">Productised AI Platforms</div>
+          <div class="lane-examples">Celonis AI · Glean · Sirion</div>
+          <p class="lane-problem">Vertical SaaS with AI baked in — built for the average customer. You adapt to their workflow, not the other way around. You need AI built around your business.</p>
+        </div>
+
+        <div class="lane-card">
+          <div class="lane-we-label">We outpace them</div>
+          <div class="lane-title">Advisory &amp; SI Firms</div>
+          <div class="lane-examples">McKinsey · EY · PwC · Deloitte · Accenture</div>
+          <p class="lane-problem">Six-figure decks, multi-quarter timelines, minimal running systems at the end. You need working systems in weeks, at a fraction of the cost.</p>
+        </div>
+
+        <div class="lane-card">
+          <div class="lane-we-label">We accelerate it</div>
+          <div class="lane-title">In-House Build</div>
+          <p class="lane-problem">A team you assemble yourself — 12+ months to staff, senior AI engineers leave first. The platform you would build is the platform we already have. You need a partner that accelerates your team, not replaces it.</p>
+        </div>
+
+      </div>
+
+      <p class="positioning-close">SAFWAI is not a vendor. Not advisory. Not a platform licence. It is the thing between the decision and the working system.</p>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       WHY THIS IS STRUCTURALLY DIFFERENT — Sprint 2
+       ============================================================ -->
+  <section id="differentiators">
+    <div class="container">
+
+      <p class="section-label">Why This Is Structurally Different</p>
+      <h2>Five differences that matter to an enterprise buyer who has been burned before.</h2>
+
+      <div class="diff-grid">
+
+        <div class="diff-card">
+          <div class="diff-number">01 — Vendor-agnostic architecture</div>
+          <div class="diff-claim">The AI model is one swappable component, not the foundation.</div>
+          <p class="diff-mechanism">When OpenAI re-prices, your application doesn't rebuild. When a better model ships, you swap it in. Every system we build sits on a service layer that isolates your application from any single model provider. Your investment is in the system, not in a vendor relationship.</p>
+        </div>
+
+        <div class="diff-card">
+          <div class="diff-number">02 — Data sovereignty</div>
+          <div class="diff-claim">Your data never leaves your chosen environment.</div>
+          <p class="diff-mechanism">Deployed in your cloud tenant, your region — Qatar, KSA, UAE, EU, on-premise — whichever your compliance posture requires. Contractually yours. Never used to train AI models. Never mixed with other clients' data. Full client isolation by architecture, not by policy.</p>
+        </div>
+
+        <div class="diff-card">
+          <div class="diff-number">03 — Working systems, not roadmaps</div>
+          <div class="diff-claim">What you receive is running in production, not waiting for the next quarter's budget.</div>
+          <p class="diff-mechanism">The PoC runs on your actual data. The first use case is scoped, priced, built, and deployed. Not a pilot. Not a prototype. A system that processes real inputs and produces real outputs in your live environment.</p>
+        </div>
+
+        <div class="diff-card">
+          <div class="diff-number">04 — Outlasts any single AI cycle</div>
+          <div class="diff-claim">What we build doesn't become obsolete when the next model drops.</div>
+          <p class="diff-mechanism">The composable architecture means the business logic, the workflow integration, and the data pipelines are yours — stable, tested, and running. The AI model is one configurable layer. Model upgrades are maintenance items, not rebuilds.</p>
+        </div>
+
+        <div class="diff-card">
+          <div class="diff-number">05 — Infrastructure-agnostic deployment</div>
+          <div class="diff-claim">We build to your environment, not ours.</div>
+          <p class="diff-mechanism">Azure, AWS, GCP, on-premise, hybrid — your infrastructure, your security posture, your procurement rules. We have no preferred cloud partner and no platform licence to sell you. The system runs wherever you need it to run.</p>
+        </div>
+
+      </div>
+
+      <div class="trust-block">
+        <p class="section-label">Data Governance &amp; Security</p>
+        <div class="trust-grid">
+          <div class="trust-item">
+            <span class="trust-checkmark">✓</span>
+            <span class="trust-item-text">Your data is never used to train AI models</span>
+          </div>
+          <div class="trust-item">
+            <span class="trust-checkmark">✓</span>
+            <span class="trust-item-text">Every agent action is logged — full audit trail, not just session metadata</span>
+          </div>
+          <div class="trust-item">
+            <span class="trust-checkmark">✓</span>
+            <span class="trust-item-text">Complete client data isolation — your data is never mixed with other clients</span>
+          </div>
+          <div class="trust-item">
+            <span class="trust-checkmark">✓</span>
+            <span class="trust-item-text">Configurable human-in-the-loop escalation — the system pauses for human approval at defined steps</span>
+          </div>
+        </div>
+        <p class="trust-note">For government and Islamic banking buyers: full governance documentation is available on request. We have passed security audit in a government-issued identity document context.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SYSTEMS IN PRODUCTION — Sprint 2
+       ============================================================ -->
+  <section id="proof">
+    <div class="container">
+
+      <p class="section-label">Systems in Production</p>
+      <h2>Built systems. Proven results.</h2>
+      <p class="proof-sub">Every engagement begins with a free PoC. These are the ones that proved out.</p>
+
+      <div class="proof-grid">
+
+        <div class="proof-card production">
+          <div class="proof-card-badges">
+            <span class="badge badge-production">Production</span>
+            <span class="badge badge-sector">Construction / EPC</span>
+          </div>
+          <div class="proof-metric">42% → 95%</div>
+          <div class="proof-metric-label">analysis consistency through automated prompt optimisation</div>
+          <div class="proof-system-name">Compliance OS</div>
+          <p class="proof-brief">Five AI tools built on SAFWAI platform for systems engineering on large-scale construction, infrastructure, and energy projects. Secure Azure / Microsoft Entra ID deployment. Data in volatile storage only — never used for model training. Multiple customer implementations.</p>
+        </div>
+
+        <div class="proof-card production">
+          <div class="proof-card-badges">
+            <span class="badge badge-production">Production</span>
+            <span class="badge badge-sector">Professional Services</span>
+          </div>
+          <div class="proof-metric">12-agent system</div>
+          <div class="proof-metric-label">coordinating a full negotiation workflow in production</div>
+          <div class="proof-system-name">Consulting OS</div>
+          <p class="proof-brief">Full negotiation workflow platform. Context hydration populates each session with client historical data, stakeholder profiles, and engagement outcomes. Trademarked methodology encoded — IP stays inside the platform. +25% faster client onboarding. +8% sales performance uplift.</p>
+          <a href="../transformationos.html" class="proof-card-link">→ Explore TransformationOS</a>
+        </div>
+
+        <div class="proof-card production">
+          <div class="proof-card-badges">
+            <span class="badge badge-production">Production</span>
+            <span class="badge badge-sector">Logistics / Trade</span>
+          </div>
+          <div class="proof-metric">15 min → ~0</div>
+          <div class="proof-metric-label">per container — multilingual Bill of Lading reconciliation, fully automated</div>
+          <div class="proof-system-name">Workflow Automation</div>
+          <p class="proof-brief">Agentic document automation for multilingual bill of lading reconciliation against warehouse management system. Thousands of containers per year. Full reconciliation loop without human intervention. In production since 2024 as an ongoing managed service.</p>
+        </div>
+
+        <div class="proof-card production">
+          <div class="proof-card-badges">
+            <span class="badge badge-production">Production</span>
+            <span class="badge badge-sector">Maritime / Technical</span>
+          </div>
+          <div class="proof-metric">Natural language</div>
+          <div class="proof-metric-label">access to a large proprietary technical knowledge corpus</div>
+          <div class="proof-system-name">Conversation OS</div>
+          <p class="proof-brief">Conversational AI over a large proprietary technical documentation library. Engineers query documentation in natural language — the system retrieves, synthesises, and cites with source precision. No more manual search through thousands of technical documents.</p>
+        </div>
+
+        <div class="proof-card production">
+          <div class="proof-card-badges">
+            <span class="badge badge-production">Production</span>
+            <span class="badge badge-sector">Internal / Platform</span>
+          </div>
+          <div class="proof-metric">Eats its own cooking</div>
+          <div class="proof-metric-label">SAFWAI's own development managed by the platform it builds</div>
+          <div class="proof-system-name">Project OS</div>
+          <p class="proof-brief">Emails BCC'd to ProjectOS are automatically classified by project and converted to structured tasks. Development agents triggered weekly from sprint board. Continuously self-updating operational memory. The platform we build for clients manages our own operations.</p>
+        </div>
+
+        <div class="proof-card poc">
+          <div class="proof-card-badges">
+            <span class="badge badge-poc">PoC Completed</span>
+            <span class="badge badge-sector">Government / Vision 2030</span>
+          </div>
+          <div class="proof-metric">252-day</div>
+          <div class="proof-metric-label">PPP business case review cycle — credible compression path proven</div>
+          <div class="proof-system-name">Compliance OS</div>
+          <p class="proof-brief">AI-powered compliance and consistency validation for PPP business case submissions. PoC demonstrated a credible path to compressing review cycles for the Saudi National Center for Privatisation. Government-grade data handling throughout.</p>
+        </div>
+
+        <div class="proof-card poc">
+          <div class="proof-card-badges">
+            <span class="badge badge-poc">PoC Completed</span>
+            <span class="badge badge-sector">Defence / National Security</span>
+          </div>
+          <div class="proof-metric">Binary decision</div>
+          <div class="proof-metric-label">OK / NOT OK — document authenticity and fraud detection in hiring workflow</div>
+          <div class="proof-system-name">Visual AI</div>
+          <p class="proof-brief">Rules-based AI system for employment screening — document authenticity, fraud detection, address verification. Integrated directly into hiring workflow. Passed security audit in government-issued identity document context.</p>
+        </div>
+
+        <div class="proof-card poc">
+          <div class="proof-card-badges">
+            <span class="badge badge-poc">PoC Completed</span>
+            <span class="badge badge-sector">Consumer Brands / Social</span>
+          </div>
+          <div class="proof-metric">90% reduction</div>
+          <div class="proof-metric-label">in video analysis time — 20 min → under 2 min per video</div>
+          <div class="proof-system-name">Visual AI</div>
+          <p class="proof-brief">Computer vision and NLP system for social media video intelligence across TikTok, Instagram, YouTube, and Facebook. Five recurring visual themes identified driving 60% of engagement. 15–20% engagement lift. 30% improvement in creative efficiency.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       THE PLATFORM — Sprint 3
+       ============================================================ -->
+  <section id="platform">
+    <div class="container">
+      <span class="section-label">The Platform</span>
+      <h2>Three layers. One system. Built on your infrastructure.</h2>
+      <p class="platform-intro">Every system SAFWAI builds sits on the same composable architecture. Gysho — our development arm — implements it in days to weeks, not quarters. The result is a system that runs on your own data, in your cloud environment, connected to your existing tools.</p>
+
+      <div class="layers-grid">
+        <div class="layer-card">
+          <span class="layer-number">Layer 01</span>
+          <div class="layer-name">Service Layer</div>
+          <p class="layer-desc">The interface between your business and the AI. Purpose-built agents and tools scoped to your specific business problem.</p>
+          <ul class="layer-bullets">
+            <li>Purpose-built AI agents scoped to your workflow</li>
+            <li>Connectors to your existing systems (ERP, CRM, SharePoint, email)</li>
+            <li>Data ingestion pipelines from your live data sources</li>
+            <li>Workflow triggers — time, event, or human-initiated</li>
+          </ul>
+        </div>
+        <div class="layer-card">
+          <span class="layer-number">Layer 02</span>
+          <div class="layer-name">Orchestration Layer</div>
+          <p class="layer-desc">The coordination layer. Multi-agent workflow management, memory, context, and all six guardrail layers enforced here.</p>
+          <ul class="layer-bullets">
+            <li>Multi-agent task routing and coordination</li>
+            <li>Persistent memory and context management across sessions</li>
+            <li>Prompt optimisation and output quality scoring</li>
+            <li>Full audit logging — every agent action timestamped</li>
+          </ul>
+        </div>
+        <div class="layer-card">
+          <span class="layer-number">Layer 03</span>
+          <div class="layer-name">Front End / Delivery Layer</div>
+          <p class="layer-desc">How your users interact with the system. Interfaces built for your team, not a generic dashboard.</p>
+          <ul class="layer-bullets">
+            <li>Branded client portals and conversational interfaces</li>
+            <li>Role-based dashboards and reporting views</li>
+            <li>Human-in-the-loop review and approval interfaces</li>
+            <li>API endpoints for integration into existing portals</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="platform-tabs">
+        <div class="tab-nav" role="tablist">
+          <button class="tab-btn active" role="tab" aria-selected="true" data-tab="layer1">Service Layer</button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="layer2">Orchestration Layer</button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="layer3">Front End Layer</button>
+        </div>
+        <div class="tab-panel active" id="layer1" role="tabpanel">
+          <div class="tab-content-grid">
+            <p class="tab-description">The Service Layer is where your business problem lives. We build the agents, tools, and workflow logic that are specific to what you need. This layer is the only layer that is different for every client — the Orchestration and Front End layers share composable infrastructure. Because we are not starting from scratch, the Service Layer build happens in weeks, not months. The business logic, data pipelines, and workflow integration live here and are entirely yours — deployed to your infrastructure, running under your control.</p>
+            <ul class="tab-capabilities">
+              <li>Domain-specific agents scoped to your use case (document processing, Q&amp;A, classification, extraction, generation)</li>
+              <li>System integrations: SharePoint, Dynamics 365, SAP, Salesforce, custom REST APIs</li>
+              <li>Structured and unstructured data ingestion — PDFs, emails, databases, live system feeds</li>
+              <li>Configurable workflow rules: escalation logic, approval gates, exception routing</li>
+              <li>Multilingual support — Arabic, English, and additional languages where required</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tab-panel" id="layer2" role="tabpanel">
+          <div class="tab-content-grid">
+            <p class="tab-description">The Orchestration Layer sits underneath all client-facing systems. It manages how agents coordinate, how context is maintained across sessions, how prompts are optimised, and how every output is validated before delivery. This layer is where the guardrail system lives. No output leaves the system without passing through quality scoring and confidence threshold checks. Every action is logged. If confidence falls below the configured threshold, the system escalates — it does not guess.</p>
+            <ul class="tab-capabilities">
+              <li>Multi-agent task orchestration — sequential, parallel, and conditional workflows</li>
+              <li>Persistent memory across sessions — agent knows the history of the engagement</li>
+              <li>Automated prompt optimisation — output quality improves continuously</li>
+              <li>Confidence threshold enforcement — below threshold triggers escalation, not a guess</li>
+              <li>Complete audit trail — agent ID, action, input, output, timestamp, confidence score</li>
+              <li>Anomaly detection — automated alerting on unexpected output patterns</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tab-panel" id="layer3" role="tabpanel">
+          <div class="tab-content-grid">
+            <p class="tab-description">The Front End Layer is what your users see. We build interfaces appropriate to the use case — conversational for knowledge retrieval, dashboard-based for monitoring and reporting, form-based for structured human review. Every interface is built to your brand, role-gated by user type, and designed for the actual workflow — not a generic AI chat window bolted onto the side. For clients who want to embed the system into an existing portal or enterprise platform, we expose API endpoints from this layer.</p>
+            <ul class="tab-capabilities">
+              <li>Branded client portals — consistent with your existing enterprise UI standards</li>
+              <li>Conversational interfaces for knowledge base access and Q&amp;A workflows</li>
+              <li>Structured review interfaces for human-in-the-loop approval flows</li>
+              <li>Role-based access — agent capabilities visible only to appropriate user types</li>
+              <li>Reporting dashboards — usage, accuracy, escalation rates, throughput metrics</li>
+              <li>API layer for embedding into existing portals or triggering from external systems</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="guardrail-block">
+        <span class="section-label">Guardrail System — Six Layers</span>
+        <div class="guardrail-grid">
+          <div class="guardrail-item">
+            <span class="guardrail-number">01</span>
+            <span class="guardrail-text">Input validation and sanitisation — malformed, adversarial, or out-of-scope inputs rejected before processing</span>
+          </div>
+          <div class="guardrail-item">
+            <span class="guardrail-number">02</span>
+            <span class="guardrail-text">Output quality scoring before delivery — every response evaluated against accuracy and completeness criteria</span>
+          </div>
+          <div class="guardrail-item">
+            <span class="guardrail-number">03</span>
+            <span class="guardrail-text">Confidence thresholds with escalation triggers — low-confidence outputs route to human review, not to the user</span>
+          </div>
+          <div class="guardrail-item">
+            <span class="guardrail-number">04</span>
+            <span class="guardrail-text">Human-in-the-loop checkpoints at defined decision points — the system pauses for approval where the stakes require it</span>
+          </div>
+          <div class="guardrail-item">
+            <span class="guardrail-number">05</span>
+            <span class="guardrail-text">Full audit trail — every agent action logged with timestamp, input, output, agent ID, and confidence score</span>
+          </div>
+          <div class="guardrail-item">
+            <span class="guardrail-number">06</span>
+            <span class="guardrail-text">Automated anomaly detection and alert routing — unexpected output patterns trigger alerts before they become incidents</span>
+          </div>
+        </div>
+      </div>
+
+      <span class="section-label" style="margin-top: 8px; display: block;">Deployment Options</span>
+      <div class="deployment-grid">
+        <div class="deploy-item">
+          <div class="deploy-label">Your Azure Tenant</div>
+          <p class="deploy-desc">KSA region · Qatar region · UAE region · EU region</p>
+        </div>
+        <div class="deploy-item">
+          <div class="deploy-label">AWS or GCP</div>
+          <p class="deploy-desc">Your chosen environment — your procurement, your security posture</p>
+        </div>
+        <div class="deploy-item">
+          <div class="deploy-label">On-Premise</div>
+          <p class="deploy-desc">Where data residency requirements demand full physical control</p>
+        </div>
+        <div class="deploy-item">
+          <div class="deploy-label">Hybrid</div>
+          <p class="deploy-desc">Compute in cloud, data on-premise — or any combination your architecture requires</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       USE CASES BY SECTOR — Sprint 3
+       ============================================================ -->
+  <section id="sectors">
+    <div class="container">
+      <span class="section-label">Use Cases by Sector</span>
+      <h2>Already designed. Ready to prove. First-mover position still open.</h2>
+      <p class="sectors-sub">These use cases are scoped, not started. The design is complete. The build takes weeks, once you're ready to begin.</p>
+
+      <div class="sector-grid">
+
+        <div class="sector-card first-mover">
+          <div class="sector-card-badges">
+            <span class="badge badge-sector">ERP / Core Banking / Major Migrations</span>
+            <span class="badge badge-poc">PoC Scoped</span>
+          </div>
+          <h3>The AI system that manages your go-live — so your team doesn't have to manage it manually</h3>
+          <p class="sector-brief">Enterprise system implementations succeed or fail at go-live, not in selection or design. CutoverOS applies AI to the cutover process — the compressed, high-stakes moment where execution risk is highest. Plan Builder assembles the cutover plan from live documentation. Dependency Simulator maps task and data dependencies and models go-live scenarios. Go-Live Consequence Engine monitors progress in real time, flags emerging risk, and maintains an objective risk register from kickoff to sign-off.</p>
+          <div class="sector-cta">The first-mover position for ERP and core banking cutover is open. Let's talk.</div>
+        </div>
+
+        <div class="sector-card first-mover">
+          <div class="sector-card-badges">
+            <span class="badge badge-sector">Islamic Banking &amp; Finance</span>
+            <span class="badge badge-poc">PoC Scoped</span>
+          </div>
+          <h3>Multi-agent Shariah advisory system — augmenting your Board, not replacing it</h3>
+          <p class="sector-brief">A three-tier Shariah advisory model has a structural bottleneck: the single internal advisor is the choke point for all routine queries. A multi-agent system routes by confidence: Inquiry Agent (Arabic and English Q&amp;A), Business Activity Screening Agent, Financing Structure Agent (Murabaha / Ijarah / Musharakah validation), Precedent Research Agent (AAOIFI standards, Board positions). Board authority preserved. Binary classification. Full audit trail.</p>
+          <div class="sector-impact">
+            <div class="sector-impact-label">Target Impact — Year 1</div>
+            <p>60–70% reduction in Tier 2 routine workload · 99% faster response (24–48 hrs → &lt;1 min) · 75% fewer escalations · QAR 5–10M annual benefit</p>
+          </div>
+          <div class="sector-cta">The first-mover position for Islamic banking Shariah advisory is open. Let's talk.</div>
+        </div>
+
+        <div class="sector-card first-mover">
+          <div class="sector-card-badges">
+            <span class="badge badge-sector">GCC Multi-Brand Dealer Groups</span>
+            <span class="badge badge-poc">PoC Scoped</span>
+          </div>
+          <h3>Service-to-sales intelligence for GCC automotive — built for the local dealer model</h3>
+          <p class="sector-brief">A service-to-sales intelligence platform designed for the GCC multi-brand dealer group model — where service history, customer lifecycle data, and vehicle inventory sit across disconnected systems. Designed for Arabic-first operations and GCC regulatory context. Connects the data that already exists in your dealership to surface the next best action for every service visit, every customer, every vehicle.</p>
+          <div class="sector-cta">The first-mover position for GCC automotive is open. Let's talk.</div>
+        </div>
+
+        <div class="sector-card in-production">
+          <div class="sector-card-badges">
+            <span class="badge badge-sector">Consulting &amp; Professional Services</span>
+            <span class="badge badge-production">In Production</span>
+          </div>
+          <h3>Your methodology is the only thing your competitors can't copy — yet</h3>
+          <p class="sector-brief">SAFWAI transforms boutique consulting firms' proprietary frameworks into subscription-based AI platforms — so your IP becomes the engine of recurring revenue, not an asset that AI-native competitors can replicate with a prompt. Reference outcome: +25% faster client onboarding, +8% sales performance uplift, new subscription revenue stream in under 12 months.</p>
+          <div class="sector-cta"><a href="https://transformationos.ai" target="_blank" rel="noopener">Explore TransformationOS →</a></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       OBJECTIONS ADDRESSED — Sprint 3
+       ============================================================ -->
+  <section id="objections">
+    <div class="container">
+      <span class="section-label">Questions We Hear</span>
+      <h2>The objections enterprise buyers actually have — answered directly.</h2>
+
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+            <span class="faq-q-text">Our data can never leave our environment.</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </div>
+          <div class="faq-answer">It doesn't. Every system we build is deployed in your chosen cloud region — Qatar, KSA, UAE, EU, or on-premise. Your data stays inside your environment throughout the PoC and in production. It is never used to train AI models and is never mixed with other clients' data. This is contractual, not just policy. For regulated industries we provide full data governance documentation on request.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+            <span class="faq-q-text">We tried AI before and it went nowhere.</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </div>
+          <div class="faq-answer">We know. Most enterprise AI projects fail before they reach production — the MIT NANDA research puts the number at 95% delivering zero P&amp;L impact. The reason is usually not the technology. It is the gap between a working prototype and a system integrated into a real workflow, running on real data, with real governance around it. The PoC is designed specifically to cross that gap — not to demonstrate capability in isolation, but to prove the system works inside your actual operations.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+            <span class="faq-q-text">What happens when the AI vendor changes pricing or gets deprecated?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </div>
+          <div class="faq-answer">The AI model is one swappable component behind a service layer. When OpenAI re-prices, your application does not rebuild. When a better model ships, we swap it in — typically a configuration change, not a rebuild. Your investment is in the system: the business logic, the workflow integration, the data pipelines, and the agent coordination. These are stable. The model is not.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+            <span class="faq-q-text">Is this built for Arabic? For Islamic finance? For GCC government?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </div>
+          <div class="faq-answer">Yes. The Shariah compliance system handles Arabic and English natively — multi-agent classification designed around the correct Shariah compliance model, not a generic finance AI with an Arabic tokeniser bolted on. The government work is built to GCC data sovereignty requirements and has passed security audit in a government-issued identity document context. These are not regional adaptations of Western tools. They are built for these contexts from the ground up.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+            <span class="faq-q-text">Can a small team actually deliver what Big 4 firms can't?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </div>
+          <div class="faq-answer">The Big 4 constraint is not capability — it is model. A large advisory firm sends a senior partner to sell, a mid-level team to deliver, and bills by the day. Their incentive is a long programme. Ours is a working system in weeks. The fractional model means you get the architecture and build expertise without the overhead. The proof is in production: five live systems across construction, government, professional services, maritime, and logistics.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+            <span class="faq-q-text">What does 'bespoke' actually mean in practice?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </div>
+          <div class="faq-answer">It means the system is built around your business problem, your data structures, your existing tools, and your workflow — not configured from a template. The composable architecture means we are not starting from zero, which is how we build in weeks. But what you receive is not a generic product. It is a system that processes your inputs, follows your workflow rules, and integrates with your existing environment.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+            <span class="faq-q-text">How long before we see anything real?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </div>
+          <div class="faq-answer">The PoC runs in one to two weeks — on your actual data, not dummy data. You see a working system. If it proves value, the first use case is scoped and built on a fixed timeline, typically four to twelve weeks depending on complexity. You know the timeline and the price before we start.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question" role="button" tabindex="0" aria-expanded="false">
+            <span class="faq-q-text">Who owns the system after you build it?</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </div>
+          <div class="faq-answer">You do. Entirely. The system is deployed on your infrastructure. The code, the data pipelines, the workflow logic, and the agent configurations are yours. SAFWAI has no ongoing claim on your system, your data, or how you use it. The only ongoing engagement is an optional managed service or enhancement cycle — which you control.</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FINAL CTA BLOCK — Sprint 3
+       ============================================================ -->
+  <section id="cta">
+    <div class="container">
+      <div class="cta-inner">
+        <span class="section-label">Next Step</span>
+        <p class="cta-headline">See it work on your data before you commit to anything.</p>
+        <p class="cta-body">No fee. Your data. Typically one week. If the PoC doesn't prove value, there is nothing to buy. We scope the use case together, run the proof on your actual data, and you see a working system — before any commitment is made to a build.</p>
+        <div class="cta-buttons">
+          <a href="https://calendly.com/contact-safwai/30min" target="_blank" rel="noopener" class="btn btn-primary">Start with a free PoC</a>
+          <a href="https://calendly.com/contact-safwai/30min" target="_blank" rel="noopener" class="btn btn-secondary">Talk to us first</a>
+        </div>
+        <p class="cta-micro">If the PoC doesn't prove value, there's nothing to buy.</p>
+        <p class="cta-contact">
+          Jeroen Hendriks · SAFWAI AI Solutions<br>
+          <a href="tel:+97450308208">+974 50308208</a> · <a href="mailto:hello@safwai.ai">hello@safwai.ai</a>
+        </p>
+      </div>
+      <div class="first-mover-callout">
+        <span class="section-label">First-Mover Positions Open</span>
+        <p class="first-mover-positions">CutoverOS · Shariah Compliance OS · GCC Automotive Intelligence</p>
+        <p class="first-mover-body">If your sector is on this list, the design is complete and the PoC timeline is weeks, not months. The position is open — until it isn't.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="container">
+    <p>
+      <strong style="color: var(--text-primary); font-family: 'Montserrat', sans-serif;">SAFWAI AI Solutions</strong><br>
+      From pilot to production — AI that actually runs your business.<br>
+      <a href="mailto:hello@safwai.ai">hello@safwai.ai</a>
+    </p>
+    <p style="margin-top: 16px; font-size: 0.75rem;">
+      &copy; 2026 SAFWAI AI Solutions. All rights reserved.
+    </p>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   SCROLL SPY — highlight active nav link
+   ============================================================ */
+(function () {
+  const sections = document.querySelectorAll('main section[id]');
+  const navLinks = document.querySelectorAll('#nav-links a');
+  const navHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height'));
+
+  function onScroll() {
+    let current = '';
+    sections.forEach(sec => {
+      if (window.scrollY >= sec.offsetTop - navHeight - 24) {
+        current = sec.id;
+      }
+    });
+    navLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+/* ============================================================
+   SPRINT 3 — PLATFORM TABS
+   ============================================================ */
+(function () {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+
+  tabBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      const target = btn.getAttribute('data-tab');
+      tabBtns.forEach(function (b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      tabPanels.forEach(function (p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(target).classList.add('active');
+    });
+  });
+})();
+
+/* ============================================================
+   SPRINT 3 — FAQ ACCORDION
+   ============================================================ */
+(function () {
+  const items = document.querySelectorAll('.faq-item');
+
+  items.forEach(function (item) {
+    const question = item.querySelector('.faq-question');
+
+    function toggle() {
+      const isOpen = item.classList.contains('open');
+      items.forEach(function (i) {
+        i.classList.remove('open');
+        i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        question.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    question.addEventListener('click', toggle);
+    question.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    });
+  });
+})();
+
+/* ============================================================
+   HAMBURGER MENU TOGGLE
+   ============================================================ */
+(function () {
+  const toggle = document.getElementById('nav-toggle');
+  const nav = document.getElementById('site-nav');
+  const links = document.querySelectorAll('#nav-links a');
+
+  toggle.addEventListener('click', function () {
+    const isOpen = nav.classList.toggle('nav-open');
+    toggle.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  links.forEach(function (link) {
+    link.addEventListener('click', function () {
+      nav.classList.remove('nav-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
