@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TransformationOS — AI Platform Development for Consulting Firms | SAFWAI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep-teal:      #0E5C4D;
+    --warm-gold:      #D4AF37;
+    --deep-navy:      #002D49;
+    --off-white:      #F7F6F3;
+    --light-mint:     #7BC9A3;
+    --beige-sand:     #E8DCC4;
+    --sage-green:     #ABC5A5;
+    --bg-primary:     #002D49;
+    --bg-card:        #0E3D52;
+    --bg-accent:      #0E5C4D;
+    --text-primary:   #F7F6F3;
+    --text-secondary: #ABC5A5;
+    --accent-primary: #D4AF37;
+    --accent-secondary: #7BC9A3;
+    --border:         #1A4A5C;
+    --nav-h:          68px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 17px; }
+
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Poppins', 'Open Sans', sans-serif;
+    font-weight: 400;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ---- Scrollbar ---- */
+  ::-webkit-scrollbar { width: 7px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--bg-accent); }
+
+  /* ---- Nav ---- */
+  .site-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    height: var(--nav-h);
+    background: rgba(0, 45, 73, 0.97);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    gap: 24px;
+  }
+
+  .nav-logo a { display: flex; align-items: center; text-decoration: none; }
+  .nav-logo img { height: 32px; width: auto; display: block; }
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+    justify-content: center;
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 5px 10px;
+    font-size: 0.76rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    letter-spacing: 0.025em;
+    border-radius: 4px;
+    transition: color 0.18s, background 0.18s;
+    white-space: nowrap;
+  }
+
+  .nav-links a:hover { color: var(--off-white); background: rgba(255,255,255,0.05); }
+  .nav-links a.active { color: var(--accent-primary); background: rgba(212,175,55,0.08); }
+
+  /* ---- Buttons ---- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .btn-primary {
+    background: var(--warm-gold);
+    color: var(--deep-navy);
+  }
+  .btn-primary:hover {
+    background: #e8c040;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 18px rgba(212,175,55,0.28);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--off-white);
+    border: 1.5px solid var(--border);
+  }
+  .btn-outline:hover {
+    border-color: var(--accent-secondary);
+    color: var(--accent-secondary);
+    transform: translateY(-1px);
+  }
+
+  /* ---- Section anchors ---- */
+  section { scroll-margin-top: calc(var(--nav-h) + 10px); }
+  #hero   { scroll-margin-top: 0; }
+
+  /* ---- Shared section layout ---- */
+  .section-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 80px 48px;
+  }
+
+  .eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.70rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-secondary);
+    margin-bottom: 14px;
+  }
+
+  .sec-headline {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 2.1rem;
+    color: var(--accent-primary);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+
+  .sec-sub {
+    font-size: 1rem;
+    color: var(--off-white);
+    opacity: 0.88;
+    max-width: 680px;
+    line-height: 1.65;
+    margin-bottom: 40px;
+  }
+
+  /* ---- Placeholder boxes ---- */
+  .placeholder {
+    min-height: 360px;
+    border: 1px dashed rgba(26, 74, 92, 0.7);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .placeholder span {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    opacity: 0.4;
+    text-transform: uppercase;
+  }
+
+  /* ---- Alternating section backgrounds ---- */
+  .sec-dark { background: var(--bg-primary); border-top: 1px solid var(--border); }
+  .sec-mid  { background: rgba(14, 61, 82, 0.4); border-top: 1px solid var(--border); }
+
+  /* ---- Hero ---- */
+  #hero {
+    min-height: 100vh;
+    padding-top: var(--nav-h);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 55% 55% at 50% 38%, rgba(14,92,77,0.20) 0%, transparent 68%),
+      radial-gradient(ellipse 30% 40% at 80% 70%, rgba(212,175,55,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    max-width: 800px;
+    width: 100%;
+    padding: 64px 48px 72px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-logo {
+    height: 136px;
+    width: auto;
+    margin-bottom: 36px;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.70rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-secondary);
+    margin-bottom: 18px;
+  }
+
+  .hero-headline {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 3.0rem;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    color: var(--accent-primary);
+    margin-bottom: 20px;
+  }
+
+  .hero-sub {
+    font-size: 1.10rem;
+    color: var(--off-white);
+    opacity: 0.90;
+    line-height: 1.65;
+    max-width: 640px;
+    margin-bottom: 36px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 52px;
+  }
+
+  .hero-actions .btn { font-size: 0.86rem; padding: 12px 28px; }
+
+  .proof-card {
+    width: 100%;
+    max-width: 620px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent-primary);
+    border-radius: 8px;
+    padding: 20px 24px;
+    text-align: left;
+  }
+
+  .proof-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+    margin-bottom: 9px;
+  }
+
+  .proof-card p {
+    font-size: 0.90rem;
+    color: var(--off-white);
+    opacity: 0.88;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .proof-card strong {
+    color: var(--accent-secondary);
+    font-weight: 600;
+  }
+
+  /* ---- Contact section ---- */
+  #contact .section-inner {
+    text-align: center;
+  }
+
+  #contact .sec-sub {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .contact-actions {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 52px;
+  }
+
+  .contact-actions .btn { font-size: 0.9rem; padding: 13px 32px; }
+
+  .contact-details {
+    display: flex;
+    justify-content: center;
+    gap: 64px;
+    flex-wrap: wrap;
+  }
+
+  .contact-block { text-align: center; }
+
+  .contact-block .label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+
+  .contact-block .name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.0rem;
+    font-weight: 600;
+    color: var(--off-white);
+    margin-bottom: 6px;
+  }
+
+  .contact-block a,
+  .contact-block p {
+    font-size: 0.90rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    display: block;
+    margin-top: 3px;
+    transition: color 0.18s;
+  }
+
+  .contact-block a:hover { color: var(--accent-primary); }
+
+  /* ---- Footer ---- */
+  footer {
+    background: rgba(0, 18, 32, 0.85);
+    border-top: 1px solid var(--border);
+    padding: 36px 48px;
+  }
+
+  .footer-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .footer-brand img { height: 26px; width: auto; display: block; margin-bottom: 10px; }
+
+  .footer-brand p {
+    font-size: 0.80rem;
+    color: var(--text-secondary);
+    opacity: 0.70;
+    margin: 0;
+  }
+
+  .footer-brand p + p { margin-top: 3px; }
+
+  .footer-contact { text-align: right; }
+
+  .footer-contact .fc-name {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--off-white);
+    margin-bottom: 5px;
+  }
+
+  .footer-contact a,
+  .footer-contact span {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    margin-top: 3px;
+    transition: color 0.18s;
+  }
+
+  .footer-contact a:hover { color: var(--accent-primary); }
+
+  /* ---- Mid-page CTA strip ---- */
+  .cta-strip {
+    background: var(--bg-accent);
+    border-top: 1px solid rgba(123,201,163,0.2);
+    border-bottom: 1px solid rgba(123,201,163,0.2);
+    padding: 40px 48px;
+  }
+
+  .cta-strip-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .cta-strip-text p:first-child {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--off-white);
+    margin-bottom: 5px;
+  }
+
+  .cta-strip-text p:last-child {
+    font-size: 0.88rem;
+    color: var(--accent-secondary);
+    opacity: 0.9;
+    margin: 0;
+  }
+
+  /* ---- Architecture Explorer ---- */
+  #arch-explorer { position: relative; }
+  .arch-hidden { display: none; }
+
+  .layer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .layer-tile {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 18px 16px;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .layer-tile::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent-primary);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.2s ease;
+    border-radius: 3px 0 0 3px;
+  }
+
+  .layer-tile:hover,
+  .layer-tile:focus-visible {
+    border-color: rgba(212,175,55,0.5);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(212,175,55,0.10);
+    outline: none;
+  }
+
+  .layer-tile:hover::after,
+  .layer-tile:focus-visible::after { transform: scaleY(1); }
+
+  .tile-num {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.63rem;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    color: var(--accent-primary);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .tile-icon {
+    width: 26px; height: 26px;
+    color: var(--accent-secondary);
+    margin-bottom: 11px;
+    flex-shrink: 0;
+  }
+
+  .tile-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.83rem;
+    font-weight: 600;
+    color: var(--off-white);
+    line-height: 1.3;
+    margin-bottom: 6px;
+    flex: 1;
+  }
+
+  .tile-sub {
+    font-size: 0.71rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
+    margin-bottom: 10px;
+    opacity: 0.8;
+  }
+
+  .tile-explore {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .layer-tile:hover .tile-explore,
+  .layer-tile:focus-visible .tile-explore { opacity: 1; }
+
+  .arch-hint {
+    text-align: center;
+    font-size: 0.71rem;
+    color: var(--text-secondary);
+    opacity: 0.40;
+    letter-spacing: 0.04em;
+    margin-top: 14px;
+  }
+
+  /* Cross-cutting */
+  .cross-section {
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    margin-top: 4px;
+  }
+
+  .cross-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.63rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    opacity: 0.50;
+    margin-bottom: 12px;
+  }
+
+  .cross-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .cross-tile {
+    background: rgba(14, 61, 82, 0.38);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 13px 16px;
+    display: flex;
+    gap: 11px;
+    align-items: center;
+  }
+
+  .cross-icon {
+    width: 17px; height: 17px;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+    opacity: 0.65;
+  }
+
+  .cross-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    opacity: 0.80;
+  }
+
+  /* Drill-down */
+  .detail-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.80rem;
+    font-weight: 500;
+    color: var(--accent-secondary);
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    margin-bottom: 24px;
+    transition: color 0.18s;
+  }
+
+  .detail-back:hover { color: var(--accent-primary); }
+
+  .detail-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .detail-num {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+    opacity: 0.20;
+    line-height: 1;
+    flex-shrink: 0;
+    letter-spacing: -0.02em;
+  }
+
+  .detail-icon {
+    width: 34px; height: 34px;
+    color: var(--accent-secondary);
+    flex-shrink: 0;
+  }
+
+  .detail-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--off-white);
+    line-height: 1.2;
+  }
+
+  .detail-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  .subsection-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .subsection-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--accent-primary);
+    border-radius: 8px;
+    padding: 20px 18px;
+  }
+
+  .subsection-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.79rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+    margin-bottom: 14px;
+    line-height: 1.3;
+  }
+
+  .subsection-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .subsection-list li {
+    font-size: 0.77rem;
+    color: var(--off-white);
+    opacity: 0.82;
+    line-height: 1.50;
+    padding-left: 14px;
+    position: relative;
+  }
+
+  .subsection-list li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 7px;
+    width: 4px; height: 4px;
+    background: var(--accent-secondary);
+    border-radius: 50%;
+  }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .section-inner { padding: 60px 28px; }
+    .hero-inner { padding: 52px 28px 60px; }
+    .hero-headline { font-size: 2.2rem; }
+    footer { padding: 32px 28px; }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+    .footer-contact { text-align: left; }
+    .contact-details { gap: 36px; }
+    .layer-grid { grid-template-columns: repeat(2, 1fr); }
+    .cross-grid { grid-template-columns: 1fr; }
+    .subsection-grid { grid-template-columns: 1fr; }
+    .cta-strip { padding: 32px 28px; }
+    .cta-strip-inner { flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (max-width: 560px) {
+    .hero-headline { font-size: 1.8rem; }
+    .sec-headline { font-size: 1.65rem; }
+    .layer-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ---- Disruption section ---- */
+  .disruption-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+  .disruption-card { background: var(--bg-card); border: 1px solid var(--border); border-left: 4px solid var(--accent-primary); border-radius: 8px; padding: 24px 20px; }
+  .disruption-num { font-family: 'Montserrat', sans-serif; font-size: 0.63rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-primary); margin-bottom: 10px; }
+  .disruption-title { font-family: 'Montserrat', sans-serif; font-size: 0.90rem; font-weight: 600; color: var(--off-white); margin-bottom: 10px; line-height: 1.3; }
+  .disruption-body { font-size: 0.84rem; color: var(--text-secondary); line-height: 1.60; }
+  .first-mover { background: var(--bg-accent); border: 1px solid rgba(123,201,163,0.20); border-radius: 8px; padding: 24px 28px; }
+  .first-mover-label { font-family: 'Montserrat', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-secondary); margin-bottom: 14px; }
+  .first-mover-items { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 24px; }
+  .first-mover-item { font-size: 0.86rem; color: var(--off-white); opacity: 0.88; padding-left: 18px; position: relative; line-height: 1.5; }
+  .first-mover-item::before { content: '→'; position: absolute; left: 0; color: var(--accent-secondary); font-weight: 600; }
+
+  /* ---- Proposition mechanism table ---- */
+  .mechanism-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; }
+  .mechanism-table thead tr { background: rgba(14,61,82,0.5); }
+  .mechanism-table th { font-family: 'Montserrat', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; padding: 13px 18px; text-align: left; }
+  .mechanism-table th:first-child { color: var(--accent-secondary); border-bottom: 2px solid var(--accent-secondary); }
+  .mechanism-table th:last-child  { color: var(--accent-primary);   border-bottom: 2px solid var(--accent-primary); }
+  .mechanism-table td { font-size: 0.86rem; padding: 12px 18px; color: var(--off-white); opacity: 0.88; border-bottom: 1px solid rgba(26,74,92,0.5); background: var(--bg-card); }
+  .mechanism-table tr:last-child td { border-bottom: none; }
+  .mechanism-table tr:hover td { background: rgba(14,61,82,0.7); }
+  .prop-outcomes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .prop-outcome { background: var(--bg-card); border: 1px solid var(--border); border-top: 3px solid var(--accent-primary); border-radius: 8px; padding: 20px 16px; text-align: center; }
+  .prop-outcome-num { font-family: 'Montserrat', sans-serif; font-size: 1.65rem; font-weight: 700; color: var(--accent-primary); line-height: 1; margin-bottom: 8px; }
+  .prop-outcome-label { font-size: 0.77rem; color: var(--text-secondary); line-height: 1.45; }
+
+  /* ---- Reference case story ---- */
+  .story-flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-bottom: 28px; }
+  .story-step { background: var(--bg-card); border: 1px solid var(--border); padding: 24px 20px; }
+  .story-step:first-child { border-radius: 8px 0 0 8px; }
+  .story-step:last-child  { border-radius: 0 8px 8px 0; }
+  .story-step-label { font-family: 'Montserrat', sans-serif; font-size: 0.63rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; margin-bottom: 12px; }
+  .story-step.challenge .story-step-label { color: rgba(232,100,100,0.85); }
+  .story-step.approach  .story-step-label { color: var(--accent-secondary); }
+  .story-step.outcome   .story-step-label { color: var(--accent-primary); }
+  .story-step h3 { font-family: 'Montserrat', sans-serif; font-size: 0.87rem; font-weight: 600; color: var(--off-white); margin-bottom: 12px; line-height: 1.3; }
+  .story-step ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .story-step ul li { font-size: 0.80rem; color: var(--text-secondary); line-height: 1.5; padding-left: 14px; position: relative; }
+  .story-step ul li::before { content: ''; position: absolute; left: 0; top: 7px; width: 4px; height: 4px; border-radius: 50%; background: var(--text-secondary); opacity: 0.6; }
+  .outcome-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .outcome-metric { background: rgba(14,92,77,0.18); border: 1px solid rgba(123,201,163,0.22); border-radius: 8px; padding: 18px 16px; text-align: center; }
+  .outcome-metric-num { font-family: 'Montserrat', sans-serif; font-size: 1.55rem; font-weight: 700; color: var(--accent-secondary); line-height: 1; margin-bottom: 7px; }
+  .outcome-metric-label { font-size: 0.74rem; color: var(--off-white); opacity: 0.78; line-height: 1.4; }
+
+  /* ---- ICP section ---- */
+  .icp-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px; }
+  .icp-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 20px 16px; }
+  .icp-card-num { font-family: 'Montserrat', sans-serif; font-size: 0.60rem; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--accent-primary); margin-bottom: 10px; }
+  .icp-card h3 { font-family: 'Montserrat', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--off-white); margin-bottom: 8px; line-height: 1.3; }
+  .icp-card p { font-size: 0.76rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 12px; }
+  .icp-card-examples { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .icp-card-examples li { font-size: 0.73rem; color: var(--text-secondary); opacity: 0.80; padding-left: 12px; position: relative; }
+  .icp-card-examples li::before { content: ''; position: absolute; left: 0; top: 6px; width: 3px; height: 3px; background: var(--accent-secondary); border-radius: 50%; }
+  .icp-qualifier { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .icp-fits, .icp-nots { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 22px 20px; }
+  .icp-fits { border-top: 3px solid var(--accent-secondary); }
+  .icp-nots { border-top: 3px solid rgba(232,100,100,0.65); }
+  .icp-qualifier-label { font-family: 'Montserrat', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; margin-bottom: 14px; }
+  .icp-fits .icp-qualifier-label { color: var(--accent-secondary); }
+  .icp-nots .icp-qualifier-label { color: rgba(232,100,100,0.85); }
+  .icp-qualifier-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .icp-qualifier-list li { font-size: 0.83rem; color: var(--off-white); opacity: 0.86; padding-left: 22px; position: relative; line-height: 1.45; }
+  .icp-fits .icp-qualifier-list li::before { content: '✓'; position: absolute; left: 0; color: var(--accent-secondary); font-weight: 700; font-size: 0.80rem; }
+  .icp-nots .icp-qualifier-list li::before { content: '✕'; position: absolute; left: 0; color: rgba(232,100,100,0.85); font-weight: 700; font-size: 0.80rem; }
+
+  /* ---- Path stages ---- */
+  .path-stages { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; margin-bottom: 20px; }
+  .path-stage { background: var(--bg-card); border: 1px solid var(--border); padding: 22px 16px; }
+  .path-stage:first-child { border-radius: 8px 0 0 8px; }
+  .path-stage:last-child  { border-radius: 0 8px 8px 0; }
+  .path-stage-badge { display: inline-block; padding: 3px 9px; border-radius: 4px; font-family: 'Montserrat', sans-serif; font-size: 0.60rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+  .badge-free  { background: rgba(123,201,163,0.12); color: var(--accent-secondary); border: 1px solid rgba(123,201,163,0.30); }
+  .badge-gated { background: rgba(212,175,55,0.08);  color: var(--accent-primary);   border: 1px solid rgba(212,175,55,0.25); }
+  .path-stage-num { font-family: 'Montserrat', sans-serif; font-size: 0.63rem; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 8px; }
+  .path-stage h3 { font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 600; color: var(--off-white); margin-bottom: 10px; line-height: 1.3; }
+  .path-stage p { font-size: 0.77rem; color: var(--text-secondary); line-height: 1.58; }
+  .path-gate-note { background: rgba(14,61,82,0.3); border: 1px dashed rgba(26,74,92,0.8); border-radius: 8px; padding: 16px 22px; }
+  .path-gate-note p { font-size: 0.84rem; color: var(--text-secondary); line-height: 1.65; }
+
+  /* ---- Investment tiers ---- */
+  .investment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 22px; }
+  .investment-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 26px 22px; position: relative; overflow: hidden; }
+  .investment-card.featured { border-color: rgba(212,175,55,0.38); }
+  .investment-card.featured::before { content: 'MOST COMMON'; position: absolute; top: 0; right: 0; background: var(--accent-primary); color: var(--deep-navy); font-family: 'Montserrat', sans-serif; font-size: 0.57rem; font-weight: 700; letter-spacing: 0.10em; padding: 5px 12px; border-radius: 0 10px 0 7px; }
+  .tier-name { font-family: 'Montserrat', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 8px; }
+  .tier-price { font-family: 'Montserrat', sans-serif; font-size: 1.50rem; font-weight: 700; color: var(--accent-primary); line-height: 1; margin-bottom: 5px; }
+  .tier-price span { font-size: 0.78rem; font-weight: 400; color: var(--text-secondary); }
+  .tier-build { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--border); line-height: 1.4; }
+  .tier-features { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .tier-features li { font-size: 0.81rem; color: var(--off-white); opacity: 0.86; padding-left: 18px; position: relative; line-height: 1.45; }
+  .tier-features li::before { content: ''; position: absolute; left: 0; top: 7px; width: 5px; height: 5px; background: var(--accent-secondary); border-radius: 50%; }
+  .investment-note { background: rgba(14,61,82,0.3); border: 1px solid var(--border); border-radius: 8px; padding: 18px 22px; }
+  .investment-note p { font-size: 0.84rem; color: var(--text-secondary); line-height: 1.65; }
+  .investment-note strong { color: var(--off-white); }
+
+  /* ---- FAQ accordion ---- */
+  .faq-list { display: flex; flex-direction: column; gap: 8px; }
+  .faq-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: border-color 0.2s; }
+  .faq-item.open { border-color: rgba(212,175,55,0.30); }
+  .faq-q { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 20px; background: none; border: none; cursor: pointer; text-align: left; }
+  .faq-q-text { font-family: 'Montserrat', sans-serif; font-size: 0.87rem; font-weight: 600; color: var(--off-white); line-height: 1.35; }
+  .faq-chevron { width: 18px; height: 18px; color: var(--accent-secondary); flex-shrink: 0; transition: transform 0.25s ease; }
+  .faq-item.open .faq-chevron { transform: rotate(180deg); }
+  .faq-a { display: none; }
+  .faq-item.open .faq-a { display: block; }
+  .faq-a-inner { padding: 16px 20px 18px; font-size: 0.87rem; color: var(--off-white); opacity: 0.82; line-height: 1.65; border-top: 1px solid var(--border); }
+
+  /* ---- Sprint 3 responsive ---- */
+  @media (max-width: 900px) {
+    .disruption-grid { grid-template-columns: 1fr; }
+    .first-mover-items { grid-template-columns: 1fr; }
+    .prop-outcomes { grid-template-columns: repeat(2, 1fr); }
+    .story-flow { grid-template-columns: 1fr; }
+    .story-step:first-child { border-radius: 8px 8px 0 0; }
+    .story-step:last-child  { border-radius: 0 0 8px 8px; }
+    .outcome-metrics { grid-template-columns: repeat(2, 1fr); }
+    .icp-grid { grid-template-columns: repeat(2, 1fr); }
+    .icp-qualifier { grid-template-columns: 1fr; }
+    .path-stages { grid-template-columns: 1fr; }
+    .path-stage:first-child { border-radius: 8px 8px 0 0; }
+    .path-stage:last-child  { border-radius: 0 0 8px 8px; }
+    .investment-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 560px) {
+    .icp-grid { grid-template-columns: 1fr; }
+    .prop-outcomes { grid-template-columns: repeat(2, 1fr); }
+    .outcome-metrics { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== NAVIGATION ==================== -->
+<nav class="site-nav">
+  <div class="nav-logo">
+    <a href="#hero" aria-label="SAFWAI home">
+      <img src="SAFWA%20LOGO%20HORIZONTAL.svg" alt="SAFWAI">
+    </a>
+  </div>
+
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#disruption">Why Now</a></li>
+    <li><a href="#proposition">What We Build</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#reference">In Practice</a></li>
+    <li><a href="#icp">Is This For You?</a></li>
+    <li><a href="#path">The Path</a></li>
+    <li><a href="#investment">Investment</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+
+  <div class="nav-cta">
+    <a href="https://calendly.com/contact-safwai/30min" class="btn btn-primary" target="_blank" rel="noopener">Book Workshop</a>
+  </div>
+</nav>
+
+
+<!-- ==================== HERO ==================== -->
+<section id="hero">
+  <div class="hero-inner">
+    <img class="hero-logo"
+         src="SAFWAI%20LOGO%20VERTICAL.svg"
+         alt="SAFWAI AI Solutions">
+
+    <p class="hero-eyebrow">AI for Consulting &amp; Professional Services Transformation</p>
+
+    <h1 class="hero-headline">Your methodology is the only thing<br>your competitors can't copy — yet.</h1>
+
+    <p class="hero-sub">SAFWAI transforms boutique consulting firms' proprietary frameworks into subscription-based AI platforms — so your IP becomes the engine of recurring revenue, not an asset that AI-native competitors can replicate with a prompt.</p>
+
+    <div class="hero-actions">
+      <a href="https://calendly.com/contact-safwai/30min" class="btn btn-primary" target="_blank" rel="noopener">Book a Discovery Workshop</a>
+      <a href="#disruption" class="btn btn-outline">Explore the Proposition</a>
+    </div>
+
+    <div class="proof-card">
+      <p class="proof-label">Reference Outcome</p>
+      <p>A specialist negotiation consultancy achieved <strong>+25% faster client onboarding</strong> and <strong>+8% sales performance uplift</strong>, launched a new subscription revenue stream in under 12 months — full IP ownership retained, ISO 27001-aligned data security throughout.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==================== DISRUPTION ==================== -->
+<section id="disruption" class="sec-mid">
+  <div class="section-inner">
+    <p class="eyebrow">The Inflection Point</p>
+    <h2 class="sec-headline">Why the consulting business model<br>is being disrupted — now</h2>
+    <p class="sec-sub">AI-native competitors are entering your market. Clients expect always-on access to expertise. The frameworks you have built over years can now be replicated by anyone with a prompt. This section sets out why the window to act is narrow — and what firms that move first gain.</p>
+
+    <div class="disruption-grid">
+      <div class="disruption-card">
+        <div class="disruption-num">Threat 1</div>
+        <h3 class="disruption-title">Your methodology is one prompt away from replication</h3>
+        <p class="disruption-body">Generic AI tools let clients generate "good enough" frameworks from public knowledge. Without a proprietary platform encoding your specific methodology, depth, and context — your trademarked approach becomes a starting point anyone can approximate for free.</p>
+      </div>
+      <div class="disruption-card">
+        <div class="disruption-num">Threat 2</div>
+        <h3 class="disruption-title">AI-native competitors don't charge by the day</h3>
+        <p class="disruption-body">New entrants with AI-native delivery models are undercutting project fees and offering always-on expertise. They have no consultant capacity constraints. They do not sleep, and they do not invoice by the workshop.</p>
+      </div>
+      <div class="disruption-card">
+        <div class="disruption-num">Threat 3</div>
+        <h3 class="disruption-title">Clients expect continuous access, not periodic engagements</h3>
+        <p class="disruption-body">When a competitor offers a subscription platform delivering methodology 24/7 for a fixed monthly fee — the one-off workshop engagement becomes harder to justify at every renewal conversation. The client's reference point has changed.</p>
+      </div>
+    </div>
+
+    <div class="first-mover">
+      <p class="first-mover-label">What first movers gain</p>
+      <div class="first-mover-items">
+        <div class="first-mover-item">A defensible platform moat — replicating a bespoke AI platform takes 12–18 months, not a prompt</div>
+        <div class="first-mover-item">Subscription revenue from clients you already have, before you win a single new one</div>
+        <div class="first-mover-item">Premium pricing supported by a platform, not a workshop — clients pay for continuous access</div>
+        <div class="first-mover-item">60–70% reduction in Tier 2 routine workload, freeing senior consultants for higher-value work</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==================== PROPOSITION ==================== -->
+<section id="proposition" class="sec-dark">
+  <div class="section-inner">
+    <p class="eyebrow">The SAFWAI Proposition</p>
+    <h2 class="sec-headline">What SAFWAI builds for your firm —<br>and what stays yours</h2>
+    <p class="sec-sub">SAFWAI does not replace your methodology. We encode it into a bespoke AI platform your clients access via subscription — hosted on your infrastructure, owned entirely by you, invisible to any generic AI model. Your IP becomes the engine, not the commodity.</p>
+
+    <table class="mechanism-table">
+      <thead>
+        <tr>
+          <th>What SAFWAI delivers</th>
+          <th>What stays entirely yours</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Platform architecture and full 8-layer build</td>
+          <td>All methodology IP — ours to build, yours to own</td>
+        </tr>
+        <tr>
+          <td>Integration with your existing client workflows</td>
+          <td>Client relationships and all historical engagement data</td>
+        </tr>
+        <tr>
+          <td>ISO 27001-aligned security and data governance</td>
+          <td>Platform infrastructure — deployed on your environment, not ours</td>
+        </tr>
+        <tr>
+          <td>Quarterly enhancement cycles as AI capabilities advance</td>
+          <td>Revenue from every subscription your clients pay</td>
+        </tr>
+        <tr>
+          <td>Technical implementation and ongoing platform management</td>
+          <td>Brand positioning and commercial strategy — entirely your call</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="prop-outcomes">
+      <div class="prop-outcome">
+        <div class="prop-outcome-num">70%</div>
+        <div class="prop-outcome-label">Reduction in Tier 2 routine workload for delivery teams</div>
+      </div>
+      <div class="prop-outcome">
+        <div class="prop-outcome-num">+25%</div>
+        <div class="prop-outcome-label">Faster client onboarding (reference engagement)</div>
+      </div>
+      <div class="prop-outcome">
+        <div class="prop-outcome-num">&lt;12mo</div>
+        <div class="prop-outcome-label">From discovery workshop to live subscription platform</div>
+      </div>
+      <div class="prop-outcome">
+        <div class="prop-outcome-num">100%</div>
+        <div class="prop-outcome-label">IP ownership retained — your platform, your data, your revenue</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==================== ARCHITECTURE ==================== -->
+<section id="architecture" class="sec-mid">
+  <div class="section-inner">
+    <p class="eyebrow">Platform Architecture</p>
+    <h2 class="sec-headline">The 8-Layer Platform Architecture</h2>
+    <p class="sec-sub">Every capability a consulting platform might need, organised into eight service layers — from discovery and assessment through to governance and IP protection. Click any layer to explore its components. This is the system we configure to your methodology. Not a template: a bespoke build.</p>
+    <div id="arch-explorer">
+      <div id="arch-overview">
+        <div class="layer-grid" id="layer-grid"></div>
+        <p class="arch-hint">Click any layer to explore its capabilities</p>
+        <div class="cross-section">
+          <p class="cross-label">Cross-Cutting Capabilities</p>
+          <div class="cross-grid" id="cross-grid"></div>
+        </div>
+      </div>
+      <div id="arch-detail" class="arch-hidden"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==================== REFERENCE CASE ==================== -->
+<section id="reference" class="sec-dark">
+  <div class="section-inner">
+    <p class="eyebrow">In Practice</p>
+    <h2 class="sec-headline">From methodology to platform:<br>a negotiation consultancy's transformation</h2>
+    <p class="sec-sub">+25% faster client onboarding. +8% sales performance uplift. New subscription revenue stream live in under 12 months. A specialist negotiation consultancy with a trademarked preparation methodology transformed their proprietary IP into a client-facing platform — full ownership retained, ISO 27001-aligned throughout.</p>
+
+    <div class="story-flow">
+      <div class="story-step challenge">
+        <div class="story-step-label">The Challenge</div>
+        <h3>Methodology locked behind workshops</h3>
+        <ul>
+          <li>Trademarked preparation methodology delivered exclusively through in-person workshops</li>
+          <li>Revenue tied directly to senior consultant days — no scale without headcount</li>
+          <li>Clients unable to access methodology between engagements</li>
+          <li>Growing competitive pressure from generic negotiation AI tools</li>
+          <li>High cost-to-serve making smaller client engagements increasingly unviable</li>
+        </ul>
+      </div>
+      <div class="story-step approach">
+        <div class="story-step-label">The Approach</div>
+        <h3>Methodology encoded into a 12-agent platform</h3>
+        <ul>
+          <li>Trademarked methodology broken into structured AI workflows across three interfaces: stakeholder interview, strategy generation, role-play simulation</li>
+          <li>12 coordinating agents — negotiation objectives, questioning frameworks, variable analysis, balance of power, people mapping, risk assessment</li>
+          <li>Context hydration populates each session with client-specific history via continuous SharePoint sync</li>
+          <li>ISO 27001-aligned deployment on client-controlled infrastructure</li>
+          <li>Full IP ownership retained — no data leaves their environment</li>
+        </ul>
+      </div>
+      <div class="story-step outcome">
+        <div class="story-step-label">The Outcome</div>
+        <h3>New revenue stream, measurable client performance</h3>
+        <ul>
+          <li>Subscription platform live within 12 months of discovery workshop</li>
+          <li>+25% faster client onboarding, measured by the client's own team</li>
+          <li>+8% sales performance uplift across the client portfolio</li>
+          <li>60–70% reduction in Tier 2 routine delivery workload for senior consultants</li>
+          <li>Methodology now monetised continuously, not periodically</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="outcome-metrics">
+      <div class="outcome-metric">
+        <div class="outcome-metric-num">+25%</div>
+        <div class="outcome-metric-label">Faster client onboarding</div>
+      </div>
+      <div class="outcome-metric">
+        <div class="outcome-metric-num">+8%</div>
+        <div class="outcome-metric-label">Sales performance uplift</div>
+      </div>
+      <div class="outcome-metric">
+        <div class="outcome-metric-num">&lt;12mo</div>
+        <div class="outcome-metric-label">Discovery to live platform</div>
+      </div>
+      <div class="outcome-metric">
+        <div class="outcome-metric-num">100%</div>
+        <div class="outcome-metric-label">IP ownership retained</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==================== MID-PAGE CTA ==================== -->
+<div class="cta-strip">
+  <div class="cta-strip-inner">
+    <div class="cta-strip-text">
+      <p>Ready to see what this looks like for your firm?</p>
+      <p>Half a day. Your methodology mapped. A prioritised scope document — yours regardless of what you decide next.</p>
+    </div>
+    <a href="https://calendly.com/contact-safwai/30min" class="btn btn-primary" target="_blank" rel="noopener">Book a Free Discovery Workshop</a>
+  </div>
+</div>
+
+
+<!-- ==================== ICP ==================== -->
+<section id="icp" class="sec-mid">
+  <div class="section-inner">
+    <p class="eyebrow">Fit Assessment</p>
+    <h2 class="sec-headline">Is TransformationOS right<br>for your firm?</h2>
+    <p class="sec-sub">This is designed for a specific profile. Boutique to mid-sized advisory firms with trademarked or clearly proprietary methodologies, 10–200 people, predominantly project or workshop-based revenue, feeling the pressure from AI-native competitors. If you fit, the opportunity is significant. If you don't, we'll say so directly.</p>
+
+    <div class="icp-grid">
+      <div class="icp-card">
+        <div class="icp-card-num">Vertical 1 · Highest Fit</div>
+        <h3>Professional Training &amp; Development</h3>
+        <p>Clear proprietary methodologies, workshop-based delivery, high repeatability — the profile this was built for.</p>
+        <ul class="icp-card-examples">
+          <li>Sales training firms</li>
+          <li>Negotiation advisory practices</li>
+          <li>Leadership development consultancies</li>
+          <li>Executive coaching practices</li>
+          <li>Communication skills training</li>
+        </ul>
+      </div>
+      <div class="icp-card">
+        <div class="icp-card-num">Vertical 2</div>
+        <h3>HR &amp; Talent Advisory</h3>
+        <p>Structured frameworks, assessment tools, and advisory relationships that map well to platform delivery.</p>
+        <ul class="icp-card-examples">
+          <li>Succession planning consultancies</li>
+          <li>Organisational design firms</li>
+          <li>Talent assessment practices</li>
+          <li>Workforce strategy advisors</li>
+        </ul>
+      </div>
+      <div class="icp-card">
+        <div class="icp-card-num">Vertical 3</div>
+        <h3>Specialised Strategy Boutiques</h3>
+        <p>Repeatable strategic frameworks, high-value engagements, IP-driven positioning.</p>
+        <ul class="icp-card-examples">
+          <li>Go-to-market strategy firms</li>
+          <li>Pricing strategy consultancies</li>
+          <li>Business model innovation advisors</li>
+          <li>Market entry specialists</li>
+        </ul>
+      </div>
+      <div class="icp-card">
+        <div class="icp-card-num">Vertical 4</div>
+        <h3>Change Management &amp; Transformation</h3>
+        <p>Structured methodologies with ongoing client relationships and measurable implementation outcomes.</p>
+        <ul class="icp-card-examples">
+          <li>Digital transformation advisors</li>
+          <li>Organisational change consultancies</li>
+          <li>Process improvement specialists</li>
+        </ul>
+      </div>
+      <div class="icp-card">
+        <div class="icp-card-num">Vertical 5</div>
+        <h3>Operational Excellence Consulting</h3>
+        <p>Standardised approaches with measurable outcomes and a strong implementation focus.</p>
+        <ul class="icp-card-examples">
+          <li>Lean/Six Sigma consultancies</li>
+          <li>Supply chain optimisation firms</li>
+          <li>Operational efficiency advisors</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="icp-qualifier">
+      <div class="icp-fits">
+        <div class="icp-qualifier-label">Fits this profile</div>
+        <ul class="icp-qualifier-list">
+          <li>10–200 employees, $2M–$50M revenue</li>
+          <li>Trademarked or clearly proprietary methodology</li>
+          <li>Predominantly workshop or project-based delivery</li>
+          <li>50–500 established clients</li>
+          <li>Feels competitive pressure from AI-native alternatives</li>
+          <li>Clients asking for always-on access to your expertise</li>
+          <li>Leadership open to transformation</li>
+        </ul>
+      </div>
+      <div class="icp-nots">
+        <div class="icp-qualifier-label">Not the right fit</div>
+        <ul class="icp-qualifier-list">
+          <li>No proprietary methodology — generic best practices only</li>
+          <li>Already heavily digitised with an established platform</li>
+          <li>Pure staffing or body-shop model — no IP to protect</li>
+          <li>Primarily technology implementation, not advisory</li>
+          <li>Revenue below $2M (build investment not viable)</li>
+          <li>Freelance practitioners or solo consultants</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==================== PATH ==================== -->
+<section id="path" class="sec-dark">
+  <div class="section-inner">
+    <p class="eyebrow">How It Works</p>
+    <h2 class="sec-headline">From discovery workshop<br>to live subscription platform</h2>
+    <p class="sec-sub">A five-stage engagement model with clear decision gates at each step. Nothing is committed until you are ready. Each stage delivers value independently — the discovery workshop produces a prioritised scope document whether or not you proceed further.</p>
+
+    <div class="path-stages">
+      <div class="path-stage">
+        <span class="path-stage-badge badge-free">Free</span>
+        <div class="path-stage-num">Stage 1</div>
+        <h3>Discovery Workshop</h3>
+        <p>Half-day structured session. We map your methodology, identify the highest-value platform layers for your context, and produce a written prioritised scope document — yours regardless of what you decide next.</p>
+      </div>
+      <div class="path-stage">
+        <span class="path-stage-badge badge-gated">Gated</span>
+        <div class="path-stage-num">Stage 2</div>
+        <h3>Scope &amp; Design</h3>
+        <p>2–4 weeks. Full platform architecture design, integration mapping, build timeline, and a fixed-price investment proposal. You see exactly what will be built before any commitment is made.</p>
+      </div>
+      <div class="path-stage">
+        <span class="path-stage-badge badge-gated">Gated</span>
+        <div class="path-stage-num">Stage 3</div>
+        <h3>Platform Build</h3>
+        <p>8–32 weeks depending on scope. Your methodology encoded into the agreed platform layers. Testing with your team at every stage — no surprises at handover.</p>
+      </div>
+      <div class="path-stage">
+        <span class="path-stage-badge badge-gated">Gated</span>
+        <div class="path-stage-num">Stage 4</div>
+        <h3>Pilot Launch</h3>
+        <p>Launch with a defined subset of existing clients. Usage data gathered, client feedback collected, refinements made. Your subscription model goes live at controlled scale before full rollout.</p>
+      </div>
+      <div class="path-stage">
+        <span class="path-stage-badge badge-gated">Gated</span>
+        <div class="path-stage-num">Stage 5</div>
+        <h3>Full Launch &amp; Enhancement</h3>
+        <p>Full client subscription rollout. Quarterly enhancement cycles thereafter — new capabilities added as your methodology evolves and as AI capabilities advance.</p>
+      </div>
+    </div>
+
+    <div class="path-gate-note">
+      <p>Each stage has a clear decision gate. Nothing is committed until you are ready. You can stop after any stage — the scope document from Stage 1 is standalone value. Build investment is fixed and agreed before Stage 3 begins. There are no surprises.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==================== INVESTMENT ==================== -->
+<section id="investment" class="sec-mid">
+  <div class="section-inner">
+    <p class="eyebrow">Investment</p>
+    <h2 class="sec-headline">Pricing on request —<br>scoped to your firm</h2>
+    <p class="sec-sub">Every engagement is scoped to your specific methodology, platform layers, and timeline. Investment is fixed and agreed before any build begins — no surprises at handover. The discovery workshop is free and produces a written scope document and investment proposal tailored to your firm.</p>
+
+    <div class="investment-note" style="max-width:680px;margin:0 auto 32px;">
+      <p>Build investment is a one-off cost. There is no ongoing SAFWAI platform licence and no revenue share on your subscription income. The quarterly enhancement cycle (scoped and priced per cycle) is the only ongoing engagement. <strong>Request a proposal through the discovery workshop — no commitment required beyond the session itself.</strong></p>
+    </div>
+
+    <div style="text-align:center;">
+      <a href="https://calendly.com/contact-safwai/30min" class="btn btn-primary" target="_blank" rel="noopener" style="font-size:0.92rem;padding:14px 36px;">Request Pricing — Book a Discovery Workshop</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==================== FAQ ==================== -->
+<section id="faq" class="sec-dark">
+  <div class="section-inner">
+    <p class="eyebrow">Questions</p>
+    <h2 class="sec-headline">Frequently asked questions</h2>
+    <p class="sec-sub">Straight answers to the questions we hear most often — from "We're a 20-person firm, is this too complex?" to "How do we stop competitors accessing our platform?"</p>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q">
+          <span class="faq-q-text">We're a 20-person firm. Is this genuinely designed for us — or for firms ten times our size?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">TransformationOS is built for firms exactly your size. The 10–200 person range is not an afterthought — it is the design target. Larger firms have internal platform teams and build their own. You need a partner who handles the technical complexity while your team focuses on what it does well. The more important qualification is not headcount — it is whether you have a trademarked or clearly proprietary methodology worth encoding. If you do, the conversation is worth having.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span class="faq-q-text">How do we prevent competitors from accessing our platform and our methodology?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">The platform is deployed on your infrastructure with role-based access control and full client isolation. Your clients are the only people who can access it — by design, not by policy. There is no shared model trained on your data, no third party with access to your methodology, and no vendor dependency that exposes your IP. The platform is yours: architecturally, commercially, and legally. Governance, Risk &amp; Compliance is Layer 8 of the architecture precisely because IP protection is not an afterthought.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span class="faq-q-text">How long does a full build take?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">From discovery workshop to a live subscription platform: typically 3–9 months, depending on the number of layers in scope. The discovery workshop itself is a half-day session. Scoping and design takes 2–4 weeks. A Foundation build (2–3 layers) typically runs 8–12 weeks. A Full Architecture build runs 20–32 weeks. The reference engagement — a full negotiation platform, eight layers — went from methodology mapping to live subscription in under 12 months.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span class="faq-q-text">Who owns the platform when it's built?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">You do. Entirely. There is no revenue share, no data sharing arrangement, and no vendor lock-in. The platform is deployed on infrastructure you control. The code and the methodology encoding are yours. SAFWAI has no ongoing claim on your platform, your clients, or your subscription revenue. The only ongoing relationship is the quarterly enhancement cycle — which you can discontinue at any time.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span class="faq-q-text">What if we don't proceed beyond the discovery workshop?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">You keep the scope document. It is a prioritised map of what your platform would look like and what it would cost to build — produced by someone who has built this type of platform before. That has standalone value as a strategic planning document, an RFP basis if you choose to go elsewhere, or a board presentation on your digital transformation options. No commitment is made and no fee is charged for the workshop itself.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span class="faq-q-text">How is this different from our team just using ChatGPT or Microsoft Copilot?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">ChatGPT and Copilot are generic AI tools trained on public data. They cannot access your specific methodology, your client history, or your proprietary knowledge structures — and if you feed them that data, it may be used for model training. TransformationOS is a bespoke platform: your methodology is encoded, not prompted. Your data stays on your infrastructure. Context hydration means the platform arrives at every client session already briefed on that client's specific history and objectives. There is no generic equivalent of that.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span class="faq-q-text">Our existing clients have been with us for years. Why would they adopt a new platform?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">The platform extends the relationship — it does not replace it. It gives existing clients continuous access between engagements: practice tools, on-demand guidance, progress tracking. Subscription adoption by existing clients typically outperforms new client acquisition because the trust is already there. The reference engagement launched subscription access with existing clients before winning a single new subscription client. Your client base is the asset. The platform monetises it differently.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span class="faq-q-text">What does the quarterly enhancement cycle actually involve?</span>
+          <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Every quarter, we review platform usage data, identify the highest-value improvements, and build them: new capabilities, refined methodology encoding, expanded integrations, new use cases. The platform evolves as your methodology evolves and as AI capabilities advance. Enhancement cycles are scoped and priced per cycle — you control what goes in and when. Each subsequent build draws on already-built components, so it is faster and cheaper each time.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==================== CONTACT CTA ==================== -->
+<section id="contact" class="sec-mid">
+  <div class="section-inner">
+    <p class="eyebrow">Next Step</p>
+    <h2 class="sec-headline">The scope document is yours.<br>Whether or not you proceed.</h2>
+    <p class="sec-sub">The discovery workshop is a structured half-day session: we map your methodology, identify the highest-value platform layers for your context, and produce a written prioritised scope. You leave with a concrete picture of what your platform would look like and what it would cost. No commitment to anything beyond the session itself.</p>
+
+    <div class="contact-actions">
+      <a href="https://calendly.com/contact-safwai/30min" class="btn btn-primary" target="_blank" rel="noopener">Book a Discovery Workshop</a>
+      <a href="mailto:contact@safwai.com" class="btn btn-outline">Send a Message</a>
+    </div>
+
+    <div class="contact-details">
+      <div class="contact-block">
+        <p class="label">Contact</p>
+        <p class="name">Jeroen Hendriks</p>
+        <a href="tel:+97450308208">+974 50308208</a>
+        <a href="mailto:contact@safwai.com">contact@safwai.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="SAFWA%20LOGO%20HORIZONTAL.svg" alt="SAFWAI">
+      <p>AI for Consulting &amp; Professional Services Transformation</p>
+      <p>© 2026 SAFWAI AI Solutions. All rights reserved.</p>
+    </div>
+    <div class="footer-contact">
+      <p class="fc-name">Jeroen Hendriks</p>
+      <a href="tel:+97450308208">+974 50308208</a>
+      <a href="mailto:contact@safwai.com">contact@safwai.com</a>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+  /* ---- Scroll-spy ---- */
+  const navLinks = Array.from(document.querySelectorAll('#nav-links a'));
+  const sections = Array.from(document.querySelectorAll('section[id]'));
+  const NAV_H = 68;
+
+  function updateNav() {
+    const y = window.scrollY;
+    let current = sections[0].id;
+    sections.forEach(s => {
+      if (y >= s.offsetTop - NAV_H - 80) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }
+  window.addEventListener('scroll', updateNav, { passive: true });
+  updateNav();
+
+  /* ---- Architecture Explorer ---- */
+  const ICONS = {
+    search: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>`,
+    chart:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 16V9M12 16V5M17 16v-3"/></svg>`,
+    target: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z"/></svg>`,
+    bolt:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
+    grad:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>`,
+    chat:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+    trend:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`,
+    shield: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+    link:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`,
+    star:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>`,
+    wifi:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49M7.76 7.76a6 6 0 0 0 0 8.49"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>`
+  };
+
+  const LAYERS = [
+    {
+      num: 1, icon: ICONS.search,
+      title: 'Discovery & Assessment',
+      subtitle: 'Capturing current state and identifying opportunities',
+      sections: [
+        { title: 'Maturity Assessment Tools', items: [
+          'Multi-dimensional questionnaires: people, process, technology, data, culture',
+          'Industry-specific assessment frameworks and custom methodologies',
+          'Capability heat maps showing strengths and weaknesses across dimensions',
+          'Benchmark comparison engines: peer, industry, and best-in-class',
+          'Automated scoring algorithms with weighted criteria and historical tracking'
+        ]},
+        { title: 'Data Collection & Input Processing', items: [
+          'Interview audio/video processing: transcription, sentiment analysis, theme extraction',
+          'Document ingestion and analysis: reports, policies, procedures, financial statements',
+          'Survey deployment and analysis platforms',
+          'Multi-source data integration: CRM, ERP, HRIS, project management tools',
+          'Real-time data streaming from operational systems'
+        ]},
+        { title: 'Diagnostic Intelligence', items: [
+          'Root cause analysis engines',
+          'Pattern recognition across engagements: identifying recurring issues',
+          'Predictive maturity modelling: forecasting future state without intervention',
+          'Risk identification and quantification',
+          'Compliance gap analysis: regulatory, policy, and standards adherence'
+        ]}
+      ]
+    },
+    {
+      num: 2, icon: ICONS.chart,
+      title: 'Visualisation & Reporting',
+      subtitle: 'Making insights accessible and actionable',
+      sections: [
+        { title: 'Interactive Dashboards', items: [
+          'Real-time KPI dashboards with custom metrics aligned to client objectives',
+          'Executive summary views: high-level insights for leadership',
+          'Drill-down capabilities: from summary to detailed data',
+          'Role-based views so different stakeholders see relevant data',
+          'Mobile-responsive interfaces for on-the-go access'
+        ]},
+        { title: 'Visual Assessment Outputs', items: [
+          'Spider/radar diagrams showing multi-dimensional maturity',
+          'Heat maps: geographic, organisational, and functional',
+          'Capability matrices: current vs. target state',
+          'Gap analysis visualisations with prioritised closure activities',
+          'Comparative benchmarking graphs: peer and industry performance'
+        ]},
+        { title: 'Automated Reporting', items: [
+          'As-is assessment reports with executive summaries',
+          'Customisable report templates: branded, client-specific',
+          'Multi-format exports: PDF, PowerPoint, Word, interactive HTML',
+          'Scheduled report generation and distribution',
+          'White-label reporting with consulting firm branding'
+        ]}
+      ]
+    },
+    {
+      num: 3, icon: ICONS.target,
+      title: 'Strategy & Planning',
+      subtitle: 'From insights to action',
+      sections: [
+        { title: 'Recommendation Engines', items: [
+          'AI-powered improvement recommendations based on assessment results',
+          'Best practice libraries: industry-specific, methodology-aligned',
+          'Activity catalogues with step-by-step guidance and deliverable templates',
+          'Effort estimation: time, resources, and budget for each recommendation',
+          'Risk-adjusted recommendations considering implementation challenges'
+        ]},
+        { title: 'Prioritisation & Roadmapping', items: [
+          'Value vs. feasibility scoring matrices',
+          'Strategic objective alignment: linking recommendations to business goals',
+          'ROI modelling: cost-benefit analysis for each initiative',
+          'Multi-phase roadmap generation: quarterly, annual, 3-year horizons',
+          'Scenario planning tools: what-if analysis for different strategies'
+        ]},
+        { title: 'Business Case Development', items: [
+          'Financial modelling tools: NPV, IRR, payback period',
+          'Benefits realisation frameworks: quantifying expected outcomes',
+          'Risk assessment and mitigation planning',
+          'Stakeholder impact analysis and change readiness assessment',
+          'Investment approval documentation: board presentations and business cases'
+        ]}
+      ]
+    },
+    {
+      num: 4, icon: ICONS.bolt,
+      title: 'Execution & Delivery',
+      subtitle: 'Operationalising strategy through guided implementation',
+      sections: [
+        { title: 'Implementation Guidance', items: [
+          'Step-by-step playbooks: phase-by-phase execution guides',
+          'Workflow automation: triggering next steps based on completion',
+          'Task assignment and tracking: who does what by when',
+          'Milestone management: critical checkpoints and go/no-go decisions',
+          'RACI matrices with roles and responsibilities clearly defined'
+        ]},
+        { title: 'Project Management Integration', items: [
+          'Integrated project planning: Gantt charts and dependencies',
+          'Agile, Scrum, and Kanban boards for iterative delivery tracking',
+          'Issue and risk registers: logging, escalating, and resolving',
+          'Budget monitoring: actual vs. planned spend',
+          'Status reporting automation: weekly and monthly updates'
+        ]},
+        { title: 'Quality Assurance & Governance', items: [
+          'Quality gates and checkpoints ensuring standards adherence',
+          'Compliance validation: regulatory, policy, and methodology',
+          'Audit trail creation: documenting decisions and approvals',
+          'Version control for managing document iterations',
+          'Approval workflows routing decisions to the right stakeholders'
+        ]}
+      ]
+    },
+    {
+      num: 5, icon: ICONS.grad,
+      title: 'Learning & Development',
+      subtitle: 'Building capabilities in client organisations',
+      sections: [
+        { title: 'Training & Enablement', items: [
+          'Microlearning modules: bite-sized, role-specific content',
+          'Video tutorials and demonstrations',
+          'Interactive simulations: practice scenarios in safe environments',
+          'Certification programmes: assessing and credentialling learners',
+          'Learning paths with sequential curriculum for each role'
+        ]},
+        { title: 'Virtual Coaching & Mentoring', items: [
+          'AI-powered virtual coaches: conversational guidance on methodologies',
+          'Personalised learning recommendations adaptive to user progress',
+          'Just-in-time performance support: help when needed in workflow',
+          'Expert Q&A: connecting learners to human consultants on demand',
+          'Feedback mechanisms tracking coaching effectiveness over time'
+        ]},
+        { title: 'Knowledge Management', items: [
+          'Best practice repositories: searchable, tagged, and curated',
+          'Case study libraries: real-world examples and lessons learned',
+          'Methodology documentation: frameworks, tools, and templates',
+          'Glossaries and taxonomies establishing a common language',
+          'Version-controlled content ensuring currency of all materials'
+        ]}
+      ]
+    },
+    {
+      num: 6, icon: ICONS.chat,
+      title: 'Engagement & Collaboration',
+      subtitle: 'Continuous interaction between consultants and clients',
+      sections: [
+        { title: 'Conversational AI Interfaces', items: [
+          'Natural language query interfaces: ask questions of the platform',
+          'Contextual help systems understanding where the user is and what they need',
+          'Multi-language support for global accessibility',
+          'Chat history and continuity: remembering past conversations',
+          'Escalation to human consultants when AI cannot answer'
+        ]},
+        { title: 'Client Portals & Workspaces', items: [
+          'Secure, branded client access with white-label platform',
+          'Document sharing and collaboration with version control and commenting',
+          'Real-time co-editing: multiple users working simultaneously',
+          'Notification systems for milestones, updates, and issues',
+          'Mobile apps: iOS and Android access'
+        ]},
+        { title: 'Feedback & Continuous Improvement', items: [
+          'Real-time feedback collection: in-app surveys and ratings',
+          'Sentiment analysis: understanding user satisfaction',
+          'Usage analytics: feature adoption and engagement patterns',
+          'NPS and satisfaction tracking: client health scores',
+          'Feature request management: crowdsourcing platform improvements'
+        ]}
+      ]
+    },
+    {
+      num: 7, icon: ICONS.trend,
+      title: 'Monitoring & Optimisation',
+      subtitle: 'Measuring outcomes and driving continuous improvement',
+      sections: [
+        { title: 'Performance Dashboards', items: [
+          'KPI tracking: business outcomes and leading indicators',
+          'Real-time alerts: thresholds, anomalies, and risks',
+          'Comparative analytics: period-over-period and peer benchmarks',
+          'Goal progress tracking: actual vs. target at every level',
+          'Predictive analytics: forecasting future performance'
+        ]},
+        { title: 'Outcome Measurement', items: [
+          'Business impact quantification: revenue, cost, and efficiency',
+          'ROI tracking: realised benefits vs. investment',
+          'Customer satisfaction metrics: CSAT, NPS, and retention',
+          'Operational metrics: cycle time, throughput, and quality',
+          'Strategic goal alignment: contribution to business objectives'
+        ]},
+        { title: 'Continuous Improvement Engines', items: [
+          'Automated anomaly detection: flagging issues proactively',
+          'Improvement opportunity identification: where to optimise next',
+          'Test-and-learn frameworks: structured experimentation',
+          'Feedback loop integration: insights fed back into recommendations',
+          'Adaptive algorithms: the platform learns from outcomes over time'
+        ]}
+      ]
+    },
+    {
+      num: 8, icon: ICONS.shield,
+      title: 'Governance, Risk & Compliance',
+      subtitle: 'Ensuring security, control, and regulatory adherence',
+      sections: [
+        { title: 'Security & Data Protection', items: [
+          'Enterprise-grade encryption: AES-256 at rest, TLS 1.3+ in transit',
+          'Role-based access control (RBAC) with granular permissions',
+          'Multi-factor authentication and single sign-on (SSO) integration',
+          'Audit logging: all user actions tracked and retained',
+          'Data residency controls with automated backup and disaster recovery'
+        ]},
+        { title: 'Compliance Management', items: [
+          'Regulatory framework mapping: GDPR, CCPA, SOC 2, ISO 27001',
+          'Compliance checklists and automated validation',
+          'Data privacy controls: consent management and right to erasure',
+          'Automated compliance reporting',
+          'Third-party risk assessment: vendor compliance validation'
+        ]},
+        { title: 'Intellectual Property Protection', items: [
+          'Trade secret management: protecting proprietary methodologies',
+          'Digital rights management: controlling content usage',
+          'Watermarking and attribution: tracking content origin',
+          'Contractual IP ownership: clear, enforceable client agreements',
+          'IP audit trails: documenting IP creation and use'
+        ]}
+      ]
+    }
+  ];
+
+  const CROSS = [
+    { icon: ICONS.link, title: 'Integration Layer', items: [
+      'API-first architecture: RESTful and GraphQL',
+      'Pre-built connectors: CRM, ERP, HRIS, project management',
+      'Real-time data synchronisation',
+      'Legacy system bridges and middleware compatibility',
+      'Webhook support for event-driven integrations'
+    ]},
+    { icon: ICONS.star, title: 'Analytics & AI Layer', items: [
+      'Machine learning model deployment',
+      'Natural language processing for document analysis',
+      'Predictive modelling: forecasting outcomes',
+      'Recommendation systems: personalised guidance',
+      'Sentiment analysis: gauging stakeholder sentiment'
+    ]},
+    { icon: ICONS.wifi, title: 'Platform Administration', items: [
+      'User management: provisioning and de-provisioning',
+      'White-label branding: consulting firm look and feel',
+      'Multi-tenancy support: complete client data isolation',
+      'Usage reporting: platform adoption and feature utilisation',
+      'System health monitoring: uptime and performance'
+    ]}
+  ];
+
+  (function initArch() {
+    const overview = document.getElementById('arch-overview');
+    const detail   = document.getElementById('arch-detail');
+    const grid     = document.getElementById('layer-grid');
+    const crossEl  = document.getElementById('cross-grid');
+
+    grid.innerHTML = LAYERS.map(l => `
+      <div class="layer-tile" data-num="${l.num}" role="button" tabindex="0" aria-label="Explore layer ${l.num}: ${l.title}">
+        <span class="tile-num">Layer ${l.num}</span>
+        <div class="tile-icon">${l.icon}</div>
+        <div class="tile-title">${l.title}</div>
+        <div class="tile-sub">${l.subtitle}</div>
+        <span class="tile-explore">Explore →</span>
+      </div>`).join('');
+
+    crossEl.innerHTML = CROSS.map(c => `
+      <div class="cross-tile">
+        <div class="cross-icon">${c.icon}</div>
+        <span class="cross-title">${c.title}</span>
+      </div>`).join('');
+
+    grid.querySelectorAll('.layer-tile').forEach(tile => {
+      const open = () => showDetail(+tile.dataset.num);
+      tile.addEventListener('click', open);
+      tile.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }});
+    });
+
+    function showDetail(num) {
+      const l = LAYERS.find(x => x.num === num);
+      if (!l) return;
+      detail.innerHTML = `
+        <button class="detail-back" id="back-btn">← All layers</button>
+        <div class="detail-header">
+          <div class="detail-num">0${l.num}</div>
+          <div class="detail-icon">${l.icon}</div>
+          <div>
+            <div class="detail-title">${l.title}</div>
+            <div class="detail-subtitle">${l.subtitle}</div>
+          </div>
+        </div>
+        <div class="subsection-grid">
+          ${l.sections.map(s => `
+            <div class="subsection-card">
+              <div class="subsection-title">${s.title}</div>
+              <ul class="subsection-list">
+                ${s.items.map(i => `<li>${i}</li>`).join('')}
+              </ul>
+            </div>`).join('')}
+        </div>`;
+      overview.classList.add('arch-hidden');
+      detail.classList.remove('arch-hidden');
+      document.getElementById('back-btn').addEventListener('click', showOverview);
+    }
+
+    function showOverview() {
+      detail.classList.add('arch-hidden');
+      overview.classList.remove('arch-hidden');
+    }
+  })();
+
+  /* ---- FAQ accordion ---- */
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.closest('.faq-item').classList.toggle('open');
+    });
+  });
+</script>
+
+</body>
+</html>
