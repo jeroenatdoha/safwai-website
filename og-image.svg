@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="627" viewBox="0 0 1200 627">
+  <rect width="1200" height="627" fill="#002D49"/>
+  <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+    <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#1A4A5C" stroke-width="0.6"/>
+  </pattern>
+  <rect width="1200" height="627" fill="url(#grid)" opacity="0.5"/>
+  <rect x="0" y="0" width="5" height="627" fill="#D4AF37"/>
+  <rect x="0" y="590" width="1200" height="4" fill="#0DCFB8" opacity="0.4"/>
+  <text x="600" y="260" font-family="Montserrat, Arial, sans-serif" font-weight="800" font-size="72" fill="#D4AF37" text-anchor="middle" letter-spacing="4">SAFWAI</text>
+  <text x="600" y="340" font-family="Montserrat, Arial, sans-serif" font-weight="400" font-size="36" fill="#0DCFB8" text-anchor="middle" letter-spacing="8">AI SOLUTIONS</text>
+  <text x="600" y="430" font-family="Montserrat, Arial, sans-serif" font-weight="400" font-size="22" fill="#F7F6F3" text-anchor="middle" letter-spacing="1">Bespoke agentic AI for GCC regulated enterprises</text>
+  <text x="600" y="480" font-family="Montserrat, Arial, sans-serif" font-weight="300" font-size="18" fill="#ABC5A5" text-anchor="middle" letter-spacing="1">safwai.com</text>
+</svg>
