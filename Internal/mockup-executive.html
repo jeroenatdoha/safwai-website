@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>CutoverOS — 60-second brief</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:        #1a2b4a;
+  --navy-dark:   #0f1d35;
+  --navy-mid:    #243656;
+  --navy-light:  #2e4570;
+  --blue:        #2563eb;
+  --blue-mid:    #3b82f6;
+  --blue-light:  #eff6ff;
+  --green:       #16a34a;
+  --green-mid:   #22c55e;
+  --green-light: #f0fdf4;
+  --amber:       #d97706;
+  --amber-mid:   #f59e0b;
+  --amber-light: #fffbeb;
+  --red:         #dc2626;
+  --red-mid:     #ef4444;
+  --red-light:   #fef2f2;
+  --bg:          #f8fafc;
+  --gray-100:    #f1f5f9;
+  --gray-200:    #e2e8f0;
+  --gray-300:    #cbd5e1;
+  --gray-400:    #94a3b8;
+  --gray-500:    #64748b;
+  --gray-600:    #475569;
+  --gray-700:    #334155;
+  --gray-800:    #1e293b;
+  --gray-900:    #0f172a;
+  --white:       #ffffff;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--navy-dark);
+  overflow: hidden;
+  font-feature-settings: "ss01" on, "cv11" on;
+}
+
+.presentation {
+  position: relative;
+  width: 100vw; height: 100vh;
+}
+.screen {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s ease;
+  display: flex; flex-direction: column;
+}
+.screen.active { opacity: 1; pointer-events: auto; }
+
+/* ── INDICATOR ──────────────────────────────────────── */
+.indicator {
+  position: fixed; bottom: 14px; right: 22px;
+  font-size: 10.5px; color: rgba(255,255,255,.18);
+  letter-spacing: 2px; z-index: 100;
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── ANIMATIONS ─────────────────────────────────────── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: .35; }
+}
+.pulse-dot { animation: pulse 1.6s infinite; }
+
+
+/* ═══════════════════════════════════════════════════════
+   CONTEXT SLIDE BASE (Screens 1 & 3)
+   ═══════════════════════════════════════════════════════ */
+.ctx {
+  flex: 1; display: flex; flex-direction: column;
+  background: var(--navy);
+  color: #fff; padding: 56px 80px 64px;
+  position: relative; overflow: hidden;
+}
+.ctx::before {
+  content: '';
+  position: absolute; top: -100px; right: -100px;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(37,99,235,.13) 0%, transparent 70%);
+  pointer-events: none;
+}
+.ctx::after {
+  content: '';
+  position: absolute; bottom: -140px; left: -80px;
+  width: 480px; height: 480px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(37,99,235,.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.ctx-inner {
+  position: relative; z-index: 1; flex: 1;
+  display: flex; flex-direction: column;
+}
+
+.eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--blue-mid);
+  margin-bottom: 18px;
+}
+.headline {
+  font-size: 50px; font-weight: 800; line-height: 1.08;
+  letter-spacing: -1.5px; color: #fff;
+  margin-bottom: 18px;
+}
+.subhead {
+  font-size: 18px; font-weight: 400;
+  color: rgba(255,255,255,.6); line-height: 1.55;
+  max-width: 880px; margin-bottom: 36px;
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   SCREEN 1 — THE WAR ROOM
+   ═══════════════════════════════════════════════════════ */
+#s1 .ctx { padding: 48px 72px 48px; }
+
+.war-headstats {
+  display: flex; gap: 56px; margin-top: 6px; margin-bottom: 32px;
+  align-items: baseline;
+}
+.war-stat {
+  display: flex; flex-direction: column; gap: 5px;
+}
+.war-stat-num {
+  font-size: 36px; font-weight: 800;
+  color: var(--red-mid); line-height: 1;
+  letter-spacing: -1px;
+  font-variant-numeric: tabular-nums;
+}
+.war-stat-label {
+  font-size: 10px; letter-spacing: 2px;
+  color: rgba(255,255,255,.4); text-transform: uppercase;
+  font-weight: 600;
+}
+
+.war-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr 1fr;
+  gap: 14px;
+  flex: 1; min-height: 0; margin-bottom: 24px;
+}
+.war-card {
+  background: rgba(255,255,255,.045);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 10px;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+.war-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(220,38,38,.4), transparent);
+}
+.war-card-head {
+  padding: 11px 14px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.war-card-title {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 600;
+  color: rgba(255,255,255,.85);
+}
+.war-card-title-icon { font-size: 13px; }
+.war-card-badge {
+  font-size: 10px; font-weight: 700;
+  color: var(--red-mid);
+  background: rgba(220,38,38,.12);
+  padding: 2px 8px; border-radius: 3px;
+  letter-spacing: .5px;
+  font-variant-numeric: tabular-nums;
+}
+.war-card-body {
+  flex: 1; padding: 11px 12px;
+  display: flex; flex-direction: column;
+  gap: 5px; overflow: hidden;
+}
+.war-row {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 4px 4px;
+  font-size: 11.5px; line-height: 1.4;
+  color: rgba(255,255,255,.7);
+  border-radius: 3px;
+}
+.war-row.urgent {
+  color: var(--red-mid);
+  background: rgba(220,38,38,.06);
+}
+.war-row.warn { color: var(--amber-mid); }
+.war-row .war-icon {
+  width: 12px; flex-shrink: 0; font-size: 9px;
+  margin-top: 2px;
+}
+.war-row .war-text {
+  flex: 1;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.war-row .war-meta {
+  font-size: 9.5px; color: rgba(255,255,255,.3);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+.war-row em { font-style: italic; opacity: .8; }
+
+.war-row-handwritten {
+  font-family: 'Caveat', 'Bradley Hand', 'Inter', cursive;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--amber-mid);
+  padding: 3px 4px;
+  letter-spacing: .2px;
+}
+
+.pain-quote {
+  font-size: 16px; font-style: italic;
+  color: rgba(255,255,255,.5); line-height: 1.55;
+  border-left: 2px solid var(--blue);
+  padding-left: 18px;
+  max-width: 720px;
+}
+.pain-quote strong {
+  color: rgba(255,255,255,.85);
+  font-weight: 500;
+}
+
+
+/* ═══════════════════════════════════════════════════════
+   SCREEN 2 — THE COMMAND CENTRE (light, real product)
+   ═══════════════════════════════════════════════════════ */
+#s2 {
+  background: var(--navy-dark);
+}
+
+/* browser chrome */
+.browser-wrap {
+  flex: 1;
+  margin: 12px 24px 0;
+  display: flex; flex-direction: column;
+  border-radius: 10px 10px 0 0;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,.35);
+  min-height: 0;
+}
+.browser-bar {
+  background: #dee1e6;
+  padding: 9px 14px 0;
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0;
+}
+.browser-dots { display: flex; gap: 5px; }
+.bd { width: 10px; height: 10px; border-radius: 50%; }
+.bd.r { background: #ff5f57; }
+.bd.y { background: #febc2e; }
+.bd.g { background: #28c840; }
+.browser-addr {
+  flex: 1; background: #fff; border-radius: 5px;
+  padding: 4px 12px; font-size: 12px; color: var(--gray-500);
+  font-family: 'SF Mono', 'Fira Mono', monospace;
+}
+.browser-tabs {
+  background: #dee1e6; padding: 5px 14px 0;
+  display: flex; gap: 2px;
+}
+.browser-tab {
+  background: var(--bg); border-radius: 7px 7px 0 0;
+  padding: 6px 18px; font-size: 12px; color: var(--gray-700);
+  font-weight: 500; display: flex; align-items: center; gap: 7px;
+}
+.tab-fav { width: 13px; height: 13px; border-radius: 3px; background: var(--blue); }
+
+/* app */
+.app {
+  flex: 1; display: flex; flex-direction: column;
+  background: var(--bg); overflow: hidden;
+}
+.app-nav {
+  background: var(--navy); height: 52px; padding: 0 22px;
+  display: flex; align-items: center; gap: 20px; flex-shrink: 0;
+}
+.app-logo { font-size: 15px; font-weight: 700; color: #fff; letter-spacing: -.4px; }
+.app-logo span { color: var(--blue-mid); }
+.app-sep { width: 1px; height: 18px; background: rgba(255,255,255,.15); }
+.app-prog { font-size: 12.5px; color: rgba(255,255,255,.7); }
+.app-prog strong { color: #fff; font-weight: 600; }
+.app-spacer { flex: 1; }
+.app-live {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 10.5px; color: var(--green-mid);
+  font-weight: 700; letter-spacing: 1.5px;
+}
+.app-live-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green-mid);
+  animation: pulse 1.4s infinite;
+}
+.persona-pill {
+  display: flex; align-items: center; gap: 9px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 6px; padding: 5px 11px;
+}
+.persona-av {
+  width: 24px; height: 24px; border-radius: 50%;
+  color: #fff; font-size: 10px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--amber);
+}
+.persona-name { font-size: 12px; color: #fff; font-weight: 500; }
+.persona-role { font-size: 10px; color: rgba(255,255,255,.45); }
+.persona-chev { font-size: 9px; color: rgba(255,255,255,.3); margin-left: 2px; }
+
+.app-body { flex: 1; display: flex; overflow: hidden; }
+
+.sidebar {
+  width: 200px; flex-shrink: 0;
+  background: var(--navy-mid);
+  display: flex; flex-direction: column; padding: 14px 0;
+}
+.side-section-label {
+  padding: 6px 16px 4px;
+  font-size: 9.5px; font-weight: 700; letter-spacing: 1.5px;
+  color: rgba(255,255,255,.32); text-transform: uppercase;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; font-size: 13px;
+  color: rgba(255,255,255,.55);
+  border-left: 3px solid transparent; cursor: pointer;
+}
+.nav-item.active {
+  background: rgba(255,255,255,.06); color: #fff;
+  border-left-color: var(--blue-mid); font-weight: 500;
+}
+.nav-icon { font-size: 13px; width: 16px; text-align: center; }
+.nav-item .item-badge {
+  margin-left: auto; width: 6px; height: 6px;
+  border-radius: 50%; background: var(--amber);
+}
+
+/* content area */
+.cc-main {
+  flex: 1; display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.page-header {
+  padding: 18px 26px 14px;
+  border-bottom: 1px solid var(--gray-200);
+  background: #fff; flex-shrink: 0;
+  display: flex; align-items: flex-start; justify-content: space-between;
+}
+.page-title {
+  font-size: 19px; font-weight: 700; color: var(--gray-900);
+  letter-spacing: -.3px; margin-bottom: 3px;
+}
+.page-sub {
+  font-size: 12px; color: var(--gray-500);
+  display: flex; align-items: center; gap: 14px;
+}
+.page-sub strong { color: var(--gray-700); font-weight: 600; }
+.page-actions { display: flex; gap: 8px; }
+.btn {
+  font-family: inherit; font-size: 12px; font-weight: 500;
+  padding: 7px 13px; border-radius: 6px; cursor: pointer;
+  border: 1px solid transparent;
+}
+.btn-secondary {
+  background: #fff; color: var(--gray-700);
+  border-color: var(--gray-200);
+}
+
+.cc-body {
+  flex: 1; padding: 18px 26px 22px;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 16px;
+  min-height: 0; overflow: hidden;
+}
+
+/* hero row */
+.cc-hero {
+  display: grid;
+  grid-template-columns: 200px 220px 1fr;
+  gap: 14px;
+}
+.cc-readiness {
+  background: linear-gradient(135deg, var(--amber-light) 0%, #fef3c7 100%);
+  border: 1px solid #fcd34d;
+  border-radius: 12px;
+  padding: 22px 26px;
+  position: relative; overflow: hidden;
+}
+.cc-readiness::before {
+  content: ''; position: absolute;
+  top: -20px; right: -20px; width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(245,158,11,.15) 0%, transparent 70%);
+}
+.cc-r-label {
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--amber); margin-bottom: 10px;
+}
+.cc-r-num {
+  font-size: 56px; font-weight: 800;
+  color: var(--gray-900); line-height: 1;
+  letter-spacing: -2.5px;
+  font-variant-numeric: tabular-nums;
+}
+.cc-r-num span {
+  font-size: 26px; color: var(--amber);
+  letter-spacing: -1px; margin-left: 3px;
+  font-weight: 700;
+}
+
+/* BLOCKERS card (peer of readiness) */
+.cc-blockers {
+  background: linear-gradient(135deg, var(--red-light) 0%, #fee2e2 100%);
+  border: 1px solid #fca5a5;
+  border-radius: 12px;
+  padding: 22px 22px;
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.cc-blockers::before {
+  content: ''; position: absolute;
+  top: -20px; right: -20px; width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(220,38,38,.15) 0%, transparent 70%);
+}
+.cc-b-label {
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--red); margin-bottom: 10px;
+}
+.cc-b-num {
+  font-size: 56px; font-weight: 800;
+  color: var(--gray-900); line-height: 1;
+  letter-spacing: -2.5px;
+  font-variant-numeric: tabular-nums;
+}
+.cc-b-status {
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 1.5px; color: var(--red);
+  margin-top: 8px; text-transform: uppercase;
+}
+.cc-b-trend {
+  font-size: 11.5px; color: var(--gray-700);
+  margin-top: 10px; line-height: 1.4;
+}
+.cc-b-trend strong { color: var(--gray-900); font-weight: 600; }
+.cc-r-status {
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 2px; color: var(--amber);
+  margin-top: 8px;
+}
+.cc-r-trend {
+  font-size: 12px; color: var(--gray-600);
+  margin-top: 10px;
+}
+.cc-r-trend .up { color: var(--green); font-weight: 600; }
+
+.cc-assess {
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.cc-assess-label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--blue);
+}
+.cc-assess-label::before { content: '◆'; font-size: 9px; }
+.cc-assess-quote {
+  font-size: 17px; color: var(--gray-900);
+  line-height: 1.45; font-weight: 600;
+  letter-spacing: -.2px;
+}
+.cc-assess-detail {
+  font-size: 13px; color: var(--gray-700);
+  line-height: 1.55;
+}
+.cc-assess-detail strong { color: var(--gray-900); font-weight: 600; }
+.cc-assess-rec {
+  background: var(--blue-light);
+  border-left: 3px solid var(--blue);
+  padding: 11px 14px;
+  border-radius: 0 6px 6px 0;
+  margin-top: 4px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+.cc-assess-rec-text {
+  font-size: 12.5px; color: var(--gray-900);
+}
+.cc-assess-rec-text strong { color: var(--blue); font-weight: 700; }
+.cc-assess-rec-tag {
+  font-size: 10px; font-weight: 700;
+  color: var(--blue);
+  letter-spacing: 1px;
+  background: rgba(37,99,235,.12);
+  padding: 4px 9px; border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* workstream readiness */
+.cc-workstreams {
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 16px 22px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.cc-section-title {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gray-700);
+  padding-bottom: 4px;
+}
+.cc-section-meta {
+  font-size: 10.5px; color: var(--gray-500);
+  font-weight: 500; letter-spacing: .3px;
+  text-transform: none;
+}
+.ws-row {
+  display: grid;
+  grid-template-columns: 150px 1fr 60px 110px;
+  align-items: center; gap: 14px;
+  padding: 5px 0;
+  font-size: 12.5px;
+}
+.ws-name { color: var(--gray-700); font-weight: 500; }
+.ws-bar-track {
+  height: 8px; background: var(--gray-100);
+  border-radius: 4px; overflow: hidden;
+}
+.ws-bar-fill {
+  height: 100%; border-radius: 4px;
+}
+.ws-bar-fill.ready   { background: var(--green); }
+.ws-bar-fill.ontrack { background: var(--blue);  }
+.ws-bar-fill.atrisk  { background: var(--amber); }
+.ws-bar-fill.crit    { background: var(--red);   }
+.ws-pct {
+  font-weight: 700; font-size: 13px;
+  color: var(--gray-900); text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.ws-status {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 1.2px; text-transform: uppercase;
+  text-align: right;
+}
+.ws-status.ready   { color: var(--green); }
+.ws-status.ontrack { color: var(--blue);  }
+.ws-status.atrisk  { color: var(--amber); }
+.ws-status.crit    { color: var(--red);   }
+
+/* bottom split */
+.cc-bottom {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px; min-height: 0;
+}
+.cc-panel {
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 14px 20px;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.cc-panel-head {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gray-700); margin-bottom: 11px;
+  flex-shrink: 0;
+}
+.cc-panel-body {
+  flex: 1; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 6px;
+}
+
+/* risk row */
+.risk-row {
+  display: grid;
+  grid-template-columns: 95px 1fr auto;
+  gap: 12px; align-items: center;
+  padding: 9px 11px;
+  background: var(--gray-100);
+  border-radius: 6px;
+}
+.risk-row.crit { border-left: 3px solid var(--red); background: var(--red-light); }
+.risk-row.high { border-left: 3px solid var(--amber); background: var(--amber-light); }
+.risk-row.med  { border-left: 3px solid var(--green); background: var(--green-light); }
+.risk-icon { font-size: 10px; }
+.risk-sev-badge {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 1px;
+  padding: 5px 6px; border-radius: 4px;
+  text-align: center;
+  display: inline-block;
+  align-self: center;
+  white-space: nowrap;
+  color: #fff;
+}
+.risk-sev-badge.crit { background: var(--red); }
+.risk-sev-badge.high { background: var(--amber); }
+.risk-sev-badge.med  { background: var(--green); }
+.risk-content { min-width: 0; }
+.risk-title {
+  font-size: 12px; font-weight: 600; color: var(--gray-900);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.risk-meta {
+  font-size: 10.5px; color: var(--gray-600);
+  margin-top: 2px;
+}
+.risk-impact {
+  font-size: 11.5px; font-weight: 700;
+  white-space: nowrap; text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.risk-impact.crit { color: var(--red); }
+.risk-impact.high { color: var(--amber); }
+.risk-impact.med  { color: var(--green); }
+.risk-impact-sub {
+  font-size: 9.5px; font-weight: 600;
+  color: var(--gray-500); letter-spacing: .5px;
+  margin-top: 1px; text-transform: uppercase;
+}
+
+/* signal feed */
+.signal-row {
+  display: grid;
+  grid-template-columns: 50px 16px 1fr;
+  gap: 10px; align-items: baseline;
+  padding: 6px 4px;
+  font-size: 11.5px;
+  border-bottom: 1px dashed var(--gray-200);
+}
+.signal-row:last-child { border-bottom: none; }
+.signal-time {
+  font-size: 10.5px; color: var(--gray-500);
+  font-variant-numeric: tabular-nums;
+}
+.signal-icon {
+  font-size: 11px; text-align: center; line-height: 1.3;
+}
+.signal-icon.ai   { color: var(--blue); }
+.signal-icon.warn { color: var(--amber); }
+.signal-icon.bad  { color: var(--red); }
+.signal-icon.ok   { color: var(--green); }
+.signal-text { color: var(--gray-700); line-height: 1.45; }
+.signal-text strong { color: var(--gray-900); font-weight: 600; }
+
+
+/* ═══════════════════════════════════════════════════════
+   SCREEN 3 — THE AI LAYER
+   ═══════════════════════════════════════════════════════ */
+#s3 .ctx::before {
+  background: radial-gradient(circle, rgba(168,85,247,.08) 0%, transparent 70%);
+}
+#s3 .ctx::after {
+  background: radial-gradient(circle, rgba(59,130,246,.06) 0%, transparent 70%);
+}
+
+.ai-stats {
+  display: flex; gap: 32px; margin-bottom: 32px;
+}
+.ai-stat-item {
+  font-size: 12px; color: rgba(255,255,255,.6);
+  display: flex; flex-direction: column; gap: 3px;
+}
+.ai-stat-num {
+  font-size: 22px; font-weight: 800; color: #fff;
+  letter-spacing: -.5px;
+  font-variant-numeric: tabular-nums;
+}
+.ai-stat-num span { color: var(--green-mid); }
+.ai-stat-lbl {
+  font-size: 10px; letter-spacing: 1.5px;
+  color: rgba(255,255,255,.4); text-transform: uppercase;
+  font-weight: 600;
+}
+
+.ai-body {
+  flex: 1; display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto;
+  gap: 18px;
+  min-height: 0;
+}
+
+.ai-agent-area {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  min-height: 0;
+}
+
+.ai-col {
+  display: flex; flex-direction: column;
+  gap: 10px;
+}
+.ai-col-label {
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  text-align: left; padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  margin-bottom: 4px;
+  display: flex; align-items: center; gap: 8px;
+}
+.ai-col-label.listening { color: var(--blue-mid); }
+.ai-col-label.thinking  { color: #c084fc; }
+.ai-col-label.acting    { color: var(--green-mid); }
+.ai-col-label-icon { font-size: 10px; }
+
+.ai-agent {
+  background: rgba(255,255,255,.045);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 9px;
+  padding: 13px 15px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.ai-agent.active {
+  background: rgba(34,197,94,.06);
+  border-color: rgba(34,197,94,.20);
+}
+.ai-agent.processing {
+  background: rgba(168,85,247,.06);
+  border-color: rgba(168,85,247,.22);
+}
+.ai-agent.idle { opacity: .55; }
+
+.ai-agent-head {
+  display: flex; align-items: center; gap: 9px;
+}
+.ai-agent-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  flex-shrink: 0;
+}
+.ai-agent.active .ai-agent-dot {
+  background: var(--green-mid); animation: pulse 1.4s infinite;
+}
+.ai-agent.processing .ai-agent-dot {
+  background: #c084fc; animation: pulse 1s infinite;
+}
+.ai-agent.idle .ai-agent-dot { background: rgba(255,255,255,.2); }
+.ai-agent-name {
+  font-size: 13px; font-weight: 600;
+  color: #fff; flex: 1;
+}
+.ai-agent-status {
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: .8px; text-transform: uppercase;
+}
+.ai-agent.active .ai-agent-status   { color: var(--green-mid); }
+.ai-agent.processing .ai-agent-status { color: #c084fc; }
+.ai-agent.idle .ai-agent-status     { color: rgba(255,255,255,.3); }
+.ai-agent-detail {
+  font-size: 11.5px; color: rgba(255,255,255,.55);
+  line-height: 1.5;
+}
+.ai-agent-action {
+  font-size: 11px; color: rgba(255,255,255,.85);
+  font-style: italic;
+  padding-top: 6px; margin-top: 2px;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+
+/* coach card spans full width */
+.ai-coach {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, rgba(168,85,247,.10) 0%, rgba(59,130,246,.06) 100%);
+  border: 1px solid rgba(168,85,247,.25);
+  border-radius: 9px;
+  padding: 14px 20px;
+  display: flex; align-items: center; gap: 16px;
+}
+.ai-coach-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: rgba(168,85,247,.18);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: #c084fc;
+  flex-shrink: 0;
+}
+.ai-coach-info { flex: 1; }
+.ai-coach-name {
+  font-size: 13px; font-weight: 700; color: #fff;
+  margin-bottom: 3px;
+  display: flex; align-items: center; gap: 9px;
+}
+.ai-coach-tag {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: #c084fc;
+  background: rgba(168,85,247,.18);
+  padding: 2px 8px; border-radius: 3px;
+}
+.ai-coach-detail {
+  font-size: 11.5px; color: rgba(255,255,255,.6);
+  line-height: 1.5;
+}
+
+/* live activity log */
+.ai-log {
+  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 10px;
+  padding: 14px 22px;
+}
+.ai-log-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px;
+}
+.ai-log-title {
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,255,255,.7);
+  display: flex; align-items: center; gap: 8px;
+}
+.ai-log-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green-mid);
+  animation: pulse 1.2s infinite;
+}
+.ai-log-stats {
+  font-size: 10.5px; color: rgba(255,255,255,.35);
+  font-variant-numeric: tabular-nums; letter-spacing: .3px;
+}
+.ai-log-row {
+  display: grid;
+  grid-template-columns: 80px 130px 1fr;
+  gap: 14px;
+  font-size: 11.5px;
+  padding: 3px 0;
+  align-items: baseline;
+}
+.ai-log-time {
+  color: rgba(255,255,255,.32);
+  font-variant-numeric: tabular-nums;
+}
+.ai-log-agent {
+  font-weight: 600;
+  color: var(--green-mid);
+}
+.ai-log-agent.thinking { color: #c084fc; }
+.ai-log-agent.coach    { color: var(--blue-mid); }
+.ai-log-text {
+  color: rgba(255,255,255,.65);
+  line-height: 1.45;
+}
+.ai-log-text strong { color: rgba(255,255,255,.92); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="presentation">
+
+  <!-- ════════════════════════════════════════════════════════════════
+       SCREEN 1 — THE WAR ROOM (context slide)
+       ════════════════════════════════════════════════════════════════ -->
+  <div class="screen active" id="s1">
+    <div class="ctx">
+      <div class="ctx-inner">
+
+        <div class="eyebrow">T-minus 3 days · 02:47 local · Project Atlas</div>
+        <h1 class="headline">What cutover looks like<br>72 hours before go-live.</h1>
+        <p class="subhead">A real cutover lead's screen, right now. Six tools, none talking. The cutover lead is the integration layer.</p>
+
+        <div class="war-headstats">
+          <div class="war-stat"><div class="war-stat-num">312</div><div class="war-stat-label">Open items</div></div>
+          <div class="war-stat"><div class="war-stat-num">12</div><div class="war-stat-label">Blockers</div></div>
+          <div class="war-stat"><div class="war-stat-num">47</div><div class="war-stat-label">Urgent unread</div></div>
+          <div class="war-stat"><div class="war-stat-num">8</div><div class="war-stat-label">Unowned risks</div></div>
+          <div class="war-stat"><div class="war-stat-num">23</div><div class="war-stat-label">Decisions pending</div></div>
+        </div>
+
+        <div class="war-grid">
+
+          <div class="war-card">
+            <div class="war-card-head">
+              <div class="war-card-title"><span class="war-card-title-icon">📧</span>Outlook · Inbox</div>
+              <div class="war-card-badge">47 UNREAD</div>
+            </div>
+            <div class="war-card-body">
+              <div class="war-row urgent"><span class="war-icon">●</span><span class="war-text">RE: URGENT — Production cutover blocker not resolved</span><span class="war-meta">02:14</span></div>
+              <div class="war-row urgent"><span class="war-icon">●</span><span class="war-text">FW: Exflow approval workflow still outstanding NL/DE</span><span class="war-meta">01:45</span></div>
+              <div class="war-row warn"><span class="war-icon">●</span><span class="war-text">Customer master delta — who's the validation owner?</span><span class="war-meta">23:12</span></div>
+              <div class="war-row warn"><span class="war-icon">●</span><span class="war-text">FW: SCM defect triage needed before Mon</span><span class="war-meta">22:48</span></div>
+              <div class="war-row warn"><span class="war-icon">●</span><span class="war-text">Re: Parallel run window — conflicting requirements</span><span class="war-meta">21:30</span></div>
+              <div class="war-row" style="color: rgba(255,255,255,.3); font-size: 10.5px;"><span class="war-icon">↓</span><span class="war-text">+ 42 more unread urgent</span></div>
+            </div>
+          </div>
+
+          <div class="war-card">
+            <div class="war-card-head">
+              <div class="war-card-title"><span class="war-card-title-icon">📊</span>Cutover_Plan_v17_FINAL_USE_THIS.xlsx</div>
+              <div class="war-card-badge">312 · 84 TBD</div>
+            </div>
+            <div class="war-card-body">
+              <div class="war-row"><span class="war-icon">▶</span><span class="war-text">Stage 1 — Pre-cutover · 56 tasks · 18 still open</span></div>
+              <div class="war-row warn"><span class="war-icon">●</span><span class="war-text">Task 47: Final delta migration · OWNER: <em>TBD</em> · DUE: ???</span></div>
+              <div class="war-row urgent"><span class="war-icon">●</span><span class="war-text">Task 91: Integration smoke · DURATION: 4h <em>or 8h</em>?</span></div>
+              <div class="war-row urgent"><span class="war-icon">●</span><span class="war-text">Task 142: Parallel run · 48h vs 24h <em>CONFLICT</em></span></div>
+              <div class="war-row" style="color: rgba(255,255,255,.3); font-size: 10.5px;"><span class="war-icon">⋯</span><span class="war-text">84 tasks marked TBD · last edit: Tom B, 3 days ago</span></div>
+              <div class="war-row" style="color: rgba(255,255,255,.3); font-size: 10.5px;"><span class="war-icon">⋯</span><span class="war-text">v15, v16, v17 — which is canonical?</span></div>
+            </div>
+          </div>
+
+          <div class="war-card">
+            <div class="war-card-head">
+              <div class="war-card-title"><span class="war-card-title-icon">💬</span>Microsoft Teams</div>
+              <div class="war-card-badge">23 MENTIONS</div>
+            </div>
+            <div class="war-card-body">
+              <div class="war-row urgent"><span class="war-icon">#</span><span class="war-text"><strong>cutover-warroom</strong> · 8 unread · "Are we still going Mon??"</span><span class="war-meta">14m</span></div>
+              <div class="war-row urgent"><span class="war-icon">@</span><span class="war-text">Marieke J: "Need decision on Exflow today"</span><span class="war-meta">32m</span></div>
+              <div class="war-row warn"><span class="war-icon">#</span><span class="war-text"><strong>data-migration</strong> · 3 unread · Pieter D thread</span></div>
+              <div class="war-row warn"><span class="war-icon">#</span><span class="war-text"><strong>integrations</strong> · 5 unread · Tom B</span></div>
+              <div class="war-row warn"><span class="war-icon">@</span><span class="war-text">Hans M: "Anyone seen the 14:00 export?"</span></div>
+              <div class="war-row" style="color: rgba(255,255,255,.3); font-size: 10.5px;"><span class="war-icon">↓</span><span class="war-text">+ 5 more channels active</span></div>
+            </div>
+          </div>
+
+          <div class="war-card">
+            <div class="war-card-head">
+              <div class="war-card-title"><span class="war-card-title-icon">🐛</span>Azure DevOps · Project Atlas</div>
+              <div class="war-card-badge">47 P2 OPEN</div>
+            </div>
+            <div class="war-card-body">
+              <div class="war-row urgent"><span class="war-icon">●</span><span class="war-text">#4823 PO confirmation fails &gt;€50k · 9d · NO TRIAGE</span></div>
+              <div class="war-row urgent"><span class="war-icon">●</span><span class="war-text">#4791 Customer master record validation timeout</span></div>
+              <div class="war-row warn"><span class="war-icon">●</span><span class="war-text">#4856 Vendor invoice attachment preview · 2d</span></div>
+              <div class="war-row warn"><span class="war-icon">●</span><span class="war-text">#4842 Trial balance reconciliation logic · 6d</span></div>
+              <div class="war-row" style="color: rgba(255,255,255,.3); font-size: 10.5px;"><span class="war-icon">⋯</span><span class="war-text">+ 43 more P2 open · 15 stale &gt;5 days</span></div>
+              <div class="war-row" style="color: rgba(255,255,255,.3); font-size: 10.5px;"><span class="war-icon">⋯</span><span class="war-text">Last triage session: 5 days ago</span></div>
+            </div>
+          </div>
+
+          <div class="war-card">
+            <div class="war-card-head">
+              <div class="war-card-title"><span class="war-card-title-icon">💚</span>WhatsApp · Cutover Atlas</div>
+              <div class="war-card-badge">67 MSGS TODAY</div>
+            </div>
+            <div class="war-card-body">
+              <div class="war-row"><span class="war-meta" style="margin-right:4px;">02:45</span><span class="war-text"><strong>Sarah:</strong> Has Marieke approved Exflow yet?</span></div>
+              <div class="war-row"><span class="war-meta" style="margin-right:4px;">02:42</span><span class="war-text"><strong>Pieter:</strong> Migration test 4 still running…</span></div>
+              <div class="war-row warn"><span class="war-meta" style="margin-right:4px;">02:38</span><span class="war-text"><strong>Tom:</strong> Need a parallel-run decision TODAY</span></div>
+              <div class="war-row"><span class="war-meta" style="margin-right:4px;">02:35</span><span class="war-text"><strong>Sarah:</strong> Anyone seen Anna? 🤷</span></div>
+              <div class="war-row warn"><span class="war-meta" style="margin-right:4px;">02:30</span><span class="war-text"><strong>Sarah:</strong> Steering tomorrow — what do we say?</span></div>
+              <div class="war-row"><span class="war-meta" style="margin-right:4px;">02:25</span><span class="war-text"><strong>Hans:</strong> Where's the latest plan?</span></div>
+            </div>
+          </div>
+
+          <div class="war-card">
+            <div class="war-card-head">
+              <div class="war-card-title"><span class="war-card-title-icon">🗒</span>Sarah's Notebook</div>
+              <div class="war-card-badge">HANDWRITTEN</div>
+            </div>
+            <div class="war-card-body">
+              <div class="war-row-handwritten">??? owns delta validation</div>
+              <div class="war-row-handwritten">Check Anna re: COA mapping</div>
+              <div class="war-row-handwritten">Tom hasn't responded — 24h window</div>
+              <div class="war-row-handwritten">Hans → training gap WH-04 06 07</div>
+              <div class="war-row-handwritten">Steering: defer 7d? 30d? proceed?</div>
+              <div class="war-row-handwritten" style="color: var(--red-mid);">DON'T FORGET MARIEKE !!</div>
+            </div>
+          </div>
+
+        </div>
+
+        <p class="pain-quote">
+          "This is the cutover lead's screen at 02:47 AM, three days before go-live.<br>
+          <strong>There is no system. There is no oversight. There are heroics, exhaustion, and luck."</strong>
+        </p>
+
+      </div>
+    </div>
+  </div><!-- /screen 1 -->
+
+
+  <!-- ════════════════════════════════════════════════════════════════
+       SCREEN 2 — THE COMMAND CENTRE (real product page)
+       ════════════════════════════════════════════════════════════════ -->
+  <div class="screen" id="s2">
+
+    <!-- browser chrome -->
+    <div class="browser-wrap">
+      <div class="browser-bar">
+        <div class="browser-dots"><div class="bd r"></div><div class="bd y"></div><div class="bd g"></div></div>
+        <div class="browser-addr">cutoveros.app/p/atlas/dashboard</div>
+      </div>
+      <div class="browser-tabs">
+        <div class="browser-tab"><div class="tab-fav"></div> CutoverOS — Project Atlas</div>
+      </div>
+
+      <!-- app -->
+      <div class="app">
+
+        <div class="app-nav">
+          <div class="app-logo">Cutover<span>OS</span></div>
+          <div class="app-sep"></div>
+          <div class="app-prog"><strong>Project Atlas</strong> · Vandenberg Materials Group · D365 F&amp;O</div>
+          <div class="app-spacer"></div>
+          <div class="app-live"><span class="app-live-dot"></span>LIVE</div>
+          <div class="persona-pill">
+            <div class="persona-av">RT</div>
+            <div>
+              <div class="persona-name">Rebecca Thomson</div>
+              <div class="persona-role">Programme Director</div>
+            </div>
+            <div class="persona-chev">▾</div>
+          </div>
+        </div>
+
+        <div class="app-body">
+
+          <div class="sidebar">
+            <div class="side-section-label">Programme</div>
+            <div class="nav-item active"><span class="nav-icon">🏠</span> Dashboard</div>
+            <div class="nav-item"><span class="nav-icon">📊</span> Workstreams</div>
+            <div class="nav-item"><span class="nav-icon">⚠️</span> Risks <div class="item-badge"></div></div>
+            <div class="nav-item"><span class="nav-icon">⚖</span> Decisions</div>
+            <div class="nav-item"><span class="nav-icon">📄</span> Steering Brief</div>
+            <div class="side-section-label" style="margin-top: 14px;">Modules</div>
+            <div class="nav-item"><span class="nav-icon">📋</span> Plan Builder</div>
+            <div class="nav-item"><span class="nav-icon">⚖</span> Consequence Engine</div>
+            <div class="nav-item"><span class="nav-icon">📡</span> Signal Distiller</div>
+          </div>
+
+          <div class="cc-main">
+
+            <div class="page-header">
+              <div>
+                <div class="page-title">Programme Dashboard</div>
+                <div class="page-sub">
+                  <span><strong>T-3 days</strong> · go-live 2 Jun 2026, 06:00 CET</span>
+                  <span style="color: var(--gray-300);">·</span>
+                  <span>Last update <strong>14:23 UTC</strong> · 47 mapped items</span>
+                </div>
+              </div>
+              <div class="page-actions">
+                <button class="btn btn-secondary">Export</button>
+                <button class="btn btn-secondary">Share</button>
+              </div>
+            </div>
+
+            <div class="cc-body">
+
+              <!-- hero -->
+              <div class="cc-hero">
+                <div class="cc-readiness">
+                  <div class="cc-r-label">Programme Readiness</div>
+                  <div class="cc-r-num">78<span>%</span></div>
+                  <div class="cc-r-status">AMBER</div>
+                  <div class="cc-r-trend"><span class="up">▲ +4%</span> in last 7 days</div>
+                </div>
+
+                <div class="cc-blockers">
+                  <div class="cc-b-label">Blockers</div>
+                  <div class="cc-b-num">4</div>
+                  <div class="cc-b-status">Gating go-live</div>
+                  <div class="cc-b-trend">Of <strong>12</strong> the team flagged · system-confirmed</div>
+                </div>
+
+                <div class="cc-assess">
+                  <div class="cc-assess-label">AI Assessment · 14:23 UTC · orchestrator-v2.4</div>
+                  <div class="cc-assess-quote">"AMBER. 4 true blockers — system-classified from 12 the team flagged. Conditional proceed possible."</div>
+                  <div class="cc-assess-detail">
+                    All 4 blockers have documented mitigation paths. Revenue exposure manageable at <strong>~€485k</strong> in unplanned Q3 OPEX. However, the COA sign-off blocker has audit timing implications that escalate beyond Q3 if not closed in the next 96 hours.
+                  </div>
+                  <div class="cc-assess-rec">
+                    <div class="cc-assess-rec-text"><strong>Primary recommendation:</strong> Defer go-live by 7 days. Resolves 3 of 4 blockers. Aligns with Q3 audit prep cycle.</div>
+                    <div class="cc-assess-rec-tag">CONFIDENCE 91%</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- workstreams -->
+              <div class="cc-workstreams">
+                <div class="cc-section-title">
+                  <span>Workstream Readiness · 6 active</span>
+                  <span class="cc-section-meta">Updated continuously from 47 signal sources</span>
+                </div>
+                <div class="ws-row">
+                  <span class="ws-name">Finance</span>
+                  <div class="ws-bar-track"><div class="ws-bar-fill ready" style="width:92%;"></div></div>
+                  <span class="ws-pct">92%</span>
+                  <span class="ws-status ready">● Ready</span>
+                </div>
+                <div class="ws-row">
+                  <span class="ws-name">Data Migration</span>
+                  <div class="ws-bar-track"><div class="ws-bar-fill ontrack" style="width:84%;"></div></div>
+                  <span class="ws-pct">84%</span>
+                  <span class="ws-status ontrack">On track</span>
+                </div>
+                <div class="ws-row">
+                  <span class="ws-name">Integrations</span>
+                  <div class="ws-bar-track"><div class="ws-bar-fill atrisk" style="width:62%;"></div></div>
+                  <span class="ws-pct">62%</span>
+                  <span class="ws-status atrisk">⚠ At risk</span>
+                </div>
+                <div class="ws-row">
+                  <span class="ws-name">UAT &amp; Quality</span>
+                  <div class="ws-bar-track"><div class="ws-bar-fill ontrack" style="width:76%;"></div></div>
+                  <span class="ws-pct">76%</span>
+                  <span class="ws-status ontrack">On track</span>
+                </div>
+                <div class="ws-row">
+                  <span class="ws-name">Training</span>
+                  <div class="ws-bar-track"><div class="ws-bar-fill crit" style="width:47%;"></div></div>
+                  <span class="ws-pct">47%</span>
+                  <span class="ws-status crit">⚠⚠ Critical</span>
+                </div>
+                <div class="ws-row">
+                  <span class="ws-name">Hypercare Readiness</span>
+                  <div class="ws-bar-track"><div class="ws-bar-fill atrisk" style="width:68%;"></div></div>
+                  <span class="ws-pct">68%</span>
+                  <span class="ws-status atrisk">At risk</span>
+                </div>
+              </div>
+
+              <!-- bottom split -->
+              <div class="cc-bottom">
+
+                <div class="cc-panel">
+                  <div class="cc-panel-head">
+                    <span>Active Risks · <span style="color: var(--red);">4 BLOCKER</span> · <span style="color: var(--amber);">22 SIGNIFICANT</span> · <span style="color: var(--green);">21 MANAGEABLE</span></span>
+                    <span class="cc-section-meta">Top 6 of 47</span>
+                  </div>
+                  <div class="cc-panel-body">
+                    <div class="risk-row crit">
+                      <span class="risk-sev-badge crit">BLOCKER</span>
+                      <div class="risk-content">
+                        <div class="risk-title">Exflow approval workflow not signed off · NL &amp; DE</div>
+                        <div class="risk-meta">Marieke Janssen · 12d outstanding · CF-241</div>
+                      </div>
+                      <div>
+                        <div class="risk-impact crit">€95k</div>
+                        <div class="risk-impact-sub">unplanned cost</div>
+                      </div>
+                    </div>
+                    <div class="risk-row crit">
+                      <span class="risk-sev-badge crit">BLOCKER</span>
+                      <div class="risk-content">
+                        <div class="risk-title">Customer master delta · validation owner not assigned</div>
+                        <div class="risk-meta">Pieter D · 8d outstanding · CF-244</div>
+                      </div>
+                      <div>
+                        <div class="risk-impact crit">€420k</div>
+                        <div class="risk-impact-sub">AR exposure</div>
+                      </div>
+                    </div>
+                    <div class="risk-row crit">
+                      <span class="risk-sev-badge crit">BLOCKER</span>
+                      <div class="risk-content">
+                        <div class="risk-title">Group Controller COA mapping sign-off pending</div>
+                        <div class="risk-meta">Anna V · 6d · audit timing critical</div>
+                      </div>
+                      <div>
+                        <div class="risk-impact crit">FY26</div>
+                        <div class="risk-impact-sub">audit risk</div>
+                      </div>
+                    </div>
+                    <div class="risk-row high">
+                      <span class="risk-sev-badge high">SIGNIFICANT</span>
+                      <div class="risk-content">
+                        <div class="risk-title">14 P2 SCM defects · PO confirmation &gt;€50k</div>
+                        <div class="risk-meta">DevOps #4823 + 13 related · critical path</div>
+                      </div>
+                      <div>
+                        <div class="risk-impact high">€72k</div>
+                        <div class="risk-impact-sub">OPEX</div>
+                      </div>
+                    </div>
+                    <div class="risk-row high">
+                      <span class="risk-sev-badge high">SIGNIFICANT</span>
+                      <div class="risk-content">
+                        <div class="risk-title">Super-user training gap · 3 of 8 warehouses</div>
+                        <div class="risk-meta">WH-04 / 06 / 07 · day-1 ticket risk</div>
+                      </div>
+                      <div>
+                        <div class="risk-impact high">+1 FTE</div>
+                        <div class="risk-impact-sub">×14 days</div>
+                      </div>
+                    </div>
+                    <div class="risk-row med">
+                      <span class="risk-sev-badge med">MANAGEABLE</span>
+                      <div class="risk-content">
+                        <div class="risk-title">HGB §238 statutory export · DE entity</div>
+                        <div class="risk-meta">Workaround documented · audit notification req'd</div>
+                      </div>
+                      <div>
+                        <div class="risk-impact med">1 mo</div>
+                        <div class="risk-impact-sub">manual</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cc-panel">
+                  <div class="cc-panel-head">
+                    <span>Live Cutover Signal · last 60 min</span>
+                    <span class="cc-section-meta">⏵ streaming · 14 events</span>
+                  </div>
+                  <div class="cc-panel-body">
+                    <div class="signal-row">
+                      <span class="signal-time">14:23</span>
+                      <span class="signal-icon ai">◆</span>
+                      <span class="signal-text"><strong>AI</strong> escalated CF-247 to Programme Director · context attached</span>
+                    </div>
+                    <div class="signal-row">
+                      <span class="signal-time">14:21</span>
+                      <span class="signal-icon ok">✓</span>
+                      <span class="signal-text">Anna V signed off COA mapping (was blocker · now confirmed)</span>
+                    </div>
+                    <div class="signal-row">
+                      <span class="signal-time">14:18</span>
+                      <span class="signal-icon bad">!</span>
+                      <span class="signal-text">New blocker · Exflow workflow stalled at AP review</span>
+                    </div>
+                    <div class="signal-row">
+                      <span class="signal-time">14:15</span>
+                      <span class="signal-icon ok">✓</span>
+                      <span class="signal-text">Pieter: Migration test 4 complete · 3:42:11 (within bench)</span>
+                    </div>
+                    <div class="signal-row">
+                      <span class="signal-time">14:12</span>
+                      <span class="signal-icon ai">◆</span>
+                      <span class="signal-text"><strong>AI</strong> updated readiness 76% → 78% · 3 items resolved</span>
+                    </div>
+                    <div class="signal-row">
+                      <span class="signal-time">14:09</span>
+                      <span class="signal-icon warn">⚠</span>
+                      <span class="signal-text">Hans M confirmed training gap WH-04 (impact mapped)</span>
+                    </div>
+                    <div class="signal-row">
+                      <span class="signal-time">14:01</span>
+                      <span class="signal-icon ai">◆</span>
+                      <span class="signal-text"><strong>AI</strong> drafted steering brief v3 · ready for review</span>
+                    </div>
+                    <div class="signal-row">
+                      <span class="signal-time">13:55</span>
+                      <span class="signal-icon ai">◆</span>
+                      <span class="signal-text"><strong>AI</strong> ingested email · routed to consequence engine</span>
+                    </div>
+                    <div class="signal-row">
+                      <span class="signal-time">13:48</span>
+                      <span class="signal-icon ok">✓</span>
+                      <span class="signal-text">Anna V approved posting cutoff: 28 May 18:00 CET</span>
+                    </div>
+                    <div class="signal-row">
+                      <span class="signal-time">13:42</span>
+                      <span class="signal-icon ai">◆</span>
+                      <span class="signal-text"><strong>AI</strong> recommended defer-7-days · cost analysis attached</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /screen 2 -->
+
+
+  <!-- ════════════════════════════════════════════════════════════════
+       SCREEN 3 — THE AI LAYER (context slide)
+       ════════════════════════════════════════════════════════════════ -->
+  <div class="screen" id="s3">
+    <div class="ctx">
+      <div class="ctx-inner">
+
+        <div class="eyebrow">The AI Layer · beneath the command centre</div>
+        <h1 class="headline">Nine agents.<br>One orchestrator.</h1>
+        <p class="subhead">Listening, thinking, acting. Twenty-four-seven. Zero human intervention required. The benchmark library compounds with every cutover.</p>
+
+        <div class="ai-stats">
+          <div class="ai-stat-item">
+            <div class="ai-stat-num"><span>9</span></div>
+            <div class="ai-stat-lbl">Active agents</div>
+          </div>
+          <div class="ai-stat-item">
+            <div class="ai-stat-num">14,247</div>
+            <div class="ai-stat-lbl">Signals · last 24h</div>
+          </div>
+          <div class="ai-stat-item">
+            <div class="ai-stat-num">47</div>
+            <div class="ai-stat-lbl">Cross-checks per minute</div>
+          </div>
+          <div class="ai-stat-item">
+            <div class="ai-stat-num">142</div>
+            <div class="ai-stat-lbl">Prior cutovers in benchmark</div>
+          </div>
+          <div class="ai-stat-item">
+            <div class="ai-stat-num"><span>98.4%</span></div>
+            <div class="ai-stat-lbl">Cross-check precision</div>
+          </div>
+        </div>
+
+        <div class="ai-body">
+
+          <div class="ai-agent-area">
+
+            <!-- LISTENING -->
+            <div class="ai-col">
+              <div class="ai-col-label listening"><span class="ai-col-label-icon">◉</span>Listening</div>
+              <div class="ai-agent active">
+                <div class="ai-agent-head">
+                  <div class="ai-agent-dot"></div>
+                  <div class="ai-agent-name">Monitor</div>
+                  <div class="ai-agent-status">Active</div>
+                </div>
+                <div class="ai-agent-detail">7 source systems · 3.2 signals/min · last signal 12s ago</div>
+                <div class="ai-agent-action">"Just ingested 3 emails, 1 Teams thread, 7 DevOps updates"</div>
+              </div>
+              <div class="ai-agent active">
+                <div class="ai-agent-head">
+                  <div class="ai-agent-dot"></div>
+                  <div class="ai-agent-name">Ingestor</div>
+                  <div class="ai-agent-status">Active</div>
+                </div>
+                <div class="ai-agent-detail">Vision + text + voice · 47 items/h · scope-aware tagging</div>
+                <div class="ai-agent-action">"Parsing integration architecture diagram (vision)"</div>
+              </div>
+            </div>
+
+            <!-- THINKING -->
+            <div class="ai-col">
+              <div class="ai-col-label thinking"><span class="ai-col-label-icon">◆</span>Thinking</div>
+              <div class="ai-agent processing">
+                <div class="ai-agent-head">
+                  <div class="ai-agent-dot"></div>
+                  <div class="ai-agent-name">Conflict Detector</div>
+                  <div class="ai-agent-status">Cross-checking</div>
+                </div>
+                <div class="ai-agent-detail">47 ops/min · context window: full programme</div>
+                <div class="ai-agent-action">"Detected: 48h Finance parallel run vs 24h IT window"</div>
+              </div>
+              <div class="ai-agent processing">
+                <div class="ai-agent-head">
+                  <div class="ai-agent-dot"></div>
+                  <div class="ai-agent-name">Benchmarker</div>
+                  <div class="ai-agent-status">Comparing</div>
+                </div>
+                <div class="ai-agent-detail">12 estimates challenged today · library: 142 prior cutovers</div>
+                <div class="ai-agent-action">"4h prod migration vs 8–12h benchmark (n=6) · flagged"</div>
+              </div>
+              <div class="ai-agent processing">
+                <div class="ai-agent-head">
+                  <div class="ai-agent-dot"></div>
+                  <div class="ai-agent-name">Consequence Mapper</div>
+                  <div class="ai-agent-status">Mapping</div>
+                </div>
+                <div class="ai-agent-detail">47 items mapped to € impact · severity recalibrated 8m ago</div>
+                <div class="ai-agent-action">"DevOps #4823 → SCM PO failure → €72k Q3 impact"</div>
+              </div>
+              <div class="ai-agent idle">
+                <div class="ai-agent-head">
+                  <div class="ai-agent-dot"></div>
+                  <div class="ai-agent-name">Planner</div>
+                  <div class="ai-agent-status">Idle</div>
+                </div>
+                <div class="ai-agent-detail">Last replan 6m ago · critical path stable</div>
+                <div class="ai-agent-action">"Watching for plan-relevant signals"</div>
+              </div>
+            </div>
+
+            <!-- ACTING -->
+            <div class="ai-col">
+              <div class="ai-col-label acting"><span class="ai-col-label-icon">▶</span>Acting</div>
+              <div class="ai-agent active">
+                <div class="ai-agent-head">
+                  <div class="ai-agent-dot"></div>
+                  <div class="ai-agent-name">Escalator</div>
+                  <div class="ai-agent-status">Routing</div>
+                </div>
+                <div class="ai-agent-detail">CF-247 → Programme Director · context block drafting</div>
+                <div class="ai-agent-action">"Ready in 23s with full audit trail attached"</div>
+              </div>
+              <div class="ai-agent active">
+                <div class="ai-agent-head">
+                  <div class="ai-agent-dot"></div>
+                  <div class="ai-agent-name">Communicator</div>
+                  <div class="ai-agent-status">Drafting</div>
+                </div>
+                <div class="ai-agent-detail">3 stakeholder messages · audience-adapted</div>
+                <div class="ai-agent-action">"Day-1 readiness comms for Finance, IT, Business"</div>
+              </div>
+              <div class="ai-agent active">
+                <div class="ai-agent-head">
+                  <div class="ai-agent-dot"></div>
+                  <div class="ai-agent-name">Briefer</div>
+                  <div class="ai-agent-status">Generating</div>
+                </div>
+                <div class="ai-agent-detail">Steering pack v3 · audit ID GNG-2026-05-26-A1</div>
+                <div class="ai-agent-action">"Ready in 23s · awaiting Programme Director review"</div>
+              </div>
+            </div>
+
+            <!-- COACH -->
+            <div class="ai-coach">
+              <div class="ai-coach-icon">⚇</div>
+              <div class="ai-coach-info">
+                <div class="ai-coach-name">
+                  Coach Agent
+                  <span class="ai-coach-tag">Always-on · human layer</span>
+                </div>
+                <div class="ai-coach-detail">Detected stress signal in Sarah Chen's Teams activity (02:47 message cadence) · advising slower escalation cadence · monitoring for burnout indicators · the agent that watches the humans, not the programme</div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- live activity log -->
+          <div class="ai-log">
+            <div class="ai-log-head">
+              <div class="ai-log-title"><span class="ai-log-dot"></span>Live agent telemetry · last 60 seconds</div>
+              <div class="ai-log-stats">streaming · 14,247 ops/24h</div>
+            </div>
+            <div>
+              <div class="ai-log-row">
+                <span class="ai-log-time">14:23:47</span>
+                <span class="ai-log-agent thinking">[Conflict Det]</span>
+                <span class="ai-log-text">Cross-checked Anna's COA approval against schema map. <strong>CONSISTENT.</strong> Releasing dependency lock on M3.</span>
+              </div>
+              <div class="ai-log-row">
+                <span class="ai-log-time">14:23:42</span>
+                <span class="ai-log-agent">[Monitor]</span>
+                <span class="ai-log-text">Ingested email · Marieke J → Sarah C re: Exflow status (NL/DE) · routing to Conflict Detector.</span>
+              </div>
+              <div class="ai-log-row">
+                <span class="ai-log-time">14:23:38</span>
+                <span class="ai-log-agent">[Escalator]</span>
+                <span class="ai-log-text">Routing <strong>CF-247</strong> to Programme Director · drafting context block · ETA 23s.</span>
+              </div>
+              <div class="ai-log-row">
+                <span class="ai-log-time">14:23:31</span>
+                <span class="ai-log-agent">[Briefer]</span>
+                <span class="ai-log-text">Drafted steering brief §3 · 412 words · audit ID <strong>GNG-2026-05-26-A1</strong> · ready for review.</span>
+              </div>
+              <div class="ai-log-row">
+                <span class="ai-log-time">14:23:24</span>
+                <span class="ai-log-agent thinking">[Conflict Det]</span>
+                <span class="ai-log-text">Detected: 48h Finance parallel run vs 24h IT maintenance window. <strong>FLAGGED as Blocker.</strong> Notifying.</span>
+              </div>
+              <div class="ai-log-row">
+                <span class="ai-log-time">14:22:57</span>
+                <span class="ai-log-agent coach">[Coach]</span>
+                <span class="ai-log-text">Stress signal detected in Sarah Chen's Teams activity (02:47 message cadence) · advising slower escalation flow.</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div><!-- /screen 3 -->
+
+</div><!-- /presentation -->
+
+<div class="indicator">1 / 3</div>
+
+<script>
+  const screens = document.querySelectorAll('.screen');
+  const indicator = document.querySelector('.indicator');
+  let current = 0;
+
+  function go(delta) {
+    const next = current + delta;
+    if (next < 0 || next >= screens.length) return;
+    screens[current].classList.remove('active');
+    current = next;
+    screens[current].classList.add('active');
+    indicator.textContent = (current + 1) + ' / ' + screens.length;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+      go(1); e.preventDefault();
+    }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      go(-1); e.preventDefault();
+    }
+    if (e.key === 'Home') { while (current > 0) go(-1); }
+    if (e.key === 'End') { while (current < screens.length - 1) go(1); }
+  });
+
+  // Click-to-advance for screen-share
+  document.addEventListener('click', e => {
+    if (e.target.closest('.indicator')) return;
+    go(1);
+  });
+</script>
+
+</body>
+</html>
