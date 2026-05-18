@@ -1,0 +1,2711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>CutoverOS — anonymous brief</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:        #1a2b4a;
+  --navy-dark:   #0f1d35;
+  --navy-mid:    #243656;
+  --navy-light:  #2e4570;
+  --blue:        #2563eb;
+  --blue-mid:    #3b82f6;
+  --blue-light:  #eff6ff;
+  --green:       #16a34a;
+  --green-mid:   #22c55e;
+  --green-light: #f0fdf4;
+  --amber:       #d97706;
+  --amber-mid:   #f59e0b;
+  --amber-light: #fffbeb;
+  --red:         #dc2626;
+  --red-mid:     #ef4444;
+  --red-light:   #fef2f2;
+  --purple:      #a855f7;
+  --purple-light:#c084fc;
+  --bg:          #f8fafc;
+  --gray-100:    #f1f5f9;
+  --gray-200:    #e2e8f0;
+  --gray-300:    #cbd5e1;
+  --gray-400:    #94a3b8;
+  --gray-500:    #64748b;
+  --gray-600:    #475569;
+  --gray-700:    #334155;
+  --gray-800:    #1e293b;
+  --gray-900:    #0f172a;
+  --white:       #ffffff;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--navy-dark);
+  overflow: hidden;
+  font-feature-settings: "ss01" on, "cv11" on;
+}
+
+.presentation {
+  position: relative;
+  width: 100vw; height: 100vh;
+}
+.screen {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s ease;
+  display: flex; flex-direction: column;
+}
+.screen.active { opacity: 1; pointer-events: auto; }
+
+/* ── INDICATOR + ATTRIBUTION ────────────────────────── */
+.indicator {
+  position: fixed; bottom: 14px; right: 22px;
+  font-size: 10.5px; color: rgba(255,255,255,.45);
+  letter-spacing: 2px; z-index: 100;
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+}
+.attribution {
+  position: fixed; bottom: 14px; left: 22px;
+  font-size: 10.5px; color: rgba(255,255,255,.45);
+  letter-spacing: .3px; z-index: 100;
+  user-select: none;
+}
+.attribution strong { color: rgba(255,255,255,.75); font-weight: 600; }
+
+/* ── ANIMATIONS ─────────────────────────────────────── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: .35; }
+}
+.pulse-dot { animation: pulse 1.6s infinite; }
+
+/* ═══════════════════════════════════════════════════════
+   CONTEXT SLIDE BASE (Screens 1 & 3)
+   ═══════════════════════════════════════════════════════ */
+.ctx {
+  flex: 1; display: flex; flex-direction: column;
+  background: var(--navy);
+  color: #fff; padding: 56px 80px 64px;
+  position: relative; overflow: hidden;
+}
+.ctx::before {
+  content: '';
+  position: absolute; top: -100px; right: -100px;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(37,99,235,.13) 0%, transparent 70%);
+  pointer-events: none;
+}
+.ctx::after {
+  content: '';
+  position: absolute; bottom: -140px; left: -80px;
+  width: 480px; height: 480px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(37,99,235,.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.ctx-inner {
+  position: relative; z-index: 1; flex: 1;
+  display: flex; flex-direction: column;
+}
+
+.eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--blue-mid);
+  margin-bottom: 18px;
+}
+.headline {
+  font-size: 50px; font-weight: 800; line-height: 1.08;
+  letter-spacing: -1.5px; color: #fff;
+  margin-bottom: 18px;
+}
+.subhead {
+  font-size: 18px; font-weight: 400;
+  color: rgba(255,255,255,.6); line-height: 1.55;
+  max-width: 880px; margin-bottom: 36px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   SCREEN 1 — THE WAR ROOM
+   ═══════════════════════════════════════════════════════ */
+#s1 .ctx { padding: 48px 72px 48px; }
+
+.war-headstats {
+  display: flex; gap: 56px; margin-top: 6px; margin-bottom: 32px;
+  align-items: baseline;
+}
+.war-stat { display: flex; flex-direction: column; gap: 5px; }
+.war-stat-num {
+  font-size: 36px; font-weight: 800;
+  color: var(--red-mid); line-height: 1;
+  letter-spacing: -1px;
+  font-variant-numeric: tabular-nums;
+}
+.war-stat-label {
+  font-size: 10px; letter-spacing: 2px;
+  color: rgba(255,255,255,.4); text-transform: uppercase;
+  font-weight: 600;
+}
+
+.war-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr 1fr;
+  gap: 14px;
+  flex: 1; min-height: 0; margin-bottom: 24px;
+}
+.war-card {
+  background: rgba(255,255,255,.045);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 10px;
+  display: flex; flex-direction: column;
+  overflow: hidden; position: relative;
+}
+.war-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(220,38,38,.4), transparent);
+}
+.war-card-head {
+  padding: 11px 14px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.war-card-title {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 600;
+  color: rgba(255,255,255,.85);
+}
+.war-card-title-icon { font-size: 13px; }
+.war-card-badge {
+  font-size: 10px; font-weight: 700;
+  color: var(--red-mid);
+  background: rgba(220,38,38,.12);
+  padding: 2px 8px; border-radius: 3px;
+  letter-spacing: .5px;
+  font-variant-numeric: tabular-nums;
+}
+.war-card-body {
+  flex: 1; padding: 11px 12px;
+  display: flex; flex-direction: column;
+  gap: 5px; overflow: hidden;
+}
+.war-row {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 4px 4px;
+  font-size: 11.5px; line-height: 1.4;
+  color: rgba(255,255,255,.7);
+  border-radius: 3px;
+}
+.war-row.urgent { color: var(--red-mid); background: rgba(220,38,38,.06); }
+.war-row.warn   { color: var(--amber-mid); }
+.war-row .war-icon { width: 12px; flex-shrink: 0; font-size: 9px; margin-top: 2px; }
+.war-row .war-text { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.war-row .war-meta {
+  font-size: 9.5px; color: rgba(255,255,255,.3);
+  font-variant-numeric: tabular-nums; flex-shrink: 0;
+}
+.war-row em { font-style: italic; opacity: .8; }
+.war-row-handwritten {
+  font-family: 'Caveat', 'Bradley Hand', 'Inter', cursive;
+  font-size: 14px; font-weight: 500;
+  color: var(--amber-mid);
+  padding: 3px 4px; letter-spacing: .2px;
+}
+
+.pain-quote {
+  font-size: 16px; font-style: italic;
+  color: rgba(255,255,255,.5); line-height: 1.55;
+  border-left: 2px solid var(--blue);
+  padding-left: 18px;
+  max-width: 720px;
+}
+.pain-quote strong { color: rgba(255,255,255,.85); font-weight: 500; }
+
+/* ═══════════════════════════════════════════════════════
+   SCREEN 2 — THE COMMAND CENTRE (also used by 4, 5)
+   ═══════════════════════════════════════════════════════ */
+#s2, #s4, #s5 { background: var(--navy-dark); }
+
+.browser-wrap {
+  flex: 1; margin: 12px 24px 44px;
+  display: flex; flex-direction: column;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,.35);
+  min-height: 0;
+}
+.browser-bar {
+  background: #dee1e6;
+  padding: 9px 14px 0;
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0;
+}
+.browser-dots { display: flex; gap: 5px; }
+.bd { width: 10px; height: 10px; border-radius: 50%; }
+.bd.r { background: #ff5f57; }
+.bd.y { background: #febc2e; }
+.bd.g { background: #28c840; }
+.browser-addr {
+  flex: 1; background: #fff; border-radius: 5px;
+  padding: 4px 12px; font-size: 12px; color: var(--gray-500);
+  font-family: 'SF Mono', 'Fira Mono', monospace;
+}
+.browser-tabs {
+  background: #dee1e6; padding: 5px 14px 0;
+  display: flex; gap: 2px;
+}
+.browser-tab {
+  background: var(--bg); border-radius: 7px 7px 0 0;
+  padding: 6px 18px; font-size: 12px; color: var(--gray-700);
+  font-weight: 500; display: flex; align-items: center; gap: 7px;
+}
+.tab-fav { width: 13px; height: 13px; border-radius: 3px; background: var(--blue); }
+
+.app { flex: 1; display: flex; flex-direction: column; background: var(--bg); overflow: hidden; }
+.app-nav {
+  background: var(--navy); height: 52px; padding: 0 22px;
+  display: flex; align-items: center; gap: 20px; flex-shrink: 0;
+}
+.app-logo { font-size: 15px; font-weight: 700; color: #fff; letter-spacing: -.4px; }
+.app-logo span { color: var(--blue-mid); }
+.app-sep { width: 1px; height: 18px; background: rgba(255,255,255,.15); }
+.app-prog { font-size: 12.5px; color: rgba(255,255,255,.7); }
+.app-prog strong { color: #fff; font-weight: 600; }
+.app-spacer { flex: 1; }
+.app-live {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 10.5px; color: var(--green-mid);
+  font-weight: 700; letter-spacing: 1.5px;
+}
+.app-live-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green-mid); animation: pulse 1.4s infinite;
+}
+.persona-pill {
+  display: flex; align-items: center; gap: 9px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 6px; padding: 5px 11px;
+}
+.persona-av {
+  width: 24px; height: 24px; border-radius: 50%;
+  color: #fff; font-size: 10px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--amber);
+}
+.persona-name { font-size: 12px; color: #fff; font-weight: 500; }
+.persona-role { font-size: 10px; color: rgba(255,255,255,.45); }
+.persona-chev { font-size: 9px; color: rgba(255,255,255,.3); margin-left: 2px; }
+
+.app-body { flex: 1; display: flex; overflow: hidden; }
+
+.sidebar {
+  width: 200px; flex-shrink: 0;
+  background: var(--navy-mid);
+  display: flex; flex-direction: column; padding: 14px 0;
+}
+.side-section-label {
+  padding: 6px 16px 4px;
+  font-size: 9.5px; font-weight: 700; letter-spacing: 1.5px;
+  color: rgba(255,255,255,.32); text-transform: uppercase;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; font-size: 13px;
+  color: rgba(255,255,255,.55);
+  border-left: 3px solid transparent; cursor: pointer;
+}
+.nav-item.active {
+  background: rgba(255,255,255,.06); color: #fff;
+  border-left-color: var(--blue-mid); font-weight: 500;
+}
+.nav-icon { font-size: 13px; width: 16px; text-align: center; }
+.nav-item .item-badge {
+  margin-left: auto; width: 6px; height: 6px;
+  border-radius: 50%; background: var(--amber);
+}
+
+.cc-main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.page-header {
+  padding: 18px 26px 14px;
+  border-bottom: 1px solid var(--gray-200);
+  background: #fff; flex-shrink: 0;
+  display: flex; align-items: flex-start; justify-content: space-between;
+}
+.page-title {
+  font-size: 19px; font-weight: 700; color: var(--gray-900);
+  letter-spacing: -.3px; margin-bottom: 3px;
+}
+.page-sub {
+  font-size: 12px; color: var(--gray-500);
+  display: flex; align-items: center; gap: 14px;
+}
+.page-sub strong { color: var(--gray-700); font-weight: 600; }
+.page-actions { display: flex; gap: 8px; }
+.btn {
+  font-family: inherit; font-size: 12px; font-weight: 500;
+  padding: 7px 13px; border-radius: 6px; cursor: pointer;
+  border: 1px solid transparent;
+}
+.btn-secondary { background: #fff; color: var(--gray-700); border-color: var(--gray-200); }
+
+.cc-body {
+  flex: 1; padding: 18px 26px 22px;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 16px;
+  min-height: 0; overflow: hidden;
+}
+
+/* hero row */
+.cc-hero {
+  display: grid;
+  grid-template-columns: 200px 220px 1fr;
+  gap: 14px;
+}
+.cc-readiness {
+  background: linear-gradient(135deg, var(--amber-light) 0%, #fef3c7 100%);
+  border: 1px solid #fcd34d;
+  border-radius: 12px;
+  padding: 22px 26px;
+  position: relative; overflow: hidden;
+}
+.cc-readiness::before {
+  content: ''; position: absolute;
+  top: -20px; right: -20px; width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(245,158,11,.15) 0%, transparent 70%);
+}
+.cc-r-label {
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--amber); margin-bottom: 10px;
+}
+.cc-r-num {
+  font-size: 56px; font-weight: 800;
+  color: var(--gray-900); line-height: 1;
+  letter-spacing: -2.5px;
+  font-variant-numeric: tabular-nums;
+}
+.cc-r-num span {
+  font-size: 26px; color: var(--amber);
+  letter-spacing: -1px; margin-left: 3px;
+  font-weight: 700;
+}
+.cc-blockers {
+  background: linear-gradient(135deg, var(--red-light) 0%, #fee2e2 100%);
+  border: 1px solid #fca5a5;
+  border-radius: 12px;
+  padding: 22px 22px;
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.cc-blockers::before {
+  content: ''; position: absolute;
+  top: -20px; right: -20px; width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(220,38,38,.15) 0%, transparent 70%);
+}
+.cc-b-label {
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--red); margin-bottom: 10px;
+}
+.cc-b-num {
+  font-size: 56px; font-weight: 800;
+  color: var(--gray-900); line-height: 1;
+  letter-spacing: -2.5px;
+  font-variant-numeric: tabular-nums;
+}
+.cc-b-status {
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 1.5px; color: var(--red);
+  margin-top: 8px; text-transform: uppercase;
+}
+.cc-b-trend {
+  font-size: 11.5px; color: var(--gray-700);
+  margin-top: 10px; line-height: 1.4;
+}
+.cc-b-trend strong { color: var(--gray-900); font-weight: 600; }
+.cc-r-status {
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 2px; color: var(--amber);
+  margin-top: 8px;
+}
+.cc-r-trend { font-size: 12px; color: var(--gray-600); margin-top: 10px; }
+.cc-r-trend .up { color: var(--green); font-weight: 600; }
+
+.cc-assess {
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.cc-assess-label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--blue);
+}
+.cc-assess-label::before { content: '◆'; font-size: 9px; }
+.cc-assess-quote {
+  font-size: 17px; color: var(--gray-900);
+  line-height: 1.45; font-weight: 600; letter-spacing: -.2px;
+}
+.cc-assess-detail {
+  font-size: 13px; color: var(--gray-700); line-height: 1.55;
+}
+.cc-assess-detail strong { color: var(--gray-900); font-weight: 600; }
+.cc-assess-rec {
+  background: var(--blue-light);
+  border-left: 3px solid var(--blue);
+  padding: 11px 14px;
+  border-radius: 0 6px 6px 0;
+  margin-top: 4px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.cc-assess-rec-text { font-size: 12.5px; color: var(--gray-900); }
+.cc-assess-rec-text strong { color: var(--blue); font-weight: 700; }
+.cc-assess-rec-tag {
+  font-size: 10px; font-weight: 700;
+  color: var(--blue); letter-spacing: 1px;
+  background: rgba(37,99,235,.12);
+  padding: 4px 9px; border-radius: 4px;
+  white-space: nowrap;
+}
+
+.cc-workstreams {
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 16px 22px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.cc-section-title {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gray-700);
+  padding-bottom: 4px;
+}
+.cc-section-meta {
+  font-size: 10.5px; color: var(--gray-500);
+  font-weight: 500; letter-spacing: .3px; text-transform: none;
+}
+.ws-row {
+  display: grid;
+  grid-template-columns: 150px 1fr 60px 110px;
+  align-items: center; gap: 14px;
+  padding: 5px 0; font-size: 12.5px;
+}
+.ws-name { color: var(--gray-700); font-weight: 500; }
+.ws-bar-track { height: 8px; background: var(--gray-100); border-radius: 4px; overflow: hidden; }
+.ws-bar-fill { height: 100%; border-radius: 4px; }
+.ws-bar-fill.ready   { background: var(--green); }
+.ws-bar-fill.ontrack { background: var(--blue);  }
+.ws-bar-fill.atrisk  { background: var(--amber); }
+.ws-bar-fill.crit    { background: var(--red);   }
+.ws-pct {
+  font-weight: 700; font-size: 13px;
+  color: var(--gray-900); text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.ws-status {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 1.2px; text-transform: uppercase;
+  text-align: right;
+}
+.ws-status.ready   { color: var(--green); }
+.ws-status.ontrack { color: var(--blue);  }
+.ws-status.atrisk  { color: var(--amber); }
+.ws-status.crit    { color: var(--red);   }
+
+.cc-bottom {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px; min-height: 0;
+}
+.cc-panel {
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+  padding: 14px 20px;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.cc-panel-head {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gray-700); margin-bottom: 11px;
+  flex-shrink: 0;
+}
+.cc-panel-body { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+
+.risk-row {
+  display: grid;
+  grid-template-columns: 95px 1fr auto;
+  gap: 12px; align-items: center;
+  padding: 9px 11px;
+  background: var(--gray-100); border-radius: 6px;
+}
+.risk-row.crit { border-left: 3px solid var(--red); background: var(--red-light); }
+.risk-row.high { border-left: 3px solid var(--amber); background: var(--amber-light); }
+.risk-row.med  { border-left: 3px solid var(--green); background: var(--green-light); }
+.risk-sev-badge {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 1px;
+  padding: 5px 6px; border-radius: 4px;
+  text-align: center; display: inline-block;
+  align-self: center; white-space: nowrap; color: #fff;
+}
+.risk-sev-badge.crit { background: var(--red); }
+.risk-sev-badge.high { background: var(--amber); }
+.risk-sev-badge.med  { background: var(--green); }
+.risk-content { min-width: 0; }
+.risk-title {
+  font-size: 12px; font-weight: 600; color: var(--gray-900);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.risk-meta { font-size: 10.5px; color: var(--gray-600); margin-top: 2px; }
+.risk-impact {
+  font-size: 11.5px; font-weight: 700;
+  white-space: nowrap; text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.risk-impact.crit { color: var(--red); }
+.risk-impact.high { color: var(--amber); }
+.risk-impact.med  { color: var(--green); }
+.risk-impact-sub {
+  font-size: 9.5px; font-weight: 600;
+  color: var(--gray-500); letter-spacing: .5px;
+  margin-top: 1px; text-transform: uppercase;
+}
+
+.signal-row {
+  display: grid;
+  grid-template-columns: 50px 16px 1fr;
+  gap: 10px; align-items: baseline;
+  padding: 6px 4px;
+  font-size: 11.5px;
+  border-bottom: 1px dashed var(--gray-200);
+}
+.signal-row:last-child { border-bottom: none; }
+.signal-time { font-size: 10.5px; color: var(--gray-500); font-variant-numeric: tabular-nums; }
+.signal-icon { font-size: 11px; text-align: center; line-height: 1.3; }
+.signal-icon.ai   { color: var(--blue); }
+.signal-icon.warn { color: var(--amber); }
+.signal-icon.bad  { color: var(--red); }
+.signal-icon.ok   { color: var(--green); }
+.signal-text { color: var(--gray-700); line-height: 1.45; }
+.signal-text strong { color: var(--gray-900); font-weight: 600; }
+
+/* ═══════════════════════════════════════════════════════
+   SCREEN 2 — THE PLAN (results-first replacement)
+   ═══════════════════════════════════════════════════════ */
+.plan-body {
+  flex: 1; padding: 14px 22px 18px;
+  display: flex; flex-direction: column;
+  gap: 12px; min-height: 0; overflow: hidden;
+}
+
+/* ingestion strip */
+.ingestion-strip {
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 10px 18px;
+  display: flex; align-items: center;
+  gap: 22px; flex-wrap: wrap;
+  flex-shrink: 0;
+}
+.ingest-item {
+  font-size: 11.5px; color: var(--gray-600);
+  display: flex; align-items: center; gap: 6px;
+}
+.ingest-item .ingest-icon { font-size: 13px; }
+.ingest-item strong {
+  color: var(--gray-900); font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.ingest-live {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 7px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px;
+  color: var(--green); text-transform: uppercase;
+}
+.ingest-live-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green-mid); animation: pulse 1.4s infinite;
+}
+
+/* main two-column area */
+.plan-main {
+  flex: 1; display: grid;
+  grid-template-columns: 1fr 290px;
+  gap: 12px; min-height: 0;
+}
+
+/* plan view (left) */
+.plan-view {
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  padding: 14px 18px;
+  overflow-y: auto;
+}
+.plan-stage { margin-bottom: 14px; }
+.plan-stage:last-child { margin-bottom: 0; }
+.plan-stage-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--gray-200);
+  margin-bottom: 8px;
+}
+.plan-stage-name {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12.5px; font-weight: 700; color: var(--gray-900);
+}
+.plan-stage-name .chev { font-size: 9px; color: var(--gray-500); }
+.plan-stage-status {
+  font-size: 11px; color: var(--gray-600);
+  font-weight: 500;
+}
+.plan-stage-status strong { color: var(--green); font-weight: 700; }
+.plan-stage-status .blkr {
+  color: var(--red); font-weight: 700;
+  background: var(--red-light); padding: 2px 7px; border-radius: 3px;
+  font-size: 10.5px; letter-spacing: .5px; margin-left: 4px;
+}
+
+.task-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  padding: 7px 10px 7px 11px;
+  border-radius: 6px;
+  align-items: center;
+  border-left: 3px solid transparent;
+  margin-bottom: 3px;
+}
+.task-row.blocker { background: var(--red-light); border-left-color: var(--red); }
+.task-row.atrisk  { background: var(--amber-light); border-left-color: var(--amber); }
+
+.task-main { min-width: 0; }
+.task-title {
+  font-size: 12.5px; font-weight: 600; color: var(--gray-900);
+  margin-bottom: 3px; line-height: 1.3;
+}
+.task-meta {
+  font-size: 11px; color: var(--gray-600);
+  display: flex; align-items: center; gap: 8px;
+  flex-wrap: wrap;
+}
+.task-meta .owner { font-weight: 600; color: var(--gray-700); }
+.task-meta .unassigned {
+  color: var(--red); font-weight: 700;
+  letter-spacing: .5px;
+}
+.task-meta .duration {
+  color: var(--gray-700); font-variant-numeric: tabular-nums;
+}
+.task-meta .bench-flag { color: var(--amber); }
+.task-meta .bench-ok   { color: var(--green); }
+.task-meta .conflict-ok { color: var(--blue); }
+.task-meta .blocker-flag { color: var(--red); font-weight: 700; }
+.task-meta .meta-sep { color: var(--gray-300); }
+
+/* source badges per task */
+.task-badges {
+  display: flex; gap: 4px;
+  flex-shrink: 0;
+}
+.src-badge {
+  width: 22px; height: 22px;
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  border: 1px solid transparent;
+}
+.src-badge.email     { background: #dbeafe; color: #1d4ed8; border-color: #93c5fd; }
+.src-badge.doc       { background: #f3e8ff; color: #7e22ce; border-color: #d8b4fe; }
+.src-badge.interview { background: #d1fae5; color: #065f46; border-color: #6ee7b7; }
+.src-badge.teams     { background: #fef3c7; color: #92400e; border-color: #fcd34d; }
+.src-badge.devops    { background: #fee2e2; color: #b91c1c; border-color: #fca5a5; }
+.src-badge.wapp      { background: #dcfce7; color: #15803d; border-color: #86efac; }
+
+/* live status panel (right) */
+.status-panel {
+  background: var(--navy);
+  border: 1px solid var(--navy-light);
+  border-radius: 10px;
+  padding: 18px 18px;
+  display: flex; flex-direction: column;
+  color: #fff; overflow-y: auto;
+}
+.status-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 1.8px; text-transform: uppercase;
+  color: var(--blue-mid); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 7px;
+}
+.status-label::before { content: '◆'; font-size: 9px; }
+
+/* readiness card — industry-standard pattern */
+.readiness-card {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.readiness-top {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.readiness-num {
+  font-size: 52px; font-weight: 800; color: #fff;
+  letter-spacing: -2px; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.readiness-num span {
+  font-size: 22px; color: var(--amber-mid);
+  font-weight: 700; margin-left: 3px;
+}
+.readiness-status-pill {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 1.5px;
+  background: var(--amber); color: #fff;
+  padding: 5px 11px; border-radius: 4px;
+}
+.readiness-bar {
+  height: 6px;
+  background: rgba(255,255,255,.08);
+  border-radius: 3px; overflow: hidden;
+  margin-bottom: 10px;
+  position: relative;
+}
+.readiness-bar-fill {
+  height: 100%; width: 78%;
+  background: linear-gradient(to right, var(--red) 0%, #ea580c 55%, var(--amber-mid) 100%);
+  border-radius: 3px;
+}
+.readiness-trend {
+  font-size: 11px; color: rgba(255,255,255,.55);
+  display: flex; justify-content: space-between;
+  align-items: center;
+}
+.readiness-trend .up { color: var(--green-mid); font-weight: 700; }
+.readiness-trend .last-update {
+  display: flex; align-items: center; gap: 6px;
+}
+.readiness-trend .last-update-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green-mid);
+  animation: pulse 1.4s infinite;
+}
+
+/* narrative band above product slides (s2 / s4 / s5) */
+.product-narrative {
+  flex-shrink: 0;
+  background: var(--navy);
+  padding: 22px 44px 18px;
+  display: flex; flex-direction: column; gap: 6px;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  position: relative;
+}
+.product-narrative::after {
+  content: '';
+  position: absolute; bottom: -1px; left: 44px; width: 80px; height: 2px;
+  background: var(--blue-mid);
+}
+.product-narrative-eyebrow {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--blue-mid);
+}
+.product-narrative-text {
+  font-size: 22px; font-weight: 700;
+  color: #fff; letter-spacing: -.4px;
+  line-height: 1.3;
+  max-width: 1300px;
+}
+.product-narrative-text em {
+  font-style: normal;
+  color: var(--blue-mid);
+  font-weight: 700;
+}
+
+.status-line {
+  font-size: 12.5px; color: rgba(255,255,255,.78);
+  padding: 9px 0;
+  border-top: 1px solid rgba(255,255,255,.07);
+  line-height: 1.4;
+}
+.status-line strong { color: #fff; font-weight: 700; }
+.status-line .accent { color: var(--red-mid); font-weight: 700; }
+.status-line .pulse-dot {
+  display: inline-block;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green-mid); margin-right: 7px;
+  vertical-align: middle;
+  animation: pulse 1.4s infinite;
+}
+
+.status-counters {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,.07);
+  font-size: 11px; color: rgba(255,255,255,.5);
+  line-height: 1.55;
+}
+.status-counters strong { color: rgba(255,255,255,.88); font-weight: 600; }
+
+/* live changes feed (bottom strip) */
+.changes-strip {
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  padding: 10px 18px 8px;
+  flex-shrink: 0;
+}
+.changes-head {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 1.8px; text-transform: uppercase;
+  color: var(--gray-500); margin-bottom: 6px;
+  display: flex; align-items: center; gap: 8px;
+}
+.changes-head-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green-mid); animation: pulse 1.4s infinite;
+}
+.change-row {
+  display: grid;
+  grid-template-columns: 46px 16px 1fr;
+  gap: 10px; align-items: baseline;
+  font-size: 11.5px;
+  padding: 2px 0;
+}
+.change-time {
+  color: var(--gray-500);
+  font-variant-numeric: tabular-nums;
+  font-size: 10.5px;
+}
+.change-icon { font-size: 11px; text-align: center; }
+.change-icon.ai   { color: var(--blue); }
+.change-icon.ok   { color: var(--green); }
+.change-icon.warn { color: var(--amber); }
+.change-icon.bad  { color: var(--red); }
+.change-text { color: var(--gray-700); line-height: 1.4; }
+.change-text strong { color: var(--gray-900); font-weight: 600; }
+
+/* legend strip for source badges */
+.badge-legend {
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--gray-200);
+  display: flex; flex-wrap: wrap; gap: 14px;
+  font-size: 10.5px; color: var(--gray-500);
+}
+.badge-legend-item {
+  display: flex; align-items: center; gap: 6px;
+}
+.badge-legend-item .src-badge {
+  width: 16px; height: 16px; font-size: 9px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   SCREEN 3 — THE AI LAYER
+   ═══════════════════════════════════════════════════════ */
+#s3 .ctx::before { background: radial-gradient(circle, rgba(168,85,247,.08) 0%, transparent 70%); }
+#s3 .ctx::after  { background: radial-gradient(circle, rgba(59,130,246,.06) 0%, transparent 70%); }
+
+.ai-stats { display: flex; gap: 32px; margin-bottom: 32px; }
+.ai-stat-item {
+  font-size: 12px; color: rgba(255,255,255,.6);
+  display: flex; flex-direction: column; gap: 3px;
+}
+.ai-stat-num {
+  font-size: 22px; font-weight: 800; color: #fff;
+  letter-spacing: -.5px;
+  font-variant-numeric: tabular-nums;
+}
+.ai-stat-num span { color: var(--green-mid); }
+.ai-stat-lbl {
+  font-size: 10px; letter-spacing: 1.5px;
+  color: rgba(255,255,255,.4); text-transform: uppercase;
+  font-weight: 600;
+}
+.ai-body {
+  flex: 1; display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto;
+  gap: 18px;
+  min-height: 0;
+}
+.ai-agent-area {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  min-height: 0;
+}
+.ai-col { display: flex; flex-direction: column; gap: 10px; }
+.ai-col-label {
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  text-align: left; padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  margin-bottom: 4px;
+  display: flex; align-items: center; gap: 8px;
+}
+.ai-col-label.listening { color: var(--blue-mid); }
+.ai-col-label.thinking  { color: #c084fc; }
+.ai-col-label.acting    { color: var(--green-mid); }
+.ai-col-label-icon { font-size: 10px; }
+
+.ai-agent {
+  background: rgba(255,255,255,.045);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 9px;
+  padding: 13px 15px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.ai-agent.active     { background: rgba(34,197,94,.06);  border-color: rgba(34,197,94,.20); }
+.ai-agent.processing { background: rgba(168,85,247,.06); border-color: rgba(168,85,247,.22); }
+.ai-agent.idle       { opacity: .55; }
+.ai-agent-head { display: flex; align-items: center; gap: 9px; }
+.ai-agent-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.ai-agent.active     .ai-agent-dot { background: var(--green-mid); animation: pulse 1.4s infinite; }
+.ai-agent.processing .ai-agent-dot { background: #c084fc; animation: pulse 1s infinite; }
+.ai-agent.idle       .ai-agent-dot { background: rgba(255,255,255,.2); }
+.ai-agent-name { font-size: 13px; font-weight: 600; color: #fff; flex: 1; }
+.ai-agent-status {
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: .8px; text-transform: uppercase;
+}
+.ai-agent.active     .ai-agent-status { color: var(--green-mid); }
+.ai-agent.processing .ai-agent-status { color: #c084fc; }
+.ai-agent.idle       .ai-agent-status { color: rgba(255,255,255,.3); }
+.ai-agent-detail { font-size: 11.5px; color: rgba(255,255,255,.55); line-height: 1.5; }
+.ai-agent-action {
+  font-size: 11px; color: rgba(255,255,255,.85);
+  font-style: italic;
+  padding-top: 6px; margin-top: 2px;
+  border-top: 1px solid rgba(255,255,255,.06);
+}
+.ai-coach {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, rgba(168,85,247,.10) 0%, rgba(59,130,246,.06) 100%);
+  border: 1px solid rgba(168,85,247,.25);
+  border-radius: 9px;
+  padding: 14px 20px;
+  display: flex; align-items: center; gap: 16px;
+}
+.ai-coach-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: rgba(168,85,247,.18);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: #c084fc; flex-shrink: 0;
+}
+.ai-coach-info { flex: 1; }
+.ai-coach-name {
+  font-size: 13px; font-weight: 700; color: #fff;
+  margin-bottom: 3px;
+  display: flex; align-items: center; gap: 9px;
+}
+.ai-coach-tag {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: #c084fc;
+  background: rgba(168,85,247,.18);
+  padding: 2px 8px; border-radius: 3px;
+}
+.ai-coach-detail { font-size: 11.5px; color: rgba(255,255,255,.6); line-height: 1.5; }
+.ai-log {
+  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 10px;
+  padding: 14px 22px;
+}
+.ai-log-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.ai-log-title {
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,255,255,.7);
+  display: flex; align-items: center; gap: 8px;
+}
+.ai-log-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green-mid); animation: pulse 1.2s infinite;
+}
+.ai-log-stats {
+  font-size: 10.5px; color: rgba(255,255,255,.35);
+  font-variant-numeric: tabular-nums; letter-spacing: .3px;
+}
+.ai-log-row {
+  display: grid;
+  grid-template-columns: 80px 130px 1fr;
+  gap: 14px;
+  font-size: 11.5px;
+  padding: 3px 0;
+  align-items: baseline;
+}
+.ai-log-time { color: rgba(255,255,255,.32); font-variant-numeric: tabular-nums; }
+.ai-log-agent { font-weight: 600; color: var(--green-mid); }
+.ai-log-agent.thinking { color: #c084fc; }
+.ai-log-agent.coach    { color: var(--blue-mid); }
+.ai-log-text { color: rgba(255,255,255,.65); line-height: 1.45; }
+.ai-log-text strong { color: rgba(255,255,255,.92); font-weight: 600; }
+
+/* ═══════════════════════════════════════════════════════
+   SCREEN 4 — CONSEQUENCE REGISTER
+   ═══════════════════════════════════════════════════════ */
+.consq-body {
+  flex: 1; padding: 18px 26px 22px;
+  display: flex; flex-direction: column;
+  gap: 12px;
+  min-height: 0; overflow: hidden;
+}
+.consq-summary {
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  padding: 12px 18px;
+  display: flex; align-items: center; gap: 24px;
+}
+.consq-stat {
+  font-size: 12px; color: var(--gray-600);
+  font-weight: 500;
+}
+.consq-stat strong {
+  color: var(--gray-900); font-weight: 700; font-size: 14px;
+  margin-right: 4px; font-variant-numeric: tabular-nums;
+}
+.consq-stat.blocker  strong { color: var(--red); }
+.consq-stat.critical strong { color: #ea580c; }
+.consq-stat.signif   strong { color: var(--amber); }
+.consq-stat.manage   strong { color: var(--green); }
+.consq-stat-sep { width: 1px; height: 18px; background: var(--gray-200); }
+.consq-list {
+  flex: 1; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 9px;
+  padding-right: 4px;
+}
+.consq-row {
+  display: grid;
+  grid-template-columns: 100px 1fr 220px;
+  gap: 16px;
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-left-width: 3px;
+  border-radius: 8px;
+  padding: 14px 18px;
+}
+.consq-row.blocker  { border-left-color: var(--red);    background: #fff7f7; }
+.consq-row.critical { border-left-color: #ea580c;        background: #fff8f3; }
+.consq-row.signif   { border-left-color: var(--amber);  background: #fffcf3; }
+.consq-row.manage   { border-left-color: var(--green);  background: #f6fdf8; }
+.consq-sev-pill {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 5px 8px; border-radius: 4px;
+  text-align: center; color: #fff;
+  align-self: flex-start;
+  white-space: nowrap;
+}
+.consq-sev-pill.blocker  { background: var(--red); }
+.consq-sev-pill.critical { background: #ea580c; }
+.consq-sev-pill.signif   { background: var(--amber); }
+.consq-sev-pill.manage   { background: var(--green); }
+.consq-title {
+  font-size: 13.5px; font-weight: 700;
+  color: var(--gray-900);
+  line-height: 1.35; margin-bottom: 6px;
+}
+.consq-text {
+  font-size: 12px; color: var(--gray-700);
+  line-height: 1.55; margin-bottom: 7px;
+}
+.consq-meta {
+  font-size: 10.5px; color: var(--gray-500);
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+.consq-meta strong { color: var(--gray-700); font-weight: 600; }
+.consq-meta .dot-sep { color: var(--gray-300); }
+.consq-impact {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 7px;
+  padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.consq-impact-label {
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: 2px;
+}
+.consq-impact-value {
+  font-size: 11.5px; color: var(--gray-900);
+  line-height: 1.5; font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════════════════
+   SCREEN 5 — STEERING BRIEF
+   ═══════════════════════════════════════════════════════ */
+.brief-body {
+  flex: 1; padding: 18px 26px 22px;
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  gap: 16px; min-height: 0; overflow: hidden;
+}
+.brief-doc {
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  padding: 28px 36px;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(15,29,53,.04);
+}
+.doc-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--gray-200);
+  margin-bottom: 18px;
+}
+.doc-eyebrow {
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--blue); margin-bottom: 6px;
+}
+.doc-title {
+  font-size: 24px; font-weight: 800;
+  color: var(--gray-900); letter-spacing: -.5px;
+  line-height: 1.15; margin-bottom: 4px;
+}
+.doc-sub { font-size: 12px; color: var(--gray-600); }
+.doc-stamp {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--amber); background: var(--amber-light);
+  padding: 4px 9px; border-radius: 4px;
+  border: 1px solid #fcd34d;
+  white-space: nowrap;
+}
+.doc-section { margin-bottom: 16px; }
+.doc-section-num {
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--blue); margin-bottom: 5px;
+}
+.doc-section-title {
+  font-size: 16px; font-weight: 700;
+  color: var(--gray-900); margin-bottom: 7px;
+  line-height: 1.3;
+}
+.doc-body {
+  font-size: 12.5px; color: var(--gray-700);
+  line-height: 1.6;
+}
+.doc-body strong { color: var(--gray-900); font-weight: 700; }
+.doc-list {
+  list-style: none;
+  font-size: 12px; color: var(--gray-700);
+  line-height: 1.55;
+}
+.doc-list li {
+  padding: 6px 0 6px 16px;
+  position: relative;
+  border-bottom: 1px dashed var(--gray-200);
+}
+.doc-list li:last-child { border-bottom: none; }
+.doc-list li::before {
+  content: '⛔';
+  position: absolute; left: 0; top: 6px;
+  font-size: 10px;
+}
+.doc-list li.med::before { content: '⚠'; color: var(--amber); }
+.doc-list li strong { color: var(--gray-900); font-weight: 700; }
+.doc-callout {
+  background: var(--green-light);
+  border-left: 3px solid var(--green);
+  padding: 12px 16px;
+  border-radius: 0 6px 6px 0;
+  font-size: 12.5px; color: var(--gray-800);
+  line-height: 1.55;
+}
+.doc-footer {
+  margin-top: 18px; padding-top: 12px;
+  border-top: 1px solid var(--gray-200);
+  font-size: 10.5px; color: var(--gray-500);
+  display: flex; justify-content: space-between;
+  font-variant-numeric: tabular-nums;
+}
+
+.brief-actions {
+  background: #fff;
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  padding: 16px 16px;
+  display: flex; flex-direction: column; gap: 8px;
+  height: fit-content;
+}
+.brief-actions-title {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: 4px;
+}
+.action-btn {
+  font-family: inherit;
+  font-size: 12px; font-weight: 500;
+  background: #fff; color: var(--gray-700);
+  border: 1px solid var(--gray-200);
+  padding: 9px 12px; border-radius: 6px;
+  cursor: pointer; text-align: left;
+  display: flex; align-items: center; gap: 9px;
+}
+.action-btn.primary {
+  background: var(--blue); color: #fff;
+  border-color: var(--blue);
+  font-weight: 600;
+}
+.action-icon {
+  font-size: 12px;
+  width: 16px; text-align: center;
+}
+.action-divider {
+  height: 1px; background: var(--gray-200);
+  margin: 6px 0;
+}
+.brief-actions-note {
+  font-size: 11px; color: var(--gray-600);
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════════════════
+   SCREEN 6 — THE PATTERN LIBRARY (family expansion)
+   ═══════════════════════════════════════════════════════ */
+#s6 .ctx::before { background: radial-gradient(circle, rgba(245,158,11,.10) 0%, transparent 70%); }
+#s6 .ctx::after  { background: radial-gradient(circle, rgba(168,85,247,.08) 0%, transparent 70%); }
+#s6 .ctx { padding: 44px 60px 36px; }
+#s6 .ctx-inner { overflow-y: auto; }
+#s6 .headline { font-size: 38px; margin-bottom: 12px; }
+#s6 .subhead  { font-size: 15px; max-width: 1100px; margin-bottom: 22px; }
+
+.pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 22px;
+}
+.pat-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.pat-card-num {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 1.8px; color: var(--blue-mid);
+  text-transform: uppercase;
+}
+.pat-card-title {
+  font-size: 13px; font-weight: 700;
+  color: #fff; line-height: 1.25;
+  margin-bottom: 4px;
+}
+.pat-card-line {
+  font-size: 10.5px; line-height: 1.4;
+  padding-top: 5px;
+  border-top: 1px dashed rgba(255,255,255,.08);
+}
+.pat-card-line strong {
+  display: block;
+  font-size: 8.5px; font-weight: 700;
+  letter-spacing: 1.2px;
+  color: rgba(255,255,255,.4);
+  margin-bottom: 2px;
+  text-transform: uppercase;
+}
+.pat-card-line.where { color: rgba(252,193,73,.85); }
+.pat-card-line.reuse { color: rgba(255,255,255,.55); }
+
+.family-divider {
+  display: flex; align-items: center;
+  gap: 16px;
+  margin: 4px 0 18px;
+}
+.family-divider-line {
+  flex: 1; height: 1px;
+  background: rgba(255,255,255,.10);
+}
+.family-divider-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: rgba(255,255,255,.6);
+}
+
+.sister-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.sister-card {
+  background: rgba(255,255,255,.035);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 10px;
+  padding: 16px 18px;
+  display: flex; flex-direction: column;
+  position: relative;
+}
+.sister-card.primary {
+  border-color: rgba(245,158,11,.45);
+  background: linear-gradient(135deg, rgba(245,158,11,.10), rgba(255,255,255,.04));
+}
+.sister-card.primary::after {
+  content: 'First build · in flight';
+  position: absolute; top: 14px; right: 14px;
+  font-size: 8.5px; font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(252,193,73,1);
+  background: rgba(245,158,11,.18);
+  padding: 3px 8px; border-radius: 3px;
+}
+.sister-eyebrow {
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: 1.8px; text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.sister-card.primary .sister-eyebrow { color: rgba(252,193,73,.95); }
+.sister-eyebrow.t-os { color: rgba(96,165,250,.95); }
+.sister-eyebrow.q-os { color: rgba(192,132,252,.95); }
+.sister-name {
+  font-size: 22px; font-weight: 800; color: #fff;
+  letter-spacing: -.5px; line-height: 1.1;
+  margin-bottom: 6px;
+}
+.sister-tagline {
+  font-size: 12.5px; color: rgba(255,255,255,.7);
+  line-height: 1.45; margin-bottom: 12px;
+  flex: 1;
+}
+.sister-status {
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,255,255,.45);
+  margin-bottom: 10px;
+}
+.sister-pat-tags {
+  display: flex; flex-wrap: wrap; gap: 4px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+.sister-pat-tag {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: .8px;
+  padding: 3px 7px; border-radius: 3px;
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.7);
+}
+
+.pattern-bottom {
+  text-align: center;
+  font-size: 13.5px; color: rgba(255,255,255,.7);
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+.pattern-bottom strong { color: #fff; font-weight: 700; }
+.pattern-bottom em {
+  font-style: normal; color: var(--amber-mid);
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════════════════
+   SCREEN 7 — THE ASK
+   ═══════════════════════════════════════════════════════ */
+#s7 .ctx::before { background: radial-gradient(circle, rgba(34,197,94,.10) 0%, transparent 70%); }
+#s7 .ctx::after  { background: radial-gradient(circle, rgba(37,99,235,.08) 0%, transparent 70%); }
+
+.ask-modules-band {
+  font-size: 11.5px; color: rgba(255,255,255,.45);
+  border-top: 1px solid rgba(255,255,255,.08);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  padding: 14px 0;
+  margin-bottom: 32px;
+  display: flex; flex-wrap: wrap; gap: 6px 22px;
+  align-items: baseline;
+}
+.ask-modules-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,255,255,.6);
+  margin-right: 8px;
+}
+.ask-mod { color: rgba(255,255,255,.55); }
+.ask-mod.shown {
+  color: #fff; font-weight: 600;
+  position: relative;
+}
+.ask-mod.shown::after {
+  content: '·';
+  position: absolute;
+  bottom: -3px; left: 50%; transform: translateX(-50%);
+  color: var(--green-mid); font-size: 22px; line-height: 0;
+}
+.ask-mod-sep { color: rgba(255,255,255,.2); }
+
+.ask-doors {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  min-height: 0;
+  margin-bottom: 26px;
+}
+.ask-door {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 12px;
+  padding: 26px 28px;
+  display: flex; flex-direction: column;
+  position: relative; overflow: hidden;
+}
+.ask-door::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+.ask-door.si::before    { background: linear-gradient(90deg, transparent, var(--blue-mid), transparent); }
+.ask-door.prod::before  { background: linear-gradient(90deg, transparent, #c084fc, transparent); }
+.ask-door.cust::before  { background: linear-gradient(90deg, transparent, var(--green-mid), transparent); }
+.ask-door-num {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.ask-door.si    .ask-door-num { color: var(--blue-mid); }
+.ask-door.prod  .ask-door-num { color: #c084fc; }
+.ask-door.cust  .ask-door-num { color: var(--green-mid); }
+.ask-door-name {
+  font-size: 26px; font-weight: 800; color: #fff;
+  letter-spacing: -.6px; line-height: 1.1;
+  margin-bottom: 10px;
+}
+.ask-door-tag {
+  font-size: 13px; font-style: italic;
+  color: rgba(255,255,255,.55); line-height: 1.5;
+  margin-bottom: 18px; padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.ask-door-look {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 1.8px; text-transform: uppercase;
+  color: rgba(255,255,255,.4); margin-bottom: 6px;
+}
+.ask-door-detail {
+  font-size: 13.5px; color: rgba(255,255,255,.82);
+  line-height: 1.55; flex: 1; margin-bottom: 16px;
+}
+.ask-door-why {
+  font-size: 11.5px; color: rgba(255,255,255,.5);
+  line-height: 1.55; font-style: italic;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.ask-bottom {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px; align-items: stretch;
+}
+.ask-bottom.ask-bottom-top {
+  margin-bottom: 22px;
+}
+.ask-bottom-top .ask-question-text {
+  font-size: 25px;
+}
+.ask-question {
+  background: linear-gradient(135deg, rgba(34,197,94,.10) 0%, rgba(37,99,235,.06) 100%);
+  border: 1px solid rgba(34,197,94,.25);
+  border-radius: 12px;
+  padding: 22px 28px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.ask-question-label {
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--green-mid); margin-bottom: 10px;
+}
+.ask-question-text {
+  font-size: 22px; font-weight: 700; color: #fff;
+  letter-spacing: -.4px; line-height: 1.3;
+}
+.ask-question-sub {
+  font-size: 13px; color: rgba(255,255,255,.55);
+  margin-top: 8px; line-height: 1.5;
+}
+.ask-contact {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 12px;
+  padding: 22px 24px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.ask-contact-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: rgba(255,255,255,.45); margin-bottom: 12px;
+}
+.ask-contact-name {
+  font-size: 18px; font-weight: 700; color: #fff;
+  margin-bottom: 4px;
+}
+.ask-contact-role {
+  font-size: 12px; color: rgba(255,255,255,.55);
+  margin-bottom: 14px;
+}
+.ask-contact-email {
+  font-size: 13px; color: var(--blue-mid);
+  font-family: 'SF Mono', 'Fira Mono', monospace;
+}
+</style>
+</head>
+<body>
+
+<div class="presentation">
+
+  <!-- ════════════════════════════════════════════════════════════════
+       SCREEN 1 — THE WAR ROOM
+       ════════════════════════════════════════════════════════════════ -->
+  <div class="screen active" id="s1">
+    <div class="ctx">
+      <div class="ctx-inner">
+
+        <div class="eyebrow">T-minus 3 days · 02:47 local · enterprise ERP cutover</div>
+        <h1 class="headline">What cutover looks like<br>72 hours before go-live.</h1>
+        <p class="subhead">A real cutover lead's screen, right now. Six tools, none talking. The cutover lead is the integration layer.</p>
+
+        <div class="war-headstats">
+          <div class="war-stat"><div class="war-stat-num">312</div><div class="war-stat-label">Open items</div></div>
+          <div class="war-stat"><div class="war-stat-num">12</div><div class="war-stat-label">Blockers</div></div>
+          <div class="war-stat"><div class="war-stat-num">47</div><div class="war-stat-label">Urgent unread</div></div>
+          <div class="war-stat"><div class="war-stat-num">8</div><div class="war-stat-label">Unowned risks</div></div>
+          <div class="war-stat"><div class="war-stat-num">23</div><div class="war-stat-label">Decisions pending</div></div>
+        </div>
+
+        <div class="war-grid">
+
+          <div class="war-card">
+            <div class="war-card-head">
+              <div class="war-card-title"><span class="war-card-title-icon">📧</span>Outlook · Inbox</div>
+              <div class="war-card-badge">47 UNREAD</div>
+            </div>
+            <div class="war-card-body">
+              <div class="war-row urgent"><span class="war-icon">●</span><span class="war-text">RE: URGENT — Production cutover blocker not resolved</span><span class="war-meta">02:14</span></div>
+              <div class="war-row urgent"><span class="war-icon">●</span><span class="war-text">FW: Invoice approval workflow still outstanding NL/DE</span><span class="war-meta">01:45</span></div>
+              <div class="war-row warn"><span class="war-icon">●</span><span class="war-text">Customer master delta — who's the validation owner?</span><span class="war-meta">23:12</span></div>
+              <div class="war-row warn"><span class="war-icon">●</span><span class="war-text">FW: SCM defect triage needed before Mon</span><span class="war-meta">22:48</span></div>
+              <div class="war-row warn"><span class="war-icon">●</span><span class="war-text">Re: Parallel run window — conflicting requirements</span><span class="war-meta">21:30</span></div>
+              <div class="war-row" style="color: rgba(255,255,255,.3); font-size: 10.5px;"><span class="war-icon">↓</span><span class="war-text">+ 42 more unread urgent</span></div>
+            </div>
+          </div>
+
+          <div class="war-card">
+            <div class="war-card-head">
+              <div class="war-card-title"><span class="war-card-title-icon">📊</span>Cutover_Plan_v17_FINAL_USE_THIS.xlsx</div>
+              <div class="war-card-badge">312 · 84 TBD</div>
+            </div>
+            <div class="war-card-body">
+              <div class="war-row"><span class="war-icon">▶</span><span class="war-text">Stage 1 — Pre-cutover · 56 tasks · 18 still open</span></div>
+              <div class="war-row warn"><span class="war-icon">●</span><span class="war-text">Task 47: Final delta migration · OWNER: <em>TBD</em> · DUE: ???</span></div>
+              <div class="war-row urgent"><span class="war-icon">●</span><span class="war-text">Task 91: Integration smoke · DURATION: 4h <em>or 8h</em>?</span></div>
+              <div class="war-row urgent"><span class="war-icon">●</span><span class="war-text">Task 142: Parallel run · 48h vs 24h <em>CONFLICT</em></span></div>
+              <div class="war-row" style="color: rgba(255,255,255,.3); font-size: 10.5px;"><span class="war-icon">⋯</span><span class="war-text">84 tasks marked TBD · last edit: 3 days ago</span></div>
+              <div class="war-row" style="color: rgba(255,255,255,.3); font-size: 10.5px;"><span class="war-icon">⋯</span><span class="war-text">v15, v16, v17 — which is canonical?</span></div>
+            </div>
+          </div>
+
+          <div class="war-card">
+            <div class="war-card-head">
+              <div class="war-card-title"><span class="war-card-title-icon">💬</span>Microsoft Teams</div>
+              <div class="war-card-badge">23 MENTIONS</div>
+            </div>
+            <div class="war-card-body">
+              <div class="war-row urgent"><span class="war-icon">#</span><span class="war-text"><strong>cutover-warroom</strong> · 8 unread · "Are we still going Mon??"</span><span class="war-meta">14m</span></div>
+              <div class="war-row urgent"><span class="war-icon">@</span><span class="war-text">Marieke: "Need decision on Exflow today"</span><span class="war-meta">32m</span></div>
+              <div class="war-row warn"><span class="war-icon">#</span><span class="war-text"><strong>data-migration</strong> · 3 unread · Pieter thread</span></div>
+              <div class="war-row warn"><span class="war-icon">#</span><span class="war-text"><strong>integrations</strong> · 5 unread · Tom</span></div>
+              <div class="war-row warn"><span class="war-icon">@</span><span class="war-text">Hans: "Anyone seen the 14:00 export?"</span></div>
+              <div class="war-row" style="color: rgba(255,255,255,.3); font-size: 10.5px;"><span class="war-icon">↓</span><span class="war-text">+ 5 more channels active</span></div>
+            </div>
+          </div>
+
+          <div class="war-card">
+            <div class="war-card-head">
+              <div class="war-card-title"><span class="war-card-title-icon">🐛</span>Azure DevOps · ERP Programme</div>
+              <div class="war-card-badge">47 P2 OPEN</div>
+            </div>
+            <div class="war-card-body">
+              <div class="war-row urgent"><span class="war-icon">●</span><span class="war-text">#4823 PO confirmation fails &gt;€50k · 9d · NO TRIAGE</span></div>
+              <div class="war-row urgent"><span class="war-icon">●</span><span class="war-text">#4791 Customer master record validation timeout</span></div>
+              <div class="war-row warn"><span class="war-icon">●</span><span class="war-text">#4856 Vendor invoice attachment preview · 2d</span></div>
+              <div class="war-row warn"><span class="war-icon">●</span><span class="war-text">#4842 Trial balance reconciliation logic · 6d</span></div>
+              <div class="war-row" style="color: rgba(255,255,255,.3); font-size: 10.5px;"><span class="war-icon">⋯</span><span class="war-text">+ 43 more P2 open · 15 stale &gt;5 days</span></div>
+              <div class="war-row" style="color: rgba(255,255,255,.3); font-size: 10.5px;"><span class="war-icon">⋯</span><span class="war-text">Last triage session: 5 days ago</span></div>
+            </div>
+          </div>
+
+          <div class="war-card">
+            <div class="war-card-head">
+              <div class="war-card-title"><span class="war-card-title-icon">💚</span>WhatsApp · Cutover Group</div>
+              <div class="war-card-badge">67 MSGS TODAY</div>
+            </div>
+            <div class="war-card-body">
+              <div class="war-row"><span class="war-meta" style="margin-right:4px;">02:45</span><span class="war-text"><strong>Sarah:</strong> Has Marieke approved Exflow yet?</span></div>
+              <div class="war-row"><span class="war-meta" style="margin-right:4px;">02:42</span><span class="war-text"><strong>Pieter:</strong> Migration test 4 still running…</span></div>
+              <div class="war-row warn"><span class="war-meta" style="margin-right:4px;">02:38</span><span class="war-text"><strong>Tom:</strong> Need a parallel-run decision TODAY</span></div>
+              <div class="war-row"><span class="war-meta" style="margin-right:4px;">02:35</span><span class="war-text"><strong>Sarah:</strong> Anyone seen Anna? 🤷</span></div>
+              <div class="war-row warn"><span class="war-meta" style="margin-right:4px;">02:30</span><span class="war-text"><strong>Sarah:</strong> Steering tomorrow — what do we say?</span></div>
+              <div class="war-row"><span class="war-meta" style="margin-right:4px;">02:25</span><span class="war-text"><strong>Hans:</strong> Where's the latest plan?</span></div>
+            </div>
+          </div>
+
+          <div class="war-card">
+            <div class="war-card-head">
+              <div class="war-card-title"><span class="war-card-title-icon">🗒</span>Cutover Lead's Notebook</div>
+              <div class="war-card-badge">HANDWRITTEN</div>
+            </div>
+            <div class="war-card-body">
+              <div class="war-row-handwritten">??? owns delta validation</div>
+              <div class="war-row-handwritten">Check Anna re: COA mapping</div>
+              <div class="war-row-handwritten">Tom hasn't responded — 24h window</div>
+              <div class="war-row-handwritten">Hans → training gap WH-04 06 07</div>
+              <div class="war-row-handwritten">Steering: defer 7d? 30d? proceed?</div>
+              <div class="war-row-handwritten" style="color: var(--red-mid);">DON'T FORGET MARIEKE !!</div>
+            </div>
+          </div>
+
+        </div>
+
+        <p class="pain-quote">
+          "This is the cutover lead's screen at 02:47 AM, three days before go-live.<br>
+          <strong>There is no system. There is no oversight. There are heroics, exhaustion, and luck."</strong>
+        </p>
+
+      </div>
+    </div>
+  </div><!-- /screen 1 -->
+
+
+  <!-- ════════════════════════════════════════════════════════════════
+       SCREEN 2 — THE PLAN (results first)
+       ════════════════════════════════════════════════════════════════ -->
+  <div class="screen" id="s2">
+    <div class="product-narrative">
+      <div class="product-narrative-eyebrow">From human signal — to one live cutover plan</div>
+      <div class="product-narrative-text">Every email, document, interview transcript and Teams thread from the war room — <em>read continuously</em>, distilled into one plan that builds and maintains itself.</div>
+    </div>
+    <div class="browser-wrap">
+      <div class="browser-bar">
+        <div class="browser-dots"><div class="bd r"></div><div class="bd y"></div><div class="bd g"></div></div>
+        <div class="browser-addr">cutoveros.app/p/[programme]/plan</div>
+      </div>
+      <div class="browser-tabs">
+        <div class="browser-tab"><div class="tab-fav"></div> CutoverOS — The Plan</div>
+      </div>
+
+      <div class="app">
+        <div class="app-nav">
+          <div class="app-logo">Cutover<span>OS</span></div>
+          <div class="app-sep"></div>
+          <div class="app-prog"><strong>Manufacturing client</strong> · €1.2B revenue · Module A · Plan Builder</div>
+          <div class="app-spacer"></div>
+          <div class="app-live"><span class="app-live-dot"></span>LIVE</div>
+          <div class="persona-pill">
+            <div class="persona-av">PD</div>
+            <div>
+              <div class="persona-name">Programme Director</div>
+              <div class="persona-role">role view</div>
+            </div>
+            <div class="persona-chev">▾</div>
+          </div>
+        </div>
+
+        <div class="app-body">
+
+          <div class="sidebar">
+            <div class="side-section-label">Module A · Plan Builder</div>
+            <div class="nav-item"><span class="nav-icon">📥</span> Source Ingest</div>
+            <div class="nav-item"><span class="nav-icon">🎙</span> Interviews</div>
+            <div class="nav-item"><span class="nav-icon">⚖</span> Conflicts</div>
+            <div class="nav-item active"><span class="nav-icon">📋</span> The Plan</div>
+            <div class="side-section-label" style="margin-top: 14px;">Other modules</div>
+            <div class="nav-item"><span class="nav-icon">⚖</span> Consequence Engine</div>
+            <div class="nav-item"><span class="nav-icon">📡</span> Signal Distiller</div>
+            <div class="nav-item"><span class="nav-icon">🩺</span> Hypercare Triage</div>
+          </div>
+
+          <div class="cc-main">
+            <div class="page-header">
+              <div>
+                <div class="page-title">The Plan · built, benchmarked, live</div>
+                <div class="page-sub">
+                  <span>Constructed from human signal · <strong>4,832</strong> source links</span>
+                  <span style="color: var(--gray-300);">·</span>
+                  <span>Status recomputed continuously as new signal arrives</span>
+                </div>
+              </div>
+              <div class="page-actions">
+                <button class="btn btn-secondary">Filter</button>
+                <button class="btn btn-secondary">Export</button>
+              </div>
+            </div>
+
+            <div class="plan-body">
+
+              <div class="ingestion-strip">
+                <div class="ingest-item"><span class="ingest-icon">📧</span> <strong>1,247</strong> emails</div>
+                <div class="ingest-item"><span class="ingest-icon">📄</span> <strong>84</strong> docs</div>
+                <div class="ingest-item"><span class="ingest-icon">🎙</span> <strong>23</strong> transcripts</div>
+                <div class="ingest-item"><span class="ingest-icon">💬</span> <strong>312</strong> Teams threads</div>
+                <div class="ingest-item"><span class="ingest-icon">🐛</span> <strong>156</strong> DevOps</div>
+                <div class="ingest-item"><span class="ingest-icon">💚</span> <strong>89</strong> WhatsApp</div>
+                <div class="ingest-item"><span class="ingest-icon">🗒</span> <strong>7</strong> handwritten</div>
+                <div class="ingest-live"><span class="ingest-live-dot"></span>last signal · 12s ago</div>
+              </div>
+
+              <div class="plan-main">
+
+                <div class="plan-view">
+
+                  <div class="plan-stage">
+                    <div class="plan-stage-head">
+                      <div class="plan-stage-name"><span class="chev">▼</span> Stage 1 · Pre-cutover</div>
+                      <div class="plan-stage-status">22 tasks · <strong>18 ready</strong> · 4 at risk</div>
+                    </div>
+
+                    <div class="task-row">
+                      <div class="task-main">
+                        <div class="task-title">Task 47 · Final delta migration</div>
+                        <div class="task-meta">
+                          <span class="owner">Data Lead</span>
+                          <span class="meta-sep">·</span>
+                          <span class="duration">4h</span>
+                          <span class="meta-sep">·</span>
+                          <span class="bench-flag">⚠ benchmark 8–12h (n=6)</span>
+                        </div>
+                      </div>
+                      <div class="task-badges">
+                        <div class="src-badge email" title="email">✉</div>
+                        <div class="src-badge doc" title="doc">📄</div>
+                        <div class="src-badge interview" title="interview">🎙</div>
+                      </div>
+                    </div>
+
+                    <div class="task-row">
+                      <div class="task-main">
+                        <div class="task-title">Task 91 · Integration smoke</div>
+                        <div class="task-meta">
+                          <span class="owner">Tom · Integration Lead</span>
+                          <span class="meta-sep">·</span>
+                          <span class="duration">8h</span>
+                          <span class="meta-sep">·</span>
+                          <span class="bench-ok">✓ benchmark match</span>
+                        </div>
+                      </div>
+                      <div class="task-badges">
+                        <div class="src-badge interview" title="interview">🎙</div>
+                        <div class="src-badge teams" title="Teams">💬</div>
+                      </div>
+                    </div>
+
+                    <div class="task-row">
+                      <div class="task-main">
+                        <div class="task-title">Task 142 · Parallel run window</div>
+                        <div class="task-meta">
+                          <span class="owner">Finance Lead</span>
+                          <span class="meta-sep">·</span>
+                          <span class="duration">48h</span>
+                          <span class="meta-sep">·</span>
+                          <span class="conflict-ok">⚖ Finance/IT conflict resolved</span>
+                        </div>
+                      </div>
+                      <div class="task-badges">
+                        <div class="src-badge doc" title="doc">📄</div>
+                        <div class="src-badge interview" title="interview">🎙</div>
+                        <div class="src-badge teams" title="Teams">💬</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="plan-stage">
+                    <div class="plan-stage-head">
+                      <div class="plan-stage-name"><span class="chev">▼</span> Stage 2 · Cutover</div>
+                      <div class="plan-stage-status">24 tasks · 12 ready · 8 at risk <span class="blkr">4 BLOCKER</span></div>
+                    </div>
+
+                    <div class="task-row blocker">
+                      <div class="task-main">
+                        <div class="task-title">Task 215 · Invoice approval workflow sign-off · NL/DE</div>
+                        <div class="task-meta">
+                          <span class="owner">AP Business Owner</span>
+                          <span class="meta-sep">·</span>
+                          <span class="blocker-flag">⛔ 12d unresolved · €95k exposure</span>
+                        </div>
+                      </div>
+                      <div class="task-badges">
+                        <div class="src-badge email" title="email">✉</div>
+                        <div class="src-badge doc" title="doc">📄</div>
+                      </div>
+                    </div>
+
+                    <div class="task-row blocker">
+                      <div class="task-main">
+                        <div class="task-title">Task 218 · Customer master delta validation</div>
+                        <div class="task-meta">
+                          <span class="unassigned">UNASSIGNED</span>
+                          <span class="meta-sep">·</span>
+                          <span class="blocker-flag">⛔ 8d · €420k AR exposure</span>
+                        </div>
+                      </div>
+                      <div class="task-badges">
+                        <div class="src-badge email" title="email">✉</div>
+                        <div class="src-badge interview" title="interview">🎙</div>
+                      </div>
+                    </div>
+
+                    <div class="task-row blocker">
+                      <div class="task-main">
+                        <div class="task-title">Task 224 · COA mapping sign-off</div>
+                        <div class="task-meta">
+                          <span class="owner">Group Controller</span>
+                          <span class="meta-sep">·</span>
+                          <span class="blocker-flag">⛔ 6d · audit-critical</span>
+                        </div>
+                      </div>
+                      <div class="task-badges">
+                        <div class="src-badge doc" title="doc">📄</div>
+                        <div class="src-badge interview" title="interview">🎙</div>
+                      </div>
+                    </div>
+
+                    <div class="task-row">
+                      <div class="task-main">
+                        <div class="task-title">Task 231 · Posting cutoff window</div>
+                        <div class="task-meta">
+                          <span class="owner">Group Controller</span>
+                          <span class="meta-sep">·</span>
+                          <span class="duration">4h</span>
+                          <span class="meta-sep">·</span>
+                          <span class="bench-ok">✓ approved 13:48</span>
+                        </div>
+                      </div>
+                      <div class="task-badges">
+                        <div class="src-badge email" title="email">✉</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="plan-stage">
+                    <div class="plan-stage-head">
+                      <div class="plan-stage-name"><span class="chev">▼</span> Stage 3 · Hypercare</div>
+                      <div class="plan-stage-status">14 tasks · <strong>14 ready</strong></div>
+                    </div>
+
+                    <div class="task-row">
+                      <div class="task-main">
+                        <div class="task-title">Task 312 · Day-1 readiness communications</div>
+                        <div class="task-meta">
+                          <span class="owner">Communications Lead</span>
+                          <span class="meta-sep">·</span>
+                          <span class="bench-ok">✓ drafts ready</span>
+                        </div>
+                      </div>
+                      <div class="task-badges">
+                        <div class="src-badge interview" title="interview">🎙</div>
+                        <div class="src-badge teams" title="Teams">💬</div>
+                      </div>
+                    </div>
+
+                    <div class="task-row">
+                      <div class="task-main">
+                        <div class="task-title">Task 318 · Hypercare triage rota · weeks 1–4</div>
+                        <div class="task-meta">
+                          <span class="owner">Hypercare Lead</span>
+                          <span class="meta-sep">·</span>
+                          <span class="bench-ok">✓ rota confirmed</span>
+                        </div>
+                      </div>
+                      <div class="task-badges">
+                        <div class="src-badge doc" title="doc">📄</div>
+                        <div class="src-badge teams" title="Teams">💬</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="badge-legend">
+                    <div class="badge-legend-item"><div class="src-badge email">✉</div> email</div>
+                    <div class="badge-legend-item"><div class="src-badge doc">📄</div> document</div>
+                    <div class="badge-legend-item"><div class="src-badge interview">🎙</div> interview transcript</div>
+                    <div class="badge-legend-item"><div class="src-badge teams">💬</div> Teams thread</div>
+                    <div class="badge-legend-item"><div class="src-badge devops">🐛</div> DevOps</div>
+                    <span style="color: var(--gray-400); margin-left: 8px;">· every task links back to its source signal</span>
+                  </div>
+
+                </div>
+
+                <div class="status-panel">
+                  <div class="status-label">Programme readiness · live</div>
+
+                  <div class="readiness-card">
+                    <div class="readiness-top">
+                      <div class="readiness-num">78<span>%</span></div>
+                      <div class="readiness-status-pill">AMBER</div>
+                    </div>
+                    <div class="readiness-bar"><div class="readiness-bar-fill"></div></div>
+                    <div class="readiness-trend">
+                      <span><span class="up">▲ +4%</span> in 7 days</span>
+                      <span class="last-update"><span class="last-update-dot"></span>updated 12s ago</span>
+                    </div>
+                  </div>
+
+                  <div class="status-line"><span class="accent">4</span> true blockers · of <strong>12</strong> the team flagged</div>
+                  <div class="status-line"><strong>91%</strong> confidence in this reading</div>
+                  <div class="status-line">Recomputed continuously as new signal arrives</div>
+
+                  <div class="status-counters">
+                    <strong>312</strong> tasks · <strong>47</strong> conflicts surfaced · <strong>39</strong> resolved · <strong>4,832</strong> source links · <strong>12</strong> durations challenged against benchmark library (142 prior cutovers)
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="changes-strip">
+                <div class="changes-head"><span class="changes-head-dot"></span>Live changes · last few minutes</div>
+                <div class="change-row">
+                  <span class="change-time">14:23</span>
+                  <span class="change-icon ai">◆</span>
+                  <span class="change-text"><strong>AI</strong> · Task 47 owner assigned from Finance Lead interview chain · plan updated · readiness recalibrated</span>
+                </div>
+                <div class="change-row">
+                  <span class="change-time">14:21</span>
+                  <span class="change-icon ok">✓</span>
+                  <span class="change-text">Task 91 duration validated against benchmark library (n=6 prior cutovers) · plan locked</span>
+                </div>
+                <div class="change-row">
+                  <span class="change-time">14:18</span>
+                  <span class="change-icon warn">⚠</span>
+                  <span class="change-text">New blocker · Task 215 stalled at AP review · readiness 78% → recalibrated · steering brief regenerating</span>
+                </div>
+                <div class="change-row">
+                  <span class="change-time">14:15</span>
+                  <span class="change-icon ai">◆</span>
+                  <span class="change-text"><strong>AI</strong> · Readiness 76% → 78% · 3 items closed via interview chain · 1 new conflict surfaced on Task 142, resolved</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /screen 2 -->
+
+
+  <!-- ════════════════════════════════════════════════════════════════
+       SCREEN 3 — THE AI LAYER
+       ════════════════════════════════════════════════════════════════ -->
+  <div class="screen" id="s3">
+    <div class="ctx">
+      <div class="ctx-inner">
+
+        <div class="eyebrow">The AI Layer · beneath the command centre</div>
+        <h1 class="headline">Nine agents.<br>One orchestrator.</h1>
+        <p class="subhead">Listening, thinking, acting. Twenty-four-seven. Zero human intervention required. The benchmark library compounds with every cutover.</p>
+
+        <div class="ai-stats">
+          <div class="ai-stat-item"><div class="ai-stat-num"><span>9</span></div><div class="ai-stat-lbl">Active agents</div></div>
+          <div class="ai-stat-item"><div class="ai-stat-num">14,247</div><div class="ai-stat-lbl">Signals · last 24h</div></div>
+          <div class="ai-stat-item"><div class="ai-stat-num">47</div><div class="ai-stat-lbl">Cross-checks per minute</div></div>
+          <div class="ai-stat-item"><div class="ai-stat-num">142</div><div class="ai-stat-lbl">Prior cutovers in benchmark</div></div>
+          <div class="ai-stat-item"><div class="ai-stat-num"><span>98.4%</span></div><div class="ai-stat-lbl">Cross-check precision</div></div>
+        </div>
+
+        <div class="ai-body">
+
+          <div class="ai-agent-area">
+
+            <div class="ai-col">
+              <div class="ai-col-label listening"><span class="ai-col-label-icon">◉</span>Listening</div>
+              <div class="ai-agent active">
+                <div class="ai-agent-head"><div class="ai-agent-dot"></div><div class="ai-agent-name">Monitor</div><div class="ai-agent-status">Active</div></div>
+                <div class="ai-agent-detail">7 source systems · 3.2 signals/min · last signal 12s ago</div>
+                <div class="ai-agent-action">"Just ingested 3 emails, 1 Teams thread, 7 DevOps updates"</div>
+              </div>
+              <div class="ai-agent active">
+                <div class="ai-agent-head"><div class="ai-agent-dot"></div><div class="ai-agent-name">Ingestor</div><div class="ai-agent-status">Active</div></div>
+                <div class="ai-agent-detail">Vision + text + voice · 47 items/h · scope-aware tagging</div>
+                <div class="ai-agent-action">"Parsing integration architecture diagram (vision)"</div>
+              </div>
+            </div>
+
+            <div class="ai-col">
+              <div class="ai-col-label thinking"><span class="ai-col-label-icon">◆</span>Thinking</div>
+              <div class="ai-agent processing">
+                <div class="ai-agent-head"><div class="ai-agent-dot"></div><div class="ai-agent-name">Conflict Detector</div><div class="ai-agent-status">Cross-checking</div></div>
+                <div class="ai-agent-detail">47 ops/min · context window: full programme</div>
+                <div class="ai-agent-action">"Detected: 48h Finance parallel run vs 24h IT window"</div>
+              </div>
+              <div class="ai-agent processing">
+                <div class="ai-agent-head"><div class="ai-agent-dot"></div><div class="ai-agent-name">Benchmarker</div><div class="ai-agent-status">Comparing</div></div>
+                <div class="ai-agent-detail">12 estimates challenged today · library: 142 prior cutovers</div>
+                <div class="ai-agent-action">"4h prod migration vs 8–12h benchmark (n=6) · flagged"</div>
+              </div>
+              <div class="ai-agent processing">
+                <div class="ai-agent-head"><div class="ai-agent-dot"></div><div class="ai-agent-name">Consequence Mapper</div><div class="ai-agent-status">Mapping</div></div>
+                <div class="ai-agent-detail">47 items mapped to € impact · severity recalibrated 8m ago</div>
+                <div class="ai-agent-action">"DevOps #4823 → SCM PO failure → €72k Q3 impact"</div>
+              </div>
+              <div class="ai-agent idle">
+                <div class="ai-agent-head"><div class="ai-agent-dot"></div><div class="ai-agent-name">Planner</div><div class="ai-agent-status">Idle</div></div>
+                <div class="ai-agent-detail">Last replan 6m ago · critical path stable</div>
+                <div class="ai-agent-action">"Watching for plan-relevant signals"</div>
+              </div>
+            </div>
+
+            <div class="ai-col">
+              <div class="ai-col-label acting"><span class="ai-col-label-icon">▶</span>Acting</div>
+              <div class="ai-agent active">
+                <div class="ai-agent-head"><div class="ai-agent-dot"></div><div class="ai-agent-name">Escalator</div><div class="ai-agent-status">Routing</div></div>
+                <div class="ai-agent-detail">CF-247 → Programme Director · context block drafting</div>
+                <div class="ai-agent-action">"Ready in 23s with full audit trail attached"</div>
+              </div>
+              <div class="ai-agent active">
+                <div class="ai-agent-head"><div class="ai-agent-dot"></div><div class="ai-agent-name">Communicator</div><div class="ai-agent-status">Drafting</div></div>
+                <div class="ai-agent-detail">3 stakeholder messages · audience-adapted</div>
+                <div class="ai-agent-action">"Day-1 readiness comms for Finance, IT, Business"</div>
+              </div>
+              <div class="ai-agent active">
+                <div class="ai-agent-head"><div class="ai-agent-dot"></div><div class="ai-agent-name">Briefer</div><div class="ai-agent-status">Generating</div></div>
+                <div class="ai-agent-detail">Steering pack v3 · audit ID GNG-A1</div>
+                <div class="ai-agent-action">"Ready in 23s · awaiting Programme Director review"</div>
+              </div>
+            </div>
+
+            <div class="ai-coach">
+              <div class="ai-coach-icon">⚇</div>
+              <div class="ai-coach-info">
+                <div class="ai-coach-name">Coach Agent <span class="ai-coach-tag">Always-on · human layer</span></div>
+                <div class="ai-coach-detail">Detected stress signal in cutover lead's Teams activity (02:47 message cadence) · advising slower escalation cadence · monitoring for burnout indicators · the agent that watches the humans, not the programme</div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="ai-log">
+            <div class="ai-log-head">
+              <div class="ai-log-title"><span class="ai-log-dot"></span>Live agent telemetry · last 60 seconds</div>
+              <div class="ai-log-stats">streaming · 14,247 ops/24h</div>
+            </div>
+            <div>
+              <div class="ai-log-row"><span class="ai-log-time">14:23:47</span><span class="ai-log-agent thinking">[Conflict Det]</span><span class="ai-log-text">Cross-checked COA approval against schema map. <strong>CONSISTENT.</strong> Releasing dependency lock on M3.</span></div>
+              <div class="ai-log-row"><span class="ai-log-time">14:23:42</span><span class="ai-log-agent">[Monitor]</span><span class="ai-log-text">Ingested email re: Exflow status (NL/DE) · routing to Conflict Detector.</span></div>
+              <div class="ai-log-row"><span class="ai-log-time">14:23:38</span><span class="ai-log-agent">[Escalator]</span><span class="ai-log-text">Routing <strong>CF-247</strong> to Programme Director · drafting context block · ETA 23s.</span></div>
+              <div class="ai-log-row"><span class="ai-log-time">14:23:31</span><span class="ai-log-agent">[Briefer]</span><span class="ai-log-text">Drafted steering brief §3 · 412 words · audit ID <strong>GNG-A1</strong> · ready for review.</span></div>
+              <div class="ai-log-row"><span class="ai-log-time">14:23:24</span><span class="ai-log-agent thinking">[Conflict Det]</span><span class="ai-log-text">Detected: 48h Finance parallel run vs 24h IT maintenance window. <strong>FLAGGED as Blocker.</strong> Notifying.</span></div>
+              <div class="ai-log-row"><span class="ai-log-time">14:22:57</span><span class="ai-log-agent coach">[Coach]</span><span class="ai-log-text">Stress signal detected in cutover lead's Teams activity (02:47 message cadence) · advising slower escalation flow.</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div><!-- /screen 3 -->
+
+
+  <!-- ════════════════════════════════════════════════════════════════
+       SCREEN 4 — CONSEQUENCE REGISTER
+       ════════════════════════════════════════════════════════════════ -->
+  <div class="screen" id="s4">
+    <div class="product-narrative">
+      <div class="product-narrative-eyebrow">Module B · Consequence Engine</div>
+      <div class="product-narrative-text">Each open item in the plan, translated to its <em>business consequence</em> — in plain English, with euros, FTE, and audit timing. Not project status. The thing the steering committee can act on.</div>
+    </div>
+    <div class="browser-wrap">
+      <div class="browser-bar">
+        <div class="browser-dots"><div class="bd r"></div><div class="bd y"></div><div class="bd g"></div></div>
+        <div class="browser-addr">cutoveros.app/p/[programme]/consequence/register</div>
+      </div>
+      <div class="browser-tabs">
+        <div class="browser-tab"><div class="tab-fav"></div> CutoverOS — Consequence Engine</div>
+      </div>
+
+      <div class="app">
+        <div class="app-nav">
+          <div class="app-logo">Cutover<span>OS</span></div>
+          <div class="app-sep"></div>
+          <div class="app-prog"><strong>Manufacturing client</strong> · €1.2B revenue · Module B · Consequence Engine</div>
+          <div class="app-spacer"></div>
+          <div class="app-live"><span class="app-live-dot"></span>LIVE</div>
+          <div class="persona-pill">
+            <div class="persona-av">PD</div>
+            <div><div class="persona-name">Programme Director</div><div class="persona-role">role view</div></div>
+            <div class="persona-chev">▾</div>
+          </div>
+        </div>
+
+        <div class="app-body">
+
+          <div class="sidebar">
+            <div class="side-section-label">Module B</div>
+            <div class="nav-item"><span class="nav-icon">📋</span> Open Items</div>
+            <div class="nav-item active"><span class="nav-icon">📊</span> Consequence Register</div>
+            <div class="nav-item"><span class="nav-icon">⚖</span> Go/No-Go Verdict</div>
+            <div class="nav-item"><span class="nav-icon">📄</span> Steering Brief</div>
+            <div class="side-section-label" style="margin-top: 14px;">Other modules</div>
+            <div class="nav-item"><span class="nav-icon">📋</span> Plan Builder</div>
+            <div class="nav-item"><span class="nav-icon">📡</span> Signal Distiller</div>
+          </div>
+
+          <div class="cc-main">
+            <div class="page-header">
+              <div>
+                <div class="page-title">Go-Live Consequence Register</div>
+                <div class="page-sub">
+                  <span>Every open item mapped to its specific business consequence</span>
+                  <span style="color: var(--gray-300);">·</span>
+                  <span>Severity classified for steering decisions</span>
+                </div>
+              </div>
+              <div class="page-actions">
+                <button class="btn btn-secondary">Filter</button>
+                <button class="btn btn-secondary">Export CSV</button>
+              </div>
+            </div>
+
+            <div class="consq-body">
+
+              <div class="consq-summary">
+                <div class="consq-stat"><strong>47</strong> items mapped</div>
+                <div class="consq-stat-sep"></div>
+                <div class="consq-stat blocker">⛔ <strong>4</strong> Blocker</div>
+                <div class="consq-stat critical">🔴 <strong>8</strong> Critical</div>
+                <div class="consq-stat signif">⚠ <strong>14</strong> Significant</div>
+                <div class="consq-stat manage">○ <strong>21</strong> Manageable</div>
+              </div>
+
+              <div class="consq-list">
+
+                <div class="consq-row blocker">
+                  <span class="consq-sev-pill blocker">⛔ Blocker</span>
+                  <div>
+                    <div class="consq-title">Invoice approval workflow not signed off · NL &amp; DE</div>
+                    <div class="consq-text">Vendor invoices for NL and DE legal entities cannot be processed in D365 from day 1. AP reverts to manual approval outside system. Approval cycle stretches from 2 days to 5–7 days. Procurement and Finance both impacted.</div>
+                    <div class="consq-meta">
+                      <span>Workstreams: <strong>Finance · AP</strong></span>
+                      <span class="dot-sep">·</span>
+                      <span>📎 AP business owner interview · Cutover Charter v3.2</span>
+                    </div>
+                  </div>
+                  <div class="consq-impact">
+                    <div class="consq-impact-label">Business Impact</div>
+                    <div class="consq-impact-value">2.5 FTE × 30 days<br>~€95k unplanned cost<br>Supplier payment SLA risk</div>
+                  </div>
+                </div>
+
+                <div class="consq-row blocker">
+                  <span class="consq-sev-pill blocker">⛔ Blocker</span>
+                  <div>
+                    <div class="consq-title">Customer master delta · validation owner not assigned</div>
+                    <div class="consq-text">Customer master records cannot be validated against legacy until a named owner reconciles entity counts and address normalisation. AR posting in D365 from day 1 may reference unverified data. Manual reconciliation risk if discrepancies surface post go-live.</div>
+                    <div class="consq-meta">
+                      <span>Workstreams: <strong>Data Migration · AR</strong></span>
+                      <span class="dot-sep">·</span>
+                      <span>📎 Programme risk register · data migration interview</span>
+                    </div>
+                  </div>
+                  <div class="consq-impact">
+                    <div class="consq-impact-label">Business Impact</div>
+                    <div class="consq-impact-value">3–5 days reconciliation<br>~€420k AR exposure<br>Q3 audit risk</div>
+                  </div>
+                </div>
+
+                <div class="consq-row critical">
+                  <span class="consq-sev-pill critical">🔴 Critical</span>
+                  <div>
+                    <div class="consq-title">14 open P2 UAT defects in SCM · PO confirmation</div>
+                    <div class="consq-text">PO confirmations fail for orders above €50k. Manual workaround requires 2 additional FTE in procurement for the first 30 days. Affects ~18% of weekly PO volume across NL and DE entities.</div>
+                    <div class="consq-meta">
+                      <span>Workstreams: <strong>SCM · Procurement</strong></span>
+                      <span class="dot-sep">·</span>
+                      <span>📎 DevOps #4823 + 13 related</span>
+                    </div>
+                  </div>
+                  <div class="consq-impact">
+                    <div class="consq-impact-label">Business Impact</div>
+                    <div class="consq-impact-value">2 FTE × 30 days<br>~€72k unplanned cost<br>Supplier escalation risk</div>
+                  </div>
+                </div>
+
+                <div class="consq-row critical">
+                  <span class="consq-sev-pill critical">🔴 Critical</span>
+                  <div>
+                    <div class="consq-title">Group Controller sign-off pending · chart of accounts mapping</div>
+                    <div class="consq-text">Opening balances cannot be confirmed accurate until the Group Controller signs off the COA mapping reconciliation. Month-1 period-end close in D365 requires manual restatement if mapping issues surface. Audit risk elevated for FY26 close.</div>
+                    <div class="consq-meta">
+                      <span>Workstreams: <strong>Finance</strong></span>
+                      <span class="dot-sep">·</span>
+                      <span>📎 Group Controller interview · COA mapping doc</span>
+                    </div>
+                  </div>
+                  <div class="consq-impact">
+                    <div class="consq-impact-label">Business Impact</div>
+                    <div class="consq-impact-value">Audit risk elevated<br>2–3 day month-end delay<br>FY26 close exposure</div>
+                  </div>
+                </div>
+
+                <div class="consq-row signif">
+                  <span class="consq-sev-pill signif">⚠ Significant</span>
+                  <div>
+                    <div class="consq-title">Super-user training incomplete · 3 of 8 warehouse locations</div>
+                    <div class="consq-text">WH-04, WH-06, WH-07 lack trained super-users. Estimated 40% increase in day-1 ticket volume from these sites for the first 14 days. Mitigation possible via remote support coverage from trained sites.</div>
+                    <div class="consq-meta">
+                      <span>Workstreams: <strong>Training · Hypercare</strong></span>
+                      <span class="dot-sep">·</span>
+                      <span>📎 Training lead interview · Training Roster May Update</span>
+                    </div>
+                  </div>
+                  <div class="consq-impact">
+                    <div class="consq-impact-label">Business Impact</div>
+                    <div class="consq-impact-value">+40% ticket volume<br>×14 days at 3 sites<br>+1 FTE remote support</div>
+                  </div>
+                </div>
+
+                <div class="consq-row signif">
+                  <span class="consq-sev-pill signif">⚠ Significant</span>
+                  <div>
+                    <div class="consq-title">DE statutory financial export (HGB §238) not configured</div>
+                    <div class="consq-text">DE legal entity cannot produce statutory monthly export per Handelsgesetzbuch §238 from day 1. Workaround via legacy extract is feasible for first month-end but requires audit notification. Configuration scheduled but not delivered.</div>
+                    <div class="consq-meta">
+                      <span>Workstreams: <strong>Finance · DE entity</strong></span>
+                      <span class="dot-sep">·</span>
+                      <span>📎 Config tracker · CTR-DE-0241</span>
+                    </div>
+                  </div>
+                  <div class="consq-impact">
+                    <div class="consq-impact-label">Business Impact</div>
+                    <div class="consq-impact-value">1 month manual workaround<br>Audit notification required<br>Statutory compliance flag</div>
+                  </div>
+                </div>
+
+                <div class="consq-row manage">
+                  <span class="consq-sev-pill manage">○ Manageable</span>
+                  <div>
+                    <div class="consq-title">Vendor invoice attachment preview · UX issue</div>
+                    <div class="consq-text">Approval interface doesn't render PDF preview inline. Approvers must download attachments to review. UX degradation only — no functional or financial impact. Fix scheduled for first hypercare patch (T+14).</div>
+                    <div class="consq-meta">
+                      <span>Workstreams: <strong>AP</strong></span>
+                      <span class="dot-sep">·</span>
+                      <span>📎 DevOps #4856</span>
+                    </div>
+                  </div>
+                  <div class="consq-impact">
+                    <div class="consq-impact-label">Business Impact</div>
+                    <div class="consq-impact-value">UX friction only<br>No quantified cost<br>Patch scheduled T+14</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /screen 4 -->
+
+
+  <!-- ════════════════════════════════════════════════════════════════
+       SCREEN 5 — STEERING BRIEF
+       ════════════════════════════════════════════════════════════════ -->
+  <div class="screen" id="s5">
+    <div class="product-narrative">
+      <div class="product-narrative-eyebrow">Module B · auto-generated</div>
+      <div class="product-narrative-text">Every signal, every consequence, every recommendation — assembled into the <em>board paper</em> the steering committee actually reads. Ready 48 hours ahead, not 2 hours behind. Every claim audit-traceable to its source item.</div>
+    </div>
+    <div class="browser-wrap">
+      <div class="browser-bar">
+        <div class="browser-dots"><div class="bd r"></div><div class="bd y"></div><div class="bd g"></div></div>
+        <div class="browser-addr">cutoveros.app/p/[programme]/consequence/brief</div>
+      </div>
+      <div class="browser-tabs">
+        <div class="browser-tab"><div class="tab-fav"></div> CutoverOS — Steering Brief</div>
+      </div>
+
+      <div class="app">
+        <div class="app-nav">
+          <div class="app-logo">Cutover<span>OS</span></div>
+          <div class="app-sep"></div>
+          <div class="app-prog"><strong>Manufacturing client</strong> · €1.2B revenue · Module B · Steering Brief</div>
+          <div class="app-spacer"></div>
+          <div class="app-live"><span class="app-live-dot"></span>LIVE</div>
+          <div class="persona-pill">
+            <div class="persona-av">PD</div>
+            <div><div class="persona-name">Programme Director</div><div class="persona-role">role view</div></div>
+            <div class="persona-chev">▾</div>
+          </div>
+        </div>
+
+        <div class="app-body">
+
+          <div class="sidebar">
+            <div class="side-section-label">Module B</div>
+            <div class="nav-item"><span class="nav-icon">📋</span> Open Items</div>
+            <div class="nav-item"><span class="nav-icon">📊</span> Consequence Register</div>
+            <div class="nav-item"><span class="nav-icon">⚖</span> Go/No-Go Verdict</div>
+            <div class="nav-item active"><span class="nav-icon">📄</span> Steering Brief</div>
+            <div class="side-section-label" style="margin-top: 14px;">Other modules</div>
+            <div class="nav-item"><span class="nav-icon">📋</span> Plan Builder</div>
+            <div class="nav-item"><span class="nav-icon">📡</span> Signal Distiller</div>
+          </div>
+
+          <div class="cc-main">
+            <div class="page-header">
+              <div>
+                <div class="page-title">Auto-Generated Steering Brief</div>
+                <div class="page-sub">
+                  <span>Board-ready · derived from the Consequence Register</span>
+                  <span style="color: var(--gray-300);">·</span>
+                  <span>Audit-traceable to every source item</span>
+                </div>
+              </div>
+              <div class="page-actions">
+                <button class="btn btn-secondary">Regenerate</button>
+                <button class="btn btn-secondary">Export PDF</button>
+              </div>
+            </div>
+
+            <div class="brief-body">
+
+              <div class="brief-doc">
+                <div class="doc-header">
+                  <div>
+                    <div class="doc-eyebrow">Steering Committee Brief · for review T-3 days</div>
+                    <div class="doc-title">Go-Live Readiness Assessment</div>
+                    <div class="doc-sub">Enterprise ERP cutover · D365 F&amp;O · planned go-live 06:00 CET</div>
+                  </div>
+                  <span class="doc-stamp">Draft · auto-generated</span>
+                </div>
+
+                <div class="doc-section">
+                  <div class="doc-section-num">§1 · Recommendation</div>
+                  <div class="doc-section-title">Defer go-live by 7 days.</div>
+                  <div class="doc-body">Of the 47 open items mapped to go-live consequence, 4 carry blocker severity and 8 carry critical severity. Three of the four blockers can be resolved within the 7-day defer window through actions already in motion. The fourth — invoice workflow sign-off for NL/DE — requires an executive escalation outside the cutover team and is the principal reason for the recommendation. A 7-day defer also clears the COA audit-timing exposure flagged below.</div>
+                </div>
+
+                <div class="doc-section">
+                  <div class="doc-section-num">§2 · What breaks if we proceed today</div>
+                  <ul class="doc-list">
+                    <li><strong>Vendor invoices NL/DE unprocessable</strong> · invoice workflow sign-off outstanding · 2.5 FTE × 30 days manual workaround · ~€95k unplanned cost · supplier payment SLA risk</li>
+                    <li><strong>Customer master AR exposure</strong> · delta validation owner not assigned · ~€420k AR exposure for 3–5 days · Q3 audit risk</li>
+                    <li><strong>Opening balance audit risk</strong> · Group Controller COA sign-off pending · month-1 close manual restatement · FY26 close exposure</li>
+                    <li><strong>SCM PO confirmation gap</strong> · 14 P2 defects on orders &gt;€50k · 2 FTE × 30 days · ~€72k unplanned cost</li>
+                    <li class="med"><strong>Training gap at 3 warehouses</strong> · WH-04, WH-06, WH-07 · +40% ticket volume · +1 FTE remote support × 14 days</li>
+                    <li class="med"><strong>HGB §238 statutory export</strong> · DE entity workaround for 1 month · audit notification required</li>
+                  </ul>
+                </div>
+
+                <div class="doc-section">
+                  <div class="doc-section-num">§3 · What 7 days resolves</div>
+                  <div class="doc-callout">
+                    Three of the four blockers close within the 7-day window: COA sign-off (committed by the Group Controller), warehouse training catch-up (revised schedule from Training lead), and WH-04 EDI configuration (IT delivery scheduled). The invoice workflow blocker remains and requires the recommended escalation in §4.
+                  </div>
+                </div>
+
+                <div class="doc-section">
+                  <div class="doc-section-num">§4 · Decision required from this committee</div>
+                  <div class="doc-body">
+                    <strong>Endorsement of 7-day defer</strong>, and immediate escalation of the invoice workflow blocker to the AP business owner with a target resolution date inside the defer window. Fallback to the 30-day defer option if the workflow does not close in time.
+                  </div>
+                </div>
+
+                <div class="doc-footer">
+                  <span>Generated by CutoverOS · Module B Consequence Engine</span>
+                  <span>Source: 47 mapped items · Audit ID: GNG-A1</span>
+                </div>
+              </div>
+
+              <div class="brief-actions">
+                <div class="brief-actions-title">Brief actions</div>
+                <button class="action-btn primary"><span class="action-icon">✓</span> Lock as decision record</button>
+                <div class="action-divider"></div>
+                <button class="action-btn"><span class="action-icon">⬇</span> Export PDF</button>
+                <button class="action-btn"><span class="action-icon">✉</span> Email to steering</button>
+                <button class="action-btn"><span class="action-icon">📅</span> Schedule review</button>
+                <button class="action-btn"><span class="action-icon">↻</span> Regenerate</button>
+                <div class="action-divider"></div>
+                <div class="brief-actions-title">What this is</div>
+                <div class="brief-actions-note">
+                  Auto-generated from the Consequence Register. Programme Director reviews — never assembles. Ready 48 hours ahead of steering, not 2 hours behind. Every claim links back to its source item; lock it and the chain is preserved as the steering decision record.
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /screen 5 -->
+
+
+  <!-- ════════════════════════════════════════════════════════════════
+       SCREEN 6 — THE PATTERN LIBRARY (family expansion)
+       ════════════════════════════════════════════════════════════════ -->
+  <div class="screen" id="s6">
+    <div class="ctx">
+      <div class="ctx-inner">
+
+        <div class="eyebrow">Beyond CutoverOS · the pattern library</div>
+        <h1 class="headline">One pattern library.<br>Three product shapes.</h1>
+        <p class="subhead">CutoverOS is the first instance — built around the most acute moment of any transformation. The same eight AI-advisory patterns drive every product on the engine. Built by Safwai.</p>
+
+        <div class="pattern-grid">
+          <div class="pat-card">
+            <div class="pat-card-num">P01</div>
+            <div class="pat-card-title">Methodology spine encoding</div>
+            <div class="pat-card-line where"><strong>In CutoverOS</strong>The cutover lifecycle structures every screen.</div>
+            <div class="pat-card-line reuse"><strong>Reusable for</strong>Qiyas, ISO, NCA ECC, ESG — any structured framework.</div>
+          </div>
+          <div class="pat-card">
+            <div class="pat-card-num">P02</div>
+            <div class="pat-card-title">Multi-source signal ingestion</div>
+            <div class="pat-card-line where"><strong>In CutoverOS</strong>Email, docs, interviews, Teams, voice, handwritten.</div>
+            <div class="pat-card-line reuse"><strong>Reusable for</strong>Evidence rooms, M&amp;A diligence, audit fieldwork.</div>
+          </div>
+          <div class="pat-card">
+            <div class="pat-card-num">P03</div>
+            <div class="pat-card-title">Gap-driven interview design</div>
+            <div class="pat-card-line where"><strong>In CutoverOS</strong>Interviews ask only what docs leave open.</div>
+            <div class="pat-card-line reuse"><strong>Reusable for</strong>Discovery, voice-of-customer, exec interviews.</div>
+          </div>
+          <div class="pat-card">
+            <div class="pat-card-num">P04</div>
+            <div class="pat-card-title">Cross-source conflict synthesis</div>
+            <div class="pat-card-line where"><strong>In CutoverOS</strong>47 conflicts surfaced, 39 resolved (live).</div>
+            <div class="pat-card-line reuse"><strong>Reusable for</strong>Audit reconciliation, dispute resolution.</div>
+          </div>
+          <div class="pat-card">
+            <div class="pat-card-num">P05</div>
+            <div class="pat-card-title">Benchmark-validated estimates</div>
+            <div class="pat-card-line where"><strong>In CutoverOS</strong>Every duration cross-checked vs prior instances (n=6).</div>
+            <div class="pat-card-line reuse"><strong>Reusable for</strong>Any sizing context — milestones, integration days.</div>
+          </div>
+          <div class="pat-card">
+            <div class="pat-card-num">P06</div>
+            <div class="pat-card-title">Plain-English consequence mapping</div>
+            <div class="pat-card-line where"><strong>In CutoverOS</strong>Consequence Register: € / FTE / audit timing.</div>
+            <div class="pat-card-line reuse"><strong>Reusable for</strong>Board risk papers, gap-to-initiative translation.</div>
+          </div>
+          <div class="pat-card">
+            <div class="pat-card-num">P07</div>
+            <div class="pat-card-title">Auto-generated, audit-traceable briefings</div>
+            <div class="pat-card-line where"><strong>In CutoverOS</strong>Steering Brief — every claim links to source.</div>
+            <div class="pat-card-line reuse"><strong>Reusable for</strong>Submission packs, exec reports, board updates.</div>
+          </div>
+          <div class="pat-card">
+            <div class="pat-card-num">P08</div>
+            <div class="pat-card-title">Continuous, live readiness</div>
+            <div class="pat-card-line where"><strong>In CutoverOS</strong>Status reads from new signal continuously.</div>
+            <div class="pat-card-line reuse"><strong>Reusable for</strong>Cycle readiness, compliance posture, ongoing audit.</div>
+          </div>
+        </div>
+
+        <div class="family-divider">
+          <div class="family-divider-line"></div>
+          <div class="family-divider-label">Three product shapes · one engine</div>
+          <div class="family-divider-line"></div>
+        </div>
+
+        <div class="sister-grid">
+
+          <div class="sister-card primary">
+            <div class="sister-eyebrow">Event cadence · the go-live</div>
+            <div class="sister-name">CutoverOS</div>
+            <div class="sister-tagline">Choreograph the hours of going live. Every task, dependency, decision, and conflict tracked at minute-by-minute cadence — across the highest-risk 72 hours of any transformation.</div>
+            <div class="sister-status">Concept · product design v1</div>
+            <div class="sister-pat-tags">
+              <span class="sister-pat-tag">P01</span>
+              <span class="sister-pat-tag">P02</span>
+              <span class="sister-pat-tag">P03</span>
+              <span class="sister-pat-tag">P04</span>
+              <span class="sister-pat-tag">P05</span>
+              <span class="sister-pat-tag">P06</span>
+              <span class="sister-pat-tag">P07</span>
+              <span class="sister-pat-tag">P08</span>
+            </div>
+          </div>
+
+          <div class="sister-card">
+            <div class="sister-eyebrow t-os">Programme cadence · the transformation</div>
+            <div class="sister-name">TransformationOS</div>
+            <div class="sister-tagline">A live programme brain for transformations that run 12–18 months. Continuous ingestion across the whole programme — real-time dashboards replace the weekly steerco pack.</div>
+            <div class="sister-status">Concept · product design</div>
+            <div class="sister-pat-tags">
+              <span class="sister-pat-tag">P02</span>
+              <span class="sister-pat-tag">P04</span>
+              <span class="sister-pat-tag">P07</span>
+              <span class="sister-pat-tag">P08</span>
+            </div>
+          </div>
+
+          <div class="sister-card">
+            <div class="sister-eyebrow q-os">Annual cycle · assessment</div>
+            <div class="sister-name">QiyasOS</div>
+            <div class="sister-tagline">An AI advisory platform for the Qiyas national digital transformation assessment in KSA. Annual cycle of evidence ingestion, interviews, scoring, and improvement roadmap.</div>
+            <div class="sister-status">In co-design with a Big 4 firm</div>
+            <div class="sister-pat-tags">
+              <span class="sister-pat-tag">P01</span>
+              <span class="sister-pat-tag">P02</span>
+              <span class="sister-pat-tag">P03</span>
+              <span class="sister-pat-tag">P06</span>
+              <span class="sister-pat-tag">P08</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="pattern-bottom">
+          <strong>Same engine · different framework.</strong> The pattern library compounds with every build. <em>CutoverOS is where we start.</em>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- /screen 6 -->
+
+
+  <!-- ════════════════════════════════════════════════════════════════
+       SCREEN 7 — THE ASK
+       ════════════════════════════════════════════════════════════════ -->
+  <div class="screen" id="s7">
+    <div class="ctx">
+      <div class="ctx-inner">
+
+        <div class="eyebrow">CutoverOS · the ask</div>
+        <h1 class="headline">Three doors.<br>One question.</h1>
+        <p class="subhead">What you've seen: one pattern library, three product shapes, the first build in flight. CutoverOS designed end-to-end. TransformationOS in design. QiyasOS in co-design with a Big 4 firm. The question is which of these three channels — partner, product, or pilot — takes the family from concept to live fastest.</p>
+
+        <div class="ask-modules-band">
+          <span class="ask-modules-label">CutoverOS · nine modules · the first instance</span>
+          <span class="ask-mod shown">Plan Builder</span>
+          <span class="ask-mod-sep">·</span>
+          <span class="ask-mod">Plan Intelligence</span>
+          <span class="ask-mod-sep">·</span>
+          <span class="ask-mod">Readiness Scoring</span>
+          <span class="ask-mod-sep">·</span>
+          <span class="ask-mod shown">Consequence Engine</span>
+          <span class="ask-mod-sep">·</span>
+          <span class="ask-mod">Communications</span>
+          <span class="ask-mod-sep">·</span>
+          <span class="ask-mod">Integrations</span>
+          <span class="ask-mod-sep">·</span>
+          <span class="ask-mod shown">Signal Distiller</span>
+          <span class="ask-mod-sep">·</span>
+          <span class="ask-mod">Hypercare Triage</span>
+          <span class="ask-mod-sep">·</span>
+          <span class="ask-mod">Coaching</span>
+        </div>
+
+        <div class="ask-bottom ask-bottom-top">
+
+          <div class="ask-question">
+            <div class="ask-question-label">▼ The real question</div>
+            <div class="ask-question-text">Whichever door resonates, there's more under it than this slide. Worth a 30-minute conversation?</div>
+            <div class="ask-question-sub">Come with an introduction, a perspective on shape and timing, or your own appetite for direct involvement. We'll sort which door fits in the conversation — not on this page.</div>
+          </div>
+
+          <div class="ask-contact">
+            <div class="ask-contact-label">Contact</div>
+            <div class="ask-contact-name">Jeroen Hendriks</div>
+            <div class="ask-contact-role">Founder · Safwai AI Solutions</div>
+            <div class="ask-contact-email">jeroen.hendriks@safwai.com</div>
+          </div>
+
+        </div>
+
+        <div class="ask-doors">
+
+          <div class="ask-door si">
+            <div class="ask-door-num">Door 1 · SI Channel</div>
+            <div class="ask-door-name">Partner with an SI</div>
+            <div class="ask-door-tag">For SIs that want an AI-advisory engine, not a feature. The pattern library compounds across cutover, programme, and cycle.</div>
+            <div class="ask-door-look">We are looking for</div>
+            <div class="ask-door-detail">A delivery-leadership conversation at an SI with active D365 / ERP / transformation practice. CutoverOS is where they enter the family. The library deepens with every engagement.</div>
+            <div class="ask-door-why">Only SIs that compete on outcomes — not on billable hours — pick up a pattern library. The filter is deliberate.</div>
+          </div>
+
+          <div class="ask-door prod">
+            <div class="ask-door-num">Door 2 · Product</div>
+            <div class="ask-door-name">Build the family</div>
+            <div class="ask-door-tag">For investors and builders who see the moat in a pattern library compounding across three product shapes — each hardening the others.</div>
+            <div class="ask-door-look">We are looking for</div>
+            <div class="ask-door-detail">A product-shape conversation. The library is the IP. CutoverOS is the first build in flight; TransformationOS and QiyasOS follow on the same engine. Different cadence, same patterns, same moat.</div>
+            <div class="ask-door-why">Nobody has built an AI-advisory operating system across event, programme, and cycle cadence. The category is open.</div>
+          </div>
+
+          <div class="ask-door cust">
+            <div class="ask-door-num">Door 3 · End Customer</div>
+            <div class="ask-door-name">Pilot CutoverOS</div>
+            <div class="ask-door-tag">For CIOs and transformation leads running €50M+ programmes where the cutover is the make-or-break moment.</div>
+            <div class="ask-door-look">We are looking for</div>
+            <div class="ask-door-detail">One programme where the stakes are real enough for a paid pilot of the first instance. The ROI math is straightforward: one avoided deferral, one prevented day-1 disaster, one defensible steering decision pays for it many times over.</div>
+            <div class="ask-door-why">Cutover is the most acute pain. Once it proves on one client, the family — programme then cycle — follows for the same client.</div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div><!-- /screen 6 -->
+
+</div><!-- /presentation -->
+
+<div class="indicator">1 / 7</div>
+<div class="attribution">Safwai AI Solutions · <strong>pattern library · concept v1</strong> · Jeroen Hendriks · jeroen.hendriks@safwai.com</div>
+
+<script>
+  const screens = document.querySelectorAll('.screen');
+  const indicator = document.querySelector('.indicator');
+  let current = 0;
+
+  function go(delta) {
+    const next = current + delta;
+    if (next < 0 || next >= screens.length) return;
+    screens[current].classList.remove('active');
+    current = next;
+    screens[current].classList.add('active');
+    indicator.textContent = (current + 1) + ' / ' + screens.length;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+      go(1); e.preventDefault();
+    }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      go(-1); e.preventDefault();
+    }
+    if (e.key === 'Home') { while (current > 0) go(-1); }
+    if (e.key === 'End')  { while (current < screens.length - 1) go(1); }
+  });
+
+  document.addEventListener('click', e => {
+    if (e.target.closest('.indicator')) return;
+    if (e.target.closest('a, button')) return;
+    go(1);
+  });
+</script>
+
+</body>
+</html>
