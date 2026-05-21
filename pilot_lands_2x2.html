@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Why pilots die</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #FFFFFF;
+    font-family: 'Inter', sans-serif;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .diagram {
+    width: 800px;
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+  }
+
+  .title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 44px;
+    color: #1A1A1A;
+    text-align: center;
+    margin: 0 0 32px 0;
+    line-height: 1;
+  }
+
+  .matrix {
+    display: grid;
+    grid-template-columns: 40px 24px 640px;
+    grid-template-rows: 640px 24px 40px;
+  }
+
+  .y-axis {
+    grid-column: 1;
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .y-axis span {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: #555555;
+    transform: rotate(-90deg);
+    white-space: nowrap;
+  }
+
+  .y-marks {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-right: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #555555;
+  }
+
+  .grid {
+    grid-column: 3;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: 320px 320px;
+    grid-template-rows: 320px 320px;
+    border: 1px solid #2A2A2A;
+  }
+
+  .quadrant {
+    box-sizing: border-box;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1.2;
+  }
+
+  .q-tl {
+    background: #B8B8B8;
+    color: #1A1A1A;
+    border-right: 1px solid #2A2A2A;
+    border-bottom: 1px solid #2A2A2A;
+  }
+
+  .q-tr {
+    background: #1A4A52;
+    color: #FFFFFF;
+    border-bottom: 1px solid #2A2A2A;
+  }
+
+  .q-bl {
+    background: #B8B8B8;
+    color: #1A1A1A;
+    border-right: 1px solid #2A2A2A;
+  }
+
+  .q-br {
+    background: #B8B8B8;
+    color: #1A1A1A;
+  }
+
+  .x-marks {
+    grid-column: 3;
+    grid-row: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-top: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #555555;
+  }
+
+  .x-axis {
+    grid-column: 3;
+    grid-row: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: #555555;
+  }
+</style>
+</head>
+<body>
+  <div class="diagram">
+    <h1 class="title">Why pilots die</h1>
+    <div class="matrix">
+      <div class="y-axis"><span>Senior management commitment</span></div>
+      <div class="y-marks">
+        <div>High</div>
+        <div>Low</div>
+      </div>
+      <div class="grid">
+        <div class="quadrant q-tl">Resisted on<br>the floor</div>
+        <div class="quadrant q-tr">The pilot lands</div>
+        <div class="quadrant q-bl">Ceremony</div>
+        <div class="quadrant q-br">No air cover</div>
+      </div>
+      <div class="x-marks">
+        <div>Low</div>
+        <div>High</div>
+      </div>
+      <div class="x-axis">End-user participation</div>
+    </div>
+  </div>
+</body>
+</html>

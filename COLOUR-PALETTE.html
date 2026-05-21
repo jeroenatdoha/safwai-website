@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAFWAI Colour Palette</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #111; padding: 40px 24px; }
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+  .subtitle { font-size: 14px; color: #666; margin-bottom: 40px; }
+  h2 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #555; margin-bottom: 14px; margin-top: 36px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+  .swatch { border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.12); background: #fff; }
+  .swatch-block { height: 80px; }
+  .swatch-info { padding: 10px 12px; }
+  .swatch-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+  .swatch-hex { font-size: 12px; font-family: monospace; color: #555; }
+  .swatch-usage { font-size: 11px; color: #888; margin-top: 4px; line-height: 1.4; }
+  .divider { border: none; border-top: 1px solid #ddd; margin: 36px 0 0; }
+  .code-block { background: #1e1e1e; color: #d4d4d4; font-family: monospace; font-size: 12px; padding: 20px; border-radius: 10px; margin-top: 12px; overflow-x: auto; line-height: 1.7; }
+  .code-block .var { color: #9cdcfe; }
+  .code-block .val { color: #ce9178; }
+  .code-block .comment { color: #6a9955; }
+</style>
+</head>
+<body>
+
+<h1>SAFWAI Colour Palette</h1>
+<p class="subtitle">Brand colour system — hex values, usage context, and copy-paste code snippets</p>
+
+<h2>Core Brand Colours</h2>
+<div class="grid">
+
+  <div class="swatch">
+    <div class="swatch-block" style="background:#0E5C4D;"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Deep Teal</div>
+      <div class="swatch-hex">#0E5C4D</div>
+      <div class="swatch-usage">Primary brand colour. Backgrounds, headings, key UI accents.</div>
+    </div>
+  </div>
+
+  <div class="swatch">
+    <div class="swatch-block" style="background:#D4AF37;"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Warm Gold</div>
+      <div class="swatch-hex">#D4AF37</div>
+      <div class="swatch-usage">Primary accent. CTAs, highlights, dividers, status indicators.</div>
+    </div>
+  </div>
+
+  <div class="swatch">
+    <div class="swatch-block" style="background:#002D49;"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Deep Navy</div>
+      <div class="swatch-hex">#002D49</div>
+      <div class="swatch-usage">Dark backgrounds, body text on light, page base colour.</div>
+    </div>
+  </div>
+
+  <div class="swatch">
+    <div class="swatch-block" style="background:#F7F6F3; border: 1px solid #e0e0e0;"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Off-White</div>
+      <div class="swatch-hex">#F7F6F3</div>
+      <div class="swatch-usage">Light backgrounds, primary text on dark surfaces.</div>
+    </div>
+  </div>
+
+  <div class="swatch">
+    <div class="swatch-block" style="background:#7BC9A3;"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Light Mint</div>
+      <div class="swatch-hex">#7BC9A3</div>
+      <div class="swatch-usage">Secondary accent. Icons, success states, subtle highlights.</div>
+    </div>
+  </div>
+
+  <div class="swatch">
+    <div class="swatch-block" style="background:#E8DCC4;"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Beige / Sand</div>
+      <div class="swatch-hex">#E8DCC4</div>
+      <div class="swatch-usage">Light section backgrounds, hover states, warm neutrals.</div>
+    </div>
+  </div>
+
+  <div class="swatch">
+    <div class="swatch-block" style="background:#ABC5A5;"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Sage Green</div>
+      <div class="swatch-hex">#ABC5A5</div>
+      <div class="swatch-usage">Borders, secondary text, muted accents, dividers.</div>
+    </div>
+  </div>
+
+</div>
+
+<h2>UI Semantic Colours</h2>
+<div class="grid">
+
+  <div class="swatch">
+    <div class="swatch-block" style="background:#0E3D52;"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Navy Card</div>
+      <div class="swatch-hex">#0E3D52</div>
+      <div class="swatch-usage">Card and panel backgrounds on dark surfaces.</div>
+    </div>
+  </div>
+
+  <div class="swatch">
+    <div class="swatch-block" style="background:#1A4A5C;"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Border Navy</div>
+      <div class="swatch-hex">#1A4A5C</div>
+      <div class="swatch-usage">Borders and dividers on dark backgrounds.</div>
+    </div>
+  </div>
+
+  <div class="swatch">
+    <div class="swatch-block" style="background:#7BC9A3;"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Status: Production</div>
+      <div class="swatch-hex">#7BC9A3</div>
+      <div class="swatch-usage">Live / production status badge.</div>
+    </div>
+  </div>
+
+  <div class="swatch">
+    <div class="swatch-block" style="background:#D4AF37;"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Status: POC</div>
+      <div class="swatch-hex">#D4AF37</div>
+      <div class="swatch-usage">Proof-of-concept / in progress status badge.</div>
+    </div>
+  </div>
+
+  <div class="swatch">
+    <div class="swatch-block" style="background:#ABC5A5;"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Status: Future</div>
+      <div class="swatch-hex">#ABC5A5</div>
+      <div class="swatch-usage">Planned / future roadmap status badge.</div>
+    </div>
+  </div>
+
+</div>
+
+<h2>Gradient Recipes</h2>
+<div class="grid">
+
+  <div class="swatch">
+    <div class="swatch-block" style="background: linear-gradient(135deg, #0E5C4D 0%, #002D49 100%);"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Hero Gradient</div>
+      <div class="swatch-hex">#0E5C4D → #002D49</div>
+      <div class="swatch-usage">Hero section background. Teal to navy, 135°.</div>
+    </div>
+  </div>
+
+  <div class="swatch">
+    <div class="swatch-block" style="background: linear-gradient(90deg, #0E5C4D, #D4AF37, #7BC9A3);"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Brand Gradient</div>
+      <div class="swatch-hex">#0E5C4D → #D4AF37 → #7BC9A3</div>
+      <div class="swatch-usage">Footer accent bar. Full brand spectrum left to right.</div>
+    </div>
+  </div>
+
+  <div class="swatch">
+    <div class="swatch-block" style="background: linear-gradient(180deg, #F7F6F3 0%, #E8DCC4 100%);"></div>
+    <div class="swatch-info">
+      <div class="swatch-name">Light Section Gradient</div>
+      <div class="swatch-hex">#F7F6F3 → #E8DCC4</div>
+      <div class="swatch-usage">Light-mode section backgrounds. Off-white to beige.</div>
+    </div>
+  </div>
+
+</div>
+
+<hr class="divider">
+<h2>Copy-Paste: CSS Custom Properties</h2>
+<div class="code-block">
+<span class="comment">/* SAFWAI Brand Colour Tokens */</span><br>
+:root {<br>
+&nbsp;&nbsp;<span class="comment">/* Core palette */</span><br>
+&nbsp;&nbsp;<span class="var">--safwai-deep-teal</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="val">#0E5C4D</span>;<br>
+&nbsp;&nbsp;<span class="var">--safwai-warm-gold</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="val">#D4AF37</span>;<br>
+&nbsp;&nbsp;<span class="var">--safwai-deep-navy</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="val">#002D49</span>;<br>
+&nbsp;&nbsp;<span class="var">--safwai-off-white</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="val">#F7F6F3</span>;<br>
+&nbsp;&nbsp;<span class="var">--safwai-light-mint</span>:&nbsp;&nbsp;&nbsp;&nbsp;<span class="val">#7BC9A3</span>;<br>
+&nbsp;&nbsp;<span class="var">--safwai-beige-sand</span>:&nbsp;&nbsp;&nbsp;&nbsp;<span class="val">#E8DCC4</span>;<br>
+&nbsp;&nbsp;<span class="var">--safwai-sage-green</span>:&nbsp;&nbsp;&nbsp;&nbsp;<span class="val">#ABC5A5</span>;<br>
+<br>
+&nbsp;&nbsp;<span class="comment">/* UI semantic roles */</span><br>
+&nbsp;&nbsp;<span class="var">--bg-primary</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="val">#002D49</span>;<br>
+&nbsp;&nbsp;<span class="var">--bg-card</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="val">#0E3D52</span>;<br>
+&nbsp;&nbsp;<span class="var">--bg-accent</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="val">#0E5C4D</span>;<br>
+&nbsp;&nbsp;<span class="var">--text-primary</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="val">#F7F6F3</span>;<br>
+&nbsp;&nbsp;<span class="var">--text-secondary</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="val">#ABC5A5</span>;<br>
+&nbsp;&nbsp;<span class="var">--accent-primary</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="val">#D4AF37</span>;<br>
+&nbsp;&nbsp;<span class="var">--accent-secondary</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="val">#7BC9A3</span>;<br>
+&nbsp;&nbsp;<span class="var">--border</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="val">#1A4A5C</span>;<br>
+}
+</div>
+
+<h2 style="margin-top:28px;">Copy-Paste: Plain Hex Reference</h2>
+<div class="code-block">
+Deep Teal&nbsp;&nbsp;&nbsp;&nbsp;#0E5C4D<br>
+Warm Gold&nbsp;&nbsp;&nbsp;&nbsp;#D4AF37<br>
+Deep Navy&nbsp;&nbsp;&nbsp;&nbsp;#002D49<br>
+Off-White&nbsp;&nbsp;&nbsp;&nbsp;#F7F6F3<br>
+Light Mint&nbsp;&nbsp;&nbsp;#7BC9A3<br>
+Beige/Sand&nbsp;&nbsp;&nbsp;#E8DCC4<br>
+Sage Green&nbsp;&nbsp;&nbsp;#ABC5A5<br>
+Navy Card&nbsp;&nbsp;&nbsp;&nbsp;#0E3D52<br>
+Border Navy&nbsp;&nbsp;#1A4A5C
+</div>
+
+<h2 style="margin-top:28px;">Copy-Paste: RGB Values</h2>
+<div class="code-block">
+Deep Teal&nbsp;&nbsp;&nbsp;&nbsp;rgb(14, 92, 77)<br>
+Warm Gold&nbsp;&nbsp;&nbsp;&nbsp;rgb(212, 175, 55)<br>
+Deep Navy&nbsp;&nbsp;&nbsp;&nbsp;rgb(0, 45, 73)<br>
+Off-White&nbsp;&nbsp;&nbsp;&nbsp;rgb(247, 246, 243)<br>
+Light Mint&nbsp;&nbsp;&nbsp;rgb(123, 201, 163)<br>
+Beige/Sand&nbsp;&nbsp;&nbsp;rgb(232, 220, 196)<br>
+Sage Green&nbsp;&nbsp;&nbsp;rgb(171, 197, 165)<br>
+Navy Card&nbsp;&nbsp;&nbsp;&nbsp;rgb(14, 61, 82)<br>
+Border Navy&nbsp;&nbsp;rgb(26, 74, 92)
+</div>
+
+<p style="margin-top:40px; font-size:12px; color:#999;">SAFWAI AI Solutions &mdash; Internal brand reference &mdash; safwai.com</p>
+
+</body>
+</html>
