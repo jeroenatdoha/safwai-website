@@ -162,9 +162,10 @@
     z-index: 2; position: relative;
     padding-top: 36px;
     min-height: 0;
+    overflow: hidden;
   }
   .eyebrow {
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 2.5px;
     text-transform: uppercase;
     color: #60a5fa;
@@ -191,11 +192,22 @@
 
   .module-surface {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
     margin-top: auto;
-    padding-top: 36px;
+    padding-top: 26px;
     z-index: 2; position: relative;
+  }
+  .module-card.in-design { opacity: 0.92; }
+  .module-card-pill {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 2px 8px; border-radius: 4px;
+    background: rgba(129,140,248,0.18); color: #c7d2fe;
+    border: 1px solid rgba(129,140,248,0.35);
+    vertical-align: middle;
   }
   .module-card {
     background: rgba(255,255,255,0.04);
@@ -213,6 +225,7 @@
   .module-card.mod-a::before { background: linear-gradient(90deg, #3b82f6, #2563eb); }
   .module-card.mod-b::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
   .module-card.mod-c::before { background: linear-gradient(90deg, #22c55e, #16a34a); }
+  .module-card.mod-d::before { background: linear-gradient(90deg, #818cf8, #6366f1); }
 
   .module-badge {
     width: 32px; height: 32px;
@@ -225,6 +238,7 @@
   .mod-a .module-badge { background: #2563eb; }
   .mod-b .module-badge { background: #d97706; }
   .mod-c .module-badge { background: #16a34a; }
+  .mod-d .module-badge { background: #6366f1; }
 
   .module-name {
     font-size: 17px;
@@ -242,11 +256,11 @@
 
   .ctx-footer {
     display: flex; justify-content: space-between; align-items: flex-end;
-    font-size: 11px;
+    font-size: 12px;
     color: #94a3b8;
     letter-spacing: 0.5px;
     z-index: 2; position: relative;
-    margin-top: 36px;
+    margin-top: 18px;
   }
   .ctx-footer .left { display: flex; gap: 22px; }
   .ctx-footer .left span { display: flex; align-items: center; gap: 6px; }
@@ -269,7 +283,7 @@
     border-left: 4px solid #dc2626;
   }
   .pain-title {
-    font-size: 10px;
+    font-size: 14px;
     font-weight: 700;
     color: #fca5a5;
     text-transform: uppercase;
@@ -285,13 +299,13 @@
     margin-bottom: 8px;
   }
   .pain-desc {
-    font-size: 12px;
+    font-size: 15px;
     color: #cbd5e1;
     line-height: 1.55;
     margin-bottom: 8px;
   }
   .pain-source {
-    font-size: 10px;
+    font-size: 13px;
     color: #94a3b8;
     font-style: italic;
     border-top: 1px solid rgba(255,255,255,0.06);
@@ -333,7 +347,7 @@
     padding-top: 36px;
   }
   .flow-tier {
-    font-size: 9.5px;
+    font-size: 13px;
     color: #94a3b8;
     text-transform: uppercase;
     letter-spacing: 0.6px;
@@ -341,7 +355,7 @@
     margin-bottom: 6px;
   }
   .flow-name {
-    font-size: 13.5px;
+    font-size: 15px;
     font-weight: 700;
     color: white;
     margin-bottom: 6px;
@@ -349,7 +363,7 @@
     line-height: 1.2;
   }
   .flow-role {
-    font-size: 11px;
+    font-size: 14px;
     color: #cbd5e1;
     line-height: 1.5;
     margin-bottom: 14px;
@@ -367,7 +381,7 @@
     color: #60a5fa;
   }
   .flow-stat-label {
-    font-size: 9.5px;
+    font-size: 13px;
     color: #94a3b8;
     text-transform: uppercase;
     letter-spacing: 0.4px;
@@ -378,7 +392,7 @@
     top: -10px; left: 14px;
     background: #2563eb;
     color: white;
-    font-size: 9px;
+    font-size: 12px;
     font-weight: 700;
     padding: 3px 8px;
     border-radius: 4px;
@@ -432,7 +446,7 @@
   .intro-badge.mod-c { background: linear-gradient(135deg, #22c55e, #16a34a); box-shadow: 0 12px 30px rgba(22,163,74,0.3); }
 
   .intro-eyebrow {
-    font-size: 11px;
+    font-size: 13px;
     color: #60a5fa;
     text-transform: uppercase;
     letter-spacing: 2.4px;
@@ -494,14 +508,14 @@
   }
 
   .intro-personas {
-    margin-top: 32px;
+    margin-top: 12px;
     display: flex;
     gap: 14px;
     align-items: center;
     flex-wrap: wrap;
   }
   .intro-personas-label {
-    font-size: 10.5px;
+    font-size: 12px;
     color: #94a3b8;
     text-transform: uppercase;
     letter-spacing: 0.7px;
@@ -531,7 +545,7 @@
     line-height: 1.2;
   }
   .intro-persona-role {
-    font-size: 10.5px;
+    font-size: 12px;
     color: #94a3b8;
     margin-top: 1px;
   }
@@ -763,9 +777,19 @@
   .main {
     flex: 1;
     display: flex; flex-direction: column;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     background: white;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
   }
+  .main::-webkit-scrollbar { width: 10px; }
+  .main::-webkit-scrollbar-track { background: transparent; }
+  .main::-webkit-scrollbar-thumb {
+    background: #cbd5e1; border-radius: 5px;
+    border: 2px solid white;
+  }
+  .main::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
   .page-header {
     padding: 16px 24px;
     border-bottom: 1px solid #e2e8f0;
@@ -1446,6 +1470,23 @@
     border-top: 1px solid #e2e8f0; padding-top: 6px; margin-top: 2px;
   }
   .doc-req-item-why strong { color: #0f172a; font-weight: 600; }
+  .doc-req-item-alts {
+    font-size: 10.5px; color: #475569; line-height: 1.5;
+    background: #eff6ff; border: 1px dashed #bfdbfe; border-radius: 6px;
+    padding: 7px 10px; margin-top: 8px;
+  }
+  .doc-req-item-alts-label {
+    color: #1e40af; font-weight: 700; font-size: 9px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    display: flex; align-items: center; gap: 5px; margin-bottom: 4px;
+  }
+  .doc-req-item-alts-label::before {
+    content: "⇄"; font-size: 11px; color: #2563eb;
+  }
+  .doc-req-item-alts ul { margin: 0; padding-left: 14px; }
+  .doc-req-item-alts li { margin-bottom: 2px; }
+  .doc-req-item-alts li:last-child { margin-bottom: 0; }
+  .doc-req-item-alts em { font-style: normal; color: #0f172a; font-weight: 600; }
   .aaoifi-chip {
     display: inline-flex; align-items: center; gap: 3px;
     background: #eff6ff; color: #1e40af;
@@ -1577,6 +1618,20 @@
   .nav-item.active.mod-c { background: #f0fdf4; color: #16a34a; }
   .nav-item.active.mod-c .count { background: #16a34a; color: white; }
   .btn-primary.mod-c { background: #16a34a; border-color: #16a34a; color: white; }
+
+  /* ============================================================
+     Module D — Lifecycle Compliance (indigo accent)
+     ============================================================ */
+  .sb-badge.mod-d { background: #6366f1; }
+  .nav-item.active.mod-d { background: #eef2ff; color: #4338ca; }
+  .nav-item.active.mod-d .count { background: #6366f1; color: white; }
+  .btn-primary.mod-d { background: #6366f1; border-color: #6366f1; color: white; }
+  .intro-badge.mod-d { background: linear-gradient(135deg, #818cf8, #6366f1); box-shadow: 0 12px 30px rgba(99,102,241,0.3); }
+  .intro-eyebrow.mod-d { color: #a5b4fc; }
+  .preview-card.mod-d .preview-num { color: #a5b4fc; }
+  .annot-badge.b-indigo { background: #6366f1; }
+  .annot-card.c-indigo .annot-num { background: #6366f1; }
+  .annot-card.c-indigo .annot-value { color: #a5b4fc; }
 
   /* Screen 13 — SME queue */
   .sme-list {
@@ -1784,10 +1839,12 @@
     padding: 20px 22px;
     border-top: 3px solid transparent;
   }
-  .benefit-card.bc-blue  { border-top-color: #3b82f6; }
-  .benefit-card.bc-amber { border-top-color: #f59e0b; }
-  .benefit-card.bc-rose  { border-top-color: #fb7185; }
-  .benefit-card.bc-green { border-top-color: #22c55e; }
+  .benefit-card.bc-blue   { border-top-color: #3b82f6; }
+  .benefit-card.bc-amber  { border-top-color: #f59e0b; }
+  .benefit-card.bc-rose   { border-top-color: #fb7185; }
+  .benefit-card.bc-green  { border-top-color: #22c55e; }
+  .benefit-card.bc-indigo { border-top-color: #818cf8; }
+  .benefit-card.bc-slate  { border-top-color: #64748b; }
   .benefit-persona-row {
     display: flex; align-items: center; gap: 10px;
     margin-bottom: 12px;
@@ -1797,9 +1854,9 @@
     overflow: hidden; flex-shrink: 0;
   }
   .benefit-avatar svg { width: 100%; height: 100%; display: block; }
-  .benefit-name { font-size: 12.5px; font-weight: 700; color: white; line-height: 1.2; }
-  .benefit-role { font-size: 10.5px; color: #94a3b8; margin-top: 1px; }
-  .benefit-text { font-size: 12.5px; color: #94a3b8; line-height: 1.65; }
+  .benefit-name { font-size: 15px; font-weight: 700; color: white; line-height: 1.2; }
+  .benefit-role { font-size: 13px; color: #94a3b8; margin-top: 1px; }
+  .benefit-text { font-size: 14.5px; color: #94a3b8; line-height: 1.6; }
   .benefit-text strong { color: #e2e8f0; font-weight: 600; }
 
   /* ============================================================
@@ -1807,9 +1864,9 @@
      ============================================================ */
   .module-compare {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-top: 22px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 14px;
     z-index: 2; position: relative;
   }
   .mc-col {
@@ -1820,6 +1877,8 @@
   }
   .mc-col.mc-a { border-top: 3px solid #2563eb; }
   .mc-col.mc-b { border-top: 3px solid #d97706; }
+  .mc-col.mc-c { border-top: 3px solid #16a34a; }
+  .mc-col.mc-d { border-top: 3px solid #6366f1; }
   .mc-header {
     padding: 13px 18px 12px;
     border-bottom: 1px solid rgba(255,255,255,0.07);
@@ -1832,6 +1891,8 @@
   }
   .mc-a .mc-badge { background: #2563eb; }
   .mc-b .mc-badge { background: #d97706; }
+  .mc-c .mc-badge { background: #16a34a; }
+  .mc-d .mc-badge { background: #6366f1; }
   .mc-header-body {}
   .mc-header-title { font-size: 14px; font-weight: 700; color: white; letter-spacing: -0.2px; line-height: 1.2; }
   .mc-header-sub   { font-size: 11px; color: #94a3b8; margin-top: 1px; }
@@ -1841,15 +1902,15 @@
     border-top: 1px solid rgba(255,255,255,0.05);
   }
   .mc-label {
-    padding: 11px 12px 11px 16px;
-    font-size: 9.5px; font-weight: 700;
+    padding: 5px 10px 5px 16px;
+    font-size: 12px; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.7px;
     border-right: 1px solid rgba(255,255,255,0.05);
-    display: flex; align-items: flex-start; padding-top: 13px;
+    display: flex; align-items: flex-start; padding-top: 8px;
   }
   .mc-content {
-    padding: 11px 16px;
-    font-size: 12px; line-height: 1.6;
+    padding: 5px 16px 6px;
+    font-size: 14px; line-height: 1.5;
   }
   .mc-label.lbl-process  { color: #94a3b8; }
   .mc-label.lbl-pain     { color: #f87171; }
@@ -1883,6 +1944,7 @@
   }
   .recap-card.rc-blue::before  { background: linear-gradient(90deg, #3b82f6, #2563eb); }
   .recap-card.rc-amber::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
+  .recap-card.rc-green::before { background: linear-gradient(90deg, #22c55e, #16a34a); }
   .recap-card-badge {
     width: 30px; height: 30px; border-radius: 7px;
     display: inline-flex; align-items: center; justify-content: center;
@@ -1891,15 +1953,16 @@
   }
   .recap-card-badge.blue  { background: #2563eb; }
   .recap-card-badge.amber { background: #d97706; }
+  .recap-card-badge.green { background: #16a34a; }
   .recap-card-title {
-    font-size: 15px; font-weight: 700; color: white;
+    font-size: 16px; font-weight: 700; color: white;
     letter-spacing: -0.3px; margin-bottom: 5px;
   }
-  .recap-card-title .mod-label { color: #94a3b8; font-weight: 500; margin-right: 6px; font-size: 13px; }
-  .recap-card-desc { font-size: 12px; color: #cbd5e1; line-height: 1.6; margin-bottom: 12px; }
+  .recap-card-title .mod-label { color: #94a3b8; font-weight: 500; margin-right: 6px; font-size: 14px; }
+  .recap-card-desc { font-size: 13px; color: #cbd5e1; line-height: 1.6; margin-bottom: 12px; }
   .recap-card-point {
     display: flex; align-items: flex-start; gap: 8px;
-    font-size: 11.5px; color: #e2e8f0; line-height: 1.5;
+    font-size: 13px; color: #e2e8f0; line-height: 1.5;
     padding: 5px 0; border-top: 1px solid rgba(255,255,255,0.06);
   }
   .recap-card-point .dot { color: #94a3b8; flex-shrink: 0; margin-top: 2px; }
@@ -1910,7 +1973,7 @@
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(255,255,255,0.08);
     border-radius: 8px;
-    font-size: 12.5px; color: #94a3b8; line-height: 1.6;
+    font-size: 13.5px; color: #94a3b8; line-height: 1.6;
     z-index: 2; position: relative;
   }
   .recap-throughline strong { color: #e2e8f0; }
@@ -1923,13 +1986,13 @@
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 20px;
-    padding: 5px 14px;
-    font-size: 11px; color: #64748b;
+    padding: 6px 16px;
+    font-size: 12.5px; color: #64748b;
     display: flex; align-items: center; gap: 7px;
   }
-  .roadmap-pill .label { color: #94a3b8; font-weight: 600; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .roadmap-pill .label { color: #94a3b8; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
   .roadmap-pill .name { color: #cbd5e1; }
-  .roadmap-pill .status { color: #94a3b8; font-size: 9.5px; }
+  .roadmap-pill .status { color: #94a3b8; font-size: 11px; }
 
   /* Ask cards */
   .ask-grid {
@@ -1947,24 +2010,24 @@
     padding: 22px 24px;
   }
   .ask-num {
-    font-size: 10px; font-weight: 700; color: #94a3b8;
+    font-size: 12px; font-weight: 700; color: #94a3b8;
     text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 10px;
   }
   .ask-time {
     display: inline-block;
-    font-size: 10px; font-weight: 600;
+    font-size: 12px; font-weight: 600;
     background: rgba(255,255,255,0.09);
     color: #cbd5e1;
-    padding: 2px 9px; border-radius: 10px;
+    padding: 3px 10px; border-radius: 10px;
     margin-bottom: 12px;
   }
   .ask-title {
-    font-size: 15px; font-weight: 700; color: white;
+    font-size: 16px; font-weight: 700; color: white;
     letter-spacing: -0.3px; margin-bottom: 10px; line-height: 1.3;
     display: block;
   }
   .ask-text {
-    font-size: 12.5px; color: #cbd5e1; line-height: 1.65;
+    font-size: 13.5px; color: #cbd5e1; line-height: 1.65;
   }
   .ask-card.ask-primary {
     background: rgba(255,255,255,0.07);
@@ -1983,7 +2046,7 @@
   }
   .ask-close-text { font-size: 13px; color: #cbd5e1; line-height: 1.6; }
   .ask-close-text strong { color: #f1f5f9; }
-  .ask-contact { font-size: 11.5px; color: #94a3b8; text-align: right; line-height: 1.5; }
+  .ask-contact { font-size: 13px; color: #94a3b8; text-align: right; line-height: 1.5; }
   .ask-contact .name { color: #e2e8f0; font-weight: 600; display: block; }
 
   /* ---------- Fictional disclaimer ribbon ---------- */
@@ -2033,7 +2096,21 @@
             <div class="module-badge">B</div>
             <div class="module-name"><span class="mod-letter">Module B</span>Commercial Financing Clearance</div>
             <div class="module-desc">
-              SME and corporate financing applications screened across eight Shariah aspects on submission. Document gaps named on Day&nbsp;1. Dr.&nbsp;Fatima sees only what genuinely needs her judgment.
+              SME and corporate financing applications screened across eight Shariah aspects on submission. Correct mode recommended at intake. Document gaps named on Day&nbsp;1 with acceptable alternatives.
+            </div>
+          </div>
+          <div class="module-card mod-c">
+            <div class="module-badge">C</div>
+            <div class="module-name"><span class="mod-letter">Module C</span>Investment Portfolio Screening</div>
+            <div class="module-desc">
+              Quarterly AAOIFI Standard&nbsp;21 recertification of every holding: filings parsed, ratios computed, corporate structures mapped from registries. Three-week cycle becomes overnight.
+            </div>
+          </div>
+          <div class="module-card mod-d in-design">
+            <div class="module-badge">D</div>
+            <div class="module-name"><span class="mod-letter">Module D</span>Lifecycle Compliance<span class="module-card-pill">In design</span></div>
+            <div class="module-desc">
+              Post-financing surveillance: agent letters, fund-flow attestation, breach detection, restructuring engine. Year-11-month surprises become Day-91 conversations.
             </div>
           </div>
         </div>
@@ -2042,8 +2119,8 @@
       <div class="ctx-footer">
         <div class="left">
           <span>● Scenario: Rawasi Islamic Bank · Doha</span>
-          <span>● Walkthrough: 15 screens</span>
-          <span>● Read time: 10 minutes</span>
+          <span>● Walkthrough: 23 screens</span>
+          <span>● Read time: ~15 minutes</span>
         </div>
         <div class="right">SAFWAI AI Solutions · safwai.com</div>
       </div>
@@ -2134,10 +2211,9 @@
         <div class="fictional-badge">Fictional walkthrough · Not a real institution</div>
       </div>
 
-      <div class="ctx-hero" style="display:flex;flex-direction:column;padding-top:28px;">
-        <div style="color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;">Two processes · Two distinct problems</div>
-        <h1 class="intro-title" style="margin-bottom:6px;">Where the system intervenes.</h1>
-        <p style="font-size:13.5px;color:#94a3b8;line-height:1.65;margin-bottom:0;z-index:2;position:relative;">Each module targets a different operational process: a different set of people, a different failure mode, a different bottleneck to remove.</p>
+      <div class="ctx-hero" style="display:flex;flex-direction:column;padding-top:20px;">
+        <div style="color:#94a3b8;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;">Four processes · Four distinct problems &middot; A, B, C walked through · D designed and mocked</div>
+        <h1 class="intro-title" style="font-size:44px;margin-bottom:0;line-height:1.05;">Where the system intervenes.</h1>
 
         <div class="module-compare">
 
@@ -2152,15 +2228,15 @@
             </div>
             <div class="mc-row">
               <div class="mc-label lbl-process">Process</div>
-              <div class="mc-content cnt-process">A customer or front-line officer asks whether a product, transaction, or activity is Shariah-permissible. The question needs an answer: cited and consistent.</div>
+              <div class="mc-content cnt-process">A customer or front-line officer asks whether a product or activity is Shariah-permissible. The question needs an answer: cited and consistent.</div>
             </div>
             <div class="mc-row">
               <div class="mc-label lbl-pain">Pain</div>
-              <div class="mc-content cnt-pain">Different officers give different answers to the same question. Routine inquiries queue behind complex ones on the advisor's desk. No audit trail. Response quality depends on who picks up.</div>
+              <div class="mc-content cnt-pain">Different officers give different answers to the same question. Routine inquiries queue behind complex ones on the advisor's desk. No audit trail.</div>
             </div>
             <div class="mc-row">
               <div class="mc-label lbl-solution">Solution</div>
-              <div class="mc-content cnt-solution">AI retrieves the applicable Board ruling and AAOIFI standard on submission. The Shariah Desk Officer reviews and endorses, or flags for escalation. Novel cases reach the Internal Shariah Advisor pre-framed.</div>
+              <div class="mc-content cnt-solution">AI retrieves the applicable Board ruling and AAOIFI standard on submission. The desk officer reviews and endorses; novel cases reach the advisor pre-framed.</div>
             </div>
             <div class="mc-row">
               <div class="mc-label lbl-value">Value</div>
@@ -2179,19 +2255,73 @@
             </div>
             <div class="mc-row">
               <div class="mc-label lbl-process">Process</div>
-              <div class="mc-content cnt-process">A Relationship Manager submits an SME or corporate financing application. Before proceeding to credit, the deal must pass Shariah clearance across eight aspects.</div>
+              <div class="mc-content cnt-process">An RM submits an SME or corporate financing application. Before credit, the deal must pass Shariah clearance across eight aspects.</div>
             </div>
             <div class="mc-row">
               <div class="mc-label lbl-pain">Pain</div>
-              <div class="mc-content cnt-pain">Clearance takes 3–14 days. The same sectors and product structures are reviewed from scratch each time. Document gaps surface mid-process. Deals stall while the client waits, or walks.</div>
+              <div class="mc-content cnt-pain">Clearance takes 3–14 days. RM sometimes picks the wrong mode &mdash; deal fails at Shariah on Day 11. Doc gaps surface mid-process.</div>
             </div>
             <div class="mc-row">
               <div class="mc-label lbl-solution">Solution</div>
-              <div class="mc-content cnt-solution">Eight aspects screened in parallel on receipt. Document requirements named on Day 1. Precedent-covered cases cleared at Shariah Desk Officer level, same morning. Complex cases escalate with full reasoning attached.</div>
+              <div class="mc-content cnt-solution">Correct mode recommended at intake. Eight aspects screened in parallel. Doc gaps named Day 1 with SME alternatives. Precedent cases cleared same morning.</div>
             </div>
             <div class="mc-row">
               <div class="mc-label lbl-value">Value</div>
-              <div class="mc-content cnt-value">Most deals cleared the morning they are submitted. The Relationship Manager calls the client with a decision. Before the competing bank does.</div>
+              <div class="mc-content cnt-value">Most deals cleared the morning they're submitted. The RM calls the client with a decision &mdash; before the competing bank does.</div>
+            </div>
+          </div>
+
+          <!-- Module C -->
+          <div class="mc-col mc-c">
+            <div class="mc-header">
+              <div class="mc-badge">C</div>
+              <div class="mc-header-body">
+                <div class="mc-header-title">Investment Portfolio Screening</div>
+                <div class="mc-header-sub">Discretionary portfolios · Wealth Management</div>
+              </div>
+            </div>
+            <div class="mc-row">
+              <div class="mc-label lbl-process">Process</div>
+              <div class="mc-content cnt-process">Every Shariah-compliant portfolio is recertified each quarter against AAOIFI Standard 21 &mdash; every holding, every ratio.</div>
+            </div>
+            <div class="mc-row">
+              <div class="mc-label lbl-pain">Pain</div>
+              <div class="mc-content cnt-pain">24 holdings × 8 checks × manual pulls from 4 vendors = 19&ndash;22 days. By the time it clears, the data is a month old.</div>
+            </div>
+            <div class="mc-row">
+              <div class="mc-label lbl-solution">Solution</div>
+              <div class="mc-content cnt-solution">Overnight ingestion of new filings + market data. Ratios computed from parsed statements, every figure sourced. Clean holdings clear without the advisor seeing them.</div>
+            </div>
+            <div class="mc-row">
+              <div class="mc-label lbl-value">Value</div>
+              <div class="mc-content cnt-value">Three-week recertification becomes half-day exception review. The advisor sees the 3 flags, not the 24-holding spreadsheet.</div>
+            </div>
+          </div>
+
+          <!-- Module D -->
+          <div class="mc-col mc-d">
+            <div class="mc-header">
+              <div class="mc-badge">D</div>
+              <div class="mc-header-body">
+                <div class="mc-header-title">Lifecycle Compliance <span style="font-size:11px;font-weight:700;color:#c7d2fe;background:rgba(129,140,248,0.18);border:1px solid rgba(129,140,248,0.35);padding:2px 7px;border-radius:4px;letter-spacing:0.05em;margin-left:4px;text-transform:uppercase;">In design</span></div>
+                <div class="mc-header-sub">Post-financing surveillance · live book</div>
+              </div>
+            </div>
+            <div class="mc-row">
+              <div class="mc-label lbl-process">Process</div>
+              <div class="mc-content cnt-process">A 60-month facility lives long after drawdown: agent letters, fund flow, asset usage, breach detection, restructuring. Continuous, not annual.</div>
+            </div>
+            <div class="mc-row">
+              <div class="mc-label lbl-pain">Pain</div>
+              <div class="mc-content cnt-pain">Breaches surface 11 months late at audit. RMs reach for conventional rollovers (riba). Restructuring guessed, not designed.</div>
+            </div>
+            <div class="mc-row">
+              <div class="mc-label lbl-solution">Solution</div>
+              <div class="mc-content cnt-solution">Continuous attestation from core banking + telemetry. Severity-banded breaches. Restructuring engine surfaces Sharia-sound paths, blocks impermissible ones.</div>
+            </div>
+            <div class="mc-row">
+              <div class="mc-label lbl-value">Value</div>
+              <div class="mc-content cnt-value">Year-11-month surprises become Day-91 conversations. Restructuring becomes a Sharia-aware choice, not a credit gamble.</div>
             </div>
           </div>
 
@@ -2200,7 +2330,7 @@
 
       <div class="ctx-footer">
         <div class="left">
-          <span>● Two modules · Rawasi Islamic Bank · May 2026</span>
+          <span>● Four modules · three walked through · Module D designed · Rawasi Islamic Bank · May 2026</span>
         </div>
         <div class="right">SAFWAI AI Solutions · safwai.com</div>
       </div>
@@ -2310,71 +2440,101 @@
 
       <div class="ctx-hero">
         <div class="eyebrow">What the system gives back</div>
-        <h1 class="hero-title" style="font-size:52px;">Four people get<br/>their time back.</h1>
+        <h1 class="hero-title" style="font-size:46px;">Six people get<br/>their time back.</h1>
         <p class="hero-subtitle">
           The system doesn't add a layer. It removes a bottleneck from each role, and the bottleneck
           is different for each person.
         </p>
 
-        <div class="benefit-grid">
+        <div class="benefit-grid" style="grid-template-columns: repeat(3, 1fr); gap:12px; padding-top:22px;">
 
-          <div class="benefit-card bc-blue">
-            <div class="benefit-persona-row">
+          <div class="benefit-card bc-blue" style="padding:14px 16px;">
+            <div class="benefit-persona-row" style="margin-bottom:9px;">
               <div class="benefit-avatar">
                 <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#1d4ed8"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">MA</text></svg>
               </div>
               <div>
                 <div class="benefit-name">Mohammed Al-Emadi</div>
-                <div class="benefit-role">Shariah Desk Officer</div>
+                <div class="benefit-role">Shariah Desk Officer &middot; Module A</div>
               </div>
             </div>
             <div class="benefit-text">
-              <strong>Confident answers in real time.</strong> Mohammed responds to every customer inquiry against Board-approved positions, without calling upstairs, guessing, or giving a different answer than he gave last Tuesday. The knowledge base is always current; the response is always cited.
+              <strong>Confident answers in real time.</strong> Mohammed responds to every inquiry against Board-approved positions, without calling upstairs or giving a different answer than last Tuesday. Always current, always cited.
             </div>
           </div>
 
-          <div class="benefit-card bc-amber">
-            <div class="benefit-persona-row">
+          <div class="benefit-card bc-amber" style="padding:14px 16px;">
+            <div class="benefit-persona-row" style="margin-bottom:9px;">
               <div class="benefit-avatar">
                 <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#b45309"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">FA</text></svg>
               </div>
               <div>
                 <div class="benefit-name">Faisal Al-Ansari</div>
-                <div class="benefit-role">Senior Relationship Manager</div>
+                <div class="benefit-role">Senior Relationship Manager &middot; Module B</div>
               </div>
             </div>
             <div class="benefit-text">
-              <strong>Clearance before the client loses patience.</strong> Faisal tells the client where they stand before the day ends. Document requests are complete on Day&nbsp;1. Not vague. The deal doesn't stall at Shariah while a competitor bank answers faster.
+              <strong>Right mode at intake; clearance before the client loses patience.</strong> Faisal tells the client where they stand before the day ends. Doc requests precise Day&nbsp;1. Wrong-mode rejections caught before they happen.
             </div>
           </div>
 
-          <div class="benefit-card bc-rose">
-            <div class="benefit-persona-row">
+          <div class="benefit-card bc-green" style="padding:14px 16px;">
+            <div class="benefit-persona-row" style="margin-bottom:9px;">
+              <div class="benefit-avatar">
+                <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#15803d"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">LM</text></svg>
+              </div>
+              <div>
+                <div class="benefit-name">Layla Al-Mansouri</div>
+                <div class="benefit-role">Head of Wealth Mgmt &middot; Module C</div>
+              </div>
+            </div>
+            <div class="benefit-text">
+              <strong>Quarterly recertification done before she walks in.</strong> 24 holdings re-screened overnight against Q1 filings; Layla sees the 3 exceptions, not the spreadsheet. Three weeks of work becomes a half-day review.
+            </div>
+          </div>
+
+          <div class="benefit-card bc-indigo" style="padding:14px 16px;">
+            <div class="benefit-persona-row" style="margin-bottom:9px;">
+              <div class="benefit-avatar">
+                <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#4338ca"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">KH</text></svg>
+              </div>
+              <div>
+                <div class="benefit-name">Khalid Al-Hajri</div>
+                <div class="benefit-role">Shariah Lifecycle Officer &middot; Module D <span style="font-size:10.5px;background:rgba(129,140,248,0.18);color:#c7d2fe;border:1px solid rgba(129,140,248,0.35);padding:1px 6px;border-radius:3px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-left:3px;">In design</span></div>
+              </div>
+            </div>
+            <div class="benefit-text">
+              <strong>Year-11-month surprises become Day-91 conversations.</strong> Asset relocations, fund-flow drift, breach severity, restructuring options &mdash; surfaced live, classified, sourced. The conventional riba rollover is blocked before an RM proposes it.
+            </div>
+          </div>
+
+          <div class="benefit-card bc-rose" style="padding:14px 16px;">
+            <div class="benefit-persona-row" style="margin-bottom:9px;">
               <div class="benefit-avatar">
                 <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#9f1239"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">FA</text></svg>
               </div>
               <div>
                 <div class="benefit-name">Dr. Fatima Al-Subaie</div>
-                <div class="benefit-role">Internal Shariah Advisor</div>
+                <div class="benefit-role">Internal Shariah Advisor &middot; across all modules</div>
               </div>
             </div>
             <div class="benefit-text">
-              <strong>Only the cases that genuinely need her.</strong> Every case that reaches Dr.&nbsp;Fatima arrives with the question framed, the evidence assembled, the precedent cited. She rules. She doesn't research. Her time goes back to novel judgment and Board preparation.
+              <strong>Only the cases that genuinely need her.</strong> Every case arrives with the question framed, evidence assembled, precedent cited. She rules. She doesn't research. Her time goes back to novel judgment and Board preparation.
             </div>
           </div>
 
-          <div class="benefit-card bc-green">
-            <div class="benefit-persona-row">
-              <div class="benefit-avatar" style="background:linear-gradient(135deg,#16a34a,#15803d);border-radius:50%;display:flex;align-items:center;justify-content:center;width:32px;height:32px;font-size:12px;font-weight:700;color:white;flex-shrink:0;">
+          <div class="benefit-card bc-slate" style="padding:14px 16px;">
+            <div class="benefit-persona-row" style="margin-bottom:9px;">
+              <div class="benefit-avatar" style="background:linear-gradient(135deg,#475569,#334155);border-radius:50%;display:flex;align-items:center;justify-content:center;width:32px;height:32px;font-size:12px;font-weight:700;color:white;flex-shrink:0;">
                 SB
               </div>
               <div>
                 <div class="benefit-name">Supervisory Board</div>
-                <div class="benefit-role">Rawasi Islamic Bank</div>
+                <div class="benefit-role">Rawasi Islamic Bank &middot; governance authority</div>
               </div>
             </div>
             <div class="benefit-text">
-              <strong>Strategic sessions, not operational ratification.</strong> Board meetings address novel territory, new product structures, and governance. Not cases that an existing ruling already settled. Precedent handles the backlog; the Board sets the agenda.
+              <strong>Strategic sessions, not operational ratification.</strong> Board meetings address novel territory, new product structures, governance. Not cases an existing ruling already settled. Precedent handles the backlog; the Board sets the agenda.
             </div>
           </div>
 
@@ -2407,26 +2567,26 @@
         <div class="intro-badge mod-a">A</div>
         <div class="intro-eyebrow">Module A · Inquiry Resolution</div>
         <h1 class="intro-title">"Is this halal?"<br/>Answered in seconds.</h1>
-        <p class="intro-tagline">
+        <p class="intro-tagline" style="font-size:21px;">
           The most common Shariah question a bank handles. Today: 24–48 hours, three different answers, no audit trail.
           In Module A: one consistent answer, cited to the Board ruling that authorised it, in under a minute.
         </p>
 
         <div class="intro-preview">
           <div class="preview-card">
-            <div class="preview-num">SCREEN 07 · NEXT</div>
-            <div class="preview-title">Operator inquiry console</div>
-            <div class="preview-desc">Mohammed handles a live customer question. The AI suggests a 92%-confidence response with three citations.</div>
+            <div class="preview-num" style="font-size:13px;">SCREEN 07 · NEXT</div>
+            <div class="preview-title" style="font-size:17px;">Operator inquiry console</div>
+            <div class="preview-desc" style="font-size:14px;">Mohammed handles a live customer question. The AI suggests a 92%-confidence response with three citations.</div>
           </div>
           <div class="preview-card">
-            <div class="preview-num">SCREEN 09</div>
-            <div class="preview-title">Arabic mode · same case, same source</div>
-            <div class="preview-desc">Bilingual by design. The customer sees the response in their preferred language; the audit trail is captured in both.</div>
+            <div class="preview-num" style="font-size:13px;">SCREEN 08</div>
+            <div class="preview-title" style="font-size:17px;">Arabic mode · same case, same source</div>
+            <div class="preview-desc" style="font-size:14px;">Bilingual by design. The customer sees the response in their preferred language; the audit trail is captured in both.</div>
           </div>
           <div class="preview-card">
-            <div class="preview-num">SCREEN 09</div>
-            <div class="preview-title">Dr. Fatima's advisor queue</div>
-            <div class="preview-desc">The cases that need her: pre-digested, with the question framed, the evidence attached, the precedent linked.</div>
+            <div class="preview-num" style="font-size:13px;">SCREEN 09</div>
+            <div class="preview-title" style="font-size:17px;">Dr. Fatima's advisor queue</div>
+            <div class="preview-desc" style="font-size:14px;">The cases that need her: pre-digested, with the question framed, the evidence attached, the precedent linked.</div>
           </div>
         </div>
 
@@ -3264,27 +3424,29 @@
         <h1 class="intro-title">The deal that shouldn't<br/>take two weeks.</h1>
         <p class="intro-tagline">
           Every commercial facility must pass eight Shariah aspects before it reaches credit approval.
-          Today: 3–14 days of manual review, email back-and-forth, and the same sectors researched
-          a fourth time. In Module B: all eight aspects screened on submission, document gaps named
-          on Day&nbsp;1, and Dr.&nbsp;Fatima's brief pre-assembled: question framed, evidence
-          attached, precedent cited. She rules; she doesn't research.
+          Today: 3–14 days of manual review, email back-and-forth, the same sectors researched a
+          fourth time — and the occasional rejection because the RM offered the wrong mode for the
+          transaction. In Module B: the correct financing mode recommended at intake, all eight
+          aspects screened on submission, document gaps named on Day&nbsp;1, and Dr.&nbsp;Fatima's
+          brief pre-assembled: question framed, evidence attached, precedent cited. She rules;
+          she doesn't research.
         </p>
 
         <div class="intro-preview">
           <div class="preview-card mod-b">
-            <div class="preview-num">SCREEN 11 · NEXT</div>
-            <div class="preview-title">Faisal's application tracker</div>
-            <div class="preview-desc">The RM sees real-time 8-aspect screening status for every case he submitted: cleared, flagged, or in screening. No call to the Shariah desk needed.</div>
+            <div class="preview-num" style="font-size:12px;">SCREEN 11 · NEXT</div>
+            <div class="preview-title" style="font-size:16px;">AI mode recommendation at intake</div>
+            <div class="preview-desc" style="font-size:13px;">The AI reads the transaction and recommends the correct Islamic financing mode — Murabaha, Ijarah, Tijara, or Musawama — with reasoning, alternatives, and confidence. Wrong-mode rejections caught on Day 1, not Day 11.</div>
           </div>
           <div class="preview-card mod-b">
-            <div class="preview-num">SCREEN 13</div>
-            <div class="preview-title">Faisal's document request</div>
-            <div class="preview-desc">A precise, aspect-linked request on Day 1. Each item names the flag it closes and explains why the document is needed, in language the RM can take directly to the client.</div>
+            <div class="preview-num" style="font-size:12px;">SCREEN 13</div>
+            <div class="preview-title" style="font-size:16px;">Faisal's document request</div>
+            <div class="preview-desc" style="font-size:13px;">A precise, aspect-linked request on Day 1. Each item names the flag it closes and explains why the document is needed, in language the RM can take directly to the client.</div>
           </div>
           <div class="preview-card mod-b">
-            <div class="preview-num">SCREEN 13</div>
-            <div class="preview-title">Dr. Fatima's financing brief</div>
-            <div class="preview-desc">The flagged case arrives with the question framed, the revenue exposure quantified, the precedent cited, and conditions pre-drafted. She rules. She doesn't research.</div>
+            <div class="preview-num" style="font-size:12px;">SCREEN 14</div>
+            <div class="preview-title" style="font-size:16px;">Dr. Fatima's financing brief</div>
+            <div class="preview-desc" style="font-size:13px;">The flagged case arrives with the question framed, the revenue exposure quantified, the precedent cited, and conditions pre-drafted. She rules. She doesn't research.</div>
           </div>
         </div>
 
@@ -3329,9 +3491,217 @@
     </section>
 
     <!-- =========================================================
-         SCREEN 11 — Module B · Faisal's RM Application Tracker
+         SCREEN 11 — Module B · Mode Recommendation at Intake (Faisal · demo slide)
+         New screen addressing expert Q1 + Q8: AI recommends the correct financing
+         mode from transaction intake, preventing the "wrong product offered" failure.
          ========================================================= -->
     <section class="screen demo" data-screen="11">
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="traffic-lights">
+            <span class="light r"></span><span class="light y"></span><span class="light g"></span>
+          </div>
+          <div class="address-bar">
+            <span class="lock">🔒</span>
+            <span>app.rawasi.</span><span class="url">shariah-os.io</span><span>/rm/applications/new</span>
+          </div>
+          <div class="browser-actions">⊕ ⋮</div>
+        </div>
+
+        <div class="tab-strip">
+          <div class="tab"><span class="dot" style="background:#d97706;"></span>New Application · FAC-2026-3112 (draft)<span class="x">×</span></div>
+          <div class="tab inactive">My Applications<span class="x">×</span></div>
+        </div>
+
+        <div class="app">
+          <aside class="sidebar">
+            <div class="module-header">
+              <div class="module-header-row">
+                <div class="sb-badge mod-b">B</div>
+                <div class="module-header-text">
+                  <div class="label">Module B</div>
+                  <div class="name">Financing Clearance</div>
+                </div>
+              </div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">My applications</div>
+              <div class="nav-item active mod-b"><span class="ico">+</span> New application <span class="count">draft</span></div>
+              <div class="nav-item"><span class="ico">◈</span> All My Applications <span class="count">2</span></div>
+              <div class="nav-item"><span class="ico">⚠</span> Action Required <span class="count">1</span></div>
+              <div class="nav-item"><span class="ico">✓</span> Cleared <span class="count">1</span></div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">Intake screening</div>
+              <div class="nav-item"><span class="ico">◆</span> Mode recommender</div>
+              <div class="nav-item"><span class="ico">▦</span> 8-aspect pre-screen</div>
+              <div class="nav-item"><span class="ico">⎙</span> Audit trail</div>
+            </div>
+            <div class="other-modules">⊞ Other modules ↗</div>
+          </aside>
+
+          <div class="main">
+            <div class="topbar">
+              <div class="topbar-search">⌕ Search clients, applications…</div>
+              <div class="topbar-right">
+                <div class="annotation-toggle" onclick="toggleAnnotations()">
+                  <div class="toggle-switch"></div>
+                  Annotations <span class="annot-state-label">on</span>
+                </div>
+                <div class="persona">
+                  <div class="avatar">
+                    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#b45309"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">FA</text></svg>
+                  </div>
+                  <div class="persona-text">
+                    <div class="persona-name">Faisal Al-Ansari</div>
+                    <div class="persona-role">Senior Relationship Manager</div>
+                  </div>
+                  <span class="chevron">▾</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="page-header">
+              <div class="page-header-left">
+                <div class="crumbs">Financing Clearance / New Application / FAC-2026-3112</div>
+                <div class="page-title">Al-Saqr Diagnostic Center WLL <span class="case-id">FAC-2026-3112 · draft · 11 May 2026</span></div>
+                <div class="sla-line"><span class="pulse"></span><span>AI mode recommender · screening as you type</span></div>
+              </div>
+              <div class="page-header-right">
+                <button class="btn btn-secondary btn-sm">Save draft</button>
+                <button class="btn btn-primary btn-sm mod-b">Accept &amp; submit →</button>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1.05fr; gap:16px; padding:16px 24px;">
+
+              <!-- LEFT: transaction details -->
+              <div style="background:white; border:1px solid #e2e8f0; border-radius:10px; overflow:hidden;">
+                <div style="padding:10px 14px; background:#f8fafc; border-bottom:1px solid #e2e8f0; font-size:11px; font-weight:700; color:#475569; letter-spacing:0.3px; text-transform:uppercase;">
+                  Transaction details · pulled from CRM + RM intake
+                </div>
+                <div style="padding:14px; display:grid; grid-template-columns: 110px 1fr; gap:8px 14px; font-size:11.5px; color:#334155;">
+                  <div style="color:#94a3b8;">Client</div>
+                  <div style="font-weight:600; color:#0f172a;">Al-Saqr Diagnostic Center WLL <span style="font-weight:400;color:#64748b;">· Q-CR 287941 · est. 2022</span></div>
+                  <div style="color:#94a3b8;">Sector</div>
+                  <div>Healthcare · Diagnostic imaging <span style="color:#94a3b8;">· ISIC4 8690</span></div>
+                  <div style="color:#94a3b8;">Asset</div>
+                  <div>Siemens MAGNETOM Vida 3T MRI scanner <span style="color:#94a3b8;">· 1 unit · new</span></div>
+                  <div style="color:#94a3b8;">Vendor</div>
+                  <div>Siemens Healthineers GmbH · Erlangen, Germany</div>
+                  <div style="color:#94a3b8;">Amount</div>
+                  <div><span class="fin-amount" style="font-size:13px;">QAR 3.8M</span> <span style="color:#94a3b8;">· 60-month tenor</span></div>
+                  <div style="color:#94a3b8;">Customer intent</div>
+                  <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:8px 10px; line-height:1.45;">"Five-year clinical use at our Wakra branch, then we upgrade to next-generation unit. Building is leased. Need fixed monthly payments for clinic budgeting."<br/><span style="color:#94a3b8; font-style:italic;">— transcript, RM call 9 May</span></div>
+                </div>
+
+                <div style="padding:10px 14px; background:#f8fafc; border-top:1px solid #e2e8f0; font-size:10.5px; color:#64748b; display:flex; align-items:center; gap:8px;">
+                  <span style="color:#94a3b8;">◐</span> 8-aspect pre-screen: <strong style="color:#16a34a;">8 / 8 clean</strong> · primary activity, sector, supply chain all green
+                </div>
+              </div>
+
+              <!-- RIGHT: AI mode recommendation -->
+              <div style="background:white; border:2px solid #d97706; border-radius:10px; overflow:hidden; position:relative;">
+                <div style="padding:10px 14px; background:#fffbeb; border-bottom:1px solid #fcd34d; display:flex; align-items:center; gap:10px;">
+                  <span style="background:#d97706; color:white; font-size:9.5px; font-weight:700; padding:3px 7px; border-radius:4px; letter-spacing:0.3px;">AI MODE RECOMMENDER</span>
+                  <span style="font-size:11px; font-weight:700; color:#92400e; letter-spacing:0.2px; text-transform:uppercase;">Live screening at intake</span>
+                  <span style="margin-left:auto; font-size:10px; color:#92400e;">screened against AAOIFI Standards 8 · 9 · 30</span>
+                </div>
+
+                <div style="padding:14px; border-bottom:1px solid #f1f5f9; position:relative;">
+                  <div style="display:flex; align-items:baseline; gap:10px; margin-bottom:6px;">
+                    <span style="font-size:10px; color:#94a3b8; font-weight:700; letter-spacing:0.3px; text-transform:uppercase;">Recommended mode</span>
+                    <span style="margin-left:auto; font-size:10px; color:#16a34a; font-weight:700;">● 89% confidence</span>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="font-size:22px; font-weight:700; color:#0f172a; letter-spacing:-0.5px;">Ijarah</span>
+                    <span style="font-size:10.5px; color:#64748b;">— operating lease, customer rents the asset over term</span>
+                  </div>
+                  <ul style="margin:10px 0 0; padding:0; list-style:none; font-size:11px; color:#334155; display:flex; flex-direction:column; gap:5px;">
+                    <li style="display:flex; gap:6px;"><span style="color:#16a34a; font-weight:700;">✓</span> Customer states <strong>5-year use + upgrade intent</strong> — no end-state ownership required</li>
+                    <li style="display:flex; gap:6px;"><span style="color:#16a34a; font-weight:700;">✓</span> Asset retains operational value at customer; no resale or title transfer needed</li>
+                    <li style="display:flex; gap:6px;"><span style="color:#16a34a; font-weight:700;">✓</span> Fixed-payment preference matches Ijarah rental structure cleanly</li>
+                  </ul>
+                  <span class="annot-badge b-amber" style="position:absolute;top:-10px;right:14px;">1</span>
+                </div>
+
+                <div style="padding:12px 14px;">
+                  <div style="font-size:10px; color:#94a3b8; font-weight:700; letter-spacing:0.3px; text-transform:uppercase; margin-bottom:8px;">Alternatives evaluated</div>
+
+                  <div style="display:flex; flex-direction:column; gap:7px; position:relative;">
+                    <div style="display:grid; grid-template-columns: 90px 50px 1fr; gap:10px; align-items:center; padding:7px 9px; background:#fef2f2; border:1px solid #fecaca; border-radius:6px; font-size:10.5px;">
+                      <span style="font-weight:700; color:#0f172a;">Murabaha</span>
+                      <span style="color:#dc2626; font-weight:700;">42%</span>
+                      <span style="color:#7f1d1d;"><strong>Why not:</strong> Customer's upgrade intent contradicts end-state ownership. Would require Sharia-prescribed asset disposal at term — friction the customer hasn't asked for.</span>
+                    </div>
+                    <span class="annot-badge b-amber" style="position:absolute;top:-12px;right:-6px;">2</span>
+
+                    <div style="display:grid; grid-template-columns: 90px 50px 1fr; gap:10px; align-items:center; padding:7px 9px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; font-size:10.5px;">
+                      <span style="font-weight:700; color:#0f172a;">Tijara</span>
+                      <span style="color:#94a3b8; font-weight:700;">12%</span>
+                      <span style="color:#475569;"><strong>Why not:</strong> No back-to-back commodity flow. Single asset acquisition, not a trade transaction.</span>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns: 90px 50px 1fr; gap:10px; align-items:center; padding:7px 9px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; font-size:10.5px;">
+                      <span style="font-weight:700; color:#0f172a;">Musawama</span>
+                      <span style="color:#94a3b8; font-weight:700;">8%</span>
+                      <span style="color:#475569;"><strong>Why not:</strong> Single specified asset at vendor list price. No margin-negotiation pattern that Musawama is designed for.</span>
+                    </div>
+                  </div>
+
+                  <div style="margin-top:10px; padding:7px 10px; background:#f8fafc; border:1px dashed #cbd5e1; border-radius:6px; font-size:10px; color:#64748b; display:flex; align-items:center; gap:8px;">
+                    <span style="color:#94a3b8;">+</span>
+                    <span><strong>4 additional modes evaluated:</strong> Tawarruq, Salam, Istisna, Musharaka — none scored above 5% for this transaction shape.</span>
+                    <span style="margin-left:auto; color:#94a3b8;">view all →</span>
+                  </div>
+                </div>
+
+                <div style="padding:9px 14px; background:#f8fafc; border-top:1px solid #e2e8f0; display:flex; align-items:center; gap:8px; font-size:10px; color:#64748b; position:relative;">
+                  <span style="color:#16a34a;">⎙</span>
+                  <span>Full reasoning, citations &amp; rejected alternatives logged to Mohammed's audit trail · case FAC-2026-3112</span>
+                  <span class="annot-badge b-amber" style="position:absolute;top:-12px;right:14px;">3</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="annotations-strip">
+        <div class="annot-card c-amber">
+          <div class="annot-num">1</div>
+          <div class="annot-title">AI screens the mode at intake, before the deal is shaped.</div>
+          <div class="annot-desc">
+            The recommender reads the transaction description, the asset, the vendor relationship, and the customer's stated intent — then matches against the same 8-aspect framework Mohammed uses downstream. Same logic, applied earlier in the funnel. Faisal sees the recommended mode while he's still on the call with the client.
+          </div>
+          <div class="annot-value">→ The most common failure mode — RM offers a structurally wrong product, customer waits, Sharia rejects, deal restarts — is eliminated at the source.</div>
+        </div>
+        <div class="annot-card c-amber">
+          <div class="annot-num">2</div>
+          <div class="annot-title">The expert's example case, caught on Day 1 instead of Day 11.</div>
+          <div class="annot-desc">
+            Without this view, the RM might have written Murabaha into the term sheet — equipment purchase looks like a textbook Murabaha. The AI sees the customer's upgrade intent and the absence of any end-state ownership signal, and explains <em>why</em> Murabaha doesn't fit. Four named modes (Murabaha, Ijarah, Tijara, Musawama) lead the view; four more are scored silently behind the chip.
+          </div>
+          <div class="annot-value">→ Rejected modes are not hidden. The reasoning behind each one is visible to the RM and citable in the audit trail.</div>
+        </div>
+        <div class="annot-card c-amber">
+          <div class="annot-num">3</div>
+          <div class="annot-title">Faisal decides. The AI recommends. Mohammed sees everything.</div>
+          <div class="annot-desc">
+            The recommendation is not binding. Faisal can accept Ijarah, override with a justification, or refer the case to Mohammed before commitment. Every alternative the AI ranked, every confidence score, every AAOIFI standard cited, and every rejected mode is preserved in Mohammed's audit trail. When Dr. Fatima reviews, the reasoning is reproducible end-to-end.
+          </div>
+          <div class="annot-value">→ Transparency, not a black box. Every AI decision is logged, citable, and challengeable — which is what makes the recommendation trustable in the first place.</div>
+        </div>
+      </div>
+
+      <div class="fictional-ribbon">Rawasi Islamic Bank · Fictional Institution · Walkthrough only</div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 12 — Module B · Faisal's RM Application Tracker
+         ========================================================= -->
+    <section class="screen demo" data-screen="12">
       <div class="browser">
         <div class="browser-bar">
           <div class="traffic-lights">
@@ -3363,14 +3733,14 @@
             </div>
             <div class="nav-section">
               <div class="nav-section-title">My applications</div>
-              <div class="nav-item active mod-b"><span class="ico">◈</span> All My Applications <span class="count">2</span></div>
+              <div class="nav-item active mod-b"><span class="ico">◈</span> All My Applications <span class="count">3</span></div>
               <div class="nav-item"><span class="ico">⚠</span> Action Required <span class="count">1</span></div>
               <div class="nav-item"><span class="ico">✓</span> Cleared <span class="count">1</span></div>
-              <div class="nav-item"><span class="ico">◐</span> In Screening <span class="count">0</span></div>
+              <div class="nav-item"><span class="ico">◐</span> In Screening <span class="count">1</span></div>
             </div>
             <div class="nav-section">
               <div class="nav-section-title">This month</div>
-              <div class="nav-item"><span class="ico">↗</span> Submitted <span class="count">3</span></div>
+              <div class="nav-item"><span class="ico">↗</span> Submitted <span class="count">4</span></div>
               <div class="nav-item"><span class="ico">✓</span> Cleared <span class="count">1</span></div>
             </div>
             <div class="other-modules">⊞ Other modules ↗</div>
@@ -3400,8 +3770,8 @@
             <div class="page-header">
               <div class="page-header-left">
                 <div class="crumbs">Financing Clearance / My Applications</div>
-                <div class="page-title">My Applications <span class="case-id">2 active · 12 May 2026</span></div>
-                <div class="sla-line"><span class="pulse"></span><span>AI screening complete on all submitted · real-time status</span></div>
+                <div class="page-title">My Applications <span class="case-id">3 active · 12 May 2026</span></div>
+                <div class="sla-line"><span class="pulse"></span><span>1 in screening · 1 awaiting client docs · 1 cleared · real-time status</span></div>
               </div>
               <div class="page-header-right">
                 <button class="btn btn-secondary btn-sm">⇅ Sort: Submitted</button>
@@ -3413,6 +3783,8 @@
               <div class="queue-summary-item green"><span class="ico">●</span><strong>1</strong> cleared · drawdown approved</div>
               <span class="queue-summary-sep">·</span>
               <div class="queue-summary-item amber"><span class="ico">⚠</span><strong>1</strong> document request received · action required</div>
+              <span class="queue-summary-sep">·</span>
+              <div class="queue-summary-item" style="color:#1e40af;"><span class="ico">◐</span><strong>1</strong> in screening · advisor review pending</div>
               <span class="queue-summary-sep">·</span>
               <div class="queue-summary-item"><span class="ico">◆</span>Avg clearance time this month: <strong style="margin-left:2px;">1.4 days</strong></div>
             </div>
@@ -3494,6 +3866,37 @@
                 </div>
               </div>
 
+              <!-- FAC-3112: in screening, AI mode recommendation accepted at intake -->
+              <div class="fin-card" style="position:relative; border-left:4px solid #2563eb;">
+                <div class="fin-card-left">
+                  <div class="fin-top-row">
+                    <span class="fin-company">Al-Saqr Diagnostic Center WLL</span>
+                    <span class="fin-case-num">FAC-2026-3112</span>
+                    <span class="fin-product-pill">Ijarah · 60 months</span>
+                    <span class="fin-submitted">Submitted 11 May 2026</span>
+                  </div>
+                  <div class="fin-aspect-group" style="position:relative;">
+                    <div class="aspect-bar">
+                      <div class="aspect-dot green"></div><div class="aspect-dot green"></div>
+                      <div class="aspect-dot green"></div><div class="aspect-dot green"></div>
+                      <div class="aspect-dot green"></div><div class="aspect-dot green"></div>
+                      <div class="aspect-dot green"></div><div class="aspect-dot green"></div>
+                      <span style="font-size:10.5px;color:#16a34a;font-weight:700;margin-left:10px;">8 / 8 AI pre-screen clean</span>
+                    </div>
+                    <div class="fin-flag-text" style="margin-top:4px;">Siemens MAGNETOM Vida 3T MRI · vendor Siemens Healthineers verified clean · <strong>Ijarah mode recommended at intake (89% confidence)</strong> · accepted by Faisal &amp; submitted same day</div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;margin-top:6px;padding-top:8px;border-top:1px solid #eff6ff;">
+                    <span style="background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:6px;display:inline-flex;align-items:center;gap:5px;"><span>◐</span> Advisor review pending · Mohammed</span>
+                    <span style="font-size:11px;color:#64748b;">Expected clearance within 24 hours · no flags raised</span>
+                  </div>
+                </div>
+                <div class="fin-card-right">
+                  <div class="fin-amount">QAR 3.8M</div>
+                  <span class="fin-status-pill blue">◐ In Screening</span>
+                  <button class="btn btn-secondary btn-sm">View application →</button>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -3530,9 +3933,9 @@
     </section>
 
     <!-- =========================================================
-         SCREEN 12 — Module B · Faisal's RM Document Request
+         SCREEN 13 — Module B · Faisal's RM Document Request
          ========================================================= -->
-    <section class="screen demo" data-screen="12">
+    <section class="screen demo" data-screen="13">
       <div class="browser">
         <div class="browser-bar">
           <div class="traffic-lights">
@@ -3610,7 +4013,7 @@
 
               <div style="margin-bottom:14px;padding:12px 16px;background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;font-size:11.5px;color:#78350f;display:flex;align-items:center;gap:10px;position:relative;">
                 <span style="font-size:16px;">⚠</span>
-                <div><strong>The Shariah desk has reviewed the application and needs 3 documents before clearance can proceed.</strong> Each item below names the flag it closes and explains why the document is needed.</div>
+                <div><strong>The Shariah desk has reviewed the application and needs 3 documents before clearance can proceed.</strong> Each item names the flag it closes, explains why it's needed — and lists acceptable alternatives when the ideal document isn't available. SME clients rarely have everything; the system is built around that.</div>
                 <span class="annot-badge b-amber" style="position:absolute;top:-12px;right:-6px;width:22px;height:22px;font-size:12px;">1</span>
               </div>
 
@@ -3624,6 +4027,15 @@
                   <div class="doc-req-item-title">Master Service Agreement · Marriott Qatar and/or IHG Intercontinental City Centre</div>
                   <div class="doc-req-item-why">
                     <strong>Why needed:</strong> 47% of Joud's revenue comes from these two hotel accounts. The MSA's scope clause will confirm whether Joud's engagement is food-only or includes any beverage coordination. A food-only scope closes this flag.
+                  </div>
+                  <div class="doc-req-item-alts">
+                    <div class="doc-req-item-alts-label">If the MSA can't be shared <span style="color:#64748b;font-weight:500;letter-spacing:0;text-transform:none;font-size:10px;">— confidentiality or version-control issues are common</span></div>
+                    Any of these closes the same flag:
+                    <ul>
+                      <li><em>Scope-of-services letter</em> from the hotel client on Marriott/IHG letterhead, naming Joud's service categories</li>
+                      <li><em>Two representative event POs</em> from each hotel showing line items (food only vs catering + beverage)</li>
+                      <li><em>Statement of work extract</em> — the scope clause and parties page only, with commercial terms redacted</li>
+                    </ul>
                   </div>
                   <div style="margin-top:8px;display:flex;gap:8px;align-items:center;">
                     <button class="btn btn-secondary" style="font-size:10.5px;padding:4px 10px;">↑ Upload document</button>
@@ -3641,6 +4053,16 @@
                   <div class="doc-req-item-why">
                     <strong>Why needed:</strong> Joud's P&amp;L shows QAR 3.82M from hotel events as a single line. The Shariah desk needs a split by event type, and for hotel events a further split between alcohol-served and alcohol-free settings.
                   </div>
+                  <div class="doc-req-item-alts">
+                    <div class="doc-req-item-alts-label">If audited segment reporting isn't available <span style="color:#64748b;font-weight:500;letter-spacing:0;text-transform:none;font-size:10px;">— typical for QAR &lt;10M SMEs</span></div>
+                    The Shariah desk accepts triangulation from operational records:
+                    <ul>
+                      <li><em>VAT returns FY24–FY25</em> with service-category codes + <em>POS / banquet-system event log</em> for the same period</li>
+                      <li><em>Supplier invoices</em> from beverage vendors (zero invoices = no beverage handled directly)</li>
+                      <li><em>Bank statements</em> tagged to hotel client accounts, cross-referenced to the event log</li>
+                    </ul>
+                    Two of the three, consistent, satisfies the same evidentiary standard as audited segment data.
+                  </div>
                   <div style="margin-top:8px;display:flex;gap:8px;align-items:center;">
                     <button class="btn btn-secondary" style="font-size:10.5px;padding:4px 10px;">↑ Upload document</button>
                     <span style="font-size:10px;color:#94a3b8;">PDF, Word, JPG accepted</span>
@@ -3656,9 +4078,19 @@
                   <div class="doc-req-item-why">
                     <strong>Why needed:</strong> Al-Mazroei's trade registration lists beverage distribution as a secondary activity. A letter confirming this runs through a separate legal entity, with no shared management or operations, closes this flag.
                   </div>
+                  <div class="doc-req-item-alts">
+                    <div class="doc-req-item-alts-label">If Al-Mazroei won't issue a letter <span style="color:#64748b;font-weight:500;letter-spacing:0;text-transform:none;font-size:10px;">— third-party suppliers often decline ad-hoc attestations</span></div>
+                    The system can verify entity separation from public records:
+                    <ul>
+                      <li><em>MoCI commercial-registry extracts</em> for both Al-Mazroei entities, showing distinct CR numbers, separate directors, separate registered addresses</li>
+                      <li><em>Audited financial statements</em> (most recent) — separate entity disclosure satisfies AAOIFI Standard 21 §3/2/3</li>
+                      <li>Or Faisal authorises the AI to pull the CR records directly — 1 click, no client involvement</li>
+                    </ul>
+                  </div>
                   <div style="margin-top:8px;display:flex;gap:8px;align-items:center;">
                     <button class="btn btn-secondary" style="font-size:10.5px;padding:4px 10px;">↑ Upload document</button>
                     <span style="font-size:10px;color:#94a3b8;">PDF, Word, JPG accepted</span>
+                    <button class="btn btn-secondary mod-b" style="font-size:10.5px;padding:4px 10px;margin-left:auto;">⇄ Pull CR records via MoCI API</button>
                   </div>
                   <span class="annot-badge b-amber" style="position:absolute;top:-10px;right:-8px;width:22px;height:22px;font-size:12px;">3</span>
                 </div>
@@ -3690,11 +4122,11 @@
         </div>
         <div class="annot-card c-amber">
           <div class="annot-num">2</div>
-          <div class="annot-title">Each document closes a specific flag</div>
+          <div class="annot-title">When the ideal document doesn't exist, the AI names what does</div>
           <div class="annot-desc">
-            The MSA isn't requested because "hospitality sector" triggered a review. It's requested because 47% of revenue is from alcohol-licensed hotels and the P&amp;L doesn't show whether Joud's scope includes beverage coordination. The document answers that exact question.
+            Joud is a QAR 14M SME — they don't have audited segment reporting and Marriott won't share an MSA. So the AI lists what closes the same flag from documents an SME actually has: VAT returns + POS data + supplier invoices triangulating to the same answer. For the supplier-separation question, the AI offers to pull the commercial-registry records itself — no client task at all.
           </div>
-          <div class="annot-value">→ Faisal knows what the document is for before he asks Joud for it.</div>
+          <div class="annot-value">→ The Shariah standard doesn't bend. The route to satisfying it does.</div>
         </div>
         <div class="annot-card c-amber">
           <div class="annot-num">3</div>
@@ -3710,9 +4142,9 @@
     </section>
 
     <!-- =========================================================
-         SCREEN 13 — Module B · Dr. Fatima's Financing Brief
+         SCREEN 14 — Module B · Dr. Fatima's Financing Brief
          ========================================================= -->
-    <section class="screen demo" data-screen="13">
+    <section class="screen demo" data-screen="14">
       <div class="browser">
         <div class="browser-bar">
           <div class="traffic-lights">
@@ -3943,9 +4375,9 @@
     </section>
 
     <!-- =========================================================
-         SCREEN 14 — System recap + roadmap (context)
+         SCREEN 15 — Module C intro (context slide · green)
          ========================================================= -->
-    <section class="screen ctx" data-screen="14">
+    <section class="screen ctx" data-screen="15">
       <div class="ctx-header">
         <div class="brand-mark">
           <div class="brand-logo"><img src="SAFWA LOGO LOGO ONLY.svg" alt="SAFWAI"></div>
@@ -3956,42 +4388,995 @@
         <div class="fictional-badge">Fictional walkthrough · Not a real institution</div>
       </div>
 
-      <div class="ctx-hero" style="display:flex;flex-direction:column;padding-top:32px;">
-        <div style="color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:16px;">Recap &middot; Two modules</div>
+      <div class="ctx-hero">
+        <div class="intro-badge mod-c">C</div>
+        <div class="intro-eyebrow mod-c">Module C · Investment Portfolio Screening</div>
+        <h1 class="intro-title">The recertification that<br/>takes three weeks.</h1>
+        <p class="intro-tagline">
+          Every Shariah-compliant portfolio is recertified each quarter against AAOIFI Standard 21:
+          sector screen, debt ratio, interest income, liquidity &mdash; for every holding. Today:
+          24 holdings &times; 8 checks &times; manual data pulls from four vendors = 19&ndash;22 working days.
+          By the time recertification clears, the data is a month old. The portfolio was compliant on
+          31&nbsp;March; what it is on 22&nbsp;May, nobody knows. In Module&nbsp;C: overnight ingestion of
+          Q1 filings and market data, every counterparty re-screened, every ratio re-computed. Layla
+          walks in to a 3-flag list, not a 24-holding spreadsheet. Dr.&nbsp;Fatima rules only on what
+          the data can't resolve.
+        </p>
+
+        <div class="intro-preview">
+          <div class="preview-card mod-c">
+            <div class="preview-num" style="font-size:12px;">SCREEN 16 · NEXT</div>
+            <div class="preview-title" style="font-size:15px;">Portfolio recertification dashboard</div>
+            <div class="preview-desc" style="font-size:12px;">Layla sees 24 holdings ranked overnight: 21 cleared, 3 flagged with reason chips, every data feed live and timestamped. Refinitiv, S&amp;P CapIQ, MSCI ESG, Tadawul / QE / DFM / ADX, Korean FSS DART, ISIC4 reference &mdash; all named, all current.</div>
+          </div>
+          <div class="preview-card mod-c">
+            <div class="preview-num" style="font-size:12px;">SCREEN 17</div>
+            <div class="preview-title" style="font-size:15px;">Holding deep-dive &middot; SIIG</div>
+            <div class="preview-desc" style="font-size:12px;">The AI's reasoning for the debt-ratio breach: Q1 10-Q parsed with the exact figures highlighted, AAOIFI Standard 21 ratios computed and shown against threshold, corporate-structure map pulled from the Saudi commercial registry with every subsidiary ISIC4-classified.</div>
+          </div>
+          <div class="preview-card mod-c">
+            <div class="preview-num" style="font-size:12px;">&rarr; TO DR. FATIMA</div>
+            <div class="preview-title" style="font-size:15px;">Only the rulings reach her</div>
+            <div class="preview-desc" style="font-size:12px;">21 holdings cleared without her seeing them. 3 referred with the question framed, ratios computed, source statements attached, precedent cited. Her quarterly recertification workload: half a day, not three weeks.</div>
+          </div>
+        </div>
+
+        <div class="intro-personas">
+          <span class="intro-personas-label">Personas in this module</span>
+          <div class="intro-persona">
+            <div class="intro-avatar">
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#15803d"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">LM</text></svg>
+            </div>
+            <div>
+              <div class="intro-persona-name">Layla Al-Mansouri</div>
+              <div class="intro-persona-role">Head of Wealth Mgmt &middot; Discretionary Portfolios</div>
+            </div>
+          </div>
+          <div class="intro-persona">
+            <div class="intro-avatar">
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#1d4ed8"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">MA</text></svg>
+            </div>
+            <div>
+              <div class="intro-persona-name">Mohammed Al-Emadi</div>
+              <div class="intro-persona-role">Shariah Desk Officer</div>
+            </div>
+          </div>
+          <div class="intro-persona">
+            <div class="intro-avatar">
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#9f1239"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">FA</text></svg>
+            </div>
+            <div>
+              <div class="intro-persona-name">Dr. Fatima Al-Subaie</div>
+              <div class="intro-persona-role">Internal Shariah Advisor</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ctx-footer">
+        <div class="left">
+          <span>● Process 3 · Portfolio Recertification · Rawasi Islamic Bank · Q1 2026 cycle</span>
+        </div>
+        <div class="right">SAFWAI AI Solutions · safwai.com</div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 16 — Module C · Portfolio Recertification Dashboard (Layla · demo)
+         ========================================================= -->
+    <section class="screen demo" data-screen="16">
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="traffic-lights">
+            <span class="light r"></span><span class="light y"></span><span class="light g"></span>
+          </div>
+          <div class="address-bar">
+            <span class="lock">🔒</span>
+            <span>app.rawasi.</span><span class="url">shariah-os.io</span><span>/wm/portfolios/rwm-growth-2024/recertification</span>
+          </div>
+          <div class="browser-actions">⊕ ⋮</div>
+        </div>
+
+        <div class="tab-strip">
+          <div class="tab"><span class="dot" style="background:#16a34a;"></span>Rawasi Shariah Growth · Q1 2026 Recertification<span class="x">×</span></div>
+          <div class="tab inactive">All portfolios (4)<span class="x">×</span></div>
+        </div>
+
+        <div class="app">
+          <aside class="sidebar">
+            <div class="module-header">
+              <div class="module-header-row">
+                <div class="sb-badge mod-c">C</div>
+                <div class="module-header-text">
+                  <div class="label">Module C</div>
+                  <div class="name">Portfolio Screening</div>
+                </div>
+              </div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">My portfolios</div>
+              <div class="nav-item active mod-c"><span class="ico">◈</span> Shariah Growth <span class="count">3</span></div>
+              <div class="nav-item"><span class="ico">◈</span> Shariah Income <span class="count">0</span></div>
+              <div class="nav-item"><span class="ico">◈</span> Sukuk Multi-Asset <span class="count">1</span></div>
+              <div class="nav-item"><span class="ico">◈</span> Global Equity Sleeve <span class="count">0</span></div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">Q1 2026 recertification</div>
+              <div class="nav-item"><span class="ico">◐</span> Active cycles <span class="count">4</span></div>
+              <div class="nav-item"><span class="ico">✓</span> Q4 2025 · Closed</div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">Reference</div>
+              <div class="nav-item"><span class="ico">◆</span> AAOIFI Standard 21</div>
+              <div class="nav-item"><span class="ico">▦</span> Source feed status</div>
+              <div class="nav-item"><span class="ico">⎙</span> Audit trail</div>
+            </div>
+            <div class="other-modules">⊞ Other modules ↗</div>
+          </aside>
+
+          <div class="main">
+            <div class="topbar">
+              <div class="topbar-search">⌕ Search holdings, tickers, sectors…</div>
+              <div class="topbar-right">
+                <div class="annotation-toggle" onclick="toggleAnnotations()">
+                  <div class="toggle-switch"></div>
+                  Annotations <span class="annot-state-label">on</span>
+                </div>
+                <div class="persona">
+                  <div class="avatar">
+                    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#15803d"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">LM</text></svg>
+                  </div>
+                  <div class="persona-text">
+                    <div class="persona-name">Layla Al-Mansouri</div>
+                    <div class="persona-role">Head of WM · Discretionary Portfolios</div>
+                  </div>
+                  <span class="chevron">▾</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="page-header">
+              <div class="page-header-left">
+                <div class="crumbs">Portfolios / Shariah Growth / Q1 2026 Recertification</div>
+                <div class="page-title">Rawasi Shariah-Compliant Growth Portfolio <span class="case-id">QAR 280.4M AUM · 24 holdings · 18 May 2026</span></div>
+                <div class="sla-line"><span class="pulse"></span><span>Overnight ingestion complete · 24 / 24 holdings refreshed against Q1 filings (released 30 Apr – 15 May 2026)</span></div>
+              </div>
+              <div class="page-header-right">
+                <div class="actions">
+                  <button class="btn btn-primary" style="background:#9f1239;border-color:#9f1239;color:white;">→ Refer flagged 3 to Dr. Fatima</button>
+                  <button class="btn btn-secondary">⎙ Export Q1 recertification pack</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="queue-summary" style="position:relative;">
+              <div class="queue-summary-item"><span class="ico" style="color:#16a34a;">✓</span><strong>21</strong> cleared overnight</div>
+              <span class="queue-summary-sep">·</span>
+              <div class="queue-summary-item amber"><span class="ico">⚠</span><strong>3</strong> flagged · advisor review needed</div>
+              <span class="queue-summary-sep">·</span>
+              <div class="queue-summary-item"><span class="ico">◆</span>Last source refresh: <strong style="margin-left:2px;">18 May 04:12</strong></div>
+              <span class="queue-summary-sep">·</span>
+              <div class="queue-summary-item" style="color:#1e40af;"><span class="ico">●</span>AAOIFI Standard 21 thresholds applied</div>
+            </div>
+
+            <div style="display:grid;grid-template-columns: 1fr 250px; gap:14px; padding:10px 24px 0; position:relative;">
+
+              <!-- LEFT: flagged + cleared -->
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div style="font-size:9.5px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;display:flex;align-items:center;gap:8px;">Flagged &middot; refer to Dr. Fatima (3) <span style="flex:1;height:1px;background:#e2e8f0;"></span></div>
+
+                <!-- SIIG flagged -->
+                <div style="background:white;border:1px solid #e2e8f0;border-left:4px solid #dc2626;border-radius:8px;padding:11px 13px;position:relative;">
+                  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px;">
+                    <span style="font-size:12.5px;font-weight:700;color:#0f172a;letter-spacing:-0.2px;">Saudi Industrial Investment Group</span>
+                    <span style="font-size:9.5px;color:#94a3b8;font-weight:600;letter-spacing:0.3px;">SIIG.SR</span>
+                    <span style="background:#fef2f2;color:#991b1b;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:6px;">⚠ Debt ratio breach</span>
+                    <span style="font-size:10px;color:#64748b;margin-left:auto;">QAR 14.2M · 5.06% of portfolio</span>
+                  </div>
+                  <div style="font-size:11px;color:#475569;line-height:1.45;">
+                    <strong style="color:#991b1b;">Debt / Total Assets: 32.1%</strong> &middot; AAOIFI Standard 21 §3/4/1 threshold is 30%. SIIG refinanced QAR 480M in Q1 2026 to fund the Yanbu polymer expansion. Three of the other five ratios remain inside thresholds; the sector screen is clean (ISIC4 2410 · industrial chemicals).
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;margin-top:7px;padding-top:7px;border-top:1px solid #fef2f2;">
+                    <span style="background:#fef2f2;border:1px solid #fecaca;color:#991b1b;font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;">94% AI confidence</span>
+                    <span style="font-size:10px;color:#64748b;">Source: SIIG Q1-2026 10-Q · filed Tadawul 12 May · cross-checked Refinitiv + S&amp;P CapIQ</span>
+                    <button class="btn btn-secondary btn-sm" style="margin-left:auto;">Open deep-dive →</button>
+                  </div>
+                </div>
+
+                <!-- Migros flagged -->
+                <div style="background:white;border:1px solid #e2e8f0;border-left:4px solid #d97706;border-radius:8px;padding:11px 13px;position:relative;">
+                  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px;">
+                    <span style="font-size:12.5px;font-weight:700;color:#0f172a;letter-spacing:-0.2px;">Migros Ticaret A.Ş.</span>
+                    <span style="font-size:9.5px;color:#94a3b8;font-weight:600;letter-spacing:0.3px;">MGROS.IS</span>
+                    <span style="background:#fffbeb;color:#92400e;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:6px;">⚠ Subsidiary acquisition</span>
+                    <span style="font-size:10px;color:#64748b;margin-left:auto;">QAR 9.7M · 3.46% of portfolio</span>
+                  </div>
+                  <div style="font-size:11px;color:#475569;line-height:1.45;">
+                    <strong style="color:#92400e;">New subsidiary in conventional insurance.</strong> Migros acquired a 60% stake in Garanti BBVA Insurance Brokerage on 14 March 2026 (Borsa Istanbul KAP disclosure). AAOIFI Standard 21 §3/2/1 explicitly excludes conventional insurance from permissible activities. Revenue contribution from new subsidiary: estimated 4.1% &mdash; below the 5% tolerance, but the question is structural, not quantitative.
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;margin-top:7px;padding-top:7px;border-top:1px solid #fffbeb;">
+                    <span style="background:#fffbeb;border:1px solid #fcd34d;color:#92400e;font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;">89% AI confidence</span>
+                    <span style="font-size:10px;color:#64748b;">Source: Borsa Istanbul KAP filing 14 Mar · MERSIS corporate registry · Refinitiv ownership tree</span>
+                    <button class="btn btn-secondary btn-sm" style="margin-left:auto;">Open deep-dive →</button>
+                  </div>
+                </div>
+
+                <!-- SK Hynix flagged -->
+                <div style="background:white;border:1px solid #e2e8f0;border-left:4px solid #d97706;border-radius:8px;padding:11px 13px;position:relative;">
+                  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px;">
+                    <span style="font-size:12.5px;font-weight:700;color:#0f172a;letter-spacing:-0.2px;">SK Hynix Inc.</span>
+                    <span style="font-size:9.5px;color:#94a3b8;font-weight:600;letter-spacing:0.3px;">000660.KS</span>
+                    <span style="background:#fffbeb;color:#92400e;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:6px;">⚠ Interest income drift</span>
+                    <span style="font-size:10px;color:#64748b;margin-left:auto;">QAR 12.3M · 4.39% of portfolio</span>
+                  </div>
+                  <div style="font-size:11px;color:#475569;line-height:1.45;">
+                    <strong style="color:#92400e;">Interest income / Total revenue: 5.4%</strong> &middot; AAOIFI Standard 21 §3/4/3 threshold is 5%. Cash position grew on lower Q1 capex; treasury rolled the cash into short-term won deposits. Drift is marginal (40&nbsp;bps); purification calculation pre-drafted. Sector screen clean (ISIC4 2611 · semiconductors).
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;margin-top:7px;padding-top:7px;border-top:1px solid #fffbeb;">
+                    <span style="background:#fffbeb;border:1px solid #fcd34d;color:#92400e;font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;">96% AI confidence</span>
+                    <span style="font-size:10px;color:#64748b;">Source: SK Hynix Q1-2026 disclosure · Korean FSS DART · cross-checked Refinitiv</span>
+                    <button class="btn btn-secondary btn-sm" style="margin-left:auto;">Open deep-dive →</button>
+                  </div>
+                  <span class="annot-badge b-green" style="position:absolute;top:-10px;right:-8px;width:22px;height:22px;font-size:12px;">2</span>
+                </div>
+
+                <div style="font-size:9.5px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;display:flex;align-items:center;gap:8px;margin-top:6px;">Cleared overnight (21) <span style="flex:1;height:1px;background:#e2e8f0;"></span> <span style="color:#16a34a;font-weight:600;letter-spacing:0;text-transform:none;font-size:10.5px;">All 6 ratios in band · sector screens clean</span></div>
+
+                <!-- Compact cleared list -->
+                <div style="background:white;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;font-size:10.5px;">
+                  <div style="display:grid;grid-template-columns: 1.8fr 0.6fr 0.8fr 0.7fr 0.7fr 0.7fr 0.7fr 1fr; gap:8px; padding:7px 11px; background:#f8fafc; border-bottom:1px solid #e2e8f0; font-size:9px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.04em;">
+                    <span>Holding · Ticker</span><span>Weight</span><span>Sector ISIC4</span><span>Debt/TA</span><span>Cash/TA</span><span>AR/TA</span><span>Int/Rev</span><span>Last refresh</span>
+                  </div>
+                  <div style="display:grid;grid-template-columns: 1.8fr 0.6fr 0.8fr 0.7fr 0.7fr 0.7fr 0.7fr 1fr; gap:8px; padding:6px 11px; border-bottom:1px solid #f1f5f9;">
+                    <span><strong style="color:#0f172a;">Saudi Aramco</strong> · 2222.SR</span><span>11.2%</span><span>0610 · O&amp;G</span><span style="color:#16a34a;">12.4%</span><span style="color:#16a34a;">8.1%</span><span style="color:#16a34a;">14.7%</span><span style="color:#16a34a;">2.1%</span><span style="color:#94a3b8;">04:12 Tadawul</span>
+                  </div>
+                  <div style="display:grid;grid-template-columns: 1.8fr 0.6fr 0.8fr 0.7fr 0.7fr 0.7fr 0.7fr 1fr; gap:8px; padding:6px 11px; border-bottom:1px solid #f1f5f9;">
+                    <span><strong style="color:#0f172a;">Industries Qatar</strong> · IQCD.QA</span><span>8.4%</span><span>2410 · Chem</span><span style="color:#16a34a;">18.2%</span><span style="color:#16a34a;">22.4%</span><span style="color:#16a34a;">11.9%</span><span style="color:#16a34a;">0.9%</span><span style="color:#94a3b8;">04:12 QE</span>
+                  </div>
+                  <div style="display:grid;grid-template-columns: 1.8fr 0.6fr 0.8fr 0.7fr 0.7fr 0.7fr 0.7fr 1fr; gap:8px; padding:6px 11px; border-bottom:1px solid #f1f5f9;">
+                    <span><strong style="color:#0f172a;">Emaar Properties</strong> · EMAAR.DU</span><span>6.9%</span><span>4100 · Constr.</span><span style="color:#16a34a;">28.7%</span><span style="color:#16a34a;">15.6%</span><span style="color:#16a34a;">19.2%</span><span style="color:#16a34a;">3.4%</span><span style="color:#94a3b8;">04:12 DFM</span>
+                  </div>
+                  <div style="display:grid;grid-template-columns: 1.8fr 0.6fr 0.8fr 0.7fr 0.7fr 0.7fr 0.7fr 1fr; gap:8px; padding:6px 11px; border-bottom:1px solid #f1f5f9;">
+                    <span><strong style="color:#0f172a;">Aldar Properties</strong> · ALDAR.AD</span><span>5.8%</span><span>4100 · Constr.</span><span style="color:#16a34a;">26.3%</span><span style="color:#16a34a;">12.1%</span><span style="color:#16a34a;">21.8%</span><span style="color:#16a34a;">2.8%</span><span style="color:#94a3b8;">04:12 ADX</span>
+                  </div>
+                  <div style="display:grid;grid-template-columns: 1.8fr 0.6fr 0.8fr 0.7fr 0.7fr 0.7fr 0.7fr 1fr; gap:8px; padding:6px 11px; border-bottom:1px solid #f1f5f9;">
+                    <span><strong style="color:#0f172a;">TSMC</strong> · 2330.TW</span><span>4.2%</span><span>2611 · Semi.</span><span style="color:#16a34a;">9.4%</span><span style="color:#16a34a;">26.9%</span><span style="color:#16a34a;">12.4%</span><span style="color:#16a34a;">3.8%</span><span style="color:#94a3b8;">04:12 Refinitiv</span>
+                  </div>
+                  <div style="display:grid;grid-template-columns: 1.8fr 0.6fr 0.8fr 0.7fr 0.7fr 0.7fr 0.7fr 1fr; gap:8px; padding:6px 11px; border-bottom:1px solid #f1f5f9;">
+                    <span><strong style="color:#0f172a;">Etihad Etisalat (Mobily)</strong> · 7020.SR</span><span>3.7%</span><span>6110 · Telecom</span><span style="color:#16a34a;">24.1%</span><span style="color:#16a34a;">19.8%</span><span style="color:#16a34a;">22.6%</span><span style="color:#16a34a;">4.2%</span><span style="color:#94a3b8;">04:12 Tadawul</span>
+                  </div>
+                  <div style="display:grid;grid-template-columns: 1.8fr 0.6fr 0.8fr 0.7fr 0.7fr 0.7fr 0.7fr 1fr; gap:8px; padding:6px 11px;">
+                    <span style="color:#64748b;font-style:italic;">+ 15 more &middot; click to expand</span><span colspan="7" style="grid-column:span 7;color:#94a3b8;font-size:10px;text-align:right;">Total cleared AUM: QAR 244.2&nbsp;M · all 6 ratios in band</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- RIGHT: live source connectors panel -->
+              <div style="position:relative;">
+                <div style="background:white;border:1px solid #e2e8f0;border-radius:8px;padding:11px 13px;">
+                  <div style="font-size:9.5px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;display:flex;align-items:center;gap:5px;">
+                    <span style="width:7px;height:7px;background:#16a34a;border-radius:50%;display:inline-block;box-shadow:0 0 0 3px rgba(22,163,74,0.18);"></span>
+                    Live source feeds (6)
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:6px;font-size:10.5px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 8px;background:#f0fdf4;border-radius:5px;">
+                      <span><strong style="color:#0f172a;">Refinitiv Eikon</strong><br/><span style="font-size:9.5px;color:#64748b;">Equities + ownership</span></span>
+                      <span style="color:#16a34a;font-weight:700;font-size:9.5px;text-align:right;">live<br/><span style="color:#94a3b8;font-weight:500;">12m ago</span></span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 8px;background:#f0fdf4;border-radius:5px;">
+                      <span><strong style="color:#0f172a;">S&amp;P Capital&nbsp;IQ</strong><br/><span style="font-size:9.5px;color:#64748b;">Financials + ratios</span></span>
+                      <span style="color:#16a34a;font-weight:700;font-size:9.5px;text-align:right;">live<br/><span style="color:#94a3b8;font-weight:500;">18m ago</span></span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 8px;background:#f0fdf4;border-radius:5px;">
+                      <span><strong style="color:#0f172a;">MSCI ESG Manager</strong><br/><span style="font-size:9.5px;color:#64748b;">Sector + controversy</span></span>
+                      <span style="color:#16a34a;font-weight:700;font-size:9.5px;text-align:right;">live<br/><span style="color:#94a3b8;font-weight:500;">1h ago</span></span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 8px;background:#f0fdf4;border-radius:5px;">
+                      <span><strong style="color:#0f172a;">Regional exchanges</strong><br/><span style="font-size:9.5px;color:#64748b;">Tadawul · QE · DFM · ADX · KAP</span></span>
+                      <span style="color:#16a34a;font-weight:700;font-size:9.5px;text-align:right;">live<br/><span style="color:#94a3b8;font-weight:500;">4m ago</span></span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 8px;background:#f0fdf4;border-radius:5px;">
+                      <span><strong style="color:#0f172a;">Korean FSS DART</strong><br/><span style="font-size:9.5px;color:#64748b;">Filings + ownership</span></span>
+                      <span style="color:#16a34a;font-weight:700;font-size:9.5px;text-align:right;">live<br/><span style="color:#94a3b8;font-weight:500;">4h ago</span></span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 8px;background:#f0fdf4;border-radius:5px;">
+                      <span><strong style="color:#0f172a;">ISIC4 reference</strong><br/><span style="font-size:9.5px;color:#64748b;">UN classification + AAOIFI map</span></span>
+                      <span style="color:#16a34a;font-weight:700;font-size:9.5px;text-align:right;">synced<br/><span style="color:#94a3b8;font-weight:500;">v4 rev.4</span></span>
+                    </div>
+                  </div>
+                  <div style="margin-top:8px;padding-top:7px;border-top:1px solid #e2e8f0;font-size:10px;color:#64748b;line-height:1.45;">
+                    Every flag below cites the source statement and timestamp. If a feed goes stale, the dependent holdings move to "data&nbsp;pending" &mdash; never silently re-screened against last quarter's data.
+                  </div>
+                  <span class="annot-badge b-green" style="position:absolute;top:-12px;right:-8px;width:22px;height:22px;font-size:12px;">3</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="annotations-strip">
+        <div class="annot-card c-green">
+          <div class="annot-num">1</div>
+          <div class="annot-title">24 holdings re-screened overnight. 3 in front of Layla, 21 behind her.</div>
+          <div class="annot-desc">
+            The Q1 2026 cycle ran while Layla slept. Every Q1 filing pulled as it was released between 30 April and 15 May; every ratio recomputed against current data; every sector code re-checked. By the time she opens the dashboard, the 21 clean holdings are out of her queue. Her attention is already on the 3 that matter.
+          </div>
+          <div class="annot-value">→ Three weeks of recertification work becomes a half-day review of the exceptions.</div>
+        </div>
+        <div class="annot-card c-green">
+          <div class="annot-num">2</div>
+          <div class="annot-title">Every flag is sourced and timestamped</div>
+          <div class="annot-desc">
+            SK Hynix's interest-income drift is "Q1-2026 disclosure, Korean FSS DART, cross-checked Refinitiv." Migros's subsidiary acquisition is "Borsa Istanbul KAP filing 14 Mar, MERSIS corporate registry, Refinitiv ownership tree." No flag exists without the statement it came from. Dr. Fatima can click straight through to the source paragraph.
+          </div>
+          <div class="annot-value">→ The advisor never has to ask "where did this number come from?"</div>
+        </div>
+        <div class="annot-card c-green">
+          <div class="annot-num">3</div>
+          <div class="annot-title">Six live feeds, named &mdash; not a magic black box</div>
+          <div class="annot-desc">
+            The bank already pays for Refinitiv, CapIQ, MSCI ESG, and the regional exchange feeds. Module C orchestrates them against AAOIFI Standard 21 logic; it doesn't introduce a new data dependency. If a feed goes stale, dependent holdings move to "data pending" &mdash; the system never silently re-screens against last quarter's numbers.
+          </div>
+          <div class="annot-value">→ Same data your analysts already trust. Same standard your Board already approved.</div>
+        </div>
+      </div>
+
+      <div class="fictional-ribbon">Rawasi Islamic Bank · Fictional Institution · Walkthrough only</div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 17 — Module C · Holding Deep-Dive (SIIG · doc parsing + corporate structure)
+         ========================================================= -->
+    <section class="screen demo" data-screen="17">
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="traffic-lights">
+            <span class="light r"></span><span class="light y"></span><span class="light g"></span>
+          </div>
+          <div class="address-bar">
+            <span class="lock">🔒</span>
+            <span>app.rawasi.</span><span class="url">shariah-os.io</span><span>/wm/portfolios/rwm-growth-2024/holdings/SIIG.SR</span>
+          </div>
+          <div class="browser-actions">⊕ ⋮</div>
+        </div>
+
+        <div class="tab-strip">
+          <div class="tab"><span class="dot" style="background:#dc2626;"></span>SIIG · Debt ratio breach<span class="x">×</span></div>
+          <div class="tab inactive">Q1 Recertification (3)<span class="x">×</span></div>
+          <div class="tab inactive">AAOIFI Standard 21<span class="x">×</span></div>
+        </div>
+
+        <div class="app">
+          <aside class="sidebar">
+            <div class="module-header">
+              <div class="module-header-row">
+                <div class="sb-badge mod-c">C</div>
+                <div class="module-header-text">
+                  <div class="label">Module C</div>
+                  <div class="name">Portfolio Screening</div>
+                </div>
+              </div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">Q1 recertification · flagged</div>
+              <div class="nav-item active mod-c"><span class="ico">⚠</span> SIIG · Debt ratio <span class="count">!</span></div>
+              <div class="nav-item"><span class="ico">⚠</span> Migros · Subsidiary</div>
+              <div class="nav-item"><span class="ico">⚠</span> SK Hynix · Int. income</div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">This holding</div>
+              <div class="nav-item"><span class="ico">▦</span> Ratios &amp; thresholds</div>
+              <div class="nav-item"><span class="ico">▤</span> Parsed Q1 10-Q</div>
+              <div class="nav-item"><span class="ico">⌘</span> Corporate structure</div>
+              <div class="nav-item"><span class="ico">◆</span> Precedent · prior rulings</div>
+              <div class="nav-item"><span class="ico">⎙</span> Audit trail</div>
+            </div>
+            <div class="other-modules">⊞ Other modules ↗</div>
+          </aside>
+
+          <div class="main">
+            <div class="topbar">
+              <div class="topbar-search">⌕ Search holdings, sources, rulings…</div>
+              <div class="topbar-right">
+                <div class="annotation-toggle" onclick="toggleAnnotations()">
+                  <div class="toggle-switch"></div>
+                  Annotations <span class="annot-state-label">on</span>
+                </div>
+                <div class="persona">
+                  <div class="avatar">
+                    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#15803d"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">LM</text></svg>
+                  </div>
+                  <div class="persona-text">
+                    <div class="persona-name">Layla Al-Mansouri</div>
+                    <div class="persona-role">Head of WM · Discretionary Portfolios</div>
+                  </div>
+                  <span class="chevron">▾</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="page-header">
+              <div class="page-header-left">
+                <div class="crumbs">Portfolios / Shariah Growth / Q1 Recertification / SIIG.SR</div>
+                <div class="page-title">Saudi Industrial Investment Group <span class="case-id">SIIG.SR · QAR 14.2M (5.06%) · Q1 recertification flag</span></div>
+                <div class="sla-line"><span class="pulse" style="background:#dc2626;box-shadow:0 0 0 4px rgba(220,38,38,0.18);"></span><span style="color:#991b1b;font-weight:600;">Debt / Total Assets = 32.1% &middot; above AAOIFI Standard 21 §3/4/1 threshold of 30%</span></div>
+              </div>
+              <div class="page-header-right">
+                <div class="actions">
+                  <button class="btn btn-primary" style="background:#9f1239;border-color:#9f1239;color:white;">→ Refer to Dr. Fatima</button>
+                  <button class="btn btn-secondary">⤴ Send to Mohammed (desk)</button>
+                  <button class="btn btn-secondary">⎙ Open audit trail</button>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns: 1.05fr 0.95fr; gap:14px; padding:10px 24px 0; position:relative;">
+
+              <!-- LEFT: Parsed Q1 10-Q -->
+              <div style="background:white;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;position:relative;">
+                <div style="padding:10px 13px;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:8px;font-size:10.5px;">
+                  <span style="font-size:14px;">▤</span>
+                  <strong style="color:#0f172a;font-size:11.5px;">SIIG_Q1-2026_10-Q.pdf</strong>
+                  <span style="color:#94a3b8;">· 47 pages · filed Tadawul 12 May 2026</span>
+                  <span style="margin-left:auto;background:#f0fdf4;color:#166534;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:5px;">✓ Parsed &middot; 8 figures extracted</span>
+                </div>
+
+                <!-- Mock document preview -->
+                <div style="padding:14px 17px;background:#fafbfc;border-bottom:1px solid #e2e8f0;font-size:10px;color:#475569;line-height:1.7;font-family:Georgia,serif;">
+                  <div style="color:#94a3b8;font-size:8.5px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Page 14 &middot; Consolidated Balance Sheet · 31 March 2026 (SAR millions)</div>
+                  <div style="margin-bottom:6px;color:#0f172a;font-weight:600;font-size:11px;letter-spacing:-0.1px;">CONSOLIDATED BALANCE SHEET</div>
+                  <div style="display:grid;grid-template-columns: 1fr auto; gap:2px 12px;">
+                    <span>Total assets</span><span style="background:#fef3c7;padding:0 4px;border-radius:3px;"><strong>14,847</strong></span>
+                    <span>Short-term borrowings</span><span style="background:#fef3c7;padding:0 4px;border-radius:3px;">1,212</span>
+                    <span>Long-term debt &mdash; refinanced facility (Yanbu&nbsp;II)</span><span style="background:#fee2e2;padding:0 4px;border-radius:3px;"><strong>3,548</strong></span>
+                    <span>Sukuk issuance (Mar 2026)</span><span style="background:#fee2e2;padding:0 4px;border-radius:3px;">0</span>
+                    <span style="color:#94a3b8;">&hellip;</span><span></span>
+                    <span style="border-top:1px solid #cbd5e1;padding-top:2px;color:#0f172a;font-weight:600;">Total interest-bearing debt</span><span style="border-top:1px solid #cbd5e1;padding-top:2px;background:#fee2e2;padding-left:4px;padding-right:4px;border-radius:3px;"><strong>4,760</strong></span>
+                  </div>
+                  <div style="margin-top:10px;padding-top:6px;border-top:1px dashed #cbd5e1;color:#94a3b8;font-size:8.5px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;font-family:inherit;">Page 23 · Income Statement extract</div>
+                  <div style="display:grid;grid-template-columns: 1fr auto; gap:2px 12px;">
+                    <span>Total revenue</span><span style="background:#fef3c7;padding:0 4px;border-radius:3px;"><strong>4,318</strong></span>
+                    <span>Interest income (treasury)</span><span style="background:#fef3c7;padding:0 4px;border-radius:3px;">52.4</span>
+                    <span>Accounts receivable, net</span><span style="background:#fef3c7;padding:0 4px;border-radius:3px;">3,608</span>
+                  </div>
+                  <div style="margin-top:9px;padding-top:6px;border-top:1px dashed #cbd5e1;color:#94a3b8;font-size:8.5px;font-style:italic;font-family:inherit;">
+                    AI extracted 8 figures across pages 14, 17, 23, 31. Each highlight links back to the source paragraph. Two figures (debt + cash equivalents) cross-checked against S&amp;P CapIQ filing &mdash; consistent. Filed value used.
+                  </div>
+                </div>
+                <span class="annot-badge b-green" style="position:absolute;top:-12px;right:-6px;width:22px;height:22px;font-size:12px;">1</span>
+              </div>
+
+              <!-- RIGHT: Ratios board + corporate structure -->
+              <div style="display:flex;flex-direction:column;gap:12px;">
+
+                <!-- Ratios -->
+                <div style="background:white;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;position:relative;">
+                  <div style="padding:9px 13px;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:8px;">
+                    <span style="font-size:14px;">▦</span>
+                    <strong style="color:#0f172a;font-size:11.5px;">AAOIFI Standard 21 ratios</strong>
+                    <span style="color:#94a3b8;font-size:10px;">· computed from filed Q1 statements</span>
+                  </div>
+                  <div style="padding:8px 13px;display:flex;flex-direction:column;gap:5px;font-size:10.5px;">
+                    <div style="display:grid;grid-template-columns: 1.6fr 0.7fr 0.7fr 0.5fr; gap:8px; padding:7px 8px; background:#fef2f2; border:1px solid #fecaca; border-radius:6px; align-items:center;">
+                      <span><strong style="color:#0f172a;">Interest-bearing debt / Total assets</strong><br/><span style="color:#94a3b8;font-size:9.5px;">§3/4/1 · &le; 30%</span></span>
+                      <span style="color:#94a3b8;text-align:right;">Threshold<br/><strong style="color:#475569;">30.0%</strong></span>
+                      <span style="text-align:right;color:#991b1b;">Actual<br/><strong>32.1%</strong></span>
+                      <span style="text-align:center;background:#dc2626;color:white;padding:3px 6px;border-radius:5px;font-size:9.5px;font-weight:700;">⚠ BREACH</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns: 1.6fr 0.7fr 0.7fr 0.5fr; gap:8px; padding:6px 8px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; align-items:center;">
+                      <span><strong style="color:#0f172a;">Cash + interest securities / Total assets</strong><br/><span style="color:#94a3b8;font-size:9.5px;">§3/4/2 · &le; 30%</span></span>
+                      <span style="color:#94a3b8;text-align:right;">Threshold<br/><strong style="color:#475569;">30.0%</strong></span>
+                      <span style="text-align:right;color:#166534;">Actual<br/><strong>18.4%</strong></span>
+                      <span style="text-align:center;background:#16a34a;color:white;padding:3px 6px;border-radius:5px;font-size:9.5px;font-weight:700;">✓</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns: 1.6fr 0.7fr 0.7fr 0.5fr; gap:8px; padding:6px 8px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; align-items:center;">
+                      <span><strong style="color:#0f172a;">Accounts receivable / Total assets</strong><br/><span style="color:#94a3b8;font-size:9.5px;">§3/4/4 · &le; 45%</span></span>
+                      <span style="color:#94a3b8;text-align:right;">Threshold<br/><strong style="color:#475569;">45.0%</strong></span>
+                      <span style="text-align:right;color:#166534;">Actual<br/><strong>24.3%</strong></span>
+                      <span style="text-align:center;background:#16a34a;color:white;padding:3px 6px;border-radius:5px;font-size:9.5px;font-weight:700;">✓</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns: 1.6fr 0.7fr 0.7fr 0.5fr; gap:8px; padding:6px 8px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; align-items:center;">
+                      <span><strong style="color:#0f172a;">Interest income / Total revenue</strong><br/><span style="color:#94a3b8;font-size:9.5px;">§3/4/3 · &le; 5%</span></span>
+                      <span style="color:#94a3b8;text-align:right;">Threshold<br/><strong style="color:#475569;">5.0%</strong></span>
+                      <span style="text-align:right;color:#166534;">Actual<br/><strong>1.2%</strong></span>
+                      <span style="text-align:center;background:#16a34a;color:white;padding:3px 6px;border-radius:5px;font-size:9.5px;font-weight:700;">✓</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns: 1.6fr 0.7fr 0.7fr 0.5fr; gap:8px; padding:6px 8px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; align-items:center;">
+                      <span><strong style="color:#0f172a;">Primary sector screen</strong><br/><span style="color:#94a3b8;font-size:9.5px;">§3/2 · ISIC4 2410 · industrial chemicals</span></span>
+                      <span style="color:#94a3b8;text-align:right;">Approved<br/><strong style="color:#475569;">&ndash;</strong></span>
+                      <span style="text-align:right;color:#166534;">Match<br/><strong>Halal</strong></span>
+                      <span style="text-align:center;background:#16a34a;color:white;padding:3px 6px;border-radius:5px;font-size:9.5px;font-weight:700;">✓</span>
+                    </div>
+                  </div>
+                  <span class="annot-badge b-green" style="position:absolute;top:-12px;right:-8px;width:22px;height:22px;font-size:12px;">2</span>
+                </div>
+
+                <!-- Corporate structure -->
+                <div style="background:white;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;position:relative;">
+                  <div style="padding:9px 13px;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:8px;">
+                    <span style="font-size:14px;">⌘</span>
+                    <strong style="color:#0f172a;font-size:11.5px;">Corporate structure &middot; 7 subsidiaries</strong>
+                    <span style="color:#94a3b8;font-size:10px;">· pulled from Saudi MoC registry · Refinitiv ownership tree</span>
+                  </div>
+                  <div style="padding:10px 13px;display:flex;flex-direction:column;gap:5px;font-size:10.5px;">
+                    <div style="display:grid;grid-template-columns: 1fr auto auto auto; gap:8px; padding:5px 8px; background:#f8fafc; border-radius:5px; align-items:center;">
+                      <span><strong style="color:#0f172a;">SIIG (parent)</strong> &middot; <span style="color:#94a3b8;font-size:9.5px;">CR 1010068194 · KSA</span></span>
+                      <span style="color:#94a3b8;font-size:9.5px;">ISIC4 7010</span>
+                      <span style="color:#94a3b8;font-size:9.5px;">100%</span>
+                      <span style="color:#166534;font-size:9.5px;font-weight:700;">Holding ✓</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns: 1fr auto auto auto; gap:8px; padding:5px 8px; border-left:2px solid #e2e8f0; margin-left:8px; align-items:center;">
+                      <span><span style="color:#94a3b8;">↳</span> National Industrialization Co (Tasnee) &middot; <span style="color:#94a3b8;font-size:9.5px;">CR 1010119537</span></span>
+                      <span style="color:#94a3b8;font-size:9.5px;">ISIC4 2410</span>
+                      <span style="color:#94a3b8;font-size:9.5px;">29.93%</span>
+                      <span style="color:#166534;font-size:9.5px;font-weight:700;">Halal ✓</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns: 1fr auto auto auto; gap:8px; padding:5px 8px; border-left:2px solid #e2e8f0; margin-left:8px; align-items:center;">
+                      <span><span style="color:#94a3b8;">↳</span> Saudi Polyolefins Co &middot; <span style="color:#94a3b8;font-size:9.5px;">CR 1010220815</span></span>
+                      <span style="color:#94a3b8;font-size:9.5px;">ISIC4 2013</span>
+                      <span style="color:#94a3b8;font-size:9.5px;">75%</span>
+                      <span style="color:#166534;font-size:9.5px;font-weight:700;">Halal ✓</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns: 1fr auto auto auto; gap:8px; padding:5px 8px; border-left:2px solid #e2e8f0; margin-left:8px; align-items:center;">
+                      <span><span style="color:#94a3b8;">↳</span> Saudi European Petrochemical (Ibn Zahr) &middot; <span style="color:#94a3b8;font-size:9.5px;">CR 4030013561</span></span>
+                      <span style="color:#94a3b8;font-size:9.5px;">ISIC4 2013</span>
+                      <span style="color:#94a3b8;font-size:9.5px;">80%</span>
+                      <span style="color:#166534;font-size:9.5px;font-weight:700;">Halal ✓</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns: 1fr auto auto auto; gap:8px; padding:5px 8px; border-left:2px solid #e2e8f0; margin-left:8px; align-items:center;">
+                      <span><span style="color:#94a3b8;">↳</span> + 3 minor subsidiaries (all industrial)</span>
+                      <span style="color:#94a3b8;font-size:9.5px;">ISIC4 2410/2013</span>
+                      <span style="color:#94a3b8;font-size:9.5px;">&lt; 5% rev</span>
+                      <span style="color:#166534;font-size:9.5px;font-weight:700;">Halal ✓</span>
+                    </div>
+                  </div>
+                  <div style="padding:8px 13px;background:#f8fafc;border-top:1px solid #e2e8f0;font-size:10px;color:#64748b;line-height:1.5;">
+                    <strong style="color:#166534;">Sector exposure clean across the group.</strong> The breach is purely capital-structure: the Yanbu&nbsp;II refinancing pushed debt above the threshold. No subsidiary introduces a sector or revenue question.
+                  </div>
+                  <span class="annot-badge b-green" style="position:absolute;top:-12px;right:-8px;width:22px;height:22px;font-size:12px;">3</span>
+                </div>
+
+                <!-- Precedent + draft ruling -->
+                <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:10px 13px;font-size:10.5px;">
+                  <div style="font-size:9.5px;font-weight:700;color:#1e40af;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:5px;display:flex;align-items:center;gap:5px;">
+                    <span>◆</span> Precedent + draft ruling for Dr. Fatima
+                  </div>
+                  <div style="color:#475569;line-height:1.55;">
+                    Closest precedent: <strong style="color:#0f172a;">Saudi Cement &middot; Q2 2023 (32.6%, 3-quarter wait + purification)</strong>. Drafted condition: hold position, re-test Q2 2026; if &gt; 30% for two consecutive quarters, divest with purification. Calculated purification: <strong>QAR 6,420</strong> on excess attribution. Dr. Fatima rules; conditions auto-apply.
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="annotations-strip">
+        <div class="annot-card c-green">
+          <div class="annot-num">1</div>
+          <div class="annot-title">The 10-Q parsed, not summarised</div>
+          <div class="annot-desc">
+            The AI extracted the exact figures from SIIG's filed Q1 statements &mdash; total assets from page 14, interest-bearing debt from the same balance sheet, interest income from page 23. Each highlight in the document preview links back to the source paragraph. Two figures were cross-checked against S&amp;P CapIQ; consistent, so the filed value is used. No model-generated numbers; no figures without provenance.
+          </div>
+          <div class="annot-value">→ Layla and Dr. Fatima can audit every number back to the page it was lifted from.</div>
+        </div>
+        <div class="annot-card c-green">
+          <div class="annot-num">2</div>
+          <div class="annot-title">AAOIFI Standard 21 ratios &mdash; computed, not estimated</div>
+          <div class="annot-desc">
+            Each ratio is the standard formula against the extracted figure: 4,760 / 14,847 = 32.1%. The threshold (30%) cites §3/4/1 of Standard 21. Five ratios, four green, one red. The breach isn't a model judgement; it's arithmetic the system performs from filed data using rules the Board has approved.
+          </div>
+          <div class="annot-value">→ Same standard you already apply manually. Different speed.</div>
+        </div>
+        <div class="annot-card c-green">
+          <div class="annot-num">3</div>
+          <div class="annot-title">Corporate structure tells Dr. Fatima where to look next</div>
+          <div class="annot-desc">
+            SIIG has seven subsidiaries pulled from the Saudi commercial registry and Refinitiv ownership tree. Every entity ISIC4-classified, every classification mapped to AAOIFI sector status. All halal. So the breach is not hiding inside a subsidiary &mdash; it's purely the Yanbu II refinancing. The system rules in what the breach is; the advisor rules on what to do about it.
+          </div>
+          <div class="annot-value">→ The advisor doesn't go hunting for what the system already knows.</div>
+        </div>
+      </div>
+
+      <div class="fictional-ribbon">Rawasi Islamic Bank · Fictional Institution · Walkthrough only</div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 18 — System capability · Decision trace (audit trail demo)
+         ========================================================= -->
+    <section class="screen demo" data-screen="18">
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="traffic-lights">
+            <span class="light r"></span><span class="light y"></span><span class="light g"></span>
+          </div>
+          <div class="address-bar">
+            <span class="lock">🔒</span>
+            <span>app.rawasi.</span><span class="url">shariah-os.io</span><span>/audit-trail/FAC-2026-3104</span>
+          </div>
+          <div class="browser-actions">⊕ ⋮</div>
+        </div>
+
+        <div class="tab-strip">
+          <div class="tab"><span class="dot" style="background:#9f1239;"></span>Decision trace · FAC-3104<span class="x">×</span></div>
+          <div class="tab inactive">Brief · Joud Catering<span class="x">×</span></div>
+          <div class="tab inactive">Financing Queue (3)<span class="x">×</span></div>
+        </div>
+
+        <div class="app">
+          <aside class="sidebar">
+            <div class="module-header">
+              <div class="module-header-row">
+                <div class="sb-badge" style="background:#475569;">⎙</div>
+                <div class="module-header-text">
+                  <div class="label">System</div>
+                  <div class="name">Audit Trail</div>
+                </div>
+              </div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">This case</div>
+              <div class="nav-item active mod-b" style="background:#fef2f2;color:#9f1239;"><span class="ico">⎙</span> Decision trace <span class="count" style="background:#9f1239;color:white;">10</span></div>
+              <div class="nav-item"><span class="ico">▤</span> Documents (6)</div>
+              <div class="nav-item"><span class="ico">◆</span> Precedents cited (2)</div>
+              <div class="nav-item"><span class="ico">▦</span> AAOIFI references (4)</div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">Reproducibility</div>
+              <div class="nav-item"><span class="ico">↻</span> Re-run with same inputs</div>
+              <div class="nav-item"><span class="ico">↧</span> Export trace (PDF · JSON)</div>
+              <div class="nav-item"><span class="ico">⎘</span> Compare to precedent trace</div>
+            </div>
+            <div class="other-modules">⊞ Other modules ↗</div>
+          </aside>
+
+          <div class="main">
+            <div class="topbar">
+              <div class="topbar-search">⌕ Search trace by step, citation, actor…</div>
+              <div class="topbar-right">
+                <div class="annotation-toggle" onclick="toggleAnnotations()">
+                  <div class="toggle-switch"></div>
+                  Annotations <span class="annot-state-label">on</span>
+                </div>
+                <div class="persona">
+                  <div class="avatar">
+                    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#9f1239"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">FA</text></svg>
+                  </div>
+                  <div class="persona-text">
+                    <div class="persona-name">Dr. Fatima Al-Subaie</div>
+                    <div class="persona-role">Internal Shariah Advisor</div>
+                  </div>
+                  <span class="chevron">▾</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="page-header">
+              <div class="page-header-left">
+                <div class="crumbs">Audit Trail / FAC-2026-3104 / Decision trace</div>
+                <div class="page-title">Decision trace &middot; Joud Catering &amp; Events WLL <span class="case-id">FAC-2026-3104 · 10 steps · 9 May 09:14 → 15 May 09:18</span></div>
+                <div class="sla-line"><span class="pulse"></span><span>Every step cites its source · routing rule shown for each AI decision · re-runnable with same inputs to the same outcome</span></div>
+              </div>
+              <div class="page-header-right">
+                <div class="actions">
+                  <button class="btn btn-secondary">↻ Re-run with same inputs</button>
+                  <button class="btn btn-secondary">↧ Export trace</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Routing rule reference banner -->
+            <div style="margin:0 24px 10px;padding:9px 13px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;font-size:10.5px;color:#1e40af;display:flex;align-items:center;gap:10px;position:relative;">
+              <span style="font-size:14px;">◆</span>
+              <div><strong style="color:#1e40af;">Confidence routing rule (active):</strong> &nbsp;&gt;&nbsp;85% &middot; AI clears autonomously against Board-approved precedent &nbsp;·&nbsp; 60–85% &middot; surfaces to Shariah Desk (Mohammed) &nbsp;·&nbsp; &lt;&nbsp;60% &middot; refers directly to advisor (Dr. Fatima). Only the advisor rules on novel uncertainty.</div>
+              <span class="annot-badge b-blue" style="position:absolute;top:-12px;right:-6px;width:22px;height:22px;font-size:12px;">2</span>
+            </div>
+
+            <!-- TRACE TIMELINE -->
+            <div style="padding:0 24px 16px;">
+              <div style="display:grid;grid-template-columns: 90px 1fr; gap:14px;">
+
+                <!-- Step 1 -->
+                <div style="text-align:right;font-size:10px;color:#94a3b8;padding-top:9px;font-family:'JetBrains Mono',Consolas,monospace;">
+                  <div style="font-weight:600;color:#475569;">9 May</div>
+                  <div>09:14:00</div>
+                </div>
+                <div style="background:white;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:11px;">
+                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px;">
+                    <span style="background:#475569;color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.4px;">FAISAL</span>
+                    <strong style="color:#0f172a;">Application submitted</strong>
+                    <span style="margin-left:auto;color:#94a3b8;font-size:9.5px;">via /rm/applications/new</span>
+                  </div>
+                  <div style="color:#475569;line-height:1.5;">Joud Catering &amp; Events WLL · Ijarah · QAR&nbsp;2.2M · 36 months · commercial kitchen equipment package.</div>
+                </div>
+
+                <!-- Step 2 -->
+                <div style="text-align:right;font-size:10px;color:#94a3b8;padding-top:9px;font-family:'JetBrains Mono',Consolas,monospace;">
+                  <div>09:14:01</div>
+                  <div style="color:#16a34a;font-size:9px;">+1s</div>
+                </div>
+                <div style="background:white;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:11px;">
+                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px;">
+                    <span style="background:#2563eb;color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.4px;">AI</span>
+                    <strong style="color:#0f172a;">CRM data pull &middot; counterparty resolve</strong>
+                    <span style="margin-left:auto;color:#94a3b8;font-size:9.5px;">Finastra LOS adapter v3.2</span>
+                  </div>
+                  <div style="color:#475569;line-height:1.5;">Joud client record retrieved: CR&nbsp;287941, est.&nbsp;2018, ISIC4 56210 (event catering). 4 supplier counterparties + 9 customer counterparties resolved against MoCI registry.</div>
+                </div>
+
+                <!-- Step 3 -->
+                <div style="text-align:right;font-size:10px;color:#94a3b8;padding-top:9px;font-family:'JetBrains Mono',Consolas,monospace;">
+                  <div>09:14:03</div>
+                  <div style="color:#16a34a;font-size:9px;">+2s</div>
+                </div>
+                <div style="background:white;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:11px;position:relative;">
+                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px;">
+                    <span style="background:#2563eb;color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.4px;">AI</span>
+                    <strong style="color:#0f172a;">Mode classification &middot; Ijarah confirmed</strong>
+                    <span style="background:#f0fdf4;color:#166534;font-size:9.5px;font-weight:700;padding:1px 7px;border-radius:5px;">91% confidence &middot; &gt; 85% threshold</span>
+                    <span style="margin-left:auto;background:#f0fdf4;color:#166534;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:5px;">→ Autonomous</span>
+                  </div>
+                  <div style="color:#475569;line-height:1.5;">Four modes evaluated against transaction intent. Ijarah 91% · Murabaha 38% · Tijara 4% · Musawama 2%. Citation: AAOIFI Standards 8 §3, 9 §2/1. Reason: rented equipment use over fixed term, no ownership transfer asked, no commodity trade.</div>
+                  <span class="annot-badge b-blue" style="position:absolute;top:-10px;right:-8px;width:22px;height:22px;font-size:12px;">1</span>
+                </div>
+
+                <!-- Step 4 - 8-aspect screening, compact -->
+                <div style="text-align:right;font-size:10px;color:#94a3b8;padding-top:9px;font-family:'JetBrains Mono',Consolas,monospace;">
+                  <div>09:14:04</div>
+                  <div style="color:#16a34a;font-size:9px;">+1s</div>
+                </div>
+                <div style="background:white;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:11px;">
+                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;">
+                    <span style="background:#2563eb;color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.4px;">AI</span>
+                    <strong style="color:#0f172a;">8-aspect screening &middot; 8 checks executed in parallel</strong>
+                    <span style="margin-left:auto;color:#94a3b8;font-size:9.5px;">~340ms total</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:3px;font-size:10px;color:#475569;line-height:1.45;">
+                    <div style="display:grid;grid-template-columns: 24px 130px 1fr auto auto; gap:6px; align-items:center; padding:3px 7px; background:#f0fdf4; border-radius:4px;">
+                      <span style="text-align:center;color:#166534;font-weight:700;">1</span>
+                      <span><strong>Primary Activity</strong></span>
+                      <span style="color:#64748b;">ISIC4 56210 &middot; AAOIFI Standard 21 §3/2/2 &middot; permissible</span>
+                      <span style="color:#166534;font-weight:700;">99%</span>
+                      <span style="background:#16a34a;color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;">CLEAR</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns: 24px 130px 1fr auto auto; gap:6px; align-items:center; padding:3px 7px; background:#f0fdf4; border-radius:4px;">
+                      <span style="text-align:center;color:#166534;font-weight:700;">2</span>
+                      <span><strong>Secondary Activity</strong></span>
+                      <span style="color:#64748b;">Trade licence scanned · 1 secondary (food retail) · permissible</span>
+                      <span style="color:#166534;font-weight:700;">96%</span>
+                      <span style="background:#16a34a;color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;">CLEAR</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns: 24px 130px 1fr auto auto; gap:6px; align-items:center; padding:3px 7px; background:#fffbeb; border-radius:4px;">
+                      <span style="text-align:center;color:#92400e;font-weight:700;">3</span>
+                      <span><strong>Revenue Mix</strong></span>
+                      <span style="color:#64748b;">47% from Marriott + IHG (alcohol-licensed) · trigger AAOIFI Standard 21 §3/2/1 review</span>
+                      <span style="color:#92400e;font-weight:700;">88%</span>
+                      <span style="background:#d97706;color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;">⚠ FLAG</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns: 24px 130px 1fr auto auto; gap:6px; align-items:center; padding:3px 7px; background:#f0fdf4; border-radius:4px;">
+                      <span style="text-align:center;color:#166534;font-weight:700;">4</span>
+                      <span><strong>Use of Funds</strong></span>
+                      <span style="color:#64748b;">Equipment use for catering operations · permissible</span>
+                      <span style="color:#166534;font-weight:700;">98%</span>
+                      <span style="background:#16a34a;color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;">CLEAR</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns: 24px 130px 1fr auto auto; gap:6px; align-items:center; padding:3px 7px; background:#f0fdf4; border-radius:4px;">
+                      <span style="text-align:center;color:#166534;font-weight:700;">5</span>
+                      <span><strong>Asset Backing</strong></span>
+                      <span style="color:#64748b;">Specified commercial kitchen equipment · Ijarah structure sound</span>
+                      <span style="color:#166534;font-weight:700;">95%</span>
+                      <span style="background:#16a34a;color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;">CLEAR</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns: 24px 130px 1fr auto auto; gap:6px; align-items:center; padding:3px 7px; background:#f0fdf4; border-radius:4px;">
+                      <span style="text-align:center;color:#166534;font-weight:700;">6</span>
+                      <span><strong>Contract Structure</strong></span>
+                      <span style="color:#64748b;">Standard Ijarah template &middot; Board-approved 2023, rev. 2025</span>
+                      <span style="color:#166534;font-weight:700;">96%</span>
+                      <span style="background:#16a34a;color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;">CLEAR</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns: 24px 130px 1fr auto auto; gap:6px; align-items:center; padding:3px 7px; background:#fffbeb; border-radius:4px;">
+                      <span style="text-align:center;color:#92400e;font-weight:700;">7</span>
+                      <span><strong>Supply Chain</strong></span>
+                      <span style="color:#64748b;">Al-Mazroei Commercial Kitchens secondary CR includes beverage distribution · entity-separation question</span>
+                      <span style="color:#92400e;font-weight:700;">84%</span>
+                      <span style="background:#d97706;color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;">⚠ FLAG</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns: 24px 130px 1fr auto auto; gap:6px; align-items:center; padding:3px 7px; background:#f0fdf4; border-radius:4px;">
+                      <span style="text-align:center;color:#166534;font-weight:700;">8</span>
+                      <span><strong>Customer Base</strong></span>
+                      <span style="color:#64748b;">B2B hospitality + private events &middot; permissible aggregate</span>
+                      <span style="color:#166534;font-weight:700;">92%</span>
+                      <span style="background:#16a34a;color:white;font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;">CLEAR</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div style="text-align:right;font-size:10px;color:#94a3b8;padding-top:9px;font-family:'JetBrains Mono',Consolas,monospace;">
+                  <div>09:14:05</div>
+                  <div style="color:#16a34a;font-size:9px;">+1s</div>
+                </div>
+                <div style="background:white;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:11px;">
+                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px;">
+                    <span style="background:#2563eb;color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.4px;">AI</span>
+                    <strong style="color:#0f172a;">Routing decision &middot; 2 flags &middot; confidence band 84–88%</strong>
+                    <span style="margin-left:auto;background:#fffbeb;color:#92400e;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:5px;">→ Mohammed (Shariah Desk)</span>
+                  </div>
+                  <div style="color:#475569;line-height:1.5;">Both flagged aspects fall in the 60–85% band where the routing rule sends to operator review. No autonomous clearance; no direct advisor escalation. Mohammed has the request queued with both flags pre-justified.</div>
+                </div>
+
+                <!-- Step 6 -->
+                <div style="text-align:right;font-size:10px;color:#94a3b8;padding-top:9px;font-family:'JetBrains Mono',Consolas,monospace;">
+                  <div>10:42:18</div>
+                  <div style="color:#94a3b8;font-size:9px;">+1h&nbsp;28m</div>
+                </div>
+                <div style="background:white;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:11px;">
+                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px;">
+                    <span style="background:#1d4ed8;color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.4px;">MOHAMMED</span>
+                    <strong style="color:#0f172a;">Doc request reviewed &amp; dispatched</strong>
+                    <span style="margin-left:auto;color:#94a3b8;font-size:9.5px;">3 items, AI-drafted with alternatives</span>
+                  </div>
+                  <div style="color:#475569;line-height:1.5;">Mohammed accepted the AI-drafted document request unchanged. Sent to Faisal at 10:42; Faisal forwarded to Joud's CFO at 11:07. SME alternatives included for each item.</div>
+                </div>
+
+                <!-- Step 7 -->
+                <div style="text-align:right;font-size:10px;color:#94a3b8;padding-top:9px;font-family:'JetBrains Mono',Consolas,monospace;">
+                  <div style="font-weight:600;color:#475569;">14 May</div>
+                  <div>14:30:00</div>
+                  <div style="color:#94a3b8;font-size:9px;">+5d&nbsp;3h</div>
+                </div>
+                <div style="background:white;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:11px;">
+                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px;">
+                    <span style="background:#475569;color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.4px;">CLIENT</span>
+                    <strong style="color:#0f172a;">Documents received via portal</strong>
+                    <span style="margin-left:auto;color:#94a3b8;font-size:9.5px;">2 of 3 items + 1 alternative</span>
+                  </div>
+                  <div style="color:#475569;line-height:1.5;">Joud uploaded Marriott scope-of-services letter + VAT/POS revenue triangulation (alternative to audited segment report). Al-Mazroei letter declined; Faisal authorised AI to pull MoCI CR records instead.</div>
+                </div>
+
+                <!-- Step 8 -->
+                <div style="text-align:right;font-size:10px;color:#94a3b8;padding-top:9px;font-family:'JetBrains Mono',Consolas,monospace;">
+                  <div>14:30:02</div>
+                  <div style="color:#16a34a;font-size:9px;">+2s</div>
+                </div>
+                <div style="background:white;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:11px;position:relative;">
+                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px;">
+                    <span style="background:#2563eb;color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.4px;">AI</span>
+                    <strong style="color:#0f172a;">Re-screening with new evidence</strong>
+                    <span style="background:#fef2f2;color:#991b1b;font-size:9.5px;font-weight:700;padding:1px 7px;border-radius:5px;">79% confidence &middot; &lt; 85%</span>
+                    <span style="margin-left:auto;background:#fef2f2;color:#991b1b;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:5px;">→ Dr. Fatima</span>
+                  </div>
+                  <div style="color:#475569;line-height:1.5;">Revenue Mix re-evaluated with triangulated data: 32% revenue traceable to beverage-adjacent service settings &mdash; still above 30% materiality threshold. Supply Chain cleared (Al-Mazroei beverage entity confirmed separate via CR 1010441238). Net: 1 of 2 flags closed; the remaining question is structural and crosses precedent &mdash; not autonomously clearable.</div>
+                  <span class="annot-badge b-blue" style="position:absolute;top:-10px;right:-8px;width:22px;height:22px;font-size:12px;">3</span>
+                </div>
+
+                <!-- Step 9 -->
+                <div style="text-align:right;font-size:10px;color:#94a3b8;padding-top:9px;font-family:'JetBrains Mono',Consolas,monospace;">
+                  <div>14:30:08</div>
+                  <div style="color:#16a34a;font-size:9px;">+6s</div>
+                </div>
+                <div style="background:white;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:11px;">
+                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px;">
+                    <span style="background:#2563eb;color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.4px;">AI</span>
+                    <strong style="color:#0f172a;">Brief assembled for Dr. Fatima</strong>
+                    <span style="margin-left:auto;color:#94a3b8;font-size:9.5px;">Question framed · precedent attached · conditions drafted</span>
+                  </div>
+                  <div style="color:#475569;line-height:1.5;">Question: <em>"Is a scope-restricted Ijarah permissible where 32% of customer revenue is traceable to alcohol-licensed venues but the customer's services are food-only?"</em> Precedent retrieved: Saudi Catering Co &middot; 2023 Ruling 18 (95% match) &middot; cleared with scope-binding condition + annual purification. Draft conditions and purification rate (0.4%) pre-filled.</div>
+                </div>
+
+                <!-- Step 10 -->
+                <div style="text-align:right;font-size:10px;color:#94a3b8;padding-top:9px;font-family:'JetBrains Mono',Consolas,monospace;">
+                  <div style="font-weight:600;color:#475569;">15 May</div>
+                  <div>09:18:42</div>
+                  <div style="color:#94a3b8;font-size:9px;">+18h&nbsp;48m</div>
+                </div>
+                <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:9px 12px;font-size:11px;">
+                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px;">
+                    <span style="background:#9f1239;color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.4px;">DR. FATIMA</span>
+                    <strong style="color:#0f172a;">Ruling issued &middot; Cleared with conditions</strong>
+                    <span style="margin-left:auto;background:#16a34a;color:white;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:5px;">✓ Cleared</span>
+                  </div>
+                  <div style="color:#475569;line-height:1.5;">Conditions accepted: food-only scope binding in financing agreement &middot; 0.4% purification rate confirmed &middot; review at facility renewal. New precedent recorded (Joud-2026-1) &mdash; future similar cases now resolvable at confidence &gt; 85%.</div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="annotations-strip">
+        <div class="annot-card c-blue">
+          <div class="annot-num">1</div>
+          <div class="annot-title">Every AI step shows the routing rule it triggered</div>
+          <div class="annot-desc">
+            The mode classification at step 3 hit 91% &mdash; above the 85% autonomous-clearance threshold &mdash; so the system cleared it without surfacing to a human. The 8-aspect screen at step 4 produced two flags in the 84–88% band; that's the operator-review band, so it went to Mohammed. The re-screen at step 8 dropped to 79% confidence on a structural question; that triggers direct advisor referral. Every routing decision shows which rule applied. The routing isn't a model output &mdash; it's a configurable policy the Board signs.
+          </div>
+          <div class="annot-value">→ "Why did this go to me?" is always answerable from the trace itself.</div>
+        </div>
+        <div class="annot-card c-blue">
+          <div class="annot-num">2</div>
+          <div class="annot-title">Confidence routing is policy, not vibe</div>
+          <div class="annot-desc">
+            &gt;85%, 60–85%, &lt;60% &mdash; three bands, three destinations: autonomous clearance, operator review, advisor referral. The thresholds are set by the Board, applied by the system, recorded in every trace. Adjusting the threshold is a governance decision; the system does not re-tune itself. The advisor is never asked to second-guess an AI verdict &mdash; she rules on the question, with the AI's reasoning attached as exhibit.
+          </div>
+          <div class="annot-value">→ The system's authority and the human's authority are explicit and bounded.</div>
+        </div>
+        <div class="annot-card c-blue">
+          <div class="annot-num">3</div>
+          <div class="annot-title">The trace is the reproducibility</div>
+          <div class="annot-desc">
+            Click "Re-run with same inputs" and the trace reproduces step-for-step: same retrieval, same ratios, same routing, same outcome. The model is deterministic against pinned versions of standards, precedent set, and source data. Auditor question "what if you re-ran this today?" has a button-click answer &mdash; not a paragraph of caveats.
+          </div>
+          <div class="annot-value">→ Reproducible AI. Auditable AI. The advisor's name on the ruling holds because the chain holds.</div>
+        </div>
+      </div>
+
+      <div class="fictional-ribbon">Rawasi Islamic Bank · Fictional Institution · Walkthrough only</div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 19 — System recap + roadmap (context, was 15→18)
+         ========================================================= -->
+    <section class="screen ctx" data-screen="19">
+      <div class="ctx-header">
+        <div class="brand-mark">
+          <div class="brand-logo"><img src="SAFWA LOGO LOGO ONLY.svg" alt="SAFWAI"></div>
+          <div>
+            <div class="brand-text">Shariah Compliance OS<span class="by">by SAFWAI AI Solutions</span></div>
+          </div>
+        </div>
+        <div class="fictional-badge">Fictional walkthrough · Not a real institution</div>
+      </div>
+
+      <div class="ctx-hero" style="display:flex;flex-direction:column;padding-top:28px;">
+        <div style="color:#94a3b8;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;">Recap &middot; Three modules</div>
         <h1 class="intro-title" style="margin-bottom:0;">What you just walked through.</h1>
 
-        <div class="recap-grid">
+        <div class="recap-grid" style="grid-template-columns: repeat(3, 1fr);">
           <div class="recap-card rc-blue">
             <div class="recap-card-badge blue">A</div>
             <div class="recap-card-title"><span class="mod-label">Module A</span> Inquiry Resolution</div>
             <div class="recap-card-desc">Retail and private banking customers ask Shariah questions. The system resolves most without reaching the advisor's desk.</div>
             <div class="recap-card-point"><span class="dot">·</span>AI retrieves AAOIFI standards and internal rulings in under a second</div>
-            <div class="recap-card-point"><span class="dot">·</span>Mohammed reviews and endorses with a single action, or routes for escalation</div>
-            <div class="recap-card-point"><span class="dot">·</span>Novel cases reach Dr. Fatima's queue triaged by confidence score and precedent state</div>
-            <div class="recap-card-point"><span class="dot">·</span>Board prep triggered only when no existing ruling applies and a new precedent is needed</div>
+            <div class="recap-card-point"><span class="dot">·</span>Mohammed reviews and endorses with a single action, or refers for ruling</div>
+            <div class="recap-card-point"><span class="dot">·</span>Novel cases reach Dr.&nbsp;Fatima triaged by confidence and precedent state</div>
+            <div class="recap-card-point"><span class="dot">·</span>Board prep triggered only when no existing ruling applies</div>
           </div>
           <div class="recap-card rc-amber">
             <div class="recap-card-badge amber">B</div>
             <div class="recap-card-title"><span class="mod-label">Module B</span> Commercial Financing Clearance</div>
             <div class="recap-card-desc">SME and corporate financing applications screened against eight Shariah aspects on submission. Most deals cleared before the RM's next call.</div>
-            <div class="recap-card-point"><span class="dot">·</span>Eight aspects checked in parallel on receipt: product structure, counterparty, supply chain exposure</div>
-            <div class="recap-card-point"><span class="dot">·</span>Precedent-covered cases cleared at Mohammed's level, same morning</div>
-            <div class="recap-card-point"><span class="dot">·</span>Faisal receives a clearance certificate he can share with the client, not a verbal confirmation</div>
-            <div class="recap-card-point"><span class="dot">·</span>Complex or novel cases escalate to Dr. Fatima with full AI reasoning attached</div>
+            <div class="recap-card-point"><span class="dot">·</span>Correct financing mode recommended at intake &mdash; wrong-mode rejections caught Day&nbsp;1</div>
+            <div class="recap-card-point"><span class="dot">·</span>Eight aspects checked in parallel on submission: product, counterparty, supply chain</div>
+            <div class="recap-card-point"><span class="dot">·</span>SME doc gaps named with acceptable alternatives, not a vague "more info needed"</div>
+            <div class="recap-card-point"><span class="dot">·</span>Flagged cases reach Dr.&nbsp;Fatima with the question framed and precedent attached</div>
+          </div>
+          <div class="recap-card rc-green">
+            <div class="recap-card-badge green">C</div>
+            <div class="recap-card-title"><span class="mod-label">Module C</span> Investment Portfolio Screening</div>
+            <div class="recap-card-desc">Quarterly AAOIFI Standard 21 recertification: 24 holdings re-screened overnight against Q1 filings and live market data.</div>
+            <div class="recap-card-point"><span class="dot">·</span>Six live data feeds named: Refinitiv, S&amp;P CapIQ, MSCI ESG, regional exchanges, FSS, ISIC4</div>
+            <div class="recap-card-point"><span class="dot">·</span>Filings parsed: figures extracted, AAOIFI ratios computed, every number sourced</div>
+            <div class="recap-card-point"><span class="dot">·</span>Corporate structure mapped from commercial registries &mdash; sector exposure visible end-to-end</div>
+            <div class="recap-card-point"><span class="dot">·</span>21 clean holdings clear without the advisor seeing them &mdash; only the 3 exceptions surface</div>
           </div>
         </div>
 
         <p class="recap-throughline">
-          In both modules: <strong>the AI does the retrieval and the reasoning trace.</strong> The human makes the ruling.
-          The Supervisory Board sees only what a human cannot resolve. That is the design: not faster compliance,
-          but compliance that knows where each decision belongs.
+          Across all three modules: <strong>the AI does the retrieval and the reasoning trace; the human makes the ruling.</strong>
+          The Supervisory Board sees only what a human cannot resolve. That is the design: not faster compliance, but
+          compliance that knows where each decision belongs.
         </p>
 
         <div class="recap-roadmap">
-          <span style="font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">Next on the roadmap</span>
+          <span style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">Next on the roadmap</span>
           <div class="roadmap-pill">
-            <span class="label">Module C</span>
-            <span class="name">Investment Portfolio Screening</span>
+            <span class="label">Module D</span>
+            <span class="name">Lifecycle Compliance &middot; post-financing flow, fund-flow attestation, breach &amp; restructuring</span>
             <span class="status">· In design</span>
           </div>
         </div>
@@ -3999,15 +5384,465 @@
 
       <div class="ctx-footer">
         <div class="left">
-          <span>● Shariah Compliance OS · Two modules complete · Rawasi Islamic Bank · May 2026</span>
+          <span>● Shariah Compliance OS · Three modules walked through · Rawasi Islamic Bank · May 2026</span>
         </div>
         <div class="right">SAFWAI AI Solutions · safwai.com</div>
       </div>
     </section>
     <!-- =========================================================
-         SCREEN 15 — Closing · what this is, what it isn't, what's next
+         SCREEN 20 — Module D intro · vision / next ring (context slide · indigo)
          ========================================================= -->
-    <section class="screen ctx" data-screen="15">
+    <section class="screen ctx" data-screen="20">
+      <div class="ctx-header">
+        <div class="brand-mark">
+          <div class="brand-logo"><img src="SAFWA LOGO LOGO ONLY.svg" alt="SAFWAI"></div>
+          <div>
+            <div class="brand-text">Shariah Compliance OS<span class="by">by SAFWAI AI Solutions</span></div>
+          </div>
+        </div>
+        <div class="fictional-badge">Module D · Designed, not yet built</div>
+      </div>
+
+      <div class="ctx-hero">
+        <div class="intro-badge mod-d">D</div>
+        <div class="intro-eyebrow mod-d">Module D · Lifecycle Compliance &middot; next on the roadmap</div>
+        <h1 class="intro-title">Compliance doesn't end<br/>at drawdown.</h1>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:36px; margin-top:18px; align-items:start;">
+          <p class="intro-tagline" style="max-width:none;margin:0;font-size:19px;line-height:1.55;">
+            A 60-month Ijarah is a 60-month obligation. Agent-appointment letters, fund-flow attestation,
+            asset-usage proofs, breach detection, remediation &mdash; today: paper, email, and an annual audit
+            catching things 11 months late.
+            <br/><br/>
+            Module&nbsp;D turns the post-financing life of a deal into the same continuous, sourced, audit-grade
+            record the system already produces at intake. Designed end-to-end. Build sequencing is the conversation.
+          </p>
+
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <div class="preview-card mod-d" style="padding:13px 16px;">
+              <div class="preview-num" style="font-size:12px;">SCREEN 21 &middot; NEXT</div>
+              <div class="preview-title" style="font-size:16px;line-height:1.3;">Al-Saqr at Day&nbsp;91 of 1825</div>
+              <div class="preview-desc" style="font-size:13px;line-height:1.5;">The Ijarah we cleared in Module&nbsp;B, now live. Agent letter filed. Fund flow attested. Asset relocated without notice &mdash; flagged. Tenor-extension request &mdash; restructuring options surfaced.</div>
+            </div>
+            <div class="preview-card mod-d" style="padding:13px 16px;">
+              <div class="preview-num" style="font-size:12px;">Q2 &middot; LIFECYCLE FLOW</div>
+              <div class="preview-title" style="font-size:16px;line-height:1.3;">Agent appointment, fund flow, audit</div>
+              <div class="preview-desc" style="font-size:13px;line-height:1.5;">Agent letters at drawdown. Fund-flow attestation from core banking. Annual Shariah audit pre-populated from the live record &mdash; not reconstructed at year-end.</div>
+            </div>
+            <div class="preview-card mod-d" style="padding:13px 16px;">
+              <div class="preview-num" style="font-size:12px;">Q3 + Q4 &middot; BREACH &amp; RESTRUCTURING</div>
+              <div class="preview-title" style="font-size:16px;line-height:1.3;">Detect, classify, remediate</div>
+              <div class="preview-desc" style="font-size:13px;line-height:1.5;">Severity bands &mdash; purification, restructuring, dissolution. Engine offers Sharia-sound paths (new Ijarah, Tawarruq, Salam) with AAOIFI citations. Riba rollovers blocked.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="intro-personas">
+          <span class="intro-personas-label">New personas in this module</span>
+          <div class="intro-persona">
+            <div class="intro-avatar">
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#4338ca"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">KH</text></svg>
+            </div>
+            <div>
+              <div class="intro-persona-name">Khalid Al-Hajri</div>
+              <div class="intro-persona-role">Shariah Lifecycle Officer &middot; live-book monitoring</div>
+            </div>
+          </div>
+          <div class="intro-persona">
+            <div class="intro-avatar">
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#1d4ed8"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">MA</text></svg>
+            </div>
+            <div>
+              <div class="intro-persona-name">Mohammed Al-Emadi</div>
+              <div class="intro-persona-role">Shariah Desk Officer &middot; returning</div>
+            </div>
+          </div>
+          <div class="intro-persona">
+            <div class="intro-avatar">
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#9f1239"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">FA</text></svg>
+            </div>
+            <div>
+              <div class="intro-persona-name">Dr. Fatima Al-Subaie</div>
+              <div class="intro-persona-role">Internal Shariah Advisor &middot; returning</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ctx-footer">
+        <div class="left">
+          <span>● Roadmap &middot; Module D &middot; design-stage walkthrough, not production code</span>
+        </div>
+        <div class="right">SAFWAI AI Solutions · safwai.com</div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 21 — Module D mock-up · Al-Saqr Day 91 lifecycle dashboard (demo)
+         ========================================================= -->
+    <section class="screen demo" data-screen="21">
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="traffic-lights">
+            <span class="light r"></span><span class="light y"></span><span class="light g"></span>
+          </div>
+          <div class="address-bar">
+            <span class="lock">🔒</span>
+            <span>app.rawasi.</span><span class="url">shariah-os.io</span><span>/lifecycle/FAC-2026-3112</span>
+          </div>
+          <div class="browser-actions">⊕ ⋮</div>
+        </div>
+
+        <div class="tab-strip">
+          <div class="tab"><span class="dot" style="background:#6366f1;"></span>Al-Saqr · Day 91 of 1825<span class="x">×</span></div>
+          <div class="tab inactive">Live book (47)<span class="x">×</span></div>
+          <div class="tab inactive">Restructuring queue (3)<span class="x">×</span></div>
+        </div>
+
+        <div class="app">
+          <aside class="sidebar">
+            <div class="module-header">
+              <div class="module-header-row">
+                <div class="sb-badge mod-d">D</div>
+                <div class="module-header-text">
+                  <div class="label">Module D</div>
+                  <div class="name">Lifecycle Compliance</div>
+                </div>
+              </div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">Live book</div>
+              <div class="nav-item active mod-d"><span class="ico">◈</span> Al-Saqr · FAC-3112 <span class="count">2</span></div>
+              <div class="nav-item"><span class="ico">◈</span> Joud · FAC-3104</div>
+              <div class="nav-item"><span class="ico">◈</span> Al-Noor · FAC-3098</div>
+              <div class="nav-item"><span class="ico">+</span> 44 more active facilities</div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">Surveillance</div>
+              <div class="nav-item"><span class="ico">⚠</span> Open flags <span class="count">5</span></div>
+              <div class="nav-item"><span class="ico">↻</span> Restructuring queue <span class="count">3</span></div>
+              <div class="nav-item"><span class="ico">◐</span> Audit cycle 2026 · open</div>
+              <div class="nav-item"><span class="ico">◆</span> Purification ledger</div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">Reference</div>
+              <div class="nav-item"><span class="ico">▦</span> AAOIFI Standards 8 · 9 · 30</div>
+              <div class="nav-item"><span class="ico">⎙</span> Audit trail</div>
+            </div>
+            <div class="other-modules">⊞ Other modules ↗</div>
+          </aside>
+
+          <div class="main">
+            <div class="topbar">
+              <div class="topbar-search">⌕ Search facilities, breaches, customers…</div>
+              <div class="topbar-right">
+                <div class="annotation-toggle" onclick="toggleAnnotations()">
+                  <div class="toggle-switch"></div>
+                  Annotations <span class="annot-state-label">on</span>
+                </div>
+                <div class="persona">
+                  <div class="avatar">
+                    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#4338ca"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">KH</text></svg>
+                  </div>
+                  <div class="persona-text">
+                    <div class="persona-name">Khalid Al-Hajri</div>
+                    <div class="persona-role">Shariah Lifecycle Officer</div>
+                  </div>
+                  <span class="chevron">▾</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="page-header">
+              <div class="page-header-left">
+                <div class="crumbs">Live book / Al-Saqr Diagnostic Center / Lifecycle</div>
+                <div class="page-title">Al-Saqr Diagnostic Center WLL <span class="case-id">FAC-2026-3112 · Ijarah QAR 3.8M · Day 91 of 1825</span></div>
+                <div class="sla-line"><span class="pulse" style="background:#6366f1;box-shadow:0 0 0 4px rgba(99,102,241,0.18);"></span><span>2 lifecycle events open · 1 asset-relocation flag · 1 customer-requested restructuring &mdash; surfaced 18 May 09:41</span></div>
+              </div>
+              <div class="page-header-right">
+                <div class="actions">
+                  <button class="btn btn-primary" style="background:#9f1239;border-color:#9f1239;color:white;">→ Refer restructuring to Dr. Fatima</button>
+                  <button class="btn btn-secondary">⎙ Lifecycle trace</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lifecycle status grid -->
+            <div style="padding:10px 24px 0;position:relative;">
+              <div style="font-size:9.5px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;display:flex;align-items:center;gap:8px;">Lifecycle attestation status &middot; T+91 days <span style="flex:1;height:1px;background:#e2e8f0;"></span> <span style="color:#475569;font-weight:600;letter-spacing:0;text-transform:none;font-size:10.5px;">Continuous since drawdown · 12 Feb 2026</span></div>
+
+              <div style="display:grid;grid-template-columns: repeat(4, 1fr); gap:10px;">
+                <div style="background:white;border:1px solid #e2e8f0;border-left:3px solid #16a34a;border-radius:8px;padding:9px 11px;">
+                  <div style="font-size:9.5px;font-weight:700;color:#166534;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;display:flex;align-items:center;gap:5px;">✓ Agent appointment</div>
+                  <div style="font-size:11px;color:#0f172a;font-weight:600;letter-spacing:-0.1px;margin-bottom:2px;">Letter signed, filed</div>
+                  <div style="font-size:10px;color:#64748b;line-height:1.45;">Customer appointed bank as agent 12 Feb &middot; counter-signed Faisal, witnessed by Mohammed. AAOIFI Standard&nbsp;8 §3/1 satisfied.</div>
+                </div>
+                <div style="background:white;border:1px solid #e2e8f0;border-left:3px solid #16a34a;border-radius:8px;padding:9px 11px;">
+                  <div style="font-size:9.5px;font-weight:700;color:#166534;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;display:flex;align-items:center;gap:5px;">✓ Fund flow</div>
+                  <div style="font-size:11px;color:#0f172a;font-weight:600;letter-spacing:-0.1px;margin-bottom:2px;">Bank&rarr;Siemens&rarr;Cust</div>
+                  <div style="font-size:10px;color:#64748b;line-height:1.45;">QAR&nbsp;3.8M paid Siemens 14 Feb; equipment delivered 9 Mar; possession transferred to Al-Saqr 11 Mar. Three-leg trace clean, pulled from core banking.</div>
+                </div>
+                <div style="background:white;border:1px solid #e2e8f0;border-left:3px solid #d97706;border-radius:8px;padding:9px 11px;position:relative;">
+                  <div style="font-size:9.5px;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;display:flex;align-items:center;gap:5px;">⚠ Asset attestation</div>
+                  <div style="font-size:11px;color:#0f172a;font-weight:600;letter-spacing:-0.1px;margin-bottom:2px;">Relocation without notice</div>
+                  <div style="font-size:10px;color:#64748b;line-height:1.45;">Asset moved from Wakra branch to Doha CBD branch ~21 Apr (service-record telemetry). Permitted-use envelope still met (same legal entity, same diagnostic activity) &mdash; but notice clause breached.</div>
+                  <span class="annot-badge b-indigo" style="position:absolute;top:-10px;right:-8px;width:22px;height:22px;font-size:12px;">1</span>
+                </div>
+                <div style="background:white;border:1px solid #e2e8f0;border-left:3px solid #16a34a;border-radius:8px;padding:9px 11px;">
+                  <div style="font-size:9.5px;font-weight:700;color:#166534;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px;display:flex;align-items:center;gap:5px;">✓ Revenue stream</div>
+                  <div style="font-size:11px;color:#0f172a;font-weight:600;letter-spacing:-0.1px;margin-bottom:2px;">Permitted use confirmed</div>
+                  <div style="font-size:10px;color:#64748b;line-height:1.45;">Q1 management accounts: 94% MRI scan revenue from diagnostic activity. No non-medical use detected. Next attestation: 30 Jun 2026.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Customer request: tenor extension -->
+            <div style="padding:14px 24px 0;position:relative;">
+              <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:12px 14px;position:relative;">
+                <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px;">
+                  <span style="font-size:18px;">↻</span>
+                  <div>
+                    <div style="font-size:11.5px;font-weight:700;color:#3730a3;letter-spacing:-0.1px;">Customer-initiated restructuring request</div>
+                    <div style="font-size:10px;color:#4338ca;">Received via RM portal &middot; 18 May 2026 09:41 &middot; Faisal flagged</div>
+                  </div>
+                  <span style="margin-left:auto;background:#6366f1;color:white;font-size:9.5px;font-weight:700;padding:3px 8px;border-radius:5px;">Restructuring engine engaged</span>
+                </div>
+                <div style="font-size:11px;color:#312e81;background:white;border:1px solid #c7d2fe;border-radius:6px;padding:8px 10px;line-height:1.5;">
+                  <strong>Customer request:</strong> <em>"Extend tenor by 12 months (60 &rarr; 72 months). Cash flow tightened by NHA reimbursement-delay programme; we want monthly payment reduced from QAR 73&nbsp;k to ~QAR 62&nbsp;k. No change to asset, no additional drawdown requested."</em> &mdash; CEO letter, Al-Saqr Diagnostic, 18 May.
+                </div>
+              </div>
+            </div>
+
+            <!-- Restructuring options -->
+            <div style="padding:14px 24px 16px;position:relative;">
+              <div style="font-size:9.5px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;display:flex;align-items:center;gap:8px;">AI-surfaced restructuring paths &middot; 3 Sharia-sound options + 1 blocked <span style="flex:1;height:1px;background:#e2e8f0;"></span></div>
+
+              <div style="display:flex;flex-direction:column;gap:9px;position:relative;">
+                <!-- Option 1: recommended -->
+                <div style="background:white;border:1px solid #e2e8f0;border-left:4px solid #16a34a;border-radius:8px;padding:10px 13px;position:relative;">
+                  <div style="display:flex;align-items:center;gap:9px;margin-bottom:4px;flex-wrap:wrap;">
+                    <span style="background:#16a34a;color:white;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:5px;letter-spacing:0.4px;">RECOMMENDED</span>
+                    <span style="font-size:12.5px;font-weight:700;color:#0f172a;letter-spacing:-0.2px;">Amended Ijarah &middot; revised rental schedule</span>
+                    <span style="font-size:10px;color:#64748b;margin-left:auto;">Complexity ⚫⚫○○○ &middot; AAOIFI Standard 9 §6/4</span>
+                  </div>
+                  <div style="font-size:10.5px;color:#475569;line-height:1.5;">Same Ijarah contract, amended schedule: 72-month tenor, rental of QAR&nbsp;62.5&nbsp;k/mo. Asset unchanged, agent appointment unchanged, no new contract. Permissible under Standard 9 §6/4 (rental adjustment with mutual consent before maturity). New purification rate computed: nil.</div>
+                  <div style="display:flex;gap:7px;margin-top:6px;font-size:9.5px;color:#64748b;">
+                    <span style="background:#f0fdf4;color:#166534;padding:1px 7px;border-radius:4px;font-weight:600;">Cleanest path</span>
+                    <span style="background:#f0fdf4;color:#166534;padding:1px 7px;border-radius:4px;font-weight:600;">No new docs</span>
+                    <span style="background:#f0fdf4;color:#166534;padding:1px 7px;border-radius:4px;font-weight:600;">Mohammed can approve</span>
+                  </div>
+                  <span class="annot-badge b-indigo" style="position:absolute;top:-10px;right:-8px;width:22px;height:22px;font-size:12px;">2</span>
+                </div>
+                <!-- Option 2 -->
+                <div style="background:white;border:1px solid #e2e8f0;border-left:4px solid #94a3b8;border-radius:8px;padding:10px 13px;">
+                  <div style="display:flex;align-items:center;gap:9px;margin-bottom:4px;flex-wrap:wrap;">
+                    <span style="font-size:12.5px;font-weight:700;color:#0f172a;letter-spacing:-0.2px;">Tawarruq settlement + new Ijarah</span>
+                    <span style="font-size:10px;color:#64748b;margin-left:auto;">Complexity ⚫⚫⚫⚫○ &middot; AAOIFI Standard 30</span>
+                  </div>
+                  <div style="font-size:10.5px;color:#475569;line-height:1.5;">Commodity Murabaha (Tawarruq) generates cash to settle outstanding QAR&nbsp;3.41&nbsp;M; new Ijarah opened at 72 months on same asset. Permissible (Standard&nbsp;30) but introduces a metals trade leg. Used when amendment isn't legally possible &mdash; not the case here.</div>
+                  <div style="display:flex;gap:7px;margin-top:6px;font-size:9.5px;color:#64748b;">
+                    <span style="background:#f1f5f9;color:#475569;padding:1px 7px;border-radius:4px;font-weight:600;">Heavier docs</span>
+                    <span style="background:#f1f5f9;color:#475569;padding:1px 7px;border-radius:4px;font-weight:600;">Counter-party (LME broker)</span>
+                  </div>
+                </div>
+                <!-- Option 3 -->
+                <div style="background:white;border:1px solid #e2e8f0;border-left:4px solid #94a3b8;border-radius:8px;padding:10px 13px;">
+                  <div style="display:flex;align-items:center;gap:9px;margin-bottom:4px;flex-wrap:wrap;">
+                    <span style="font-size:12.5px;font-weight:700;color:#0f172a;letter-spacing:-0.2px;">Asset re-buyback + fresh Ijarah term</span>
+                    <span style="font-size:10px;color:#64748b;margin-left:auto;">Complexity ⚫⚫⚫○○ &middot; AAOIFI Standard 9 §8/3</span>
+                  </div>
+                  <div style="font-size:10.5px;color:#475569;line-height:1.5;">Customer settles, bank re-purchases the asset at fair-value (independent valuation required), then leases back over 72 months. Permissible (Standard&nbsp;9 §8/3) but the bank takes a new ownership cycle on a used asset &mdash; depreciation and re-valuation friction. Cleanest when title needs to reset.</div>
+                </div>
+                <!-- Option 4: blocked -->
+                <div style="background:#fef2f2;border:1px solid #fecaca;border-left:4px solid #dc2626;border-radius:8px;padding:10px 13px;">
+                  <div style="display:flex;align-items:center;gap:9px;margin-bottom:4px;flex-wrap:wrap;">
+                    <span style="background:#dc2626;color:white;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:5px;letter-spacing:0.4px;">⊘ BLOCKED</span>
+                    <span style="font-size:12.5px;font-weight:700;color:#0f172a;letter-spacing:-0.2px;">Tenor extension with added charge</span>
+                    <span style="font-size:10px;color:#991b1b;margin-left:auto;">Riba &middot; AAOIFI Standard 1 §3/1</span>
+                  </div>
+                  <div style="font-size:10.5px;color:#7f1d1d;line-height:1.5;">The conventional "rollover with extension fee" is impermissible &mdash; the added charge is riba on deferral. The system surfaces this so an RM never accidentally proposes it. Equivalent permissible outcomes are in the three options above.</div>
+                </div>
+              </div>
+              <span class="annot-badge b-indigo" style="position:absolute;top:-2px;right:18px;width:22px;height:22px;font-size:12px;">3</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="annotations-strip">
+        <div class="annot-card c-indigo">
+          <div class="annot-num">1</div>
+          <div class="annot-title">Breach detected from the system's own telemetry</div>
+          <div class="annot-desc">
+            The MRI relocated from Wakra to Doha CBD on 21&nbsp;April. Al-Saqr didn't tell the bank &mdash; the system saw it in the Siemens service-record feed (asset location reported at each scheduled maintenance). The use is still permitted (same entity, same diagnostic activity), but the notice clause was breached. The system classifies severity: <strong>notice-only breach &middot; mild &middot; written acknowledgement closes it</strong>. Purification, restructuring, dissolution &mdash; the right band, automatically.
+          </div>
+          <div class="annot-value">→ Year-11-month surprises become Day-91 conversations.</div>
+        </div>
+        <div class="annot-card c-indigo">
+          <div class="annot-num">2</div>
+          <div class="annot-title">Restructuring as a Sharia-aware choice, not a credit decision</div>
+          <div class="annot-desc">
+            The customer asked for a tenor extension. The system frames the available paths: amended Ijarah (cleanest, recommended), Tawarruq settlement + new Ijarah (heavier docs, needed when amendment isn't legally possible), asset re-buyback + fresh term (title-reset friction). Each path cites the standard, names the complexity, lists the document delta, and identifies who can approve. The RM stops guessing; Dr.&nbsp;Fatima rules with the trade-offs already laid out.
+          </div>
+          <div class="annot-value">→ "Which restructuring is halal here?" stops being the conversation. "Which of these three do we want?" is.</div>
+        </div>
+        <div class="annot-card c-indigo">
+          <div class="annot-num">3</div>
+          <div class="annot-title">The impermissible path is shown &mdash; and blocked at the source</div>
+          <div class="annot-desc">
+            Conventional banking would offer a fourth option: extend the tenor and charge a fee for the deferral. That's riba (Standard&nbsp;1 §3/1) and the system surfaces it explicitly as <em>BLOCKED</em>. An RM who has worked elsewhere for 20 years may reach for it from muscle memory; the system catches the reach before it reaches the customer. This is the same defence as Module&nbsp;B's wrong-mode catch &mdash; just at the other end of the deal's life.
+          </div>
+          <div class="annot-value">→ The wrong answer never makes it to the customer &mdash; not at origination, not at restructuring.</div>
+        </div>
+      </div>
+
+      <div class="fictional-ribbon">Rawasi Islamic Bank · Fictional Institution · Module D mock-up (design-stage)</div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 22 — Integration architecture · LOS in, core banking out (context)
+         ========================================================= -->
+    <section class="screen ctx" data-screen="22">
+      <div class="ctx-header">
+        <div class="brand-mark">
+          <div class="brand-logo"><img src="SAFWA LOGO LOGO ONLY.svg" alt="SAFWAI"></div>
+          <div>
+            <div class="brand-text">Shariah Compliance OS<span class="by">by SAFWAI AI Solutions</span></div>
+          </div>
+        </div>
+        <div class="fictional-badge">Architecture &middot; not a system of record</div>
+      </div>
+
+      <div class="ctx-hero" style="display:flex;flex-direction:column;padding-top:24px;">
+        <div style="color:#94a3b8;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;">Integration &middot; wired into your existing rails</div>
+        <h1 class="intro-title" style="margin-bottom:14px;">We don't replace your LOS.<br/>We sit beside it.</h1>
+        <p style="font-size:13px;color:#cbd5e1;line-height:1.7;max-width:780px;margin-bottom:20px;z-index:2;position:relative;">
+          Shariah Compliance OS sits beside your existing systems. The corporate and SME data that already flows through
+          loan origination, core banking, CRM, and market data feeds &mdash; that's where we read from. The clearance
+          certificates, conditions, purification entries, audit trails, and Board prep packs &mdash; that's what we hand back.
+          Customer data stays in customer systems; the OS orchestrates against it, doesn't host it.
+        </p>
+
+        <!-- Architecture diagram -->
+        <div style="display:grid;grid-template-columns: 1fr 32px 1fr 32px 1fr; gap:0; align-items:stretch; max-width:1200px; width:100%; z-index:2; position:relative;">
+
+          <!-- INPUTS -->
+          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(148,163,184,0.22);border-radius:10px;padding:14px 16px;">
+            <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;">Sources in &middot; existing systems</div>
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <div style="background:rgba(255,255,255,0.05);border-radius:6px;padding:7px 9px;">
+                <div style="font-size:11px;color:#e2e8f0;font-weight:600;letter-spacing:-0.1px;">Loan origination (LOS)</div>
+                <div style="font-size:11px;color:#94a3b8;line-height:1.4;">Finastra Fusion &middot; Temenos T24 &middot; ICS Banks &middot; in-house</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.05);border-radius:6px;padding:7px 9px;">
+                <div style="font-size:11px;color:#e2e8f0;font-weight:600;letter-spacing:-0.1px;">Core banking</div>
+                <div style="font-size:11px;color:#94a3b8;line-height:1.4;">Oracle FLEXCUBE &middot; T24 &middot; iMAL &middot; in-house</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.05);border-radius:6px;padding:7px 9px;">
+                <div style="font-size:11px;color:#e2e8f0;font-weight:600;letter-spacing:-0.1px;">CRM &amp; client master</div>
+                <div style="font-size:11px;color:#94a3b8;line-height:1.4;">Salesforce FSC &middot; Microsoft Dynamics &middot; in-house</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.05);border-radius:6px;padding:7px 9px;">
+                <div style="font-size:11px;color:#e2e8f0;font-weight:600;letter-spacing:-0.1px;">Market &amp; reference data</div>
+                <div style="font-size:11px;color:#94a3b8;line-height:1.4;">Refinitiv Eikon &middot; S&amp;P CapIQ &middot; MSCI ESG &middot; Bloomberg</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.05);border-radius:6px;padding:7px 9px;">
+                <div style="font-size:11px;color:#e2e8f0;font-weight:600;letter-spacing:-0.1px;">Public registries</div>
+                <div style="font-size:11px;color:#94a3b8;line-height:1.4;">MoCI (KSA) &middot; QFC &middot; MERSIS (TR) &middot; FSS DART (KR) &middot; ISIC4</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Arrow column -->
+          <div style="display:flex;align-items:center;justify-content:center;color:#475569;font-size:24px;font-weight:300;">&rarr;</div>
+
+          <!-- THE OS -->
+          <div style="background:linear-gradient(140deg, rgba(99,102,241,0.18), rgba(99,102,241,0.05));border:1px solid rgba(99,102,241,0.4);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;">
+            <div style="font-size:11px;font-weight:700;color:#a5b4fc;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;">Shariah Compliance OS</div>
+            <div style="display:grid;grid-template-columns: 1fr 1fr; gap:6px;flex:1;">
+              <div style="background:rgba(37,99,235,0.15);border:1px solid rgba(59,130,246,0.35);border-radius:6px;padding:7px 9px;">
+                <div style="font-size:11px;color:#93c5fd;font-weight:700;letter-spacing:0.06em;">MODULE A</div>
+                <div style="font-size:10.5px;color:#e2e8f0;font-weight:600;letter-spacing:-0.1px;">Inquiry Resolution</div>
+              </div>
+              <div style="background:rgba(217,119,6,0.15);border:1px solid rgba(245,158,11,0.35);border-radius:6px;padding:7px 9px;">
+                <div style="font-size:11px;color:#fcd34d;font-weight:700;letter-spacing:0.06em;">MODULE B</div>
+                <div style="font-size:10.5px;color:#e2e8f0;font-weight:600;letter-spacing:-0.1px;">Financing Clearance</div>
+              </div>
+              <div style="background:rgba(22,163,74,0.15);border:1px solid rgba(34,197,94,0.35);border-radius:6px;padding:7px 9px;">
+                <div style="font-size:11px;color:#86efac;font-weight:700;letter-spacing:0.06em;">MODULE C</div>
+                <div style="font-size:10.5px;color:#e2e8f0;font-weight:600;letter-spacing:-0.1px;">Portfolio Screening</div>
+              </div>
+              <div style="background:rgba(99,102,241,0.15);border:1px solid rgba(129,140,248,0.4);border-radius:6px;padding:7px 9px;">
+                <div style="font-size:11px;color:#a5b4fc;font-weight:700;letter-spacing:0.06em;">MODULE D</div>
+                <div style="font-size:10.5px;color:#e2e8f0;font-weight:600;letter-spacing:-0.1px;">Lifecycle Compliance</div>
+                <div style="font-size:10.5px;color:#a5b4fc;font-style:italic;">in design</div>
+              </div>
+            </div>
+            <div style="margin-top:10px;padding-top:9px;border-top:1px solid rgba(99,102,241,0.25);font-size:11px;color:#94a3b8;line-height:1.5;">
+              <strong style="color:#cbd5e1;">Shared spine:</strong> governed retrieval &middot; citation-grounded reasoning &middot; confidence routing &middot; precedent store &middot; audit trail
+            </div>
+          </div>
+
+          <!-- Arrow column -->
+          <div style="display:flex;align-items:center;justify-content:center;color:#475569;font-size:24px;font-weight:300;">&rarr;</div>
+
+          <!-- OUTPUTS -->
+          <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(148,163,184,0.22);border-radius:10px;padding:14px 16px;">
+            <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px;">Outputs back &middot; into your systems</div>
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <div style="background:rgba(255,255,255,0.05);border-radius:6px;padding:7px 9px;">
+                <div style="font-size:11px;color:#e2e8f0;font-weight:600;letter-spacing:-0.1px;">Clearance certificates</div>
+                <div style="font-size:11px;color:#94a3b8;line-height:1.4;">Posted back to LOS &middot; attached to the facility record</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.05);border-radius:6px;padding:7px 9px;">
+                <div style="font-size:11px;color:#e2e8f0;font-weight:600;letter-spacing:-0.1px;">Conditions &amp; purification</div>
+                <div style="font-size:11px;color:#94a3b8;line-height:1.4;">Booked to core banking ledger &middot; scheduled events</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.05);border-radius:6px;padding:7px 9px;">
+                <div style="font-size:11px;color:#e2e8f0;font-weight:600;letter-spacing:-0.1px;">Audit trail</div>
+                <div style="font-size:11px;color:#94a3b8;line-height:1.4;">Full reasoning chain &middot; reproducible &middot; export PDF/JSON</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.05);border-radius:6px;padding:7px 9px;">
+                <div style="font-size:11px;color:#e2e8f0;font-weight:600;letter-spacing:-0.1px;">Board prep packs</div>
+                <div style="font-size:11px;color:#94a3b8;line-height:1.4;">Novel cases assembled with precedent, evidence, draft ruling</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.05);border-radius:6px;padding:7px 9px;">
+                <div style="font-size:11px;color:#e2e8f0;font-weight:600;letter-spacing:-0.1px;">Regulator returns</div>
+                <div style="font-size:11px;color:#94a3b8;line-height:1.4;">QCB / SAMA Shariah-governance evidence pulls, on demand</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Below-diagram statement -->
+        <div style="margin-top:18px;display:grid;grid-template-columns: 1fr 1fr 1fr; gap:14px; max-width:1200px; width:100%; z-index:2; position:relative;">
+          <div style="font-size:12.5px;color:#cbd5e1;line-height:1.55;padding:10px 13px;background:rgba(255,255,255,0.03);border-left:3px solid #6366f1;border-radius:6px;">
+            <strong style="color:#e2e8f0;">Adapters, not migrations.</strong> SAFWAI maintains connectors for the major LOS and core banking platforms. No data migration project &mdash; the OS reads from where the data already lives.
+          </div>
+          <div style="font-size:12.5px;color:#cbd5e1;line-height:1.55;padding:10px 13px;background:rgba(255,255,255,0.03);border-left:3px solid #6366f1;border-radius:6px;">
+            <strong style="color:#e2e8f0;">No new data dependencies.</strong> The market data feeds we use (Refinitiv, CapIQ, MSCI) are feeds your wealth and treasury desks already pay for. We orchestrate, not duplicate.
+          </div>
+          <div style="font-size:12.5px;color:#cbd5e1;line-height:1.55;padding:10px 13px;background:rgba(255,255,255,0.03);border-left:3px solid #6366f1;border-radius:6px;">
+            <strong style="color:#e2e8f0;">Data residency respected.</strong> On-prem deployment supported for institutions where customer data cannot leave the bank's network. Same architecture; different hosting boundary.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="ctx-footer">
+        <div class="left">
+          <span>&#9679; Shariah Compliance OS &middot; Integration architecture &middot; SAFWAI AI Solutions</span>
+        </div>
+        <div class="right">SAFWAI AI Solutions · safwai.com</div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 23 — Closing · what this is, what it isn't, what's next (was 16→19→20→22)
+         ========================================================= -->
+    <section class="screen ctx" data-screen="23">
       <div class="ctx-header">
         <div class="brand-mark">
           <div style="background:white;border-radius:8px;padding:5px 10px;display:flex;align-items:center;">
@@ -4018,12 +5853,13 @@
       </div>
 
       <div class="ctx-hero" style="display:flex;flex-direction:column;padding-top:28px;">
-        <div style="color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:16px;">Closing &middot; where the work stands</div>
+        <div style="color:#94a3b8;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:16px;">Closing &middot; where the work stands</div>
         <h1 class="intro-title" style="margin-bottom:16px;">Product vision, architecture and design &mdash; complete.</h1>
-        <p style="font-size:13.5px;color:#cbd5e1;line-height:1.75;max-width:680px;margin-bottom:0;z-index:2;position:relative;">
-          Two modules of Shariah Compliance OS specified end to end: governance model, personas, workflows, escalation logic,
-          audit trail. The components beneath the screens &mdash; governed retrieval, citation&#8209;grounded reasoning, human review and
-          routing, audit&#8209;grade traceability &mdash; already run in production on SAFWAI&rsquo;s composable platform across other regulated domains.
+        <p style="font-size:13.5px;color:#cbd5e1;line-height:1.75;max-width:740px;margin-bottom:0;z-index:2;position:relative;">
+          Three modules walked through end to end &mdash; Inquiry Resolution, Financing Clearance, Portfolio Screening &mdash; plus Module&nbsp;D
+          Lifecycle Compliance designed and mocked. Governance model, personas, workflows, confidence routing, audit trail, integration
+          surface: all specified. The components beneath the screens &mdash; governed retrieval, citation&#8209;grounded reasoning, human review
+          and routing, audit&#8209;grade traceability &mdash; already run in production on SAFWAI&rsquo;s composable platform across other regulated domains.
         </p>
 
         <div class="ask-grid">
@@ -4032,9 +5868,9 @@
             <div class="ask-time">Designed in full</div>
             <span class="ask-title">Architecture and design, end to end</span>
             <p class="ask-text">
-              Both modules walked through screen by screen: eight Shariah aspects, three personas, the precedent model, the
-              confidence&#8209;routing logic, the escalation rules, the audit trail. Every screen is wired into the same governance
-              model &mdash; AI retrieval and reasoning trace, human ruling, Board approval only where no precedent applies.
+              Three modules walked through screen by screen plus Module&nbsp;D designed: eight Shariah aspects, four personas, the precedent
+              model, the confidence&#8209;routing logic, the referral rules, the audit trail, the integration surface. Every screen is wired
+              into the same governance spine &mdash; AI retrieval and reasoning trace, human ruling, Board approval only where no precedent applies.
             </p>
           </div>
           <div class="ask-card">
