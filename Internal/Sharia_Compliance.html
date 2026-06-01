@@ -59,6 +59,7 @@
   }
   .deck {
     width: 1440px; height: 900px;
+    flex-shrink: 0;
     position: relative;
     transform-origin: center center;
     box-shadow: 0 30px 80px rgba(0,0,0,0.6);
@@ -2051,9 +2052,55 @@
 
   /* ---------- Fictional disclaimer ribbon ---------- */
   .fictional-ribbon { display: none; }
+
+  /* ---------- Small-screen overlay ---------- */
+  .small-screen-overlay { display: none; }
+  @media (max-width: 1023px) {
+    .small-screen-overlay {
+      display: flex;
+      position: fixed; inset: 0;
+      z-index: 99999;
+      background: #0a1424;
+      align-items: center; justify-content: center;
+      padding: 32px;
+      text-align: center;
+    }
+    .small-screen-overlay .sso-card {
+      max-width: 460px;
+      color: #e2e8f0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    .small-screen-overlay .sso-logo { width: 64px; height: 64px; margin: 0 auto 20px; opacity: 0.9; }
+    .small-screen-overlay h1 {
+      font-size: 22px; font-weight: 700; color: #f8fafc;
+      margin-bottom: 14px; line-height: 1.3;
+    }
+    .small-screen-overlay p {
+      font-size: 15px; line-height: 1.6; color: #94a3b8;
+      margin-bottom: 24px;
+    }
+    .small-screen-overlay .sso-continue {
+      display: inline-block;
+      font-size: 13px; color: #64748b;
+      text-decoration: underline; cursor: pointer;
+      background: none; border: none; padding: 8px 12px;
+      font-family: inherit;
+    }
+    .small-screen-overlay .sso-continue:hover { color: #94a3b8; }
+    body.sso-dismissed .small-screen-overlay { display: none; }
+  }
 </style>
 </head>
 <body>
+
+<div class="small-screen-overlay" role="dialog" aria-label="Screen size notice">
+  <div class="sso-card">
+    <img src="SAFWA LOGO LOGO ONLY.svg" alt="SAFWAI" class="sso-logo">
+    <h1>Best viewed on a larger screen</h1>
+    <p>This detailed mockup is designed for desktop or large tablet. Please reopen on a regular or large screen for the intended experience.</p>
+    <button type="button" class="sso-continue" onclick="document.body.classList.add('sso-dismissed')">Continue anyway</button>
+  </div>
+</div>
 
 <div class="stage">
   <div class="deck" id="deck">
@@ -2119,7 +2166,7 @@
       <div class="ctx-footer">
         <div class="left">
           <span>● Scenario: Rawasi Islamic Bank · Doha</span>
-          <span>● Walkthrough: 23 screens</span>
+          <span>● Walkthrough: 24 screens</span>
           <span>● Read time: ~15 minutes</span>
         </div>
         <div class="right">SAFWAI AI Solutions · safwai.com</div>
@@ -2213,7 +2260,8 @@
 
       <div class="ctx-hero" style="display:flex;flex-direction:column;padding-top:20px;">
         <div style="color:#94a3b8;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;">Four processes · Four distinct problems &middot; A, B, C walked through · D designed and mocked</div>
-        <h1 class="intro-title" style="font-size:44px;margin-bottom:0;line-height:1.05;">Where the system intervenes.</h1>
+        <h1 class="intro-title" style="font-size:44px;margin-bottom:6px;line-height:1.05;">Where the system intervenes.</h1>
+        <div style="color:#cbd5e1;font-size:15px;font-weight:500;margin-bottom:14px;max-width:920px;line-height:1.5;">Operational Sharia compliance across the transaction and restructuring lifecycle &mdash; not a business-activity halal/haram classifier.</div>
 
         <div class="module-compare">
 
@@ -5416,6 +5464,8 @@
             <br/><br/>
             Module&nbsp;D turns the post-financing life of a deal into the same continuous, sourced, audit-grade
             record the system already produces at intake. Designed end-to-end. Build sequencing is the conversation.
+            <br/><br/>
+            <span style="font-weight:600;">Charity exposure, profit forfeiture, disbursement freezes &mdash; priced and surfaced the moment the breach is detectable, not at the year-end audit.</span>
           </p>
 
           <div style="display:flex;flex-direction:column;gap:9px;">
@@ -5446,6 +5496,15 @@
             <div>
               <div class="intro-persona-name">Khalid Al-Hajri</div>
               <div class="intro-persona-role">Shariah Lifecycle Officer &middot; live-book monitoring</div>
+            </div>
+          </div>
+          <div class="intro-persona">
+            <div class="intro-avatar">
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#b45309"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">FA</text></svg>
+            </div>
+            <div>
+              <div class="intro-persona-name">Faisal Al-Ansari</div>
+              <div class="intro-persona-role">Senior RM &middot; returning &middot; frontline remediation copilot</div>
             </div>
           </div>
           <div class="intro-persona">
@@ -5596,74 +5655,39 @@
               </div>
             </div>
 
-            <!-- Customer request: tenor extension -->
-            <div style="padding:14px 24px 0;position:relative;">
-              <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:12px 14px;position:relative;">
-                <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px;">
-                  <span style="font-size:18px;">↻</span>
-                  <div>
-                    <div style="font-size:11.5px;font-weight:700;color:#3730a3;letter-spacing:-0.1px;">Customer-initiated restructuring request</div>
-                    <div style="font-size:10px;color:#4338ca;">Received via RM portal &middot; 18 May 2026 09:41 &middot; Faisal flagged</div>
+            <!-- Breach severity ladder -->
+            <div style="padding:12px 24px 0;position:relative;">
+              <div style="font-size:9.5px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;display:flex;align-items:center;gap:8px;">Breach severity ladder &middot; how the system bands what it finds <span style="flex:1;height:1px;background:#e2e8f0;"></span> <span style="color:#475569;font-weight:600;letter-spacing:0;text-transform:none;font-size:10.5px;">Al-Saqr today: <span style="color:#92400e;">MILD</span></span></div>
+
+              <div style="display:grid;grid-template-columns: repeat(3, 1fr); gap:10px;">
+                <!-- Mild -->
+                <div style="background:white;border:1px solid #e2e8f0;border-left:3px solid #d97706;border-radius:8px;padding:10px 12px;position:relative;">
+                  <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+                    <span style="background:#fef3c7;color:#92400e;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.4px;">MILD</span>
+                    <span style="font-size:11.5px;font-weight:700;color:#0f172a;letter-spacing:-0.1px;">Notice / procedural breach</span>
                   </div>
-                  <span style="margin-left:auto;background:#6366f1;color:white;font-size:9.5px;font-weight:700;padding:3px 8px;border-radius:5px;">Restructuring engine engaged</span>
+                  <div style="font-size:10px;color:#475569;line-height:1.5;margin-bottom:4px;"><strong style="color:#92400e;">This case:</strong> Al-Saqr relocated the MRI without notice. Permitted use intact, contract clause breached.</div>
+                  <div style="font-size:9.5px;color:#64748b;line-height:1.45;"><strong>Remedy:</strong> written acknowledgement, file note.<br/><strong>Exposure:</strong> nil. No profit at risk.</div>
                 </div>
-                <div style="font-size:11px;color:#312e81;background:white;border:1px solid #c7d2fe;border-radius:6px;padding:8px 10px;line-height:1.5;">
-                  <strong>Customer request:</strong> <em>"Extend tenor by 12 months (60 &rarr; 72 months). Cash flow tightened by NHA reimbursement-delay programme; we want monthly payment reduced from QAR 73&nbsp;k to ~QAR 62&nbsp;k. No change to asset, no additional drawdown requested."</em> &mdash; CEO letter, Al-Saqr Diagnostic, 18 May.
+                <!-- Material -->
+                <div style="background:white;border:1px solid #e2e8f0;border-left:3px solid #dc2626;border-radius:8px;padding:10px 12px;position:relative;">
+                  <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+                    <span style="background:#fee2e2;color:#991b1b;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.4px;">MATERIAL</span>
+                    <span style="font-size:11.5px;font-weight:700;color:#0f172a;letter-spacing:-0.1px;">Contract-flow breach</span>
+                  </div>
+                  <div style="font-size:10px;color:#475569;line-height:1.5;margin-bottom:4px;"><strong style="color:#991b1b;">Reference case:</strong> SME diverts disbursed funds to a third-party account before the contracted vendor leg. Outcome may match intent &mdash; the flow itself breaks the contract.</div>
+                  <div style="font-size:9.5px;color:#64748b;line-height:1.45;"><strong>Remedy:</strong> freeze remaining tranches, customer remediation letter, Shariah committee review.<br/><strong>Exposure:</strong> profit on the transaction forfeited as <em>charity</em>; clawback risk.</div>
+                </div>
+                <!-- Terminal -->
+                <div style="background:white;border:1px solid #e2e8f0;border-left:3px solid #6b21a8;border-radius:8px;padding:10px 12px;position:relative;">
+                  <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+                    <span style="background:#ede9fe;color:#5b21b6;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.4px;">TERMINAL</span>
+                    <span style="font-size:11.5px;font-weight:700;color:#0f172a;letter-spacing:-0.1px;">Substantive Sharia violation</span>
+                  </div>
+                  <div style="font-size:10px;color:#475569;line-height:1.5;margin-bottom:4px;"><strong style="color:#5b21b6;">Reference case:</strong> financed asset diverted to an impermissible activity, or fund flow proven to fund a haram counterparty. Remediation can't cure.</div>
+                  <div style="font-size:9.5px;color:#64748b;line-height:1.45;"><strong>Remedy:</strong> dissolution, customer settlement, board notification.<br/><strong>Exposure:</strong> full profit forfeiture, reputational, regulatory.</div>
                 </div>
               </div>
-            </div>
-
-            <!-- Restructuring options -->
-            <div style="padding:14px 24px 16px;position:relative;">
-              <div style="font-size:9.5px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;display:flex;align-items:center;gap:8px;">AI-surfaced restructuring paths &middot; 3 Sharia-sound options + 1 blocked <span style="flex:1;height:1px;background:#e2e8f0;"></span></div>
-
-              <div style="display:flex;flex-direction:column;gap:9px;position:relative;">
-                <!-- Option 1: recommended -->
-                <div style="background:white;border:1px solid #e2e8f0;border-left:4px solid #16a34a;border-radius:8px;padding:10px 13px;position:relative;">
-                  <div style="display:flex;align-items:center;gap:9px;margin-bottom:4px;flex-wrap:wrap;">
-                    <span style="background:#16a34a;color:white;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:5px;letter-spacing:0.4px;">RECOMMENDED</span>
-                    <span style="font-size:12.5px;font-weight:700;color:#0f172a;letter-spacing:-0.2px;">Amended Ijarah &middot; revised rental schedule</span>
-                    <span style="font-size:10px;color:#64748b;margin-left:auto;">Complexity ⚫⚫○○○ &middot; AAOIFI Standard 9 §6/4</span>
-                  </div>
-                  <div style="font-size:10.5px;color:#475569;line-height:1.5;">Same Ijarah contract, amended schedule: 72-month tenor, rental of QAR&nbsp;62.5&nbsp;k/mo. Asset unchanged, agent appointment unchanged, no new contract. Permissible under Standard 9 §6/4 (rental adjustment with mutual consent before maturity). New purification rate computed: nil.</div>
-                  <div style="display:flex;gap:7px;margin-top:6px;font-size:9.5px;color:#64748b;">
-                    <span style="background:#f0fdf4;color:#166534;padding:1px 7px;border-radius:4px;font-weight:600;">Cleanest path</span>
-                    <span style="background:#f0fdf4;color:#166534;padding:1px 7px;border-radius:4px;font-weight:600;">No new docs</span>
-                    <span style="background:#f0fdf4;color:#166534;padding:1px 7px;border-radius:4px;font-weight:600;">Mohammed can approve</span>
-                  </div>
-                  <span class="annot-badge b-indigo" style="position:absolute;top:-10px;right:-8px;width:22px;height:22px;font-size:12px;">2</span>
-                </div>
-                <!-- Option 2 -->
-                <div style="background:white;border:1px solid #e2e8f0;border-left:4px solid #94a3b8;border-radius:8px;padding:10px 13px;">
-                  <div style="display:flex;align-items:center;gap:9px;margin-bottom:4px;flex-wrap:wrap;">
-                    <span style="font-size:12.5px;font-weight:700;color:#0f172a;letter-spacing:-0.2px;">Tawarruq settlement + new Ijarah</span>
-                    <span style="font-size:10px;color:#64748b;margin-left:auto;">Complexity ⚫⚫⚫⚫○ &middot; AAOIFI Standard 30</span>
-                  </div>
-                  <div style="font-size:10.5px;color:#475569;line-height:1.5;">Commodity Murabaha (Tawarruq) generates cash to settle outstanding QAR&nbsp;3.41&nbsp;M; new Ijarah opened at 72 months on same asset. Permissible (Standard&nbsp;30) but introduces a metals trade leg. Used when amendment isn't legally possible &mdash; not the case here.</div>
-                  <div style="display:flex;gap:7px;margin-top:6px;font-size:9.5px;color:#64748b;">
-                    <span style="background:#f1f5f9;color:#475569;padding:1px 7px;border-radius:4px;font-weight:600;">Heavier docs</span>
-                    <span style="background:#f1f5f9;color:#475569;padding:1px 7px;border-radius:4px;font-weight:600;">Counter-party (LME broker)</span>
-                  </div>
-                </div>
-                <!-- Option 3 -->
-                <div style="background:white;border:1px solid #e2e8f0;border-left:4px solid #94a3b8;border-radius:8px;padding:10px 13px;">
-                  <div style="display:flex;align-items:center;gap:9px;margin-bottom:4px;flex-wrap:wrap;">
-                    <span style="font-size:12.5px;font-weight:700;color:#0f172a;letter-spacing:-0.2px;">Asset re-buyback + fresh Ijarah term</span>
-                    <span style="font-size:10px;color:#64748b;margin-left:auto;">Complexity ⚫⚫⚫○○ &middot; AAOIFI Standard 9 §8/3</span>
-                  </div>
-                  <div style="font-size:10.5px;color:#475569;line-height:1.5;">Customer settles, bank re-purchases the asset at fair-value (independent valuation required), then leases back over 72 months. Permissible (Standard&nbsp;9 §8/3) but the bank takes a new ownership cycle on a used asset &mdash; depreciation and re-valuation friction. Cleanest when title needs to reset.</div>
-                </div>
-                <!-- Option 4: blocked -->
-                <div style="background:#fef2f2;border:1px solid #fecaca;border-left:4px solid #dc2626;border-radius:8px;padding:10px 13px;">
-                  <div style="display:flex;align-items:center;gap:9px;margin-bottom:4px;flex-wrap:wrap;">
-                    <span style="background:#dc2626;color:white;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:5px;letter-spacing:0.4px;">⊘ BLOCKED</span>
-                    <span style="font-size:12.5px;font-weight:700;color:#0f172a;letter-spacing:-0.2px;">Tenor extension with added charge</span>
-                    <span style="font-size:10px;color:#991b1b;margin-left:auto;">Riba &middot; AAOIFI Standard 1 §3/1</span>
-                  </div>
-                  <div style="font-size:10.5px;color:#7f1d1d;line-height:1.5;">The conventional "rollover with extension fee" is impermissible &mdash; the added charge is riba on deferral. The system surfaces this so an RM never accidentally proposes it. Equivalent permissible outcomes are in the three options above.</div>
-                </div>
-              </div>
-              <span class="annot-badge b-indigo" style="position:absolute;top:-2px;right:18px;width:22px;height:22px;font-size:12px;">3</span>
             </div>
 
           </div>
@@ -5675,23 +5699,225 @@
           <div class="annot-num">1</div>
           <div class="annot-title">Breach detected from the system's own telemetry</div>
           <div class="annot-desc">
-            The MRI relocated from Wakra to Doha CBD on 21&nbsp;April. Al-Saqr didn't tell the bank &mdash; the system saw it in the Siemens service-record feed (asset location reported at each scheduled maintenance). The use is still permitted (same entity, same diagnostic activity), but the notice clause was breached. The system classifies severity: <strong>notice-only breach &middot; mild &middot; written acknowledgement closes it</strong>. Purification, restructuring, dissolution &mdash; the right band, automatically.
+            The MRI relocated from Wakra to Doha CBD on 21&nbsp;April. Al-Saqr didn't tell the bank &mdash; the system saw it in the Siemens service-record feed (asset location reported at each scheduled maintenance). The use is still permitted (same entity, same diagnostic activity), but the notice clause was breached. The system didn't wait for the next audit; it surfaced the breach the moment the data did.
           </div>
           <div class="annot-value">→ Year-11-month surprises become Day-91 conversations.</div>
         </div>
         <div class="annot-card c-indigo">
-          <div class="annot-num">2</div>
+          <div class="annot-num">&middot;</div>
+          <div class="annot-title">Continuous attestation, not annual audit</div>
+          <div class="annot-desc">
+            The four tiles above are the live state of the deal &mdash; agent appointment filed, fund flow attested from core banking, asset usage tracked against permitted-use, revenue stream confirmed quarterly from management accounts. Each tile carries the AAOIFI clause it satisfies. The annual Shariah audit is pre-populated from this record, not reconstructed by interview at year-end.
+          </div>
+          <div class="annot-value">→ The audit binder writes itself.</div>
+        </div>
+        <div class="annot-card c-indigo">
+          <div class="annot-num">&middot;</div>
+          <div class="annot-title">The severity ladder prices the consequence</div>
+          <div class="annot-desc">
+            One classifier, three bands, three different financial mechanics. <strong>MILD</strong> &mdash; notice clause only, no profit at risk. <strong>MATERIAL</strong> &mdash; contract-flow breach (e.g., disbursed funds routed to a third-party account before the contracted vendor leg): profit forfeited as <em>charity</em>, clawback risk, freeze on remaining tranches. <strong>TERMINAL</strong> &mdash; substantive Sharia violation: dissolution, full profit forfeiture, regulatory notification. The exposure is named the moment the breach is detected, not at year-end.
+          </div>
+          <div class="annot-value">→ Next slide: when the customer asks for restructuring, the engine answers with Sharia-sound paths &mdash; and blocks the riba rollover.</div>
+        </div>
+      </div>
+
+      <div class="fictional-ribbon">Rawasi Islamic Bank · Fictional Institution · Module D mock-up (design-stage)</div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 21b — Module D mock-up · Al-Saqr restructuring engine (demo · continuation)
+         ========================================================= -->
+    <section class="screen demo" data-screen="21b">
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="traffic-lights">
+            <span class="light r"></span><span class="light y"></span><span class="light g"></span>
+          </div>
+          <div class="address-bar">
+            <span class="lock">🔒</span>
+            <span>app.rawasi.</span><span class="url">shariah-os.io</span><span>/lifecycle/FAC-2026-3112#restructuring</span>
+          </div>
+          <div class="browser-actions">⊕ ⋮</div>
+        </div>
+
+        <div class="tab-strip">
+          <div class="tab"><span class="dot" style="background:#6366f1;"></span>Al-Saqr &middot; Restructuring<span class="x">×</span></div>
+          <div class="tab inactive">Live book (47)<span class="x">×</span></div>
+          <div class="tab inactive">Restructuring queue (3)<span class="x">×</span></div>
+        </div>
+
+        <div class="app">
+          <aside class="sidebar">
+            <div class="module-header">
+              <div class="module-header-row">
+                <div class="sb-badge mod-d">D</div>
+                <div class="module-header-text">
+                  <div class="label">Module D</div>
+                  <div class="name">Lifecycle Compliance</div>
+                </div>
+              </div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">Live book</div>
+              <div class="nav-item active mod-d"><span class="ico">◈</span> Al-Saqr &middot; FAC-3112 <span class="count">2</span></div>
+              <div class="nav-item"><span class="ico">◈</span> Joud &middot; FAC-3104</div>
+              <div class="nav-item"><span class="ico">◈</span> Al-Noor &middot; FAC-3098</div>
+              <div class="nav-item"><span class="ico">+</span> 44 more active facilities</div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">Surveillance</div>
+              <div class="nav-item"><span class="ico">⚠</span> Open flags <span class="count">5</span></div>
+              <div class="nav-item"><span class="ico">↻</span> Restructuring queue <span class="count">3</span></div>
+              <div class="nav-item"><span class="ico">◐</span> Audit cycle 2026 &middot; open</div>
+              <div class="nav-item"><span class="ico">◆</span> Purification ledger</div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">Reference</div>
+              <div class="nav-item"><span class="ico">▦</span> AAOIFI Standards 8 &middot; 9 &middot; 30</div>
+              <div class="nav-item"><span class="ico">⎙</span> Audit trail</div>
+            </div>
+            <div class="other-modules">⊞ Other modules ↗</div>
+          </aside>
+
+          <div class="main">
+            <div class="topbar">
+              <div class="topbar-search">⌕ Search facilities, breaches, customers…</div>
+              <div class="topbar-right">
+                <div class="annotation-toggle" onclick="toggleAnnotations()">
+                  <div class="toggle-switch"></div>
+                  Annotations <span class="annot-state-label">on</span>
+                </div>
+                <div class="persona">
+                  <div class="avatar">
+                    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#4338ca"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">KH</text></svg>
+                  </div>
+                  <div class="persona-text">
+                    <div class="persona-name">Khalid Al-Hajri</div>
+                    <div class="persona-role">Shariah Lifecycle Officer</div>
+                  </div>
+                  <span class="chevron">▾</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="page-header">
+              <div class="page-header-left">
+                <div class="crumbs">Live book / Al-Saqr Diagnostic Center / Lifecycle / Restructuring</div>
+                <div class="page-title">Al-Saqr Diagnostic Center WLL <span class="case-id">FAC-2026-3112 &middot; Restructuring request &middot; surfaced 18 May 09:41</span></div>
+                <div class="sla-line"><span class="pulse" style="background:#6366f1;box-shadow:0 0 0 4px rgba(99,102,241,0.18);"></span><span>Customer-requested tenor extension &mdash; engine evaluating 4 Sharia-sound paths + 1 impermissible (blocked at source)</span></div>
+              </div>
+              <div class="page-header-right">
+                <div class="actions">
+                  <button class="btn btn-primary" style="background:#9f1239;border-color:#9f1239;color:white;">→ Refer to Dr. Fatima</button>
+                  <button class="btn btn-secondary">⎙ Decision trace</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Customer request: tenor extension -->
+            <div style="padding:8px 24px 0;position:relative;">
+              <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:8px 12px;position:relative;">
+                <div style="display:flex;align-items:center;gap:9px;margin-bottom:4px;">
+                  <span style="font-size:14px;">↻</span>
+                  <div style="font-size:11px;font-weight:700;color:#3730a3;letter-spacing:-0.1px;">Customer-initiated restructuring request</div>
+                  <span style="font-size:9.5px;color:#4338ca;">RM portal &middot; 18 May 09:41 &middot; Faisal flagged</span>
+                  <span style="margin-left:auto;background:#6366f1;color:white;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;">Engine engaged</span>
+                </div>
+                <div style="font-size:10.5px;color:#312e81;background:white;border:1px solid #c7d2fe;border-radius:5px;padding:6px 9px;line-height:1.45;">
+                  <strong>Customer request:</strong> <em>"Extend tenor by 12 months (60 &rarr; 72 months). Cash flow tightened by NHA reimbursement-delay programme; monthly payment reduced from QAR 73&nbsp;k to ~62&nbsp;k. No change to asset, no additional drawdown."</em> &mdash; CEO letter, Al-Saqr Diagnostic, 18 May.
+                </div>
+              </div>
+            </div>
+
+            <!-- Restructuring options -->
+            <div style="padding:8px 24px 12px;position:relative;">
+              <div style="font-size:9.5px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;display:flex;align-items:center;gap:8px;">AI-surfaced restructuring paths &middot; 4 Sharia-sound options + 1 blocked <span style="flex:1;height:1px;background:#e2e8f0;"></span></div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;position:relative;">
+                <!-- Option 1: recommended -->
+                <div style="background:white;border:1px solid #e2e8f0;border-left:4px solid #16a34a;border-radius:8px;padding:9px 12px;position:relative;">
+                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px;flex-wrap:wrap;">
+                    <span style="background:#16a34a;color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.4px;">RECOMMENDED</span>
+                    <span style="font-size:11.5px;font-weight:700;color:#0f172a;letter-spacing:-0.2px;">Amended Ijarah &middot; revised rental</span>
+                  </div>
+                  <div style="font-size:9.5px;color:#64748b;margin-bottom:4px;">Complexity ⚫⚫○○○ &middot; AAOIFI Std 9 §6/4</div>
+                  <div style="font-size:10px;color:#475569;line-height:1.45;">Same contract, amended schedule: 72-mo tenor, QAR&nbsp;62.5&nbsp;k/mo. Asset, agent appointment unchanged. Permissible (rental adjustment with mutual consent). No new contract; purification nil.</div>
+                  <div style="display:flex;gap:5px;margin-top:5px;font-size:9px;color:#64748b;flex-wrap:wrap;">
+                    <span style="background:#f0fdf4;color:#166534;padding:1px 6px;border-radius:3px;font-weight:600;">Cleanest</span>
+                    <span style="background:#f0fdf4;color:#166534;padding:1px 6px;border-radius:3px;font-weight:600;">No new docs</span>
+                    <span style="background:#f0fdf4;color:#166534;padding:1px 6px;border-radius:3px;font-weight:600;">Mohammed approves</span>
+                  </div>
+                  <span class="annot-badge b-indigo" style="position:absolute;top:-10px;right:-8px;width:22px;height:22px;font-size:12px;">1</span>
+                </div>
+                <!-- Option 4: payment holiday (moved up to pair with recommended) -->
+                <div style="background:white;border:1px solid #e2e8f0;border-left:4px solid #94a3b8;border-radius:8px;padding:9px 12px;position:relative;">
+                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px;flex-wrap:wrap;">
+                    <span style="font-size:11.5px;font-weight:700;color:#0f172a;letter-spacing:-0.2px;">Payment holiday (3&nbsp;mo) + tail re-amortisation</span>
+                  </div>
+                  <div style="font-size:9.5px;color:#64748b;margin-bottom:4px;">Complexity ⚫⚫○○○ &middot; AAOIFI Std 9 §6/4 + Std 8 §4/2</div>
+                  <div style="font-size:10px;color:#475569;line-height:1.45;">3-month rental suspension; tail re-amortised over original term. <strong>Suspended rentals do not accrue profit</strong> (true forbearance, not deferral-for-charge). Default: <em>ta&rsquo;widh</em> at admin cost only, no penalty profit. <strong>Addendum</strong>, not a new contract.</div>
+                  <div style="display:flex;gap:5px;margin-top:5px;font-size:9px;color:#64748b;flex-wrap:wrap;">
+                    <span style="background:#f1f5f9;color:#475569;padding:1px 6px;border-radius:3px;font-weight:600;">No profit on gap</span>
+                    <span style="background:#f1f5f9;color:#475569;padding:1px 6px;border-radius:3px;font-weight:600;">Addendum</span>
+                    <span style="background:#f1f5f9;color:#475569;padding:1px 6px;border-radius:3px;font-weight:600;">ta&rsquo;widh at cost</span>
+                  </div>
+                  <span class="annot-badge b-indigo" style="position:absolute;top:-10px;right:-8px;width:22px;height:22px;font-size:12px;">2</span>
+                </div>
+                <!-- Option 2: Tawarruq -->
+                <div style="background:white;border:1px solid #e2e8f0;border-left:4px solid #94a3b8;border-radius:8px;padding:9px 12px;">
+                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px;flex-wrap:wrap;">
+                    <span style="font-size:11.5px;font-weight:700;color:#0f172a;letter-spacing:-0.2px;">Tawarruq settlement + new Ijarah</span>
+                  </div>
+                  <div style="font-size:9.5px;color:#64748b;margin-bottom:4px;">Complexity ⚫⚫⚫⚫○ &middot; AAOIFI Std 30</div>
+                  <div style="font-size:10px;color:#475569;line-height:1.45;">Commodity Murabaha generates cash to settle QAR&nbsp;3.41&nbsp;M; new Ijarah opened at 72&nbsp;mo on same asset. Permissible but introduces a metals trade leg. Used when amendment isn't legally possible &mdash; not the case here.</div>
+                </div>
+                <!-- Option 3: Asset re-buyback -->
+                <div style="background:white;border:1px solid #e2e8f0;border-left:4px solid #94a3b8;border-radius:8px;padding:9px 12px;">
+                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px;flex-wrap:wrap;">
+                    <span style="font-size:11.5px;font-weight:700;color:#0f172a;letter-spacing:-0.2px;">Asset re-buyback + fresh Ijarah term</span>
+                  </div>
+                  <div style="font-size:9.5px;color:#64748b;margin-bottom:4px;">Complexity ⚫⚫⚫○○ &middot; AAOIFI Std 9 §8/3</div>
+                  <div style="font-size:10px;color:#475569;line-height:1.45;">Customer settles; bank re-purchases at fair-value (independent valuation), then leases back over 72&nbsp;mo. Permissible but the bank takes a new ownership cycle on a used asset &mdash; depreciation friction. Cleanest when title must reset.</div>
+                </div>
+                <!-- Option 5: BLOCKED, full width -->
+                <div style="grid-column:1 / -1;background:#fef2f2;border:1px solid #fecaca;border-left:4px solid #dc2626;border-radius:8px;padding:9px 12px;position:relative;">
+                  <div style="display:flex;align-items:center;gap:7px;margin-bottom:3px;flex-wrap:wrap;">
+                    <span style="background:#dc2626;color:white;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:0.4px;">⊘ BLOCKED</span>
+                    <span style="font-size:11.5px;font-weight:700;color:#0f172a;letter-spacing:-0.2px;">Tenor extension with added charge</span>
+                    <span style="font-size:9.5px;color:#991b1b;margin-left:auto;">Riba &middot; AAOIFI Std 1 §3/1</span>
+                  </div>
+                  <div style="font-size:10px;color:#7f1d1d;line-height:1.45;">The conventional "rollover with extension fee" is impermissible &mdash; the added charge is riba on deferral. The system surfaces this so an RM never accidentally proposes it. Equivalent permissible outcomes are in the four options above.</div>
+                  <span class="annot-badge b-indigo" style="position:absolute;top:-10px;right:-8px;width:22px;height:22px;font-size:12px;">3</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="annotations-strip">
+        <div class="annot-card c-indigo">
+          <div class="annot-num">1</div>
           <div class="annot-title">Restructuring as a Sharia-aware choice, not a credit decision</div>
           <div class="annot-desc">
-            The customer asked for a tenor extension. The system frames the available paths: amended Ijarah (cleanest, recommended), Tawarruq settlement + new Ijarah (heavier docs, needed when amendment isn't legally possible), asset re-buyback + fresh term (title-reset friction). Each path cites the standard, names the complexity, lists the document delta, and identifies who can approve. The RM stops guessing; Dr.&nbsp;Fatima rules with the trade-offs already laid out.
+            The customer asked for a tenor extension. The system frames the four permissible paths: amended Ijarah (recommended, cleanest), Tawarruq settlement + new Ijarah (heavier docs, when amendment isn't legally possible), asset re-buyback + fresh term (title-reset friction), and a payment holiday + tail re-amortisation (cash-flow distress, no new contract). Each path cites the standard, names the complexity, names the document form, and identifies who can approve.
           </div>
-          <div class="annot-value">→ "Which restructuring is halal here?" stops being the conversation. "Which of these three do we want?" is.</div>
+          <div class="annot-value">→ "Which restructuring is halal here?" stops being the conversation. "Which of these four do we want?" is.</div>
+        </div>
+        <div class="annot-card c-indigo">
+          <div class="annot-num">2</div>
+          <div class="annot-title">Payment holiday: the COVID-era pattern, made Sharia-sound</div>
+          <div class="annot-desc">
+            Conventional banks reschedule and roll a charge. Islamic finance can't &mdash; and the questions multiply: do suspended rentals accrue? does default trigger penalty profit? is a new contract required? The engine answers all three from policy: <strong>no profit accrual on the gap</strong> (true forbearance, not deferral-for-charge), <strong>default treated under <em>ta&rsquo;widh</em>-at-cost</strong> (administrative cost only, no penalty profit), <strong>addendum &mdash; not a new contract</strong>. The branch RM gets the answer in minutes, not by escalating to the Shariah committee.
+          </div>
+          <div class="annot-value">→ The frontline stops escalating cash-flow conversations &mdash; they resolve them.</div>
         </div>
         <div class="annot-card c-indigo">
           <div class="annot-num">3</div>
           <div class="annot-title">The impermissible path is shown &mdash; and blocked at the source</div>
           <div class="annot-desc">
-            Conventional banking would offer a fourth option: extend the tenor and charge a fee for the deferral. That's riba (Standard&nbsp;1 §3/1) and the system surfaces it explicitly as <em>BLOCKED</em>. An RM who has worked elsewhere for 20 years may reach for it from muscle memory; the system catches the reach before it reaches the customer. This is the same defence as Module&nbsp;B's wrong-mode catch &mdash; just at the other end of the deal's life.
+            Conventional banking would offer a fifth option: extend the tenor and charge a fee for the deferral. That's riba (Standard&nbsp;1 §3/1) and the system surfaces it explicitly as <em>BLOCKED</em>. An RM who has worked elsewhere for 20 years may reach for it from muscle memory; the system catches the reach before it reaches the customer. Same defence as Module&nbsp;B's wrong-mode catch &mdash; at the other end of the deal's life.
           </div>
           <div class="annot-value">→ The wrong answer never makes it to the customer &mdash; not at origination, not at restructuring.</div>
         </div>
