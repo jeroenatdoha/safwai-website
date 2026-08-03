@@ -1,0 +1,4169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shariah Compliance OS — Solution Overview</title>
+<style>
+  /* ---------- Reset & base ---------- */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 100%; height: 100%;
+    background: #0a1424;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #1e293b;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ---------- Color tokens ---------- */
+  :root {
+    --navy-900: #0f1d35;
+    --navy-800: #1a2b4a;
+    --navy-700: #243656;
+    --navy-600: #2e4470;
+
+    --blue-600: #2563eb;
+    --blue-500: #3b82f6;
+    --blue-50:  #eff6ff;
+
+    --amber-600: #d97706;
+    --amber-500: #f59e0b;
+    --amber-50:  #fffbeb;
+
+    --green-600: #16a34a;
+    --green-500: #22c55e;
+    --green-50:  #f0fdf4;
+
+    --red-600: #dc2626;
+    --red-50:  #fef2f2;
+
+    --slate-50:  #f8fafc;
+    --slate-100: #f1f5f9;
+    --slate-200: #e2e8f0;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1e293b;
+    --slate-900: #0f172a;
+  }
+
+  /* ---------- Deck stage ---------- */
+  .stage {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: #0a1424;
+  }
+  .deck {
+    width: 1440px; height: 900px;
+    position: relative;
+    transform-origin: center center;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    overflow: hidden;
+    border-radius: 6px;
+  }
+  .screen {
+    position: absolute;
+    top: 0; left: 0;
+    width: 1440px; height: 900px;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .screen.active {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 2;
+  }
+
+  /* ---------- Context slide (dark navy) ---------- */
+  .ctx {
+    background: radial-gradient(ellipse at 25% 30%, #243656 0%, #1a2b4a 45%, #0f1d35 100%);
+    color: white;
+    padding: 48px 72px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .ctx::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(59,130,246,0.08), transparent 70%);
+    pointer-events: none;
+  }
+  .ctx::after {
+    content: '';
+    position: absolute;
+    bottom: -150px; left: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(22,163,74,0.05), transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Cover slide layout */
+  .ctx-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: auto;
+    z-index: 2; position: relative;
+  }
+  .brand-mark {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .brand-logo {
+    width: 38px; height: 38px;
+    background: white;
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 5px;
+    flex-shrink: 0;
+  }
+  .brand-logo img {
+    width: 100%; height: 100%;
+    object-fit: contain; display: block;
+  }
+  .brand-text {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #cbd5e1;
+  }
+  .brand-text .by { color: #94a3b8; font-weight: 400; margin-left: 6px; }
+
+  .fictional-badge {
+    background: rgba(220, 38, 38, 0.12);
+    border: 1px solid rgba(220, 38, 38, 0.35);
+    color: #fca5a5;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .fictional-badge::before {
+    content: '⚠';
+    font-size: 13px;
+  }
+
+  .ctx-hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    z-index: 2; position: relative;
+    padding-top: 36px;
+    min-height: 0;
+  }
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #60a5fa;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+  .hero-title {
+    font-size: 64px;
+    font-weight: 700;
+    letter-spacing: -2px;
+    line-height: 1.02;
+    margin-bottom: 24px;
+    color: white;
+  }
+  .hero-subtitle {
+    font-size: 22px;
+    font-weight: 400;
+    color: #cbd5e1;
+    line-height: 1.5;
+    max-width: 820px;
+    letter-spacing: -0.3px;
+  }
+  .hero-subtitle strong { color: white; font-weight: 600; }
+
+  .module-surface {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: auto;
+    padding-top: 36px;
+    z-index: 2; position: relative;
+  }
+  .module-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 22px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .module-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+  }
+  .module-card.mod-a::before { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+  .module-card.mod-b::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
+  .module-card.mod-c::before { background: linear-gradient(90deg, #22c55e, #16a34a); }
+
+  .module-badge {
+    width: 32px; height: 32px;
+    border-radius: 7px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 15px; color: white;
+    margin-bottom: 14px;
+    letter-spacing: -0.3px;
+  }
+  .mod-a .module-badge { background: #2563eb; }
+  .mod-b .module-badge { background: #d97706; }
+  .mod-c .module-badge { background: #16a34a; }
+
+  .module-name {
+    font-size: 17px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+  .module-name .mod-letter { color: #94a3b8; font-weight: 500; margin-right: 6px; }
+  .module-desc {
+    font-size: 13px;
+    color: #94a3b8;
+    line-height: 1.5;
+  }
+
+  .ctx-footer {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    font-size: 11px;
+    color: #94a3b8;
+    letter-spacing: 0.5px;
+    z-index: 2; position: relative;
+    margin-top: 36px;
+  }
+  .ctx-footer .left { display: flex; gap: 22px; }
+  .ctx-footer .left span { display: flex; align-items: center; gap: 6px; }
+
+  /* ---------- Pain grid (screen 2) ---------- */
+  .pain-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 24px;
+    z-index: 2;
+    position: relative;
+  }
+  .pain-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 14px 18px;
+    border-left: 4px solid #dc2626;
+  }
+  .pain-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: #fca5a5;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    margin-bottom: 6px;
+  }
+  .pain-stat {
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: -0.8px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .pain-desc {
+    font-size: 12px;
+    color: #cbd5e1;
+    line-height: 1.55;
+    margin-bottom: 8px;
+  }
+  .pain-source {
+    font-size: 10px;
+    color: #94a3b8;
+    font-style: italic;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 7px;
+    line-height: 1.4;
+  }
+
+  /* ---------- Flow diagram (screen 3) ---------- */
+  .flow-diagram {
+    display: flex;
+    align-items: stretch;
+    gap: 6px;
+    margin-top: auto;
+    padding-top: 28px;
+    z-index: 2;
+    position: relative;
+  }
+  .flow-box {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 16px 14px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .flow-box.new {
+    background: rgba(37, 99, 235, 0.14);
+    border-color: rgba(37, 99, 235, 0.5);
+    box-shadow: 0 0 28px rgba(37, 99, 235, 0.22);
+  }
+  .flow-arrow {
+    color: #94a3b8;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding-top: 36px;
+  }
+  .flow-tier {
+    font-size: 9.5px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .flow-name {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 6px;
+    letter-spacing: -0.2px;
+    line-height: 1.2;
+  }
+  .flow-role {
+    font-size: 11px;
+    color: #cbd5e1;
+    line-height: 1.5;
+    margin-bottom: 14px;
+    flex: 1;
+  }
+  .flow-stat {
+    font-size: 20px;
+    font-weight: 700;
+    color: #94a3b8;
+    letter-spacing: -0.5px;
+    margin-bottom: 2px;
+    line-height: 1;
+  }
+  .flow-box.new .flow-stat {
+    color: #60a5fa;
+  }
+  .flow-stat-label {
+    font-size: 9.5px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    font-weight: 600;
+  }
+  .flow-badge {
+    position: absolute;
+    top: -10px; left: 14px;
+    background: #2563eb;
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.7px;
+  }
+  .flow-note {
+    margin-top: 28px;
+    padding: 14px 18px;
+    background: rgba(34, 197, 94, 0.08);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    z-index: 2;
+    position: relative;
+  }
+  .flow-note-icon {
+    font-size: 20px;
+    color: #4ade80;
+    flex-shrink: 0;
+  }
+  .flow-note-title {
+    color: #4ade80;
+    font-weight: 700;
+    font-size: 12.5px;
+    margin-bottom: 3px;
+    letter-spacing: -0.1px;
+  }
+  .flow-note-desc {
+    color: #cbd5e1;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  /* ---------- Module intro (screens 4, 8, 12) ---------- */
+  .intro-badge {
+    width: 68px; height: 68px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 22px;
+    letter-spacing: -1px;
+  }
+  .intro-badge.mod-a { background: linear-gradient(135deg, #3b82f6, #2563eb); box-shadow: 0 12px 30px rgba(37,99,235,0.3); }
+  .intro-badge.mod-b { background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 12px 30px rgba(217,119,6,0.3); }
+  .intro-badge.mod-c { background: linear-gradient(135deg, #22c55e, #16a34a); box-shadow: 0 12px 30px rgba(22,163,74,0.3); }
+
+  .intro-eyebrow {
+    font-size: 11px;
+    color: #60a5fa;
+    text-transform: uppercase;
+    letter-spacing: 2.4px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .intro-eyebrow.mod-b { color: #fbbf24; }
+  .intro-eyebrow.mod-c { color: #4ade80; }
+
+  .intro-title {
+    font-size: 54px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: -1.8px;
+    line-height: 1.05;
+    margin-bottom: 22px;
+  }
+  .intro-tagline {
+    font-size: 19px;
+    color: #cbd5e1;
+    line-height: 1.55;
+    max-width: 780px;
+    letter-spacing: -0.3px;
+  }
+
+  .intro-preview {
+    margin-top: auto;
+    padding-top: 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+  }
+  .preview-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 16px 20px;
+  }
+  .preview-num {
+    font-size: 10px;
+    color: #60a5fa;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+  }
+  .preview-card.mod-b .preview-num { color: #fbbf24; }
+  .preview-card.mod-c .preview-num { color: #4ade80; }
+  .preview-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 5px;
+    letter-spacing: -0.2px;
+  }
+  .preview-desc {
+    font-size: 11.5px;
+    color: #94a3b8;
+    line-height: 1.5;
+  }
+
+  .intro-personas {
+    margin-top: 32px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .intro-personas-label {
+    font-size: 10.5px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    font-weight: 600;
+    margin-right: 6px;
+  }
+  .intro-persona {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.04);
+    padding: 5px 14px 5px 5px;
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .intro-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .intro-avatar svg { width: 100%; height: 100%; display: block; }
+  .intro-persona-name {
+    font-size: 12px;
+    color: white;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .intro-persona-role {
+    font-size: 10.5px;
+    color: #94a3b8;
+    margin-top: 1px;
+  }
+
+  /* ---------- Demo slide (light) ---------- */
+  .demo {
+    background: #f8fafc;
+    padding: 28px 36px 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Browser chrome */
+  .browser {
+    background: white;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 20px 50px rgba(15, 29, 53, 0.12), 0 0 0 1px rgba(15, 29, 53, 0.06);
+    overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0;
+  }
+  .browser-bar {
+    background: #f1f5f9;
+    padding: 10px 14px;
+    display: flex; align-items: center; gap: 14px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .traffic-lights {
+    display: flex; gap: 6px;
+  }
+  .light {
+    width: 12px; height: 12px; border-radius: 50%;
+  }
+  .light.r { background: #ef4444; }
+  .light.y { background: #eab308; }
+  .light.g { background: #22c55e; }
+  .address-bar {
+    flex: 1;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 11.5px;
+    color: #64748b;
+    display: flex; align-items: center; gap: 8px;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+  .address-bar .lock { color: #16a34a; }
+  .address-bar .url { color: #1e293b; font-weight: 500; }
+  .browser-actions { display: flex; gap: 6px; color: #94a3b8; font-size: 14px; }
+
+  /* Tab strip */
+  .tab-strip {
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex; align-items: flex-end;
+    padding: 0 12px;
+    height: 36px;
+  }
+  .tab {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    padding: 7px 14px 8px;
+    font-size: 12px;
+    color: #1e293b;
+    font-weight: 500;
+    display: flex; align-items: center; gap: 8px;
+    margin-right: 4px;
+    margin-bottom: -1px;
+  }
+  .tab.inactive {
+    background: transparent;
+    color: #94a3b8;
+    border-color: transparent;
+    font-weight: 400;
+  }
+  .tab .dot { width: 6px; height: 6px; border-radius: 50%; background: #16a34a; }
+  .tab .x { color: #cbd5e1; margin-left: 4px; font-size: 13px; }
+
+  /* App shell */
+  .app {
+    flex: 1;
+    display: flex;
+    background: white;
+    min-height: 0;
+  }
+  .sidebar {
+    width: 240px;
+    background: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+    padding: 16px 0;
+    display: flex; flex-direction: column;
+  }
+  .module-header {
+    padding: 4px 18px 14px;
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 12px;
+  }
+  .module-header-row { display: flex; align-items: center; gap: 10px; }
+  .sb-badge {
+    width: 28px; height: 28px; border-radius: 6px;
+    background: #2563eb;
+    color: white; font-weight: 700; font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+    letter-spacing: -0.2px;
+  }
+  .module-header-text { font-size: 12px; }
+  .module-header-text .label { color: #64748b; font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; font-weight: 600; }
+  .module-header-text .name { color: #1e293b; font-weight: 600; font-size: 13px; letter-spacing: -0.2px; }
+
+  .nav-section { padding: 8px 12px; }
+  .nav-section-title {
+    font-size: 10px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 600;
+    padding: 8px 8px;
+  }
+  .nav-item {
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    color: #475569;
+    display: flex; align-items: center; gap: 10px;
+    cursor: pointer;
+    margin-bottom: 1px;
+  }
+  .nav-item .ico { width: 16px; opacity: 0.7; }
+  .nav-item .count {
+    margin-left: auto;
+    font-size: 10.5px;
+    background: #e2e8f0;
+    color: #475569;
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+  .nav-item.active {
+    background: #eff6ff;
+    color: #2563eb;
+    font-weight: 600;
+  }
+  .nav-item.active .count {
+    background: #2563eb;
+    color: white;
+  }
+
+  .other-modules {
+    margin-top: auto;
+    padding: 12px 20px;
+    border-top: 1px solid #e2e8f0;
+    font-size: 11px;
+    color: #64748b;
+    display: flex; align-items: center; gap: 6px;
+    cursor: pointer;
+  }
+
+  /* Top bar */
+  .topbar {
+    height: 52px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex; align-items: center;
+    padding: 0 20px;
+    background: white;
+  }
+  .topbar-search {
+    flex: 1; max-width: 380px;
+    background: #f1f5f9;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: #475569;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .topbar-right {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .annotation-toggle {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 11.5px;
+    color: #475569;
+    background: #f1f5f9;
+    padding: 5px 11px;
+    border-radius: 14px;
+    cursor: pointer;
+  }
+  .toggle-switch {
+    width: 26px; height: 14px; background: #2563eb;
+    border-radius: 7px; position: relative;
+  }
+  .toggle-switch::after {
+    content: '';
+    position: absolute; top: 2px; right: 2px;
+    width: 10px; height: 10px;
+    background: white; border-radius: 50%;
+  }
+
+  /* Persona pill */
+  .persona {
+    display: flex; align-items: center; gap: 10px;
+    padding: 4px 10px 4px 4px;
+    border-radius: 24px;
+    border: 1px solid #e2e8f0;
+    background: white;
+  }
+  .avatar {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #2563eb, #16a34a);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .avatar svg { width: 100%; height: 100%; display: block; }
+  .persona-text { line-height: 1.2; }
+  .persona-name { font-size: 12px; font-weight: 600; color: #1e293b; }
+  .persona-role { font-size: 10px; color: #64748b; }
+  .chevron { color: #94a3b8; font-size: 11px; }
+
+  /* Main content */
+  .main {
+    flex: 1;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    background: white;
+  }
+  .page-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex; align-items: center;
+    gap: 24px;
+  }
+  .page-header-left { flex: 1; }
+  .page-header-left .crumbs {
+    font-size: 10.5px; color: #94a3b8;
+    text-transform: uppercase; letter-spacing: 0.6px;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .page-title { font-size: 18px; font-weight: 700; color: #0f172a; letter-spacing: -0.4px; }
+  .page-title .case-id { color: #94a3b8; font-weight: 500; margin-left: 8px; font-size: 13px; }
+  .sla-line { margin-top: 4px; display: flex; align-items: center; gap: 7px; font-size: 11px; color: #64748b; }
+  .page-header-right { margin-left: auto; display: flex; align-items: center; gap: 10px; font-size: 11.5px; color: #64748b; }
+  .pulse { width: 6px; height: 6px; background: #16a34a; border-radius: 50%; box-shadow: 0 0 0 0 rgba(22,163,74,0.4); animation: pulse 2s infinite; }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(22,163,74,0.45); }
+    70% { box-shadow: 0 0 0 6px rgba(22,163,74,0); }
+    100% { box-shadow: 0 0 0 0 rgba(22,163,74,0); }
+  }
+
+  /* Inquiry layout */
+  .inquiry {
+    display: grid;
+    grid-template-columns: 1fr 1.25fr;
+    gap: 0;
+    flex: 1;
+    min-height: 0;
+  }
+  .panel-customer {
+    border-right: 1px solid #e2e8f0;
+    padding: 18px 22px;
+    overflow: auto;
+    background: #fafbfc;
+  }
+  .panel-ai {
+    padding: 18px 22px;
+    overflow: auto;
+    background: white;
+  }
+  .panel-label {
+    font-size: 10.5px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .panel-label .icon { color: #64748b; }
+
+  /* Customer card */
+  .cust-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .cust-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .cust-avatar {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, #94a3b8, #475569);
+    border-radius: 50%;
+    color: white; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    overflow: hidden;
+  }
+  .cust-avatar svg { width: 100%; height: 100%; }
+  .cust-name { font-size: 13.5px; font-weight: 600; color: #0f172a; }
+  .cust-meta { font-size: 11px; color: #64748b; margin-top: 1px; display: flex; align-items: center; gap: 8px; }
+  .cust-meta .sep { color: #cbd5e1; }
+  .channel-pill {
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 1px 7px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .cust-stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #f1f5f9;
+  }
+  .cust-stat .stat-label { font-size: 10px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; margin-bottom: 3px; }
+  .cust-stat .stat-value { font-size: 12px; color: #1e293b; font-weight: 600; }
+
+  /* Inquiry message */
+  .msg-bubble {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 13.5px;
+    color: #1e293b;
+    line-height: 1.55;
+    position: relative;
+  }
+  .msg-bubble::before {
+    content: '';
+    position: absolute; top: 18px; left: -7px;
+    width: 12px; height: 12px;
+    background: white;
+    border-left: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    transform: rotate(45deg);
+  }
+  .msg-time { font-size: 10.5px; color: #94a3b8; margin-top: 6px; padding-left: 4px; }
+
+  /* Classification */
+  .classification {
+    margin-top: 16px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .cls-row { display: flex; justify-content: space-between; font-size: 11.5px; padding: 5px 0; }
+  .cls-row + .cls-row { border-top: 1px solid #f1f5f9; }
+  .cls-label { color: #64748b; }
+  .cls-value { color: #1e293b; font-weight: 600; }
+  .tag-low { background: #f0fdf4; color: #16a34a; padding: 1px 7px; border-radius: 8px; font-size: 10px; font-weight: 600; text-transform: uppercase; }
+
+  /* AI response */
+  .conf-bar {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 14px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .conf-circle {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid #16a34a;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 12px; color: #16a34a;
+    letter-spacing: -0.3px;
+    flex-shrink: 0;
+  }
+  .conf-text { flex: 1; }
+  .conf-label { font-size: 10.5px; color: #16a34a; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+  .conf-detail { font-size: 12px; color: #15803d; margin-top: 2px; line-height: 1.4; }
+
+  .response-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .response-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .response-title {
+    font-size: 11px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 600;
+  }
+  .lang-toggle {
+    display: flex; gap: 0;
+    background: #f1f5f9;
+    border-radius: 6px;
+    padding: 2px;
+    font-size: 10.5px;
+  }
+  .lang-toggle span {
+    padding: 3px 9px; border-radius: 4px; color: #64748b; font-weight: 600;
+  }
+  .lang-toggle .active { background: white; color: #1e293b; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+
+  .response-text {
+    font-size: 13px;
+    line-height: 1.65;
+    color: #1e293b;
+  }
+  .response-text p + p { margin-top: 10px; }
+
+  /* Sources */
+  .sources {
+    background: #fafbfc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .source-row {
+    display: flex; gap: 10px;
+    padding: 7px 0;
+    font-size: 11.5px;
+    align-items: flex-start;
+  }
+  .source-row + .source-row { border-top: 1px solid #f1f5f9; }
+  .source-icon {
+    width: 18px; height: 18px; border-radius: 4px;
+    background: #eff6ff;
+    color: #2563eb;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+  .source-text { flex: 1; line-height: 1.45; }
+  .source-text .ref { color: #1e293b; font-weight: 600; }
+  .source-text .desc { color: #64748b; font-size: 10.5px; margin-top: 1px; }
+  .source-meta { color: #94a3b8; font-size: 10px; }
+
+  /* Actions */
+  .actions {
+    display: flex; gap: 10px;
+    position: relative;
+  }
+  .btn {
+    padding: 9px 16px;
+    border-radius: 7px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid;
+    display: inline-flex; align-items: center; gap: 7px;
+  }
+  .btn-primary {
+    background: #2563eb;
+    color: white;
+    border-color: #2563eb;
+  }
+  .btn-secondary {
+    background: white;
+    color: #475569;
+    border-color: #cbd5e1;
+  }
+  .btn-escalate {
+    background: white;
+    color: #d97706;
+    border-color: #fcd34d;
+  }
+  .btn-sm { font-size: 11.5px; padding: 5px 11px; border-radius: 6px; }
+
+  /* ---------- Advisor queue (screen 7) ---------- */
+  .queue-summary {
+    padding: 11px 24px;
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-size: 11.5px;
+  }
+  .queue-summary-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #475569;
+  }
+  .queue-summary-item .ico { font-weight: 700; font-size: 13px; }
+  .queue-summary-item.red .ico { color: #dc2626; }
+  .queue-summary-item.amber .ico { color: #d97706; }
+  .queue-summary-item.green .ico { color: #16a34a; }
+  .queue-summary-item.blue .ico { color: #2563eb; }
+  .queue-summary-item strong { color: #0f172a; font-weight: 700; }
+  .queue-summary-sep { color: #cbd5e1; }
+
+  .queue-list {
+    padding: 16px 24px;
+    overflow: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    background: #f8fafc;
+  }
+  .case-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 13px 16px 13px 18px;
+    position: relative;
+    border-left: 4px solid #94a3b8;
+    display: grid;
+    grid-template-columns: 1fr 130px;
+    gap: 4px 18px;
+  }
+  .case-card.sev-red { border-left-color: #dc2626; }
+  .case-card.sev-amber { border-left-color: #d97706; }
+  .case-card.sev-green { border-left-color: #16a34a; }
+  .case-card.sev-blue { border-left-color: #2563eb; }
+
+  .case-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    color: #64748b;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+  .case-id { color: #0f172a; }
+  .case-meta-pill {
+    background: #f1f5f9;
+    color: #475569;
+    padding: 1px 7px;
+    border-radius: 8px;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 600;
+    font-size: 10px;
+  }
+  .case-meta-pill.amber { background: #fef3c7; color: #92400e; }
+  .case-meta-pill.red { background: #fee2e2; color: #991b1b; }
+  .case-meta-pill.blue { background: #dbeafe; color: #1e40af; }
+  .case-meta-pill.purple { background: #ede9fe; color: #6b21a8; }
+
+  .case-title {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #0f172a;
+    letter-spacing: -0.2px;
+    margin-bottom: 5px;
+    line-height: 1.35;
+  }
+  .case-digest {
+    font-size: 11.5px;
+    color: #475569;
+    line-height: 1.55;
+    margin-bottom: 7px;
+  }
+  .case-digest strong { color: #0f172a; font-weight: 600; }
+  .case-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 6px;
+    border-top: 1px solid #f1f5f9;
+    font-size: 10.5px;
+    color: #64748b;
+  }
+  .case-precedent { display: flex; align-items: center; gap: 6px; }
+  .case-precedent .icon { color: #2563eb; font-weight: 700; }
+  .case-precedent .ref { color: #2563eb; font-weight: 600; }
+  .case-meta-extra { color: #94a3b8; }
+
+  .case-side {
+    grid-row: span 4;
+    border-left: 1px solid #f1f5f9;
+    padding-left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+    justify-content: center;
+  }
+  .case-time {
+    font-size: 10px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .case-time-value {
+    font-size: 13px;
+    color: #0f172a;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .case-time-value.urgent { color: #dc2626; }
+  .case-time-value.medium { color: #d97706; }
+
+  /* ---------- Annotation layer ---------- */
+  .annot-badge {
+    position: absolute;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    color: white;
+    font-weight: 800;
+    font-size: 14px;
+    line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.22), 0 0 0 3px white;
+    z-index: 10;
+    letter-spacing: 0;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.15);
+    animation: badge-in 0.4s ease-out;
+  }
+  @keyframes badge-in {
+    from { transform: scale(0.6); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .annot-badge.b-blue { background: #2563eb; }
+  .annot-badge.b-amber { background: #d97706; }
+  .annot-badge.b-green { background: #16a34a; }
+
+  .annotations-strip {
+    background: #0f1d35;
+    padding: 14px 36px 16px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 20px 50px rgba(15, 29, 53, 0.18);
+  }
+  .annot-card {
+    color: white;
+    position: relative;
+    padding-left: 38px;
+    min-height: 64px;
+  }
+  .annot-card .annot-num {
+    position: absolute;
+    left: 0; top: 2px;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    color: white;
+  }
+  .annot-card.c-blue .annot-num { background: #2563eb; }
+  .annot-card.c-amber .annot-num { background: #d97706; }
+  .annot-card.c-green .annot-num { background: #16a34a; }
+  .annot-card .annot-title {
+    font-size: 12.5px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: white;
+    letter-spacing: -0.2px;
+  }
+  .annot-card .annot-desc {
+    font-size: 11.5px;
+    color: #cbd5e1;
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+  .annot-card .annot-value {
+    font-size: 11.5px;
+    color: #60a5fa;
+    font-weight: 500;
+    line-height: 1.45;
+  }
+  .annot-card.c-amber .annot-value { color: #fbbf24; }
+  .annot-card.c-green .annot-value { color: #4ade80; }
+
+  /* Hide annotations when toggled off */
+  body.annot-off .annot-badge { display: none; }
+  body.annot-off .annotations-strip { display: none; }
+
+  /* ---------- Deck navigation ---------- */
+  .deck-nav {
+    position: fixed;
+    bottom: 22px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 16px;
+    background: rgba(15, 29, 53, 0.92);
+    padding: 8px 16px;
+    border-radius: 28px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    z-index: 100;
+  }
+  .nav-btn {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    border: none;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.16); }
+  .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .nav-dots { display: flex; gap: 6px; }
+  .nav-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .nav-dot.active {
+    background: white;
+    width: 22px;
+    border-radius: 4px;
+  }
+  .nav-counter {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    min-width: 38px; text-align: center;
+  }
+
+  /* ============================================================
+     Module B — Financing Clearance (amber accent)
+     ============================================================ */
+  .sb-badge.mod-b { background: #d97706; }
+  .nav-item.active.mod-b { background: #fffbeb; color: #d97706; }
+  .nav-item.active.mod-b .count { background: #d97706; color: white; }
+  .btn-primary.mod-b { background: #d97706; border-color: #d97706; color: white; }
+  .btn-escalate.mod-b { background: white; color: #9f1239; border-color: #fda4af; }
+
+  /* 8-aspect bar */
+  .aspect-abbrs {
+    display: flex; gap: 4px; margin-bottom: 2px;
+  }
+  .aspect-abbr {
+    width: 16px; text-align: center;
+    font-size: 7px; color: #94a3b8; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0;
+  }
+  .aspect-bar { display: flex; gap: 4px; align-items: center; }
+  .aspect-dot {
+    width: 16px; height: 9px; border-radius: 3px; flex-shrink: 0;
+  }
+  .aspect-dot.green { background: #16a34a; }
+  .aspect-dot.amber { background: #d97706; }
+  .aspect-dot.red   { background: #dc2626; }
+  .aspect-dot.gray  { background: #e2e8f0; }
+
+  /* ============================================================
+     Screen 9 — Financing Pipeline
+     ============================================================ */
+  .fin-list {
+    padding: 12px 24px; overflow: auto; flex: 1;
+    display: flex; flex-direction: column; gap: 9px;
+    background: #f8fafc;
+  }
+  .fin-card {
+    background: white; border: 1px solid #e2e8f0;
+    border-radius: 10px; padding: 11px 14px 11px 17px;
+    border-left: 4px solid #94a3b8;
+    display: grid; grid-template-columns: 1fr 152px;
+    gap: 0 16px; position: relative;
+  }
+  .fin-card.sev-green { border-left-color: #16a34a; }
+  .fin-card.sev-amber { border-left-color: #d97706; }
+  .fin-card.sev-red   { border-left-color: #dc2626; }
+
+  .fin-card-left { display: flex; flex-direction: column; gap: 4px; }
+  .fin-top-row { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+  .fin-company { font-size: 13px; font-weight: 700; color: #0f172a; letter-spacing: -0.2px; }
+  .fin-case-num { font-size: 10px; color: #94a3b8; font-weight: 600; letter-spacing: 0.3px; }
+  .fin-product-pill {
+    background: #f1f5f9; color: #475569;
+    padding: 1px 7px; border-radius: 8px;
+    font-size: 10px; font-weight: 600;
+  }
+  .fin-submitted { font-size: 10.5px; color: #94a3b8; }
+  .fin-aspect-group { display: flex; flex-direction: column; gap: 2px; }
+  .fin-flag-text { font-size: 10.5px; color: #64748b; line-height: 1.35; }
+  .fin-flag-text strong { color: #0f172a; }
+  .fin-xref { font-size: 10px; color: #2563eb; font-weight: 600; }
+
+  .fin-card-right {
+    border-left: 1px solid #f1f5f9; padding-left: 14px;
+    display: flex; flex-direction: column;
+    gap: 5px; align-items: stretch; justify-content: center;
+  }
+  .fin-amount { font-size: 15px; font-weight: 700; color: #0f172a; letter-spacing: -0.3px; }
+  .fin-status-pill {
+    font-size: 10px; font-weight: 600; padding: 2px 8px;
+    border-radius: 8px; display: inline-flex; align-items: center; gap: 4px;
+  }
+  .fin-status-pill.green { background: #f0fdf4; color: #166534; }
+  .fin-status-pill.amber { background: #fef3c7; color: #92400e; }
+  .fin-status-pill.red   { background: #fee2e2; color: #991b1b; }
+  .fin-status-pill.blue  { background: #dbeafe; color: #1e40af; }
+
+  /* ============================================================
+     Screen 10 — Document Request (Faisal's RM view)
+     ============================================================ */
+  .rm-layout {
+    display: grid; grid-template-columns: 0.9fr 1.1fr;
+    gap: 0; flex: 1; min-height: 0;
+  }
+  .rm-left {
+    border-right: 1px solid #e2e8f0;
+    padding: 16px 20px; overflow: auto; background: #fafbfc;
+  }
+  .rm-right { padding: 16px 20px; overflow: auto; background: white; }
+
+  .app-summary-card {
+    background: white; border: 1px solid #e2e8f0;
+    border-radius: 8px; padding: 14px 16px; margin-bottom: 12px;
+  }
+  .app-summary-company {
+    font-size: 14px; font-weight: 700; color: #0f172a;
+    letter-spacing: -0.3px; margin-bottom: 2px;
+  }
+  .app-summary-sub { font-size: 11.5px; color: #64748b; margin-bottom: 10px; }
+  .app-summary-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; border-top: 1px solid #f1f5f9; padding-top: 10px;
+  }
+  .app-summary-row {
+    display: flex; flex-direction: column;
+    padding: 5px 0;
+    border-bottom: 1px solid #f8fafc;
+  }
+  .app-sum-label { font-size: 10px; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .app-sum-value { font-size: 12px; color: #0f172a; font-weight: 600; margin-top: 1px; }
+
+  .app-status-block {
+    background: #fffbeb; border: 1px solid #fcd34d;
+    border-radius: 7px; padding: 10px 12px;
+    font-size: 11.5px; color: #92400e;
+    display: flex; align-items: flex-start; gap: 9px;
+    margin-bottom: 12px;
+  }
+  .app-status-block .ico { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+  .doc-req-header-block {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+    position: relative;
+  }
+  .doc-req-icon {
+    width: 38px; height: 38px; border-radius: 9px;
+    background: #d97706; color: white;
+    font-size: 17px; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .doc-req-hd-title { font-size: 13.5px; font-weight: 700; color: #0f172a; letter-spacing: -0.2px; }
+  .doc-req-hd-sub { font-size: 11px; color: #64748b; margin-top: 1px; }
+  .doc-req-badge-count {
+    background: #d97706; color: white;
+    font-size: 10.5px; font-weight: 700;
+    padding: 2px 9px; border-radius: 10px; margin-left: auto;
+  }
+
+  .doc-req-items { display: flex; flex-direction: column; gap: 9px; }
+  .doc-req-item {
+    border: 1px solid #e2e8f0; border-radius: 8px;
+    padding: 11px 13px; position: relative;
+  }
+  .doc-req-item.high { border-left: 3px solid #d97706; background: #fffbeb; }
+  .doc-req-item.medium { border-left: 3px solid #94a3b8; background: #fafbfc; }
+  .doc-req-item-top {
+    display: flex; align-items: center; gap: 7px; margin-bottom: 5px;
+  }
+  .dri-priority {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.6px; padding: 1px 6px; border-radius: 4px;
+  }
+  .dri-priority.high { background: #fef3c7; color: #92400e; }
+  .dri-priority.medium { background: #f1f5f9; color: #475569; }
+  .dri-aspect {
+    font-size: 9px; color: #2563eb; font-weight: 600;
+    background: #eff6ff; padding: 1px 6px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 0.4px;
+  }
+  .doc-req-item-title {
+    font-size: 12px; font-weight: 600; color: #0f172a;
+    line-height: 1.35; margin-bottom: 5px; letter-spacing: -0.1px;
+  }
+  .doc-req-item-why {
+    font-size: 11px; color: #475569; line-height: 1.5;
+    border-top: 1px solid #e2e8f0; padding-top: 6px; margin-top: 2px;
+  }
+  .doc-req-item-why strong { color: #0f172a; font-weight: 600; }
+  .aaoifi-chip {
+    display: inline-flex; align-items: center; gap: 3px;
+    background: #eff6ff; color: #1e40af;
+    font-size: 9.5px; font-weight: 600;
+    padding: 1px 6px; border-radius: 4px;
+    vertical-align: middle; margin-left: 3px;
+  }
+
+  /* ============================================================
+     Screen 11 — Financing Brief (Dr. Fatima)
+     ============================================================ */
+  .brief-layout {
+    display: grid; grid-template-columns: 1.05fr 0.95fr;
+    gap: 0; flex: 1; min-height: 0;
+  }
+  .brief-left {
+    border-right: 1px solid #e2e8f0; padding: 14px 18px;
+    overflow: auto; display: flex; flex-direction: column; gap: 10px;
+  }
+  .brief-right {
+    padding: 14px 18px; overflow: auto; background: #fafbfc;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .brief-section-label {
+    font-size: 10px; font-weight: 700; color: #94a3b8;
+    text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px;
+  }
+  .brief-aspects-grid { display: flex; flex-direction: column; gap: 3px; }
+  .brief-asp-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 5px 9px; background: white;
+    border: 1px solid #f1f5f9; border-radius: 6px;
+    font-size: 11.5px;
+  }
+  .brief-asp-num {
+    width: 18px; height: 18px; border-radius: 4px;
+    font-size: 9px; font-weight: 700; color: white;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .brief-asp-num.green { background: #16a34a; }
+  .brief-asp-num.amber { background: #d97706; }
+  .brief-asp-name { flex: 1; color: #0f172a; font-weight: 500; }
+  .brief-asp-result { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
+  .brief-asp-result.cleared { color: #16a34a; }
+  .brief-asp-result.flagged { color: #d97706; }
+  .brief-asp-detail { font-size: 10px; color: #94a3b8; }
+
+  .brief-question-box {
+    background: #fffbeb; border: 1px solid #fcd34d;
+    border-radius: 8px; padding: 12px 14px; position: relative;
+  }
+  .brief-q-label {
+    font-size: 9.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.6px; color: #b45309; margin-bottom: 6px;
+  }
+  .brief-q-text {
+    font-size: 12.5px; font-weight: 600; color: #0f172a;
+    line-height: 1.45; letter-spacing: -0.1px; margin-bottom: 8px;
+  }
+  .brief-q-evidence {
+    font-size: 11px; color: #78350f; line-height: 1.55;
+    border-top: 1px solid #fde68a; padding-top: 8px;
+  }
+  .brief-q-evidence strong { color: #0f172a; }
+
+  .brief-prec-row {
+    display: flex; align-items: flex-start; gap: 8px;
+    padding: 8px 10px; background: white;
+    border: 1px solid #e2e8f0; border-radius: 6px; font-size: 11px;
+  }
+  .brief-prec-icon { color: #2563eb; flex-shrink: 0; margin-top: 1px; font-size: 12px; }
+  .brief-prec-ref { color: #2563eb; font-weight: 600; margin-bottom: 2px; }
+  .brief-prec-desc { color: #475569; line-height: 1.4; }
+  .brief-prec-tag {
+    font-size: 9.5px; font-weight: 700; padding: 1px 6px; border-radius: 4px;
+    display: inline-flex; margin-top: 3px;
+  }
+  .brief-prec-tag.partial { background: #fef3c7; color: #92400e; }
+  .brief-prec-tag.none { background: #f1f5f9; color: #64748b; }
+
+  .brief-decision-panel {
+    background: white; border: 1px solid #e2e8f0;
+    border-radius: 8px; overflow: hidden;
+  }
+  .brief-dec-header {
+    padding: 9px 13px; background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.6px; color: #64748b;
+  }
+  .brief-action-opt {
+    padding: 11px 13px; border-bottom: 1px solid #f1f5f9;
+    display: flex; align-items: flex-start; gap: 11px;
+  }
+  .brief-action-opt:last-child { border-bottom: none; }
+  .bao-radio {
+    width: 15px; height: 15px; border-radius: 50%;
+    border: 2px solid #cbd5e1; flex-shrink: 0; margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .bao-radio.sel { border-color: #d97706; background: #d97706; }
+  .bao-radio.sel::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: white; }
+  .bao-title { font-size: 12px; font-weight: 700; color: #0f172a; margin-bottom: 3px; letter-spacing: -0.1px; }
+  .bao-desc { font-size: 11px; color: #64748b; line-height: 1.4; }
+  .bao-conditions {
+    margin-top: 7px; background: #fffbeb;
+    border: 1px solid #fde68a; border-radius: 5px; padding: 8px 10px;
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  .bao-condition {
+    display: flex; align-items: flex-start; gap: 6px;
+    font-size: 11px; color: #1e293b; line-height: 1.45;
+  }
+  .bao-cnum {
+    width: 14px; height: 14px; border-radius: 3px;
+    background: #d97706; color: white; font-size: 8px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .brief-dec-footer {
+    display: flex; gap: 8px; padding: 11px 13px;
+    background: #f8fafc; border-top: 1px solid #e2e8f0;
+  }
+
+  /* ============================================================
+     Module C — Business Screening (green accent)
+     ============================================================ */
+  .sb-badge.mod-c { background: #16a34a; }
+  .nav-item.active.mod-c { background: #f0fdf4; color: #16a34a; }
+  .nav-item.active.mod-c .count { background: #16a34a; color: white; }
+  .btn-primary.mod-c { background: #16a34a; border-color: #16a34a; color: white; }
+
+  /* Screen 13 — SME queue */
+  .sme-list {
+    padding: 12px 24px; overflow: auto; flex: 1;
+    display: flex; flex-direction: column; gap: 10px;
+    background: #f8fafc;
+  }
+  .sme-card {
+    background: white; border: 1px solid #e2e8f0;
+    border-radius: 10px; padding: 12px 14px 11px 17px;
+    border-left: 4px solid #16a34a; position: relative;
+    display: grid; grid-template-columns: 1fr 148px; gap: 0 14px;
+  }
+  .sme-card.pending { border-left-color: #d97706; }
+  .sme-card-left { display: flex; flex-direction: column; gap: 4px; }
+  .sme-top-row { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+  .sme-company { font-size: 13px; font-weight: 700; color: #0f172a; letter-spacing: -0.2px; }
+  .sme-case-id { font-size: 10px; color: #94a3b8; font-weight: 600; letter-spacing: 0.3px; }
+  .sme-product-pill {
+    background: #f0fdf4; color: #166534;
+    padding: 1px 7px; border-radius: 8px; font-size: 10px; font-weight: 600;
+  }
+  .sme-product-pill.pending { background: #fef3c7; color: #92400e; }
+  .sme-submitted { font-size: 10.5px; color: #94a3b8; }
+  .sme-flag-text { font-size: 10.5px; color: #64748b; line-height: 1.35; margin-top: 3px; }
+  .sme-flag-text strong { color: #0f172a; }
+  .sme-footer-row {
+    display: flex; align-items: center; gap: 10px;
+    padding-top: 6px; border-top: 1px solid #f0fdf4;
+    font-size: 10.5px; color: #16a34a; font-weight: 700; margin-top: 4px;
+  }
+  .sme-footer-row.pending { border-top-color: #fef3c7; color: #d97706; }
+  .sme-card-right {
+    border-left: 1px solid #f1f5f9; padding-left: 14px;
+    display: flex; flex-direction: column;
+    gap: 6px; align-items: stretch; justify-content: center;
+  }
+  .sme-amount { font-size: 15px; font-weight: 700; color: #0f172a; letter-spacing: -0.3px; }
+  .sme-status-pill {
+    font-size: 10px; font-weight: 600; padding: 2px 8px;
+    border-radius: 8px; display: inline-flex; align-items: center; gap: 4px;
+  }
+  .sme-status-pill.cleared { background: #f0fdf4; color: #166534; }
+  .sme-status-pill.reviewing { background: #fef3c7; color: #92400e; }
+
+  /* Screen 14 — Case review */
+  .case-review-layout {
+    display: grid; grid-template-columns: 1.1fr 0.9fr;
+    gap: 0; flex: 1; min-height: 0;
+  }
+  .case-review-left {
+    border-right: 1px solid #e2e8f0; padding: 14px 18px;
+    overflow: auto; background: #fafbfc;
+    display: flex; flex-direction: column; gap: 9px;
+  }
+  .case-review-right {
+    padding: 14px 18px; overflow: auto; background: white;
+    display: flex; flex-direction: column; gap: 9px;
+  }
+  .review-section-label {
+    font-size: 10px; font-weight: 700; color: #94a3b8;
+    text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px;
+  }
+  .aspect-detail-row {
+    display: flex; align-items: flex-start; gap: 9px;
+    padding: 7px 10px; border-radius: 7px;
+    border: 1px solid #f1f5f9; background: white;
+  }
+  .aspect-detail-row.highlighted { border-color: #bbf7d0; background: #f0fdf4; }
+  .asp-badge {
+    width: 20px; height: 20px; border-radius: 5px;
+    font-size: 9px; font-weight: 700; color: white;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .asp-badge.green { background: #16a34a; }
+  .asp-name { font-size: 11.5px; font-weight: 600; color: #0f172a; line-height: 1.2; }
+  .asp-detail-text { font-size: 10.5px; color: #64748b; margin-top: 2px; line-height: 1.4; }
+  .asp-ruling { font-size: 10px; color: #2563eb; font-weight: 600; margin-top: 2px; }
+  .asp-result-tag {
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.4px; white-space: nowrap; padding: 1px 6px; border-radius: 4px;
+  }
+  .asp-result-tag.cleared { background: #f0fdf4; color: #166534; }
+
+  /* AI reasoning panel */
+  .ai-reasoning-panel {
+    background: white; border: 1px solid #e2e8f0;
+    border-radius: 8px; overflow: hidden;
+  }
+  .ai-panel-header {
+    padding: 9px 13px; background: #f0fdf4;
+    border-bottom: 1px solid #bbf7d0;
+    display: flex; align-items: center; gap: 9px;
+    font-size: 10px; font-weight: 700; color: #166534;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .ai-panel-conf {
+    margin-left: auto; background: #16a34a; color: white;
+    font-size: 11px; padding: 1px 9px; border-radius: 10px;
+    font-weight: 700; text-transform: none; letter-spacing: 0;
+  }
+  .ai-panel-body { padding: 10px 13px; display: flex; flex-direction: column; }
+  .ai-step {
+    display: flex; align-items: flex-start; gap: 9px;
+    font-size: 11.5px; color: #1e293b; line-height: 1.5;
+    padding: 7px 0; border-bottom: 1px solid #f1f5f9;
+  }
+  .ai-step:last-child { border-bottom: none; }
+  .ai-step-dot {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: #16a34a; color: white;
+    font-size: 9px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .ai-step-outcome { color: #16a34a; font-weight: 600; }
+
+  /* Screen 15 — Clearance */
+  .clearance-layout {
+    display: grid; grid-template-columns: 0.9fr 1.1fr;
+    gap: 0; flex: 1; min-height: 0;
+  }
+  .clearance-left {
+    border-right: 1px solid #e2e8f0; padding: 16px 20px;
+    overflow: auto; background: #fafbfc;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .clearance-right {
+    padding: 16px 20px; overflow: auto; background: white;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .clearance-cert {
+    background: white; border: 1px solid #e2e8f0;
+    border-radius: 10px; overflow: hidden;
+  }
+  .clearance-cert-header {
+    padding: 14px 16px;
+    background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+    border-bottom: 2px solid #16a34a;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .clearance-cert-icon {
+    width: 42px; height: 42px; border-radius: 10px;
+    background: #16a34a; color: white;
+    font-size: 20px; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .clearance-cert-title { font-size: 14px; font-weight: 700; color: #0f172a; letter-spacing: -0.3px; margin-bottom: 2px; }
+  .clearance-cert-sub { font-size: 11px; color: #64748b; }
+  .clearance-cert-status {
+    margin-left: auto; background: #16a34a; color: white;
+    font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.7px; padding: 4px 12px; border-radius: 20px; white-space: nowrap;
+  }
+  .clearance-cert-body { padding: 12px 16px; display: flex; flex-direction: column; }
+  .clearance-field {
+    display: flex; gap: 0; padding: 5px 0; border-bottom: 1px solid #f8fafc;
+  }
+  .clearance-field:last-child { border-bottom: none; }
+  .clearance-field-label {
+    font-size: 10px; color: #94a3b8; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.4px;
+    width: 120px; flex-shrink: 0; padding-top: 1px;
+  }
+  .clearance-field-value { font-size: 12px; color: #0f172a; font-weight: 600; }
+  .clearance-field-value.green { color: #16a34a; }
+  .tl { display: flex; flex-direction: column; }
+  .tl-item { display: flex; gap: 12px; position: relative; padding-bottom: 14px; }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #16a34a; flex-shrink: 0; margin-top: 3px;
+    position: relative; z-index: 1;
+  }
+  .tl-dot.dim { background: #94a3b8; }
+  .tl-line { position: absolute; left: 4px; top: 13px; bottom: 0; width: 2px; background: #e2e8f0; }
+  .tl-item:last-child .tl-line { display: none; }
+  .tl-time { font-size: 10px; color: #94a3b8; font-weight: 600; margin-top: 1px; white-space: nowrap; min-width: 36px; }
+  .tl-body { flex: 1; font-size: 11.5px; color: #1e293b; line-height: 1.4; }
+  .tl-body .actor { font-weight: 600; color: #0f172a; }
+  .tl-body .note { font-size: 10.5px; color: #64748b; margin-top: 2px; }
+  .tl-total {
+    margin-top: 8px; padding: 8px 12px;
+    background: #f0fdf4; border: 1px solid #bbf7d0;
+    border-radius: 7px; text-align: center;
+    font-size: 12.5px; color: #166534; font-weight: 700;
+  }
+
+  /* ============================================================
+     Screen 4 — Benefits
+     ============================================================ */
+  .benefit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: auto;
+    padding-top: 32px;
+    z-index: 2; position: relative;
+  }
+  .benefit-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 20px 22px;
+    border-top: 3px solid transparent;
+  }
+  .benefit-card.bc-blue  { border-top-color: #3b82f6; }
+  .benefit-card.bc-amber { border-top-color: #f59e0b; }
+  .benefit-card.bc-rose  { border-top-color: #fb7185; }
+  .benefit-card.bc-green { border-top-color: #22c55e; }
+  .benefit-persona-row {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 12px;
+  }
+  .benefit-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    overflow: hidden; flex-shrink: 0;
+  }
+  .benefit-avatar svg { width: 100%; height: 100%; display: block; }
+  .benefit-name { font-size: 12.5px; font-weight: 700; color: white; line-height: 1.2; }
+  .benefit-role { font-size: 10.5px; color: #94a3b8; margin-top: 1px; }
+  .benefit-text { font-size: 12.5px; color: #94a3b8; line-height: 1.65; }
+  .benefit-text strong { color: #e2e8f0; font-weight: 600; }
+
+  /* ============================================================
+     Screen 3 — Module comparison table
+     ============================================================ */
+  .module-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 22px;
+    z-index: 2; position: relative;
+  }
+  .mc-col {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .mc-col.mc-a { border-top: 3px solid #2563eb; }
+  .mc-col.mc-b { border-top: 3px solid #d97706; }
+  .mc-header {
+    padding: 13px 18px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .mc-badge {
+    width: 26px; height: 26px; border-radius: 6px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: white; flex-shrink: 0;
+  }
+  .mc-a .mc-badge { background: #2563eb; }
+  .mc-b .mc-badge { background: #d97706; }
+  .mc-header-body {}
+  .mc-header-title { font-size: 14px; font-weight: 700; color: white; letter-spacing: -0.2px; line-height: 1.2; }
+  .mc-header-sub   { font-size: 11px; color: #94a3b8; margin-top: 1px; }
+  .mc-row {
+    display: grid;
+    grid-template-columns: 76px 1fr;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .mc-label {
+    padding: 11px 12px 11px 16px;
+    font-size: 9.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.7px;
+    border-right: 1px solid rgba(255,255,255,0.05);
+    display: flex; align-items: flex-start; padding-top: 13px;
+  }
+  .mc-content {
+    padding: 11px 16px;
+    font-size: 12px; line-height: 1.6;
+  }
+  .mc-label.lbl-process  { color: #94a3b8; }
+  .mc-label.lbl-pain     { color: #f87171; }
+  .mc-label.lbl-solution { color: #60a5fa; }
+  .mc-label.lbl-value    { color: #4ade80; }
+  .mc-content.cnt-process  { color: #e2e8f0; }
+  .mc-content.cnt-pain     { color: #e2e8f0; }
+  .mc-content.cnt-solution { color: #f1f5f9; }
+  .mc-content.cnt-value    { color: #f8fafc; font-weight: 600; }
+
+  /* ============================================================
+     Screens 13–14 — Checkout
+     ============================================================ */
+  .recap-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 28px;
+    z-index: 2; position: relative;
+  }
+  .recap-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 20px 22px;
+    position: relative; overflow: hidden;
+  }
+  .recap-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .recap-card.rc-blue::before  { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+  .recap-card.rc-amber::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
+  .recap-card-badge {
+    width: 30px; height: 30px; border-radius: 7px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px; color: white;
+    margin-bottom: 12px;
+  }
+  .recap-card-badge.blue  { background: #2563eb; }
+  .recap-card-badge.amber { background: #d97706; }
+  .recap-card-title {
+    font-size: 15px; font-weight: 700; color: white;
+    letter-spacing: -0.3px; margin-bottom: 5px;
+  }
+  .recap-card-title .mod-label { color: #94a3b8; font-weight: 500; margin-right: 6px; font-size: 13px; }
+  .recap-card-desc { font-size: 12px; color: #cbd5e1; line-height: 1.6; margin-bottom: 12px; }
+  .recap-card-point {
+    display: flex; align-items: flex-start; gap: 8px;
+    font-size: 11.5px; color: #e2e8f0; line-height: 1.5;
+    padding: 5px 0; border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .recap-card-point .dot { color: #94a3b8; flex-shrink: 0; margin-top: 2px; }
+
+  .recap-throughline {
+    margin-top: 20px;
+    padding: 14px 20px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    font-size: 12.5px; color: #94a3b8; line-height: 1.6;
+    z-index: 2; position: relative;
+  }
+  .recap-throughline strong { color: #e2e8f0; }
+  .recap-roadmap {
+    margin-top: 12px;
+    display: flex; align-items: center; gap: 12px;
+    z-index: 2; position: relative;
+  }
+  .roadmap-pill {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 11px; color: #64748b;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .roadmap-pill .label { color: #94a3b8; font-weight: 600; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .roadmap-pill .name { color: #cbd5e1; }
+  .roadmap-pill .status { color: #94a3b8; font-size: 9.5px; }
+
+  /* Ask cards */
+  .ask-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: auto;
+    padding-top: 28px;
+    z-index: 2; position: relative;
+  }
+  .ask-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 22px 24px;
+  }
+  .ask-num {
+    font-size: 10px; font-weight: 700; color: #94a3b8;
+    text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 10px;
+  }
+  .ask-time {
+    display: inline-block;
+    font-size: 10px; font-weight: 600;
+    background: rgba(255,255,255,0.09);
+    color: #cbd5e1;
+    padding: 2px 9px; border-radius: 10px;
+    margin-bottom: 12px;
+  }
+  .ask-title {
+    font-size: 15px; font-weight: 700; color: white;
+    letter-spacing: -0.3px; margin-bottom: 10px; line-height: 1.3;
+    display: block;
+  }
+  .ask-text {
+    font-size: 12.5px; color: #cbd5e1; line-height: 1.65;
+  }
+  .ask-card.ask-primary {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(255,255,255,0.14);
+  }
+  .ask-card.ask-primary .ask-title { color: white; }
+  .ask-card.ask-primary .ask-text  { color: #e2e8f0; }
+  .ask-close {
+    margin-top: 20px;
+    padding: 14px 22px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: space-between;
+    z-index: 2; position: relative;
+  }
+  .ask-close-text { font-size: 13px; color: #cbd5e1; line-height: 1.6; }
+  .ask-close-text strong { color: #f1f5f9; }
+  .ask-contact { font-size: 11.5px; color: #94a3b8; text-align: right; line-height: 1.5; }
+  .ask-contact .name { color: #e2e8f0; font-weight: 600; display: block; }
+
+  /* ---------- Fictional disclaimer ribbon ---------- */
+  .fictional-ribbon {
+    position: absolute;
+    bottom: 10px; right: 14px;
+    background: #fef2f2;
+    color: #7f1d1d;
+    border: 1px solid #fca5a5;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    z-index: 50;
+    pointer-events: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="deck" id="deck">
+
+    <!-- =========================================================
+         SCREEN 1 — Cover / Solution Overview (context slide)
+         ========================================================= -->
+    <section class="screen ctx active" data-screen="1">
+
+      <div class="ctx-header">
+        <div class="brand-mark">
+          <div class="brand-logo"><img src="SAFWA LOGO LOGO ONLY.svg" alt="SAFWAI"></div>
+          <div>
+            <div class="brand-text">Shariah Compliance OS<span class="by">by SAFWAI AI Solutions</span></div>
+          </div>
+        </div>
+        <div class="fictional-badge">
+          Fictional walkthrough · Not a real institution
+        </div>
+      </div>
+
+      <div class="ctx-hero">
+        <div class="eyebrow">Solution Overview · May 2026</div>
+        <h1 class="hero-title">An amplifier for the<br/>Shariah advisor.</h1>
+        <p class="hero-subtitle">
+          Built around the Shariah advisor, not to replace them. The system clears routine inquiries against
+          Board-approved positions, and pre-digests the complex ones into <strong>decision-ready briefs</strong>.
+          The advisor's time goes back to novel judgment, Board preparation and the work only they can do.
+        </p>
+
+        <div class="module-surface">
+          <div class="module-card mod-a">
+            <div class="module-badge">A</div>
+            <div class="module-name"><span class="mod-letter">Module A</span>Inquiry Resolution</div>
+            <div class="module-desc">
+              Customer Shariah questions answered in seconds with cited Board rulings and AAOIFI standards. Consistent across every channel.
+            </div>
+          </div>
+          <div class="module-card mod-b">
+            <div class="module-badge">B</div>
+            <div class="module-name"><span class="mod-letter">Module B</span>Commercial Financing Clearance</div>
+            <div class="module-desc">
+              SME and corporate financing applications screened across eight Shariah aspects on submission. Document gaps named on Day&nbsp;1. Dr.&nbsp;Fatima sees only what genuinely needs her judgment.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ctx-footer">
+        <div class="left">
+          <span>● Scenario: Rawasi Islamic Bank · Doha</span>
+          <span>● Walkthrough: 15 screens</span>
+          <span>● Read time: 10 minutes</span>
+        </div>
+        <div class="right">SAFWAI AI Solutions · safwai.com</div>
+      </div>
+
+    </section>
+
+    <!-- =========================================================
+         SCREEN 2 — Problem framing · The wall of pain (context)
+         ========================================================= -->
+    <section class="screen ctx" data-screen="2">
+      <div class="ctx-header">
+        <div class="brand-mark">
+          <div class="brand-logo"><img src="SAFWA LOGO LOGO ONLY.svg" alt="SAFWAI"></div>
+          <div>
+            <div class="brand-text">Shariah Compliance OS<span class="by">by SAFWAI AI Solutions</span></div>
+          </div>
+        </div>
+        <div class="fictional-badge">Fictional walkthrough · Not a real institution</div>
+      </div>
+
+      <div class="ctx-hero">
+        <div class="eyebrow">Where the bank loses time today</div>
+        <h1 class="hero-title" style="font-size:52px;">Same question.<br/>Different day. Different answer.</h1>
+        <p class="hero-subtitle">
+          The 3-tier Shariah model works in principle. In practice, it has run out of capacity.
+          The cost lands on customers, relationship managers, and the Board.
+        </p>
+
+        <div class="pain-grid">
+          <div class="pain-card">
+            <div class="pain-title">The advisor's capacity is finite</div>
+            <div class="pain-stat">40–50%</div>
+            <div class="pain-desc">
+              of Dr. Fatima's week goes to inquiries answerable from a knowledge base, if one existed. That's the time she isn't available for novel transactions, Board preparation, or the strategic work that justifies her seniority.
+            </div>
+            <div class="pain-source">One Shariah Advisor · no substitute · the bottleneck is structural, not personal</div>
+          </div>
+
+          <div class="pain-card">
+            <div class="pain-title">Inconsistency is a regulatory finding</div>
+            <div class="pain-stat">Same Q → 2 answers</div>
+            <div class="pain-desc">
+              Monday: approved with conditions. Thursday: probably not. No record of either. AAOIFI governance standards and central bank Shariah frameworks require documented, traceable, consistent rulings. The audit trail today is: nothing.
+            </div>
+            <div class="pain-source">AAOIFI governance · central bank Shariah compliance frameworks · universal gap</div>
+          </div>
+
+          <div class="pain-card">
+            <div class="pain-title">Deals lost to speed, not price</div>
+            <div class="pain-stat">3–14 days</div>
+            <div class="pain-desc">
+              SME Shariah clearance, today. Each deal: 2–3 rounds of "we need more documents," by email, tracked in Excel. The RM can't tell the client where they stand. The client goes to the bank that can answer faster.
+            </div>
+            <div class="pain-source">Commercial Financing Review · deal loss rate untracked, but real</div>
+          </div>
+
+          <div class="pain-card">
+            <div class="pain-title">The Board's agenda is the wrong agenda</div>
+            <div class="pain-stat">Monthly meeting</div>
+            <div class="pain-desc">
+              Cases already covered by a 2023 ruling queue for the next Board session. The Supervisory Board meets to set Islamic finance strategy. In practice, it ratifies operational decisions that existing precedent already settled.
+            </div>
+            <div class="pain-source">Supervisory Board · strategic capacity consumed by operational backlog</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ctx-footer">
+        <div class="left">
+          <span>● Field analysis · Qatar Islamic banks</span>
+          <span>● Pain points are universal · numbers are illustrative</span>
+        </div>
+        <div class="right">SAFWAI AI Solutions · safwai.com</div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 3 — Module comparison table (context)
+         ========================================================= -->
+    <section class="screen ctx" data-screen="3">
+      <div class="ctx-header">
+        <div class="brand-mark">
+          <div class="brand-logo"><img src="SAFWA LOGO LOGO ONLY.svg" alt="SAFWAI"></div>
+          <div>
+            <div class="brand-text">Shariah Compliance OS<span class="by">by SAFWAI AI Solutions</span></div>
+          </div>
+        </div>
+        <div class="fictional-badge">Fictional walkthrough · Not a real institution</div>
+      </div>
+
+      <div class="ctx-hero" style="display:flex;flex-direction:column;padding-top:28px;">
+        <div style="color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;">Two processes · Two distinct problems</div>
+        <h1 class="intro-title" style="margin-bottom:6px;">Where the system intervenes.</h1>
+        <p style="font-size:13.5px;color:#94a3b8;line-height:1.65;margin-bottom:0;z-index:2;position:relative;">Each module targets a different operational process: a different set of people, a different failure mode, a different bottleneck to remove.</p>
+
+        <div class="module-compare">
+
+          <!-- Module A -->
+          <div class="mc-col mc-a">
+            <div class="mc-header">
+              <div class="mc-badge">A</div>
+              <div class="mc-header-body">
+                <div class="mc-header-title">Inquiry Resolution</div>
+                <div class="mc-header-sub">Retail &amp; private banking · front-line staff</div>
+              </div>
+            </div>
+            <div class="mc-row">
+              <div class="mc-label lbl-process">Process</div>
+              <div class="mc-content cnt-process">A customer or front-line officer asks whether a product, transaction, or activity is Shariah-permissible. The question needs an answer: cited and consistent.</div>
+            </div>
+            <div class="mc-row">
+              <div class="mc-label lbl-pain">Pain</div>
+              <div class="mc-content cnt-pain">Different officers give different answers to the same question. Routine inquiries queue behind complex ones on the advisor's desk. No audit trail. Response quality depends on who picks up.</div>
+            </div>
+            <div class="mc-row">
+              <div class="mc-label lbl-solution">Solution</div>
+              <div class="mc-content cnt-solution">AI retrieves the applicable Board ruling and AAOIFI standard on submission. The Shariah Desk Officer reviews and endorses, or flags for escalation. Novel cases reach the Internal Shariah Advisor pre-framed.</div>
+            </div>
+            <div class="mc-row">
+              <div class="mc-label lbl-value">Value</div>
+              <div class="mc-content cnt-value">Every inquiry answered the same way, every time, with a citation. The advisor handles only what requires genuine judgment.</div>
+            </div>
+          </div>
+
+          <!-- Module B -->
+          <div class="mc-col mc-b">
+            <div class="mc-header">
+              <div class="mc-badge">B</div>
+              <div class="mc-header-body">
+                <div class="mc-header-title">Commercial Financing Clearance</div>
+                <div class="mc-header-sub">SME &amp; corporate financing · Relationship Managers</div>
+              </div>
+            </div>
+            <div class="mc-row">
+              <div class="mc-label lbl-process">Process</div>
+              <div class="mc-content cnt-process">A Relationship Manager submits an SME or corporate financing application. Before proceeding to credit, the deal must pass Shariah clearance across eight aspects.</div>
+            </div>
+            <div class="mc-row">
+              <div class="mc-label lbl-pain">Pain</div>
+              <div class="mc-content cnt-pain">Clearance takes 3–14 days. The same sectors and product structures are reviewed from scratch each time. Document gaps surface mid-process. Deals stall while the client waits, or walks.</div>
+            </div>
+            <div class="mc-row">
+              <div class="mc-label lbl-solution">Solution</div>
+              <div class="mc-content cnt-solution">Eight aspects screened in parallel on receipt. Document requirements named on Day 1. Precedent-covered cases cleared at Shariah Desk Officer level, same morning. Complex cases escalate with full reasoning attached.</div>
+            </div>
+            <div class="mc-row">
+              <div class="mc-label lbl-value">Value</div>
+              <div class="mc-content cnt-value">Most deals cleared the morning they are submitted. The Relationship Manager calls the client with a decision. Before the competing bank does.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="ctx-footer">
+        <div class="left">
+          <span>● Two modules · Six demonstrations · Rawasi Islamic Bank · May 2026</span>
+        </div>
+        <div class="right">SAFWAI AI Solutions · safwai.com</div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 4 — The augmented 3-tier model (context)
+         ========================================================= -->
+    <section class="screen ctx" data-screen="4">
+      <div class="ctx-header">
+        <div class="brand-mark">
+          <div class="brand-logo"><img src="SAFWA LOGO LOGO ONLY.svg" alt="SAFWAI"></div>
+          <div>
+            <div class="brand-text">Shariah Compliance OS<span class="by">by SAFWAI AI Solutions</span></div>
+          </div>
+        </div>
+        <div class="fictional-badge">Fictional walkthrough · Not a real institution</div>
+      </div>
+
+      <div class="ctx-hero">
+        <div class="eyebrow">Where the AI fits, and where it doesn't</div>
+        <h1 class="hero-title" style="font-size:54px;">The tiers stay.<br/>The bottleneck doesn't.</h1>
+        <p class="hero-subtitle">
+          The AI sits exactly where the capacity gap is, between the frontline and the senior advisor,
+          and routes every case to the right level of expertise automatically.
+        </p>
+
+        <div class="flow-diagram">
+          <div class="flow-box">
+            <div class="flow-tier">Source</div>
+            <div class="flow-name">Customer</div>
+            <div class="flow-role">Retail, SME-via-RM, private banking</div>
+            <div class="flow-stat">100%</div>
+            <div class="flow-stat-label">of inquiries enter here</div>
+          </div>
+          <div class="flow-arrow">→</div>
+
+          <div class="flow-box">
+            <div class="flow-tier">Frontline</div>
+            <div class="flow-name">Shariah Desk Officer</div>
+            <div class="flow-role">Mohammed Al-Emadi and team · call centre, branch, RM portal</div>
+            <div class="flow-stat">+AI</div>
+            <div class="flow-stat-label">real-time guidance overlay</div>
+          </div>
+          <div class="flow-arrow">→</div>
+
+          <div class="flow-box new">
+            <div class="flow-badge">NEW LAYER</div>
+            <div class="flow-tier">AI Assistant</div>
+            <div class="flow-name">Shariah Compliance OS</div>
+            <div class="flow-role">Confidence-routes against Board-approved positions and AAOIFI standards</div>
+            <div class="flow-stat">60–70%</div>
+            <div class="flow-stat-label">resolved at this layer</div>
+          </div>
+          <div class="flow-arrow">→</div>
+
+          <div class="flow-box">
+            <div class="flow-tier">Senior Advisor</div>
+            <div class="flow-name">Dr. Fatima Al-Subaie</div>
+            <div class="flow-role">Pre-digested cases · novel judgment · Board preparation</div>
+            <div class="flow-stat">~25%</div>
+            <div class="flow-stat-label">for the advisor's ruling</div>
+          </div>
+          <div class="flow-arrow">→</div>
+
+          <div class="flow-box">
+            <div class="flow-tier">Authority</div>
+            <div class="flow-name">Supervisory Board</div>
+            <div class="flow-role">Fatwas · precedent-setting cases · approves knowledge base updates</div>
+            <div class="flow-stat">&lt;5%</div>
+            <div class="flow-stat-label">novel rulings</div>
+          </div>
+        </div>
+
+        <div class="flow-note">
+          <div class="flow-note-icon">✓</div>
+          <div>
+            <div class="flow-note-title">Board authority preserved. By design.</div>
+            <div class="flow-note-desc">
+              The AI can only validate against positions the Board has already approved. It cannot invent new rulings. Every Board fatwa flows into the knowledge base; nothing flows out without Board approval.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ctx-footer">
+        <div class="left">
+          <span>● The model is unchanged. The bottleneck is removed.</span>
+        </div>
+        <div class="right">SAFWAI AI Solutions · safwai.com</div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 5 — What changes (benefits · context)
+         ========================================================= -->
+    <section class="screen ctx" data-screen="5">
+      <div class="ctx-header">
+        <div class="brand-mark">
+          <div class="brand-logo"><img src="SAFWA LOGO LOGO ONLY.svg" alt="SAFWAI"></div>
+          <div>
+            <div class="brand-text">Shariah Compliance OS<span class="by">by SAFWAI AI Solutions</span></div>
+          </div>
+        </div>
+        <div class="fictional-badge">Fictional walkthrough · Not a real institution</div>
+      </div>
+
+      <div class="ctx-hero">
+        <div class="eyebrow">What the system gives back</div>
+        <h1 class="hero-title" style="font-size:52px;">Four people get<br/>their time back.</h1>
+        <p class="hero-subtitle">
+          The system doesn't add a layer. It removes a bottleneck from each role, and the bottleneck
+          is different for each person.
+        </p>
+
+        <div class="benefit-grid">
+
+          <div class="benefit-card bc-blue">
+            <div class="benefit-persona-row">
+              <div class="benefit-avatar">
+                <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#1d4ed8"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">MA</text></svg>
+              </div>
+              <div>
+                <div class="benefit-name">Mohammed Al-Emadi</div>
+                <div class="benefit-role">Shariah Desk Officer</div>
+              </div>
+            </div>
+            <div class="benefit-text">
+              <strong>Confident answers in real time.</strong> Mohammed responds to every customer inquiry against Board-approved positions, without calling upstairs, guessing, or giving a different answer than he gave last Tuesday. The knowledge base is always current; the response is always cited.
+            </div>
+          </div>
+
+          <div class="benefit-card bc-amber">
+            <div class="benefit-persona-row">
+              <div class="benefit-avatar">
+                <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#b45309"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">FA</text></svg>
+              </div>
+              <div>
+                <div class="benefit-name">Faisal Al-Ansari</div>
+                <div class="benefit-role">Senior Relationship Manager</div>
+              </div>
+            </div>
+            <div class="benefit-text">
+              <strong>Clearance before the client loses patience.</strong> Faisal tells the client where they stand before the day ends. Document requests are complete on Day&nbsp;1. Not vague. The deal doesn't stall at Shariah while a competitor bank answers faster.
+            </div>
+          </div>
+
+          <div class="benefit-card bc-rose">
+            <div class="benefit-persona-row">
+              <div class="benefit-avatar">
+                <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#9f1239"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">FA</text></svg>
+              </div>
+              <div>
+                <div class="benefit-name">Dr. Fatima Al-Subaie</div>
+                <div class="benefit-role">Internal Shariah Advisor</div>
+              </div>
+            </div>
+            <div class="benefit-text">
+              <strong>Only the cases that genuinely need her.</strong> Every case that reaches Dr.&nbsp;Fatima arrives with the question framed, the evidence assembled, the precedent cited. She rules. She doesn't research. Her time goes back to novel judgment and Board preparation.
+            </div>
+          </div>
+
+          <div class="benefit-card bc-green">
+            <div class="benefit-persona-row">
+              <div class="benefit-avatar" style="background:linear-gradient(135deg,#16a34a,#15803d);border-radius:50%;display:flex;align-items:center;justify-content:center;width:32px;height:32px;font-size:12px;font-weight:700;color:white;flex-shrink:0;">
+                SB
+              </div>
+              <div>
+                <div class="benefit-name">Supervisory Board</div>
+                <div class="benefit-role">Rawasi Islamic Bank</div>
+              </div>
+            </div>
+            <div class="benefit-text">
+              <strong>Strategic sessions, not operational ratification.</strong> Board meetings address novel territory, new product structures, and governance. Not cases that an existing ruling already settled. Precedent handles the backlog; the Board sets the agenda.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="ctx-footer">
+        <div class="left">
+          <span>● The system amplifies expertise. It does not replace it.</span>
+        </div>
+        <div class="right">SAFWAI AI Solutions · safwai.com</div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 6 — Module A intro (context)
+         ========================================================= -->
+    <section class="screen ctx" data-screen="6">
+      <div class="ctx-header">
+        <div class="brand-mark">
+          <div class="brand-logo"><img src="SAFWA LOGO LOGO ONLY.svg" alt="SAFWAI"></div>
+          <div>
+            <div class="brand-text">Shariah Compliance OS<span class="by">by SAFWAI AI Solutions</span></div>
+          </div>
+        </div>
+        <div class="fictional-badge">Fictional walkthrough · Not a real institution</div>
+      </div>
+
+      <div class="ctx-hero">
+        <div class="intro-badge mod-a">A</div>
+        <div class="intro-eyebrow">Module A · Inquiry Resolution</div>
+        <h1 class="intro-title">"Is this halal?"<br/>Answered in seconds.</h1>
+        <p class="intro-tagline">
+          The most common Shariah question a bank handles. Today: 24–48 hours, three different answers, no audit trail.
+          In Module A: one consistent answer, cited to the Board ruling that authorised it, in under a minute.
+        </p>
+
+        <div class="intro-preview">
+          <div class="preview-card">
+            <div class="preview-num">SCREEN 07 · NEXT</div>
+            <div class="preview-title">Operator inquiry console</div>
+            <div class="preview-desc">Mohammed handles a live customer question. The AI suggests a 92%-confidence response with three citations.</div>
+          </div>
+          <div class="preview-card">
+            <div class="preview-num">SCREEN 09</div>
+            <div class="preview-title">Arabic mode · same case, same source</div>
+            <div class="preview-desc">Bilingual by design. The customer sees the response in their preferred language; the audit trail is captured in both.</div>
+          </div>
+          <div class="preview-card">
+            <div class="preview-num">SCREEN 09</div>
+            <div class="preview-title">Dr. Fatima's advisor queue</div>
+            <div class="preview-desc">The cases that need her: pre-digested, with the question framed, the evidence attached, the precedent linked.</div>
+          </div>
+        </div>
+
+        <div class="intro-personas">
+          <span class="intro-personas-label">Personas in this module</span>
+          <div class="intro-persona">
+            <div class="intro-avatar">
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#1d4ed8"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">MA</text></svg>
+            </div>
+            <div>
+              <div class="intro-persona-name">Mohammed Al-Emadi</div>
+              <div class="intro-persona-role">Shariah Desk Officer</div>
+            </div>
+          </div>
+          <div class="intro-persona">
+            <div class="intro-avatar">
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#9f1239"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">FA</text></svg>
+            </div>
+            <div>
+              <div class="intro-persona-name">Dr. Fatima Al-Subaie</div>
+              <div class="intro-persona-role">Internal Shariah Advisor</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ctx-footer">
+        <div class="left">
+          <span>● Process 1 · Retail Shariah Inquiry · Future-state walkthrough</span>
+        </div>
+        <div class="right">SAFWAI AI Solutions · safwai.com</div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 7 — Module A · Operator Inquiry Console (demo slide)
+         ========================================================= -->
+    <section class="screen demo" data-screen="7">
+
+      <div class="browser">
+
+        <!-- Browser chrome -->
+        <div class="browser-bar">
+          <div class="traffic-lights">
+            <span class="light r"></span><span class="light y"></span><span class="light g"></span>
+          </div>
+          <div class="address-bar">
+            <span class="lock">🔒</span>
+            <span>app.rawasi.</span><span class="url">shariah-os.io</span><span>/inquiry/INQ-2026-2847</span>
+          </div>
+          <div class="browser-actions">⊕ ⋮</div>
+        </div>
+
+        <!-- Tab strip -->
+        <div class="tab-strip">
+          <div class="tab">
+            <span class="dot"></span>Inquiry · INQ-2026-2847<span class="x">×</span>
+          </div>
+          <div class="tab inactive">Knowledge Base<span class="x">×</span></div>
+          <div class="tab inactive">My Cases (4)<span class="x">×</span></div>
+        </div>
+
+        <!-- App shell -->
+        <div class="app">
+
+          <!-- Sidebar -->
+          <aside class="sidebar">
+            <div class="module-header">
+              <div class="module-header-row">
+                <div class="sb-badge">A</div>
+                <div class="module-header-text">
+                  <div class="label">Module A</div>
+                  <div class="name">Inquiry Resolution</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="nav-section">
+              <div class="nav-section-title">My Work</div>
+              <div class="nav-item active">
+                <span class="ico">●</span> Live Queue <span class="count">7</span>
+              </div>
+              <div class="nav-item">
+                <span class="ico">◆</span> My Cases <span class="count">4</span>
+              </div>
+              <div class="nav-item">
+                <span class="ico">▤</span> Knowledge Base
+              </div>
+              <div class="nav-item">
+                <span class="ico">◈</span> Reports
+              </div>
+            </div>
+
+            <div class="nav-section">
+              <div class="nav-section-title">Today</div>
+              <div class="nav-item">
+                <span class="ico">✓</span> Resolved <span class="count">23</span>
+              </div>
+              <div class="nav-item">
+                <span class="ico">↗</span> Escalated <span class="count">2</span>
+              </div>
+            </div>
+
+            <div class="other-modules">
+              ⊞ Other modules ↗
+            </div>
+          </aside>
+
+          <!-- Main -->
+          <div class="main">
+
+            <!-- Top bar -->
+            <div class="topbar">
+              <div class="topbar-search">
+                ⌕ Search rulings, customers, cases…
+              </div>
+              <div class="topbar-right">
+                <div class="annotation-toggle" onclick="toggleAnnotations()">
+                  <div class="toggle-switch"></div>
+                  Annotations <span id="annot-state">on</span>
+                </div>
+                <div class="persona">
+                  <div class="avatar">
+                    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#1d4ed8"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">MA</text></svg>
+                  </div>
+                  <div class="persona-text">
+                    <div class="persona-name">Mohammed Al-Emadi</div>
+                    <div class="persona-role">Shariah Desk Officer</div>
+                  </div>
+                  <span class="chevron">▾</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Page header -->
+            <div class="page-header">
+              <div class="page-header-left">
+                <div class="crumbs">Live Queue / Inquiry</div>
+                <div class="page-title">Live Inquiry <span class="case-id">INQ-2026-2847 · received 47s ago</span></div>
+                <div class="sla-line"><span class="pulse"></span><span>SLA: respond within 2 min</span></div>
+              </div>
+              <div class="page-header-right" style="position:relative;">
+                <div class="actions">
+                  <button class="btn btn-escalate">↗ Refer to Dr. Fatima</button>
+                  <button class="btn btn-secondary">✎ Modify first</button>
+                  <button class="btn btn-primary">Send to customer →</button>
+                  <span class="annot-badge b-blue" style="position:absolute; top:-14px; right:-10px;">3</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Inquiry layout -->
+            <div class="inquiry">
+
+              <!-- Customer column -->
+              <div class="panel-customer">
+                <div class="panel-label">
+                  <span class="icon">◐</span> CUSTOMER
+                </div>
+
+                <div class="cust-card">
+                  <div class="cust-row">
+                    <div class="cust-avatar">
+                      <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#475569"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">KA</text></svg>
+                    </div>
+                    <div>
+                      <div class="cust-name">Khalid Al-Mannai</div>
+                      <div class="cust-meta">
+                        Retail · Priority customer since 2019
+                      </div>
+                    </div>
+                  </div>
+                  <div class="cust-meta" style="display:flex;gap:8px;align-items:center;">
+                    <span class="channel-pill">AlRawasi Mobile App</span>
+                    <span class="sep">·</span>
+                    <span>Doha · QID ●●●●7142</span>
+                  </div>
+
+                  <div class="cust-stat-grid">
+                    <div class="cust-stat">
+                      <div class="stat-label">Past inquiries</div>
+                      <div class="stat-value">3</div>
+                    </div>
+                    <div class="cust-stat">
+                      <div class="stat-label">Investments</div>
+                      <div class="stat-value">QAR 420K</div>
+                    </div>
+                    <div class="cust-stat">
+                      <div class="stat-label">Risk profile</div>
+                      <div class="stat-value">Moderate</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="panel-label" style="margin-top:6px;">
+                  <span class="icon">◐</span> INQUIRY
+                </div>
+                <div class="msg-bubble">
+                  Salam, I'm thinking about buying shares in <strong>Al Mawared Foods Group</strong>
+                  through the new investment feature in the app. They run restaurant chains in Qatar
+                  and Saudi. Is this halal for me to invest in?
+                </div>
+                <div class="msg-time">via Mobile App · 12 May 2026 · 10:24 AST</div>
+
+                <div class="classification">
+                  <div class="cls-row">
+                    <span class="cls-label">Auto-classified as</span>
+                    <span class="cls-value">Investment permissibility</span>
+                  </div>
+                  <div class="cls-row">
+                    <span class="cls-label">Sector match</span>
+                    <span class="cls-value">Hospitality · F&B (conditional)</span>
+                  </div>
+                  <div class="cls-row">
+                    <span class="cls-label">Complexity</span>
+                    <span class="cls-value"><span class="tag-low">Low</span></span>
+                  </div>
+                  <div class="cls-row">
+                    <span class="cls-label">Routed in</span>
+                    <span class="cls-value">2.4 seconds</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- AI response column -->
+              <div class="panel-ai">
+                <div class="panel-label">
+                  <span class="icon">◑</span> SUGGESTED RESPONSE
+                </div>
+
+                <div class="conf-bar">
+                  <div class="conf-circle">92%</div>
+                  <div class="conf-text">
+                    <div class="conf-label">High confidence · auto-send eligible</div>
+                    <div class="conf-detail">
+                      All matched against Board-approved positions. No novel jurisprudence required.
+                    </div>
+                  </div>
+                  <span class="annot-badge b-blue" style="position:absolute; top:-10px; right:-10px;">1</span>
+                </div>
+
+                <div class="response-card">
+                  <div class="response-header">
+                    <div class="response-title">Response · English</div>
+                    <div class="lang-toggle">
+                      <span class="active">EN</span><span>عربي</span>
+                    </div>
+                  </div>
+                  <div class="response-text">
+                    <p>Wa alaikum salam, Mr. Al-Mannai. Thank you for asking before investing.</p>
+                    <p>Al Mawared Foods Group shares are <strong>permissible (halal)</strong> for investment, subject to our standard quarterly screening.</p>
+                    <p>Their latest consolidated disclosure (Q1 2026) shows <strong>2.1% haram-adjacent revenue</strong>, within the AAOIFI 5% tolerance. Their financial structure (debt 22%, interest income 1.4%) also passes purification screens. You will see a small annual purification amount calculated in your statement.</p>
+                  </div>
+                </div>
+
+                <div class="sources">
+                  <div class="response-title" style="margin-bottom:6px;">Sources cited in this response</div>
+                  <div class="source-row">
+                    <div class="source-icon">⚖</div>
+                    <div class="source-text">
+                      <div class="ref">Board Ruling #2024-118</div>
+                      <div class="desc">Restaurant sector investment screening · approved 14 Aug 2024</div>
+                    </div>
+                    <div class="source-meta">used 47×</div>
+                  </div>
+                  <div class="source-row">
+                    <div class="source-icon">§</div>
+                    <div class="source-text">
+                      <div class="ref">AAOIFI Shariah Standard No. 21 §3/4</div>
+                      <div class="desc">Financial securities · permissibility criteria</div>
+                    </div>
+                    <div class="source-meta">authoritative</div>
+                  </div>
+                  <div class="source-row">
+                    <div class="source-icon">◧</div>
+                    <div class="source-text">
+                      <div class="ref">Al Mawared Foods Group · Q3 2025 disclosures</div>
+                      <div class="desc">Revenue mix verified · last sync 4 days ago</div>
+                    </div>
+                    <div class="source-meta">live data</div>
+                  </div>
+                  <span class="annot-badge b-blue" style="position:absolute; top:-10px; right:-10px;">2</span>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Annotations strip -->
+      <div class="annotations-strip">
+        <div class="annot-card c-blue">
+          <div class="annot-num">1</div>
+          <div class="annot-title">Confidence decides who rules</div>
+          <div class="annot-desc">
+            >85% means the response matches an existing Board-approved position word for word. 60–85% surfaces to Mohammed to confirm before sending. &lt;60% routes directly to Dr. Fatima. Only the Shariah advisor rules on uncertainty.
+          </div>
+          <div class="annot-value">→ The system never pretends to be the advisor. It hands her the cases that need her.</div>
+        </div>
+        <div class="annot-card c-blue">
+          <div class="annot-num">2</div>
+          <div class="annot-title">Every answer is traceable</div>
+          <div class="annot-desc">
+            Each response cites the Board ruling, AAOIFI standard and external disclosure it relied on. Citations travel with the case if it's escalated or audited.
+          </div>
+          <div class="annot-value">→ The audit trail is built before the customer hears the answer.</div>
+        </div>
+        <div class="annot-card c-blue">
+          <div class="annot-num">3</div>
+          <div class="annot-title">The advisor opens the case already briefed</div>
+          <div class="annot-desc">
+            "Refer to Dr. Fatima" sends the full case file: every citation, the customer history, Mohammed's own note. No copy-paste, no email chains, no context lost between tiers.
+          </div>
+          <div class="annot-value">→ Dr. Fatima's time goes to judgment, never to chasing context.</div>
+        </div>
+      </div>
+
+      <div class="fictional-ribbon">Rawasi Islamic Bank · Fictional Institution · Walkthrough only</div>
+
+    </section>
+
+    <!-- =========================================================
+         SCREEN 8 — Module A · Arabic mode (demo slide)
+         ========================================================= -->
+    <section class="screen demo" data-screen="8">
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="traffic-lights">
+            <span class="light r"></span><span class="light y"></span><span class="light g"></span>
+          </div>
+          <div class="address-bar">
+            <span class="lock">🔒</span>
+            <span>app.rawasi.</span><span class="url">shariah-os.io</span><span>/inquiry/INQ-2026-2847?lang=ar</span>
+          </div>
+          <div class="browser-actions">⊕ ⋮</div>
+        </div>
+
+        <div class="tab-strip">
+          <div class="tab">
+            <span class="dot"></span>Inquiry · INQ-2026-2847<span class="x">×</span>
+          </div>
+          <div class="tab inactive">Knowledge Base<span class="x">×</span></div>
+          <div class="tab inactive">My Cases (4)<span class="x">×</span></div>
+        </div>
+
+        <div class="app">
+          <aside class="sidebar">
+            <div class="module-header">
+              <div class="module-header-row">
+                <div class="sb-badge">A</div>
+                <div class="module-header-text">
+                  <div class="label">Module A</div>
+                  <div class="name">Inquiry Resolution</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="nav-section">
+              <div class="nav-section-title">My Work</div>
+              <div class="nav-item active"><span class="ico">●</span> Live Queue <span class="count">7</span></div>
+              <div class="nav-item"><span class="ico">◆</span> My Cases <span class="count">4</span></div>
+              <div class="nav-item"><span class="ico">▤</span> Knowledge Base</div>
+              <div class="nav-item"><span class="ico">◈</span> Reports</div>
+            </div>
+
+            <div class="nav-section">
+              <div class="nav-section-title">Today</div>
+              <div class="nav-item"><span class="ico">✓</span> Resolved <span class="count">23</span></div>
+              <div class="nav-item"><span class="ico">↗</span> Escalated <span class="count">2</span></div>
+            </div>
+
+            <div class="other-modules">⊞ Other modules ↗</div>
+          </aside>
+
+          <div class="main">
+            <div class="topbar">
+              <div class="topbar-search">⌕ Search rulings, customers, cases…</div>
+              <div class="topbar-right">
+                <div class="annotation-toggle" onclick="toggleAnnotations()">
+                  <div class="toggle-switch"></div>
+                  Annotations <span class="annot-state-label">on</span>
+                </div>
+                <div class="persona">
+                  <div class="avatar">
+                    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#1d4ed8"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">MA</text></svg>
+                  </div>
+                  <div class="persona-text">
+                    <div class="persona-name">Mohammed Al-Emadi</div>
+                    <div class="persona-role">Shariah Desk Officer</div>
+                  </div>
+                  <span class="chevron">▾</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="page-header">
+              <div class="page-header-left">
+                <div class="crumbs">Live Queue / Inquiry / Customer view · Arabic</div>
+                <div class="page-title">Live Inquiry <span class="case-id">INQ-2026-2847 · response composing</span></div>
+                <div class="sla-line"><span class="pulse"></span><span>SLA: respond within 2 min</span></div>
+              </div>
+              <div class="page-header-right" style="position:relative;">
+                <div class="actions">
+                  <button class="btn btn-escalate">↗ Refer to Dr. Fatima</button>
+                  <button class="btn btn-secondary">✎ Modify first</button>
+                  <button class="btn btn-primary">Send to customer →</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="inquiry">
+              <!-- Customer column -->
+              <div class="panel-customer">
+                <div class="panel-label"><span class="icon">◐</span> CUSTOMER</div>
+
+                <div class="cust-card">
+                  <div class="cust-row">
+                    <div class="cust-avatar">
+                      <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#475569"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">KA</text></svg>
+                    </div>
+                    <div>
+                      <div class="cust-name">Khalid Al-Mannai</div>
+                      <div class="cust-meta">Retail · Priority customer since 2019</div>
+                    </div>
+                  </div>
+                  <div class="cust-meta" style="display:flex;gap:8px;align-items:center;">
+                    <span class="channel-pill">AlRawasi Mobile App</span>
+                    <span class="sep">·</span>
+                    <span>Doha · QID ●●●●7142</span>
+                  </div>
+
+                  <div class="cust-stat-grid">
+                    <div class="cust-stat">
+                      <div class="stat-label">Language pref.</div>
+                      <div class="stat-value">عربي → EN</div>
+                    </div>
+                    <div class="cust-stat">
+                      <div class="stat-label">App locale</div>
+                      <div class="stat-value">qa-AR</div>
+                    </div>
+                    <div class="cust-stat">
+                      <div class="stat-label">Prior responses</div>
+                      <div class="stat-value">All Arabic</div>
+                    </div>
+                  </div>
+                  <span class="annot-badge b-blue" style="position:absolute; top:-10px; right:-10px;">2</span>
+                </div>
+
+                <div class="panel-label" style="margin-top:6px;"><span class="icon">◐</span> INQUIRY · ORIGINAL</div>
+                <div class="msg-bubble">
+                  Salam, I'm thinking about buying shares in <strong>Al Mawared Foods Group</strong> through the new investment feature in the app. They run restaurant chains in Qatar and Saudi. Is this halal for me to invest in?
+                </div>
+                <div class="msg-time">via Mobile App · 12 May 2026 · 10:24 AST · written mixed AR/EN</div>
+
+                <div style="margin-top: 14px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 12px; font-size: 11.5px; color: #1e40af; display: flex; gap: 9px;">
+                  <span style="font-size:13px; flex-shrink:0;">⚐</span>
+                  <div>
+                    <div style="font-weight:700;">Audit trail captures both languages</div>
+                    <div style="color:#3b82f6; margin-top:2px; font-weight:500; line-height:1.4;">Customer receives Arabic. Mohammed sees both. Auditors choose whichever is authoritative for their review.</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- AI response column - ARABIC -->
+              <div class="panel-ai" dir="rtl" style="font-family: 'Segoe UI', 'Tahoma', 'Inter', sans-serif;">
+                <div class="panel-label" style="flex-direction: row-reverse; justify-content: flex-end; gap: 8px;">
+                  <span style="font-size:10px; color:#94a3b8; font-weight:500; letter-spacing:0; text-transform:none; margin-left:auto;" dir="ltr">Customer-facing · Arabic</span>
+                  <span>الرد المُقترَح للعميل</span>
+                  <span class="icon">◑</span>
+                </div>
+
+                <div class="conf-bar" style="flex-direction:row-reverse;">
+                  <div class="conf-circle">92%</div>
+                  <div class="conf-text" style="text-align:right;">
+                    <div class="conf-label">ثقة عالية · يمكن الإرسال المباشر</div>
+                    <div class="conf-detail">جميع المخرجات مطابقة لقرار الهيئة الشرعية. لا يتطلب اجتهاداً جديداً.</div>
+                  </div>
+                </div>
+
+                <div class="response-card">
+                  <div class="response-header" style="flex-direction:row-reverse;">
+                    <div class="response-title" style="text-align:right;">الرد · باللغة العربية</div>
+                    <div class="lang-toggle" dir="ltr">
+                      <span>EN</span><span class="active">عربي</span>
+                    </div>
+                  </div>
+                  <span class="annot-badge b-blue" style="position:absolute; top:-14px; left:-14px;">1</span>
+                  <div class="response-text" style="text-align:right;">
+                    <p>وعليكم السلام، أستاذ المناعي. شكراً على سؤالك قبل الاستثمار.</p>
+                    <p>أسهم <strong>مجموعة الموارد للأغذية</strong> حلال للاستثمار، مع مراعاة الفحص الفصلي القياسي لدينا.</p>
+                    <p>آخر إفصاح موحد (الربع الأول 2026) يُظهر <strong>2.1% من الإيرادات ذات الصلة بالحرام</strong>، ضمن نسبة الـ 5% المسموح بها وفقاً لمعايير أيوفي. هيكلهم المالي (الدَيْن 22%، إيرادات الفوائد 1.4%) يجتاز أيضاً اختبارات التطهير. سترى مبلغاً سنوياً صغيراً للتطهير محسوباً في كشف حسابك.</p>
+                  </div>
+                </div>
+
+                <div class="sources">
+                  <div class="response-title" style="margin-bottom:6px; text-align:right;">المصادر المُستشهد بها في هذا الرد</div>
+                  <div class="source-row" style="flex-direction:row-reverse; text-align:right;">
+                    <div class="source-icon">⚖</div>
+                    <div class="source-text">
+                      <div class="ref" dir="ltr" style="text-align:right;">قرار الهيئة الشرعية رقم 2024-118</div>
+                      <div class="desc">فحص الاستثمار في قطاع المطاعم · معتمد 14 أغسطس 2024</div>
+                    </div>
+                    <div class="source-meta">استُخدِم 47×</div>
+                  </div>
+                  <div class="source-row" style="flex-direction:row-reverse; text-align:right;">
+                    <div class="source-icon">§</div>
+                    <div class="source-text">
+                      <div class="ref">معيار أيوفي رقم 21 §3/4</div>
+                      <div class="desc">الأوراق المالية · معايير الجواز</div>
+                    </div>
+                    <div class="source-meta">معتمد</div>
+                  </div>
+                  <div class="source-row" style="flex-direction:row-reverse; text-align:right;">
+                    <div class="source-icon">◧</div>
+                    <div class="source-text">
+                      <div class="ref">إفصاحات مجموعة الموارد للأغذية · الربع الأول 2026</div>
+                      <div class="desc">تركيبة الإيرادات تم التحقق منها · آخر مزامنة قبل 4 أيام</div>
+                    </div>
+                    <div class="source-meta">بيانات مباشرة</div>
+                  </div>
+                  <span class="annot-badge b-blue" style="position:absolute; top:-10px; left:-10px;">3</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="annotations-strip">
+        <div class="annot-card c-blue">
+          <div class="annot-num">1</div>
+          <div class="annot-title">Same case. Same citations. Two languages.</div>
+          <div class="annot-desc">
+            Not a translation layer. The system processes Arabic and English against the same knowledge base. The Board ruling cited above is identical in both languages, and Board updates flow into both simultaneously.
+          </div>
+          <div class="annot-value">→ The audit trail is language-independent. Compliance reviews don't pay for translation.</div>
+        </div>
+        <div class="annot-card c-blue">
+          <div class="annot-num">2</div>
+          <div class="annot-title">Customer language preference, honoured automatically</div>
+          <div class="annot-desc">
+            Khalid's app is set to Arabic. The customer-facing response is composed in Arabic by default. Mohammed sees both versions: the one being sent and the English audit copy. He can validate either before release.
+          </div>
+          <div class="annot-value">→ The customer never has to ask "do you speak my language?" The bank already knew.</div>
+        </div>
+        <div class="annot-card c-blue">
+          <div class="annot-num">3</div>
+          <div class="annot-title">RTL is native, not a CSS mirror</div>
+          <div class="annot-desc">
+            Search direction, sort order, breadcrumbs, scroll behaviour: every interaction designed for RTL from the ground up. Citations preserve LTR for code references (ruling IDs, AAOIFI standards) within RTL prose.
+          </div>
+          <div class="annot-value">→ The bank can deploy in Arabic-first, English-first, or hybrid teams without re-implementation.</div>
+        </div>
+      </div>
+
+      <div class="fictional-ribbon">Rawasi Islamic Bank · Fictional Institution · Walkthrough only</div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 9 — Module A · Advisor queue (demo slide · Dr. Fatima)
+         ========================================================= -->
+    <section class="screen demo" data-screen="9">
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="traffic-lights">
+            <span class="light r"></span><span class="light y"></span><span class="light g"></span>
+          </div>
+          <div class="address-bar">
+            <span class="lock">🔒</span>
+            <span>app.rawasi.</span><span class="url">shariah-os.io</span><span>/advisor/queue</span>
+          </div>
+          <div class="browser-actions">⊕ ⋮</div>
+        </div>
+
+        <div class="tab-strip">
+          <div class="tab"><span class="dot"></span>Advisor Queue<span class="x">×</span></div>
+          <div class="tab inactive">Today's Rulings (5)<span class="x">×</span></div>
+          <div class="tab inactive">Board Prep (3)<span class="x">×</span></div>
+        </div>
+
+        <div class="app">
+          <aside class="sidebar">
+            <div class="module-header">
+              <div class="module-header-row">
+                <div class="sb-badge">A</div>
+                <div class="module-header-text">
+                  <div class="label">Module A</div>
+                  <div class="name">Inquiry Resolution</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="nav-section">
+              <div class="nav-section-title">Advisor view</div>
+              <div class="nav-item active"><span class="ico">◐</span> My Queue <span class="count">12</span></div>
+              <div class="nav-item"><span class="ico">✓</span> Today's Rulings <span class="count">5</span></div>
+              <div class="nav-item"><span class="ico">⚖</span> Knowledge Base</div>
+              <div class="nav-item"><span class="ico">◇</span> Precedents</div>
+              <div class="nav-item"><span class="ico">⧈</span> Board Prep <span class="count">3</span></div>
+            </div>
+
+            <div class="nav-section">
+              <div class="nav-section-title">This week</div>
+              <div class="nav-item"><span class="ico">↗</span> Rulings issued <span class="count">42</span></div>
+              <div class="nav-item"><span class="ico">◆</span> Avg time <span class="count" style="background:transparent;color:#475569;">14m</span></div>
+            </div>
+
+            <div class="other-modules">⊞ Other modules ↗</div>
+          </aside>
+
+          <div class="main">
+            <div class="topbar">
+              <div class="topbar-search">⌕ Search rulings, precedents, cases…</div>
+              <div class="topbar-right">
+                <div class="annotation-toggle" onclick="toggleAnnotations()">
+                  <div class="toggle-switch"></div>
+                  Annotations <span class="annot-state-label">on</span>
+                </div>
+                <div class="persona">
+                  <div class="avatar">
+                    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#9f1239"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">FA</text></svg>
+                  </div>
+                  <div class="persona-text">
+                    <div class="persona-name">Dr. Fatima Al-Subaie</div>
+                    <div class="persona-role">Internal Shariah Advisor</div>
+                  </div>
+                  <span class="chevron">▾</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="page-header">
+              <div class="page-header-left">
+                <div class="crumbs">Advisor / My Queue</div>
+                <div class="page-title">Advisor Queue <span class="case-id">12 cases awaiting your ruling</span></div>
+                <div class="sla-line"><span style="color:#475569;">●</span><span>Sorted by priority · longest customer wait 1h 12m</span></div>
+              </div>
+              <div class="page-header-right">
+                <button class="btn btn-secondary btn-sm">⇅ Sort: Priority</button>
+                <button class="btn btn-secondary btn-sm">⌽ Filter</button>
+                <button class="btn btn-primary btn-sm">+ Compose ruling</button>
+              </div>
+            </div>
+
+            <div class="queue-summary" style="position:relative;">
+              <div class="queue-summary-item red"><span class="ico">●</span><strong>1</strong> highest priority</div>
+              <span class="queue-summary-sep">·</span>
+              <div class="queue-summary-item amber"><span class="ico">●</span><strong>2</strong> elevated</div>
+              <span class="queue-summary-sep">·</span>
+              <div class="queue-summary-item green"><span class="ico">●</span><strong>9</strong> routine</div>
+              <span class="queue-summary-sep">·</span>
+              <div class="queue-summary-item blue"><span class="ico">◆</span><strong>3</strong> awaiting Board prep</div>
+              <span class="queue-summary-sep">·</span>
+              <div class="queue-summary-item"><span class="ico">◇</span>Avg case prep saved: <strong style="margin-left:2px;">2h 18m</strong></div>
+              <span class="annot-badge b-blue" style="position:absolute; top:-12px; right:24px;">2</span>
+            </div>
+
+            <div class="queue-list">
+              <!-- Case 1: SLA breach risk, novel-ish -->
+              <div class="case-card sev-red" style="position:relative;">
+                <div>
+                  <div class="case-meta-row">
+                    <span class="case-id">ADV-2026-0712</span>
+                    <span class="case-meta-pill red">Highest priority</span>
+                    <span class="case-meta-pill gray">AI routed · 41% confidence</span>
+                    <span class="case-meta-pill purple">Novel sector</span>
+                  </div>
+                  <div class="case-title">AI model-training services to entertainment-industry clients: is this Shariah-permissible as a financeable activity?</div>
+                  <div class="case-digest">
+                    <strong>TechFlow Qatar</strong> (SME, requesting QAR 4.8M Ijarah for GPU infrastructure). Provides AI model-training to global corporate clients. Revenue split: <strong>73%</strong> mixed-sector corporates, <strong>27%</strong> gaming and entertainment studios. Activity not in MOCI haram classification list. <strong>Question:</strong> does providing computing-as-a-service to entertainment-industry clients constitute facilitation under AAOIFI principles?
+                  </div>
+                  <div class="case-footer">
+                    <div class="case-precedent"><span class="icon">◇</span><span>Suggested precedent: <span class="ref">None found · novel sector</span></span></div>
+                    <span class="case-meta-extra">· Referred by Layla Al-Kuwari (RM)</span>
+                  </div>
+                </div>
+                <div class="case-side">
+                  <div>
+                    <div class="case-time">Customer waiting</div>
+                    <div class="case-time-value urgent">1h 12m</div>
+                  </div>
+                  <button class="btn btn-primary btn-sm">Open case →</button>
+                  <button class="btn btn-secondary btn-sm">⧈ Board prep</button>
+                </div>
+                <span class="annot-badge b-blue" style="position:absolute; top:-10px; left:14px;">1</span>
+              </div>
+
+              <!-- Case 2: amber, edge case -->
+              <div class="case-card sev-amber">
+                <div>
+                  <div class="case-meta-row">
+                    <span class="case-id">ADV-2026-0713</span>
+                    <span class="case-meta-pill amber">Elevated</span>
+                    <span class="case-meta-pill gray">Referred by Mohammed</span>
+                    <span class="case-meta-pill blue">Precedent available</span>
+                  </div>
+                  <div class="case-title">Murabaha for property purchase · vendor is the customer's brother-in-law</div>
+                  <div class="case-digest">
+                    <strong>Hassan Al-Suwaidi</strong> (retail, QAR 1.2M property Murabaha). Vendor is the customer's brother-in-law. Per <strong>Ruling #2024-033</strong> (established procedure for relative-supplier Murabaha), the required verifications are: independent valuation + prior sale history + sworn declaration of no prior contract. Customer's documentation meets each threshold cleanly. Mohammed escalated to be safe. The case sits squarely inside the documented procedure.
+                  </div>
+                  <div class="case-footer">
+                    <div class="case-precedent"><span class="icon">◇</span><span>Suggested precedent: <span class="ref">Ruling #2024-033 · brother-supplier Murabaha</span></span></div>
+                    <span class="case-meta-extra">· Referred 32 min ago</span>
+                  </div>
+                </div>
+                <div class="case-side">
+                  <div>
+                    <div class="case-time">Customer waiting</div>
+                    <div class="case-time-value medium">32 min</div>
+                  </div>
+                  <button class="btn btn-primary btn-sm">Open case →</button>
+                  <button class="btn btn-secondary btn-sm">↙ Send back to Mohammed</button>
+                </div>
+                <span class="annot-badge b-blue" style="position:absolute; top:-10px; right:14px;">4</span>
+              </div>
+
+              <!-- Case 3: green, routine but flagged -->
+              <div class="case-card sev-green">
+                <div>
+                  <div class="case-meta-row">
+                    <span class="case-id">ADV-2026-0714</span>
+                    <span class="case-meta-pill">Routine</span>
+                    <span class="case-meta-pill gray">AI routed · 64% confidence</span>
+                    <span class="case-meta-pill blue">Precedent available</span>
+                  </div>
+                  <div class="case-title">Ijarah for refrigerated trucks · supplier has secondary haram activity</div>
+                  <div class="case-digest">
+                    <strong>Doha Logistics LLC</strong> (SME, 8 refrigerated trucks). Supplier <strong>Al Bahar Motors</strong> primary activity is automotive but CR shows secondary activity "distribution of cooled beverages including alcoholic." Public website confirms a separate distribution arm. <strong>Question:</strong> does the supplier's separate alcohol-distribution arm contaminate this Ijarah, or is the truck transaction Shariah-clean by virtue of being arm's-length from that line?
+                  </div>
+                  <div class="case-footer">
+                    <div class="case-precedent"><span class="icon">◇</span><span>Suggested precedent: <span class="ref">AAOIFI SS 9 §3/2 + Ruling #2024-052 · multi-activity supplier</span></span></div>
+                    <span class="case-meta-extra">· Referred 8 min ago by Layla Al-Kuwari</span>
+                  </div>
+                </div>
+                <div class="case-side">
+                  <div>
+                    <div class="case-time">Customer waiting</div>
+                    <div class="case-time-value">8 min</div>
+                  </div>
+                  <button class="btn btn-primary btn-sm">Open case →</button>
+                </div>
+              </div>
+
+              <!-- Case 4: green, retail amber routed -->
+              <div class="case-card sev-green" style="position:relative;">
+                <div>
+                  <div class="case-meta-row">
+                    <span class="case-id">ADV-2026-0715</span>
+                    <span class="case-meta-pill">Routine</span>
+                    <span class="case-meta-pill gray">AI routed · 58% confidence</span>
+                    <span class="case-meta-pill blue">Precedent available</span>
+                  </div>
+                  <div class="case-title">Restaurant chain investment · alcohol-licensed venue exposure</div>
+                  <div class="case-digest">
+                    <strong>Retail investor</strong> asking about a F&B chain whose <strong>4 of 12 outlets</strong> are inside hotels that hold alcohol licenses. Revenue split: <strong>89%</strong> food, <strong>7%</strong> non-alcoholic beverages, <strong>4%</strong> from venues that serve alcohol (chain itself does not). AAOIFI threshold &lt;5%. <strong>Question:</strong> does venue-licence exposure count toward the haram-adjacent revenue threshold even where the chain itself is alcohol-free?
+                  </div>
+                  <div class="case-footer">
+                    <div class="case-precedent"><span class="icon">◇</span><span>Suggested precedent: <span class="ref">Ruling #2023-091 · hospitality-adjacent exposure</span></span></div>
+                    <span class="case-meta-extra">· Referred 4 min ago</span>
+                  </div>
+                </div>
+                <div class="case-side">
+                  <div>
+                    <div class="case-time">Customer waiting</div>
+                    <div class="case-time-value">4 min</div>
+                  </div>
+                  <button class="btn btn-primary btn-sm">Open case →</button>
+                </div>
+                <span class="annot-badge b-blue" style="position:absolute; bottom:-10px; right:14px;">3</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="annotations-strip" style="grid-template-columns: repeat(4, 1fr); gap: 14px;">
+        <div class="annot-card c-blue">
+          <div class="annot-num">1</div>
+          <div class="annot-title">The advisor opens a brief, not an inquiry</div>
+          <div class="annot-desc">
+            Every case arrives with the question framed, the evidence cited, the percentage quantified, and the precedent (if any) linked. Dr. Fatima's job is to rule. Not to chase the data that supports the ruling.
+          </div>
+          <div class="annot-value">→ A case that used to take 2–4 hours of research becomes a 15-minute decision.</div>
+        </div>
+        <div class="annot-card c-blue">
+          <div class="annot-num">2</div>
+          <div class="annot-title">Triage is automatic. The advisor sees what needs her first.</div>
+          <div class="annot-desc">
+            SLA breach risk first, then within-window, then within-target. AI confidence is shown so the advisor knows whether the system was close to a decision or genuinely lost. Board-prep flag separates novel-precedent cases from routine rulings.
+          </div>
+          <div class="annot-value">→ The most expert hour in the bank is spent on the most consequential cases.</div>
+        </div>
+        <div class="annot-card c-blue">
+          <div class="annot-num">3</div>
+          <div class="annot-title">One ruling teaches the system</div>
+          <div class="annot-desc">
+            When Dr. Fatima rules on the hospitality-exposure case below, the AI ingests her ruling as a new precedent. Next month, similar cases auto-resolve at high confidence, referencing her ruling, without reaching this queue.
+          </div>
+          <div class="annot-value">→ The advisor's authority compounds. She rules once; the bank applies it forever.</div>
+        </div>
+        <div class="annot-card c-blue">
+          <div class="annot-num">4</div>
+          <div class="annot-title">Actions fit the case, not the workflow</div>
+          <div class="annot-desc">
+            <strong>Open case</strong> is universal: every card offers it. <strong>Board prep</strong> appears when no precedent applies and the Board must set one (case 0712). <strong>Send back to Mohammed</strong> appears only when Mohammed referred a case already covered by an established procedure (case 0713): her endorsement closes it and shows Mohammed the precedent he should have applied. Dispositions track <em>case origin and precedent state</em>, never AI confidence.
+          </div>
+          <div class="annot-value">→ Each card offers only the dispositions the case actually supports. The menu doesn't pad itself.</div>
+        </div>
+      </div>
+
+      <div class="fictional-ribbon">Rawasi Islamic Bank · Fictional Institution · Walkthrough only</div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 10 — Module B intro (context slide · amber)
+         ========================================================= -->
+    <section class="screen ctx" data-screen="10">
+      <div class="ctx-header">
+        <div class="brand-mark">
+          <div class="brand-logo"><img src="SAFWA LOGO LOGO ONLY.svg" alt="SAFWAI"></div>
+          <div>
+            <div class="brand-text">Shariah Compliance OS<span class="by">by SAFWAI AI Solutions</span></div>
+          </div>
+        </div>
+        <div class="fictional-badge">Fictional walkthrough · Not a real institution</div>
+      </div>
+
+      <div class="ctx-hero">
+        <div class="intro-badge mod-b">B</div>
+        <div class="intro-eyebrow mod-b">Module B · Commercial Financing Clearance</div>
+        <h1 class="intro-title">The deal that shouldn't<br/>take two weeks.</h1>
+        <p class="intro-tagline">
+          Every commercial facility must pass eight Shariah aspects before it reaches credit approval.
+          Today: 3–14 days of manual review, email back-and-forth, and the same sectors researched
+          a fourth time. In Module B: all eight aspects screened on submission, document gaps named
+          on Day&nbsp;1, and Dr.&nbsp;Fatima's brief pre-assembled: question framed, evidence
+          attached, precedent cited. She rules; she doesn't research.
+        </p>
+
+        <div class="intro-preview">
+          <div class="preview-card mod-b">
+            <div class="preview-num">SCREEN 11 · NEXT</div>
+            <div class="preview-title">Faisal's application tracker</div>
+            <div class="preview-desc">The RM sees real-time 8-aspect screening status for every case he submitted: cleared, flagged, or in screening. No call to the Shariah desk needed.</div>
+          </div>
+          <div class="preview-card mod-b">
+            <div class="preview-num">SCREEN 13</div>
+            <div class="preview-title">Faisal's document request</div>
+            <div class="preview-desc">A precise, aspect-linked request on Day 1. Each item names the flag it closes and explains why the document is needed, in language the RM can take directly to the client.</div>
+          </div>
+          <div class="preview-card mod-b">
+            <div class="preview-num">SCREEN 13</div>
+            <div class="preview-title">Dr. Fatima's financing brief</div>
+            <div class="preview-desc">The flagged case arrives with the question framed, the revenue exposure quantified, the precedent cited, and conditions pre-drafted. She rules. She doesn't research.</div>
+          </div>
+        </div>
+
+        <div class="intro-personas">
+          <span class="intro-personas-label">Personas in this module</span>
+          <div class="intro-persona">
+            <div class="intro-avatar">
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#1d4ed8"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">MA</text></svg>
+            </div>
+            <div>
+              <div class="intro-persona-name">Mohammed Al-Emadi</div>
+              <div class="intro-persona-role">Shariah Desk Officer</div>
+            </div>
+          </div>
+          <div class="intro-persona">
+            <div class="intro-avatar">
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#b45309"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">FA</text></svg>
+            </div>
+            <div>
+              <div class="intro-persona-name">Faisal Al-Ansari</div>
+              <div class="intro-persona-role">Senior Relationship Manager</div>
+            </div>
+          </div>
+          <div class="intro-persona">
+            <div class="intro-avatar">
+              <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#9f1239"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">FA</text></svg>
+            </div>
+            <div>
+              <div class="intro-persona-name">Dr. Fatima Al-Subaie</div>
+              <div class="intro-persona-role">Internal Shariah Advisor</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ctx-footer">
+        <div class="left">
+          <span>● Process 2 · Financing Clearance · Rawasi Islamic Bank · May 2026</span>
+        </div>
+        <div class="right">SAFWAI AI Solutions · safwai.com</div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 11 — Module B · Faisal's RM Application Tracker
+         ========================================================= -->
+    <section class="screen demo" data-screen="11">
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="traffic-lights">
+            <span class="light r"></span><span class="light y"></span><span class="light g"></span>
+          </div>
+          <div class="address-bar">
+            <span class="lock">🔒</span>
+            <span>app.rawasi.</span><span class="url">shariah-os.io</span><span>/rm/my-applications</span>
+          </div>
+          <div class="browser-actions">⊕ ⋮</div>
+        </div>
+
+        <div class="tab-strip">
+          <div class="tab"><span class="dot" style="background:#d97706;"></span>My Applications<span class="x">×</span></div>
+          <div class="tab inactive">Action Required (1)<span class="x">×</span></div>
+          <div class="tab inactive">Cleared (1)<span class="x">×</span></div>
+        </div>
+
+        <div class="app">
+          <aside class="sidebar">
+            <div class="module-header">
+              <div class="module-header-row">
+                <div class="sb-badge mod-b">B</div>
+                <div class="module-header-text">
+                  <div class="label">Module B</div>
+                  <div class="name">Financing Clearance</div>
+                </div>
+              </div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">My applications</div>
+              <div class="nav-item active mod-b"><span class="ico">◈</span> All My Applications <span class="count">2</span></div>
+              <div class="nav-item"><span class="ico">⚠</span> Action Required <span class="count">1</span></div>
+              <div class="nav-item"><span class="ico">✓</span> Cleared <span class="count">1</span></div>
+              <div class="nav-item"><span class="ico">◐</span> In Screening <span class="count">0</span></div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">This month</div>
+              <div class="nav-item"><span class="ico">↗</span> Submitted <span class="count">3</span></div>
+              <div class="nav-item"><span class="ico">✓</span> Cleared <span class="count">1</span></div>
+            </div>
+            <div class="other-modules">⊞ Other modules ↗</div>
+          </aside>
+
+          <div class="main">
+            <div class="topbar">
+              <div class="topbar-search">⌕ Search clients, applications…</div>
+              <div class="topbar-right">
+                <div class="annotation-toggle" onclick="toggleAnnotations()">
+                  <div class="toggle-switch"></div>
+                  Annotations <span class="annot-state-label">on</span>
+                </div>
+                <div class="persona">
+                  <div class="avatar">
+                    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#b45309"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">FA</text></svg>
+                  </div>
+                  <div class="persona-text">
+                    <div class="persona-name">Faisal Al-Ansari</div>
+                    <div class="persona-role">Senior Relationship Manager</div>
+                  </div>
+                  <span class="chevron">▾</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="page-header">
+              <div class="page-header-left">
+                <div class="crumbs">Financing Clearance / My Applications</div>
+                <div class="page-title">My Applications <span class="case-id">2 active · 12 May 2026</span></div>
+                <div class="sla-line"><span class="pulse"></span><span>AI screening complete on all submitted · real-time status</span></div>
+              </div>
+              <div class="page-header-right">
+                <button class="btn btn-secondary btn-sm">⇅ Sort: Submitted</button>
+                <button class="btn btn-primary btn-sm mod-b">+ Submit new application</button>
+              </div>
+            </div>
+
+            <div class="queue-summary">
+              <div class="queue-summary-item green"><span class="ico">●</span><strong>1</strong> cleared · drawdown approved</div>
+              <span class="queue-summary-sep">·</span>
+              <div class="queue-summary-item amber"><span class="ico">⚠</span><strong>1</strong> document request received · action required</div>
+              <span class="queue-summary-sep">·</span>
+              <div class="queue-summary-item"><span class="ico">◆</span>Avg clearance time this month: <strong style="margin-left:2px;">1.4 days</strong></div>
+            </div>
+
+            <!-- Aspect legend -->
+            <div style="padding:7px 24px 6px; background:#f8fafc; border-bottom:1px solid #e2e8f0;">
+              <div style="display:flex; gap:4px; align-items:center; font-size:8.5px; color:#94a3b8; font-weight:700; letter-spacing:0.2px; text-transform:uppercase;">
+                <span style="margin-right:4px; color:#cbd5e1;">8 ASPECTS →</span>
+                <span style="width:16px;text-align:center;">PA</span><span style="width:16px;text-align:center;">SA</span><span style="width:16px;text-align:center;">RM</span><span style="width:16px;text-align:center;">UF</span><span style="width:16px;text-align:center;">AB</span><span style="width:16px;text-align:center;">CS</span><span style="width:16px;text-align:center;">SC</span><span style="width:16px;text-align:center;">CB</span>
+                <span style="margin-left:10px; font-size:8px; color:#e2e8f0; font-weight:400;">Primary Activity · Secondary · Revenue Mix · Use of Funds · Asset Backing · Contract Structure · Supply Chain · Customer Base</span>
+              </div>
+            </div>
+
+            <div class="fin-list" style="gap:14px; padding:16px 24px;">
+
+              <!-- FAC-3098: auto-cleared -->
+              <div class="fin-card sev-green" style="position:relative;">
+                <div class="fin-card-left">
+                  <div class="fin-top-row">
+                    <span class="fin-company">Al-Noor Technology Solutions</span>
+                    <span class="fin-case-num">FAC-2026-3098</span>
+                    <span class="fin-product-pill">Murabaha · 48 months</span>
+                    <span class="fin-submitted">Submitted 8 May 2026</span>
+                  </div>
+                  <div class="fin-aspect-group" style="position:relative;">
+                    <div class="aspect-bar">
+                      <div class="aspect-dot green"></div><div class="aspect-dot green"></div>
+                      <div class="aspect-dot green"></div><div class="aspect-dot green"></div>
+                      <div class="aspect-dot green"></div><div class="aspect-dot green"></div>
+                      <div class="aspect-dot green"></div><div class="aspect-dot green"></div>
+                      <span style="font-size:10.5px;color:#16a34a;font-weight:700;margin-left:10px;">8 / 8 cleared</span>
+                    </div>
+                    <div class="fin-flag-text" style="margin-top:4px;">All aspects cleared against Board-approved Murabaha template · servers + networking equipment · supplier Al-Bahri Tech verified clean</div>
+                    <span class="annot-badge b-amber" style="position:absolute;top:-10px;right:0;">2</span>
+                  </div>
+                  <div style="display:flex;gap:10px;margin-top:6px;padding-top:8px;border-top:1px solid #f0fdf4;font-size:11px;color:#16a34a;align-items:center;">
+                    <span style="font-weight:700;">✓ Clearance letter issued 9 May</span>
+                    <span style="color:#94a3b8;">·</span>
+                    <span style="color:#64748b;">Drawdown approved · client may proceed</span>
+                  </div>
+                </div>
+                <div class="fin-card-right">
+                  <div class="fin-amount">QAR 1.6M</div>
+                  <span class="fin-status-pill green">✓ Cleared</span>
+                  <button class="btn btn-secondary btn-sm">View letter →</button>
+                </div>
+              </div>
+
+              <!-- FAC-3104: 2 flags, document request received -->
+              <div class="fin-card sev-amber" style="position:relative;">
+                <div class="fin-card-left">
+                  <div class="fin-top-row">
+                    <span class="fin-company">Joud Catering &amp; Events WLL</span>
+                    <span class="fin-case-num">FAC-2026-3104</span>
+                    <span class="fin-product-pill">Ijarah · 36 months</span>
+                    <span class="fin-submitted">Submitted 9 May 2026</span>
+                  </div>
+                  <div class="fin-aspect-group" style="position:relative;">
+                    <div class="aspect-bar">
+                      <div class="aspect-dot green"></div><div class="aspect-dot green"></div>
+                      <div class="aspect-dot amber"></div><div class="aspect-dot green"></div>
+                      <div class="aspect-dot green"></div><div class="aspect-dot green"></div>
+                      <div class="aspect-dot amber"></div><div class="aspect-dot green"></div>
+                      <span style="font-size:10.5px;color:#d97706;font-weight:700;margin-left:10px;">2 flags · RM · SC</span>
+                    </div>
+                    <div class="fin-flag-text" style="margin-top:4px;"><strong>Revenue mix (RM):</strong> 47% hotel client revenue · scope of Joud's services at alcohol-serving venues requires verification &nbsp;·&nbsp; <strong>Supply chain (SC):</strong> Al-Mazroei secondary CR activity includes beverages</div>
+                    <span class="annot-badge b-amber" style="position:absolute;top:-10px;left:-6px;">1</span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;margin-top:6px;padding-top:8px;border-top:1px solid #fef3c7;" style="position:relative;">
+                    <span style="background:#fffbeb;border:1px solid #fcd34d;color:#92400e;font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:6px;display:inline-flex;align-items:center;gap:5px;"><span>⚠</span> Document request received 9 May · 3 items</span>
+                    <span style="font-size:11px;color:#64748b;">Respond to unblock Shariah clearance</span>
+                    <span class="annot-badge b-amber" style="position:absolute;top:-18px;right:-6px;">3</span>
+                  </div>
+                </div>
+                <div class="fin-card-right">
+                  <div class="fin-amount">QAR 2.2M</div>
+                  <span class="fin-status-pill amber">⚠ Action required</span>
+                  <button class="btn btn-primary btn-sm mod-b">Respond to request →</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="annotations-strip">
+        <div class="annot-card c-amber">
+          <div class="annot-num">1</div>
+          <div class="annot-title">Faisal sees the AI's screening result. No desk call needed.</div>
+          <div class="annot-desc">
+            The AI screened all 8 aspects on submission. The two amber segments show what the AI found: Revenue Mix and Supply Chain flagged, the other six cleared. Faisal sees this directly in his portal. No conversation with the Shariah desk has happened yet at this point.
+          </div>
+          <div class="annot-value">→ The RM can brief the client accurately on Day 1. No "we're waiting to hear back" holding pattern.</div>
+        </div>
+        <div class="annot-card c-amber">
+          <div class="annot-num">2</div>
+          <div class="annot-title">AI screening is instant. Clearance is Mohammed's sign-off.</div>
+          <div class="annot-desc">
+            Al-Noor matched all 8 aspects against the Board-approved Murabaha template. The AI screening completed within minutes of submission and recommended clearance. Mohammed reviewed the AI's recommendation and issued the clearance letter the same day. Two distinct steps. The AI does not clear cases itself.
+          </div>
+          <div class="annot-value">→ Faisal's client conversation moves at the pace of Mohammed's review, not at the pace of manual screening that hadn't started yet.</div>
+        </div>
+        <div class="annot-card c-amber">
+          <div class="annot-num">3</div>
+          <div class="annot-title">AI drafts the request. Mohammed sends it. Day 1.</div>
+          <div class="annot-desc">
+            The AI identified the two document gaps and drafted a 3-item request, each item tied to the specific aspect it closes and the Shariah rule it serves. Mohammed reviewed the draft and sent it on 9 May, the same day Faisal submitted. The precision is the AI's; the send decision is Mohammed's.
+          </div>
+          <div class="annot-value">→ The 5–7 day document back-and-forth cycle is replaced by one complete, AI-drafted request on Day 1.</div>
+        </div>
+      </div>
+
+      <div class="fictional-ribbon">Rawasi Islamic Bank · Fictional Institution · Walkthrough only</div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 12 — Module B · Faisal's RM Document Request
+         ========================================================= -->
+    <section class="screen demo" data-screen="12">
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="traffic-lights">
+            <span class="light r"></span><span class="light y"></span><span class="light g"></span>
+          </div>
+          <div class="address-bar">
+            <span class="lock">🔒</span>
+            <span>app.rawasi.</span><span class="url">shariah-os.io</span><span>/rm/applications/FAC-2026-3104/document-request</span>
+          </div>
+          <div class="browser-actions">⊕ ⋮</div>
+        </div>
+
+        <div class="tab-strip">
+          <div class="tab"><span class="dot" style="background:#d97706;"></span>FAC-2026-3104 · Document Request<span class="x">×</span></div>
+          <div class="tab inactive">My Applications (2)<span class="x">×</span></div>
+        </div>
+
+        <div class="app">
+          <aside class="sidebar">
+            <div class="module-header">
+              <div class="module-header-row">
+                <div class="sb-badge mod-b">B</div>
+                <div class="module-header-text">
+                  <div class="label">Module B</div>
+                  <div class="name">Financing Clearance</div>
+                </div>
+              </div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">My applications</div>
+              <div class="nav-item active mod-b"><span class="ico">◈</span> My Applications <span class="count">2</span></div>
+              <div class="nav-item"><span class="ico">⚠</span> Action Required <span class="count">1</span></div>
+              <div class="nav-item"><span class="ico">✓</span> Cleared <span class="count">1</span></div>
+              <div class="nav-item"><span class="ico">◌</span> In Screening <span class="count">0</span></div>
+            </div>
+            <div class="other-modules">⊞ Other modules ↗</div>
+          </aside>
+
+          <div class="main">
+            <div class="topbar">
+              <div class="topbar-search">⌕ Search my applications…</div>
+              <div class="topbar-right">
+                <div class="annotation-toggle" onclick="toggleAnnotations()">
+                  <div class="toggle-switch"></div>
+                  Annotations <span class="annot-state-label">on</span>
+                </div>
+                <div class="persona">
+                  <div class="avatar">
+                    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#b45309"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">FA</text></svg>
+                  </div>
+                  <div class="persona-text">
+                    <div class="persona-name">Faisal Al-Ansari</div>
+                    <div class="persona-role">Senior Relationship Manager</div>
+                  </div>
+                  <span class="chevron">▾</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="page-header">
+              <div class="page-header-left">
+                <div class="crumbs">My Applications / FAC-2026-3104 / Document Request</div>
+                <div class="page-title">Joud Catering &amp; Events WLL <span class="case-id">FAC-2026-3104 · Ijarah QAR 2.2M · 9 May 2026</span></div>
+                <div class="sla-line"><span class="pulse"></span><span>Document request received 9 May 2026 · 3 items · Respond by 16 May 2026</span></div>
+              </div>
+              <div class="page-header-right">
+                <div class="actions">
+                  <button class="btn btn-secondary">↓ Download checklist</button>
+                  <button class="btn btn-primary mod-b">Submit response →</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="rm-layout" style="position:relative;">
+
+              <div style="margin-bottom:14px;padding:12px 16px;background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;font-size:11.5px;color:#78350f;display:flex;align-items:center;gap:10px;position:relative;">
+                <span style="font-size:16px;">⚠</span>
+                <div><strong>The Shariah desk has reviewed the application and needs 3 documents before clearance can proceed.</strong> Each item below names the flag it closes and explains why the document is needed.</div>
+                <span class="annot-badge b-amber" style="position:absolute;top:-12px;right:-6px;width:22px;height:22px;font-size:12px;">1</span>
+              </div>
+
+              <div class="doc-req-items" style="display:flex;flex-direction:column;gap:12px;">
+
+                <div class="doc-req-item high" style="position:relative;">
+                  <div class="doc-req-item-top">
+                    <span class="dri-priority high">High priority</span>
+                    <span class="dri-aspect">Revenue Mix flag</span>
+                  </div>
+                  <div class="doc-req-item-title">Master Service Agreement · Marriott Qatar and/or IHG Intercontinental City Centre</div>
+                  <div class="doc-req-item-why">
+                    <strong>Why needed:</strong> 47% of Joud's revenue comes from these two hotel accounts. The MSA's scope clause will confirm whether Joud's engagement is food-only or includes any beverage coordination. A food-only scope closes this flag.
+                  </div>
+                  <div style="margin-top:8px;display:flex;gap:8px;align-items:center;">
+                    <button class="btn btn-secondary" style="font-size:10.5px;padding:4px 10px;">↑ Upload document</button>
+                    <span style="font-size:10px;color:#94a3b8;">PDF, Word, JPG accepted</span>
+                  </div>
+                  <span class="annot-badge b-amber" style="position:absolute;top:-10px;right:-8px;width:22px;height:22px;font-size:12px;">2</span>
+                </div>
+
+                <div class="doc-req-item high">
+                  <div class="doc-req-item-top">
+                    <span class="dri-priority high">High priority</span>
+                    <span class="dri-aspect">Revenue Mix flag</span>
+                  </div>
+                  <div class="doc-req-item-title">Revenue breakdown by service type · FY 2024 and FY 2025</div>
+                  <div class="doc-req-item-why">
+                    <strong>Why needed:</strong> Joud's P&amp;L shows QAR 3.82M from hotel events as a single line. The Shariah desk needs a split by event type, and for hotel events a further split between alcohol-served and alcohol-free settings.
+                  </div>
+                  <div style="margin-top:8px;display:flex;gap:8px;align-items:center;">
+                    <button class="btn btn-secondary" style="font-size:10.5px;padding:4px 10px;">↑ Upload document</button>
+                    <span style="font-size:10px;color:#94a3b8;">PDF, Word, JPG accepted</span>
+                  </div>
+                </div>
+
+                <div class="doc-req-item medium" style="position:relative;">
+                  <div class="doc-req-item-top">
+                    <span class="dri-priority medium">Medium priority</span>
+                    <span class="dri-aspect">Supply Chain flag</span>
+                  </div>
+                  <div class="doc-req-item-title">Al-Mazroei Commercial Kitchens LLC · confirmation that beverage distribution is a separate subsidiary</div>
+                  <div class="doc-req-item-why">
+                    <strong>Why needed:</strong> Al-Mazroei's trade registration lists beverage distribution as a secondary activity. A letter confirming this runs through a separate legal entity, with no shared management or operations, closes this flag.
+                  </div>
+                  <div style="margin-top:8px;display:flex;gap:8px;align-items:center;">
+                    <button class="btn btn-secondary" style="font-size:10.5px;padding:4px 10px;">↑ Upload document</button>
+                    <span style="font-size:10px;color:#94a3b8;">PDF, Word, JPG accepted</span>
+                  </div>
+                  <span class="annot-badge b-amber" style="position:absolute;top:-10px;right:-8px;width:22px;height:22px;font-size:12px;">3</span>
+                </div>
+
+              </div>
+
+              <div style="margin-top:16px;padding:10px 16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;font-size:11px;color:#475569;display:flex;align-items:center;justify-content:space-between;">
+                <span>0 of 3 items responded · 7 days remaining</span>
+                <div style="display:flex;gap:4px;align-items:center;">
+                  <div style="width:56px;height:5px;background:#d97706;border-radius:3px;"></div>
+                  <div style="width:56px;height:5px;background:#e2e8f0;border-radius:3px;"></div>
+                  <div style="width:56px;height:5px;background:#e2e8f0;border-radius:3px;"></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="annotations-strip">
+        <div class="annot-card c-amber">
+          <div class="annot-num">1</div>
+          <div class="annot-title">One request on Day 1. No back-and-forth.</div>
+          <div class="annot-desc">
+            The AI identified the document gaps and drafted this request on 9 May, the same day Faisal submitted. Mohammed reviewed and sent it. Not a vague "additional information required" email: three specific items, each naming the flag it closes. Faisal can go directly to Joud's CEO with a concrete ask.
+          </div>
+          <div class="annot-value">→ No call to the Shariah desk needed to understand what's required or why.</div>
+        </div>
+        <div class="annot-card c-amber">
+          <div class="annot-num">2</div>
+          <div class="annot-title">Each document closes a specific flag</div>
+          <div class="annot-desc">
+            The MSA isn't requested because "hospitality sector" triggered a review. It's requested because 47% of revenue is from alcohol-licensed hotels and the P&amp;L doesn't show whether Joud's scope includes beverage coordination. The document answers that exact question.
+          </div>
+          <div class="annot-value">→ Faisal knows what the document is for before he asks Joud for it.</div>
+        </div>
+        <div class="annot-card c-amber">
+          <div class="annot-num">3</div>
+          <div class="annot-title">Priority tiers let Faisal sequence the ask</div>
+          <div class="annot-desc">
+            The Al-Mazroei flag is medium, not high. It's a structural question (separate entity?) rather than a revenue threshold question. If Joud's CEO needs time, Faisal can send the two high-priority items first and follow up on the supplier letter.
+          </div>
+          <div class="annot-value">→ The RM controls the client conversation. The system just makes it precise.</div>
+        </div>
+      </div>
+
+      <div class="fictional-ribbon">Rawasi Islamic Bank · Fictional Institution · Walkthrough only</div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 13 — Module B · Dr. Fatima's Financing Brief
+         ========================================================= -->
+    <section class="screen demo" data-screen="13">
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="traffic-lights">
+            <span class="light r"></span><span class="light y"></span><span class="light g"></span>
+          </div>
+          <div class="address-bar">
+            <span class="lock">🔒</span>
+            <span>app.rawasi.</span><span class="url">shariah-os.io</span><span>/advisor/financing/FAC-2026-3104</span>
+          </div>
+          <div class="browser-actions">⊕ ⋮</div>
+        </div>
+
+        <div class="tab-strip">
+          <div class="tab"><span class="dot" style="background:#d97706;"></span>Brief · FAC-2026-3104 · Joud Catering<span class="x">×</span></div>
+          <div class="tab inactive">Financing Queue (3)<span class="x">×</span></div>
+          <div class="tab inactive">Precedents<span class="x">×</span></div>
+        </div>
+
+        <div class="app">
+          <aside class="sidebar">
+            <div class="module-header">
+              <div class="module-header-row">
+                <div class="sb-badge mod-b">B</div>
+                <div class="module-header-text">
+                  <div class="label">Module B</div>
+                  <div class="name">Financing Clearance</div>
+                </div>
+              </div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">Advisor · financing</div>
+              <div class="nav-item active mod-b"><span class="ico">◐</span> My Queue <span class="count">3</span></div>
+              <div class="nav-item"><span class="ico">✓</span> Rulings Issued <span class="count">9</span></div>
+              <div class="nav-item"><span class="ico">◇</span> Precedents</div>
+              <div class="nav-item"><span class="ico">⧈</span> Board Prep <span class="count">1</span></div>
+            </div>
+            <div class="nav-section">
+              <div class="nav-section-title">This week</div>
+              <div class="nav-item"><span class="ico">↗</span> Rulings issued <span class="count">9</span></div>
+              <div class="nav-item"><span class="ico">◆</span> Avg brief time <span class="count" style="background:transparent;color:#475569;">18m</span></div>
+            </div>
+            <div class="other-modules">⊞ Other modules ↗</div>
+          </aside>
+
+          <div class="main">
+            <div class="topbar">
+              <div class="topbar-search">⌕ Search financing cases, precedents…</div>
+              <div class="topbar-right">
+                <div class="annotation-toggle" onclick="toggleAnnotations()">
+                  <div class="toggle-switch"></div>
+                  Annotations <span class="annot-state-label">on</span>
+                </div>
+                <div class="persona">
+                  <div class="avatar">
+                    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="#9f1239"/><text x="20" y="26" font-size="14" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">FA</text></svg>
+                  </div>
+                  <div class="persona-text">
+                    <div class="persona-name">Dr. Fatima Al-Subaie</div>
+                    <div class="persona-role">Internal Shariah Advisor</div>
+                  </div>
+                  <span class="chevron">▾</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="page-header">
+              <div class="page-header-left">
+                <div class="crumbs">Advisor / Financing Queue / FAC-2026-3104</div>
+                <div class="page-title">Joud Catering &amp; Events WLL <span class="case-id">FAC-2026-3104 · Ijarah QAR 2.2M · brief ready</span></div>
+                <div class="sla-line"><span style="color:#475569;">●</span><span> Documents received 11 May · brief compiled · customer waiting 2d 14h</span></div>
+              </div>
+              <div class="page-header-right" style="position:relative;">
+                <div class="actions">
+                  <button class="btn btn-escalate mod-b">⧈ Refer to Board</button>
+                  <button class="btn btn-secondary">✎ Request more info</button>
+                  <button class="btn btn-primary mod-b">Issue ruling →</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="brief-layout">
+              <!-- Left: aspects + question -->
+              <div class="brief-left">
+                <div>
+                  <div class="brief-section-label">8-Aspect Screening Status · updated 11 May</div>
+                  <div class="brief-aspects-grid">
+                    <div class="brief-asp-row"><div class="brief-asp-num green">1</div><span class="brief-asp-name">Primary Activity</span><span class="brief-asp-result cleared">Cleared</span><span class="brief-asp-detail" style="margin-left:auto; font-size:9.5px; color:#94a3b8;">ISIC4 56210 · event catering</span></div>
+                    <div class="brief-asp-row"><div class="brief-asp-num green">2</div><span class="brief-asp-name">Secondary Activities</span><span class="brief-asp-result cleared">Cleared</span><span class="brief-asp-detail" style="margin-left:auto; font-size:9.5px; color:#94a3b8;">4 activities · all halal</span></div>
+                    <div class="brief-asp-row" style="border:1px solid #fcd34d; background:#fffbeb; position:relative;">
+                      <div class="brief-asp-num amber">3</div>
+                      <span class="brief-asp-name" style="font-weight:700;">Revenue Mix</span>
+                      <span class="brief-asp-result flagged">Flagged · see below</span>
+                      <span class="annot-badge b-amber" style="position:absolute; top:-10px; right:-8px; width:22px; height:22px; font-size:12px;">1</span>
+                    </div>
+                    <div class="brief-asp-row"><div class="brief-asp-num green">4</div><span class="brief-asp-name">Use of Funds</span><span class="brief-asp-result cleared">Cleared</span><span class="brief-asp-detail" style="margin-left:auto; font-size:9.5px; color:#94a3b8;">Kitchen equipment · Ijarah</span></div>
+                    <div class="brief-asp-row"><div class="brief-asp-num green">5</div><span class="brief-asp-name">Asset Backing</span><span class="brief-asp-result cleared">Cleared</span><span class="brief-asp-detail" style="margin-left:auto; font-size:9.5px; color:#94a3b8;">Equipment quotation Q2026-AMK-0441</span></div>
+                    <div class="brief-asp-row"><div class="brief-asp-num green">6</div><span class="brief-asp-name">Contract Structure</span><span class="brief-asp-result cleared">Cleared</span><span class="brief-asp-detail" style="margin-left:auto; font-size:9.5px; color:#94a3b8;">Template IJ-001-v4 · SS 9 §8/1 compliant</span></div>
+                    <div class="brief-asp-row"><div class="brief-asp-num green">7</div><span class="brief-asp-name">Supply Chain</span><span class="brief-asp-result cleared">Cleared</span><span class="brief-asp-detail" style="margin-left:auto; font-size:9.5px; color:#94a3b8;">Al-Mazroei confirmed: separate subsidiary</span></div>
+                    <div class="brief-asp-row"><div class="brief-asp-num green">8</div><span class="brief-asp-name">Customer Base</span><span class="brief-asp-result cleared">Cleared</span><span class="brief-asp-detail" style="margin-left:auto; font-size:9.5px; color:#94a3b8;">B2B only · no haram sector concentration</span></div>
+                  </div>
+                </div>
+
+                <div class="brief-question-box" style="position:relative;">
+                  <div class="brief-q-label">Ruling question · revenue mix (aspect 3)</div>
+                  <div class="brief-q-text">Does Joud's food-only catering to hotel venues that serve alcohol (but where Joud's staff neither serve nor coordinate alcohol) constitute haram-adjacent revenue under AAOIFI SS 1.3?</div>
+                  <div class="brief-q-evidence">
+                    <strong>Quantified exposure:</strong> Hotel catering revenue = QAR 3.82M (47% of total QAR 8.1M). Marriott Qatar MSA confirmed food-only scope, no beverage coordination. IHG contract contains a clause: <em>"Caterer may coordinate with hotel F&amp;B on event logistics including set-up timing."</em> Of total hotel revenue, <strong>61%</strong> is from events in venues that serve alcohol (est. QAR 2.3M = 28.4% of total). Joud staff confirmed: they set up food stations only; hotel staff manage all alcohol service.
+                  </div>
+                </div>
+
+                <div>
+                  <div class="brief-section-label">Precedents retrieved</div>
+                  <div class="brief-prec-row">
+                    <span class="brief-prec-icon">◇</span>
+                    <div>
+                      <div class="brief-prec-ref">Ruling #2023-091 · Hospitality-adjacent revenue</div>
+                      <div class="brief-prec-desc">Restaurant chain · 4 of 12 outlets inside alcohol-licensed hotels. Revenue from those outlets: 4% of total. Board ruled: below 5% threshold, approved. <em>Applicability here: Joud's exposure is 28.4%; threshold is not directly applicable, but the facilitation analysis is analogous.</em></div>
+                      <span class="brief-prec-tag partial">Partially applicable</span>
+                    </div>
+                  </div>
+                  <div class="brief-prec-row" style="margin-top:4px;">
+                    <span class="brief-prec-icon">◇</span>
+                    <div>
+                      <div class="brief-prec-ref">Ruling #2024-088 · Catering contractor · beverage-serving venue</div>
+                      <div class="brief-prec-desc">Approved with condition: caterer's MSA must explicitly exclude beverage service coordination. Physical presence at alcohol-serving event, with strict food-only scope, does not constitute facilitation. <em>Faisal's documents satisfy this condition for Marriott; IHG contract language is ambiguous.</em></div>
+                      <span class="brief-prec-tag partial">Directly analogous</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: decision panel -->
+              <div class="brief-right">
+                <div>
+                  <div class="brief-section-label">Advisor decision</div>
+                  <div class="brief-decision-panel" style="position:relative;">
+                    <div class="brief-dec-header">Choose ruling</div>
+
+                    <div class="brief-action-opt">
+                      <div class="bao-radio sel"></div>
+                      <div>
+                        <div class="bao-title">Approve with conditions</div>
+                        <div class="bao-desc">The Ijarah is approvable. Ruling #2024-088 covers Joud's Marriott engagement. The IHG contract's "event logistics coordination" clause requires a specific fix before drawdown.</div>
+                        <div class="bao-conditions" style="position:relative;">
+                          <div class="bao-condition"><div class="bao-cnum">1</div><div>IHG Intercontinental contract must be amended to remove the beverage-coordination clause, or replaced with a food-only MSA, before facility drawdown.</div></div>
+                          <div class="bao-condition"><div class="bao-cnum">2</div><div>Hotel catering revenue covenant: if hotel clients exceed 50% of total revenue in any fiscal year, the facility terms trigger an automatic Shariah review.</div></div>
+                          <span class="annot-badge b-amber" style="position:absolute; top:-10px; right:-6px; width:22px; height:22px; font-size:12px;">2</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="brief-action-opt">
+                      <div class="bao-radio"></div>
+                      <div>
+                        <div class="bao-title">Refer to Supervisory Board</div>
+                        <div class="bao-desc">Escalate if the catering-contractor facilitation question requires a formal precedent that will govern future cases at this revenue concentration level.</div>
+                      </div>
+                    </div>
+
+                    <div class="brief-action-opt">
+                      <div class="bao-radio"></div>
+                      <div>
+                        <div class="bao-title">Request further information</div>
+                        <div class="bao-desc">Return to Faisal if additional evidence is needed before a ruling is possible.</div>
+                      </div>
+                    </div>
+
+                    <div class="brief-dec-footer">
+                      <button class="btn btn-secondary btn-sm" style="flex:1;">← Save draft</button>
+                      <button class="btn btn-primary btn-sm mod-b" style="flex:2; justify-content:center;">Issue ruling with conditions →</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="position:relative;">
+                  <div class="brief-section-label">When Dr. Fatima rules</div>
+                  <div style="background:white; border:1px solid #e2e8f0; border-radius:8px; padding:12px 14px; display:flex; flex-direction:column; gap:7px;">
+                    <div style="display:flex; align-items:flex-start; gap:9px; font-size:11px; color:#475569; line-height:1.45;">
+                      <span style="color:#d97706; font-size:13px; flex-shrink:0; margin-top:1px;">→</span>
+                      <div>Her ruling is captured, indexed, and linked to this case. Future catering-sector applications with hotel clients will reference <strong style="color:#0f172a;">Ruling #2026-[next]</strong> automatically.</div>
+                    </div>
+                    <div style="display:flex; align-items:flex-start; gap:9px; font-size:11px; color:#475569; line-height:1.45; border-top:1px solid #f1f5f9; padding-top:7px;">
+                      <span style="color:#d97706; font-size:13px; flex-shrink:0; margin-top:1px;">→</span>
+                      <div>The two conditions are converted to covenant terms and sent to legal for inclusion in the facility agreement. Faisal receives a clearance notification with the conditions attached.</div>
+                    </div>
+                    <div style="display:flex; align-items:flex-start; gap:9px; font-size:11px; color:#475569; line-height:1.45; border-top:1px solid #f1f5f9; padding-top:7px;">
+                      <span style="color:#d97706; font-size:13px; flex-shrink:0; margin-top:1px;">→</span>
+                      <div>Similar hospitality-sector applications in the next 90 days will auto-resolve at high confidence if their hotel exposure is below Joud's 28.4% and their MSAs match the food-only standard.</div>
+                    </div>
+                  </div>
+                  <span class="annot-badge b-amber" style="position:absolute; top:-10px; right:-6px; width:22px; height:22px; font-size:12px;">3</span>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="annotations-strip">
+        <div class="annot-card c-amber">
+          <div class="annot-num">1</div>
+          <div class="annot-title">The brief does the research. Dr. Fatima does the ruling.</div>
+          <div class="annot-desc">
+            Aspect 3 is flagged. The brief tells Dr. Fatima: the specific clause that triggered it, the quantified exposure (28.4%), what the MSA confirmed, where ambiguity remains (IHG logistics clause), and which precedent most closely applies. She opens a brief. Not a document set.
+          </div>
+          <div class="annot-value">→ Dr. Fatima's time goes to judgment, never to chasing context.</div>
+        </div>
+        <div class="annot-card c-amber">
+          <div class="annot-num">2</div>
+          <div class="annot-title">Conditional approval is first-class</div>
+          <div class="annot-desc">
+            The answer isn't forced to be yes or no. The system pre-drafts conditions based on the precedent (Ruling #2024-088). Dr. Fatima confirms, edits, or replaces them. The conditions are converted directly into covenant language for the facility agreement.
+          </div>
+          <div class="annot-value">→ The advisor's nuanced judgment is captured in the contract, not lost in an email thread.</div>
+        </div>
+        <div class="annot-card c-amber">
+          <div class="annot-num">3</div>
+          <div class="annot-title">One ruling teaches the system permanently</div>
+          <div class="annot-desc">
+            Dr. Fatima rules once on the catering-contractor facilitation question. The ruling is indexed, linked to Joud's case, and applied automatically to all future hospitality-sector applicants that match the profile. She doesn't rule on the same class of question twice.
+          </div>
+          <div class="annot-value">→ The advisor's authority compounds. She rules once; the bank applies it forever.</div>
+        </div>
+      </div>
+
+      <div class="fictional-ribbon">Rawasi Islamic Bank · Fictional Institution · Walkthrough only</div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 14 — System recap + roadmap (context)
+         ========================================================= -->
+    <section class="screen ctx" data-screen="14">
+      <div class="ctx-header">
+        <div class="brand-mark">
+          <div class="brand-logo"><img src="SAFWA LOGO LOGO ONLY.svg" alt="SAFWAI"></div>
+          <div>
+            <div class="brand-text">Shariah Compliance OS<span class="by">by SAFWAI AI Solutions</span></div>
+          </div>
+        </div>
+        <div class="fictional-badge">Fictional walkthrough · Not a real institution</div>
+      </div>
+
+      <div class="ctx-hero" style="display:flex;flex-direction:column;padding-top:32px;">
+        <div style="color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:16px;">What you just saw · Two modules · Six demonstrations</div>
+        <h1 class="intro-title" style="margin-bottom:0;">What you just walked through.</h1>
+
+        <div class="recap-grid">
+          <div class="recap-card rc-blue">
+            <div class="recap-card-badge blue">A</div>
+            <div class="recap-card-title"><span class="mod-label">Module A</span> Inquiry Resolution</div>
+            <div class="recap-card-desc">Retail and private banking customers ask Shariah questions. The system resolves most without reaching the advisor's desk.</div>
+            <div class="recap-card-point"><span class="dot">·</span>AI retrieves AAOIFI standards and internal rulings in under a second</div>
+            <div class="recap-card-point"><span class="dot">·</span>Mohammed reviews and endorses with a single action, or routes for escalation</div>
+            <div class="recap-card-point"><span class="dot">·</span>Novel cases reach Dr. Fatima's queue triaged by confidence score and precedent state</div>
+            <div class="recap-card-point"><span class="dot">·</span>Board prep triggered only when no existing ruling applies and a new precedent is needed</div>
+          </div>
+          <div class="recap-card rc-amber">
+            <div class="recap-card-badge amber">B</div>
+            <div class="recap-card-title"><span class="mod-label">Module B</span> Commercial Financing Clearance</div>
+            <div class="recap-card-desc">SME and corporate financing applications screened against eight Shariah aspects on submission. Most deals cleared before the RM's next call.</div>
+            <div class="recap-card-point"><span class="dot">·</span>Eight aspects checked in parallel on receipt: product structure, counterparty, supply chain exposure</div>
+            <div class="recap-card-point"><span class="dot">·</span>Precedent-covered cases cleared at Mohammed's level, same morning</div>
+            <div class="recap-card-point"><span class="dot">·</span>Faisal receives a clearance certificate he can share with the client, not a verbal confirmation</div>
+            <div class="recap-card-point"><span class="dot">·</span>Complex or novel cases escalate to Dr. Fatima with full AI reasoning attached</div>
+          </div>
+        </div>
+
+        <p class="recap-throughline">
+          In both modules: <strong>the AI does the retrieval and the reasoning trace.</strong> The human makes the ruling.
+          The Supervisory Board sees only what a human cannot resolve. That is the design: not faster compliance,
+          but compliance that knows where each decision belongs.
+        </p>
+
+        <div class="recap-roadmap">
+          <span style="font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">Next on the roadmap</span>
+          <div class="roadmap-pill">
+            <span class="label">Module C</span>
+            <span class="name">Investment Portfolio Screening</span>
+            <span class="status">· In design</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ctx-footer">
+        <div class="left">
+          <span>● Shariah Compliance OS · Two modules complete · Rawasi Islamic Bank · May 2026</span>
+        </div>
+        <div class="right">SAFWAI AI Solutions · safwai.com</div>
+      </div>
+    </section>
+    <!-- =========================================================
+         SCREEN 15 — The ask · for Jawad Raza
+         ========================================================= -->
+    <section class="screen ctx" data-screen="15">
+      <div class="ctx-header">
+        <div class="brand-mark">
+          <div style="background:white;border-radius:8px;padding:5px 10px;display:flex;align-items:center;">
+            <img src="SAFWA LOGO HORIZONTAL.svg" alt="SAFWAI" style="height:30px;display:block;">
+          </div>
+        </div>
+        <div class="fictional-badge">Fictional walkthrough · Not a real institution</div>
+      </div>
+
+      <div class="ctx-hero" style="display:flex;flex-direction:column;padding-top:28px;">
+        <div style="color:#94a3b8;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:16px;">A direct question &middot; for Jawad Raza</div>
+        <h1 class="intro-title" style="margin-bottom:16px;">We&rsquo;d like you on the inside.</h1>
+        <p style="font-size:13.5px;color:#cbd5e1;line-height:1.75;max-width:620px;margin-bottom:0;z-index:2;position:relative;">
+          Building Shariah compliance infrastructure without someone who has run a Shariah desk is like writing a surgical
+          training programme without a surgeon. We need someone who knows where the real friction lives: not in theory,
+          but from having sat across from a client, an RM, and a Board in the same week.
+        </p>
+
+        <div class="ask-grid">
+          <div class="ask-card">
+            <div class="ask-num">01</div>
+            <div class="ask-time">30 minutes</div>
+            <span class="ask-title">Your reaction to what you just saw</span>
+            <p class="ask-text">
+              Walk through what rings true and what&rsquo;s wrong. Where does this reflect the operational reality you know,
+              and where is it still an outsider&rsquo;s view? Unfiltered reaction is the most useful thing at this stage.
+            </p>
+          </div>
+          <div class="ask-card">
+            <div class="ask-num">02</div>
+            <div class="ask-time">2 &ndash; 3 hours</div>
+            <span class="ask-title">Real cases from your previous institution</span>
+            <p class="ask-text">
+              Bring two or three cases that actually landed on the Shariah desk: the ones that required judgment, not just a lookup.
+              We&rsquo;ll map them against the system and find exactly where the model holds and where it breaks.
+            </p>
+          </div>
+          <div class="ask-card ask-primary">
+            <div class="ask-num">03</div>
+            <div class="ask-time">Ongoing</div>
+            <span class="ask-title">Named advisor &middot; deal-based profit share</span>
+            <p class="ask-text">
+              An advisory role with a share of the revenue on deals we close together.
+              Your name on the product is the credibility signal that makes it land with a Head of Shariah or a CTO at an Islamic bank.
+            </p>
+          </div>
+        </div>
+
+        <div class="ask-close">
+          <div class="ask-close-text">
+            You&rsquo;re not associated with an institution right now. That is the right moment to shape something from the ground up.<br/>
+            <strong>The ask is simple: come in at whatever capacity makes sense. We can always start with 01.</strong>
+          </div>
+          <div style="margin:18px 0 14px;">
+            <div style="background:white;border-radius:10px;padding:10px 20px;display:inline-block;">
+              <img src="SAFWA LOGO HORIZONTAL.svg" alt="SAFWAI" style="height:48px;display:block;">
+            </div>
+          </div>
+          <div class="ask-contact">
+            <span class="name">Jeroen</span>
+            jeroen.hendriks@safwai.com &nbsp;&middot;&nbsp; safwai.com
+          </div>
+        </div>
+      </div>
+
+      <div class="ctx-footer">
+        <div class="left">
+          <span>&#9679; Shariah Compliance OS &middot; SAFWAI AI Solutions &middot; May 2026</span>
+        </div>
+        <div class="right">safwai.com</div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- Deck navigation -->
+<div class="deck-nav">
+  <button class="nav-btn" id="prev-btn" onclick="prevScreen()">‹</button>
+  <div class="nav-dots" id="nav-dots"></div>
+  <button class="nav-btn" id="next-btn" onclick="nextScreen()">›</button>
+  <div class="nav-counter" id="nav-counter">1 / 2</div>
+</div>
+
+<script>
+  const screens = document.querySelectorAll('.screen');
+  const totalScreens = screens.length;
+  let currentScreen = 1;
+
+  // Build dots
+  const dotsContainer = document.getElementById('nav-dots');
+  for (let i = 0; i < totalScreens; i++) {
+    const dot = document.createElement('span');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goToScreen(i + 1);
+    dotsContainer.appendChild(dot);
+  }
+
+  function showScreen(n) {
+    screens.forEach((s, i) => s.classList.toggle('active', i + 1 === n));
+    document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i + 1 === n));
+    document.getElementById('nav-counter').textContent = n + ' / ' + totalScreens;
+    document.getElementById('prev-btn').disabled = (n === 1);
+    document.getElementById('next-btn').disabled = (n === totalScreens);
+    currentScreen = n;
+  }
+  function nextScreen() { if (currentScreen < totalScreens) showScreen(currentScreen + 1); }
+  function prevScreen() { if (currentScreen > 1) showScreen(currentScreen - 1); }
+  function goToScreen(n) { showScreen(n); }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { nextScreen(); e.preventDefault(); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { prevScreen(); e.preventDefault(); }
+    if (e.key === 'a' || e.key === 'A') toggleAnnotations();
+  });
+
+  function toggleAnnotations() {
+    document.body.classList.toggle('annot-off');
+    const state = document.body.classList.contains('annot-off') ? 'off' : 'on';
+    document.getElementById('annot-state').textContent = state;
+    document.querySelectorAll('.toggle-switch').forEach(sw => {
+      sw.style.background = state === 'on' ? '#2563eb' : '#cbd5e1';
+    });
+    document.querySelectorAll('.toggle-switch').forEach(sw => {
+      const after = state === 'on' ? 'right: 2px;' : 'right: auto; left: 2px;';
+    });
+  }
+
+  // Scale deck to fit viewport
+  function scaleDeck() {
+    const deck = document.getElementById('deck');
+    const sw = window.innerWidth;
+    const sh = window.innerHeight;
+    const scale = Math.min(sw / 1440, sh / 940, 1);
+    deck.style.transform = `scale(${scale})`;
+  }
+  window.addEventListener('resize', scaleDeck);
+  scaleDeck();
+
+  showScreen(1);
+</script>
+
+</body>
+</html>

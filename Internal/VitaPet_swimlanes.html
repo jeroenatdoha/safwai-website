@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProductCopyOS &times; VitaPet &mdash; Process Swimlanes</title>
+<style>
+  :root{
+    --bg:#002D49; --panel:#0a1e2e; --panel-2:#0d2030; --panel-3:#103048;
+    --border:#1A4A5C; --border-soft:#143845;
+    --text:#F7F6F3; --text-2:#cfe3ea; --text-3:#9ac8d8; --text-4:#5d8597;
+    --gold:#D4AF37; --teal:#0E5C4D; --good:#4ec9a1; --info:#5ab9ff;
+    --sys:#5ab9ff; --port:#c98bdb; --ext:#9ac8d8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg); color:var(--text); font-family:'Segoe UI',Inter,system-ui,sans-serif; padding:34px 30px 80px; line-height:1.5}
+  .wrap{max-width:2400px; margin:0 auto}
+  .doc-eyebrow{font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--text-4)}
+  h1{font-size:24px; font-weight:600; letter-spacing:-.01em; margin:8px 0 6px}
+  .doc-sub{font-size:13px; color:var(--text-3); max-width:1080px; line-height:1.6; margin-bottom:18px}
+  .xnav{margin-bottom:16px; font-size:11px; color:var(--text-4)}
+  .xnav a{color:var(--text-3); text-decoration:none; border-bottom:1px dotted var(--border)}
+  .xnav a:hover{color:var(--gold)}
+  .legend{display:flex; gap:22px; flex-wrap:wrap; margin-bottom:24px; font-size:11.5px; color:var(--text-3); background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:13px 18px}
+  .legend b{color:var(--text-2)}
+  .legend svg{vertical-align:middle}
+  .diagram{margin-bottom:30px; background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:18px 20px}
+  .diagram h2{font-size:15px; font-weight:600; color:var(--text); margin-bottom:4px}
+  .diagram .stateline{font-size:11.5px; color:var(--text-3); margin-bottom:12px}
+  .diagram .stateline b{color:var(--gold)}
+  .scroll{overflow-x:auto; border:1px solid var(--border-soft); border-radius:8px; background:#04223a}
+  svg{display:block}
+  .foot{margin-top:24px; font-size:10.5px; color:var(--text-4); line-height:1.7; border-top:1px solid var(--border-soft); padding-top:14px}
+  .foot b{color:var(--text-3)}
+  .foot .q{color:var(--gold); font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="doc-eyebrow">Safwai &middot; ProductCopyOS &middot; VitaPet prospect (pet nutrition &mdash; retail + veterinary &mdash; de-identified)</div>
+  <h1>Process Swimlanes &mdash; one diagram per phase (S&ndash;F)</h1>
+  <div class="doc-sub">Horizontal swimlanes (rows = roles). Each phase opens and closes on named <b>state / deliverable</b> circles (a phase may have several of either); <b>process steps</b> are rectangles in the acting role&rsquo;s lane, each named <i>verb + noun</i>; every arrow is annotated with the specific <b>deliverable or information</b> it carries. System (AI) steps also carry their <b>pattern numbers</b> (from the master Pattern Library) beneath the box. The claim-parity variant: claims originate <b>internally</b> (no supplier feed), the headline step is <b>B3 claim-parity lock</b>, and validated claims are fed back <b>upstream</b> into the product passport. Derived from <a href="VitaPet_process_table.html" style="color:var(--text-3)">VitaPet_process_table.html</a> and Yassine&rsquo;s 18-Jun input.</div>
+
+  <div class="xnav">Related: <a href="../_product/index.html">&larr; All artefacts</a> &middot; <a href="VitaPet_process_table.html">VitaPet process table</a> &middot; <a href="../buildmart/BuildMart_swimlanes.html">BuildMart swimlanes</a></div>
+
+  <div class="legend">
+    <span><svg width="34" height="20"><circle cx="14" cy="10" r="8" fill="#06121b" stroke="#D4AF37" stroke-width="2"/></svg> <b>State / deliverable</b> (named; &ge;1 per side)</span>
+    <span><svg width="40" height="20"><rect x="4" y="3" width="32" height="14" rx="3" fill="#103048" stroke="#5ab9ff" stroke-width="1.5"/></svg> <b>Process step</b> (verb + noun)</span>
+    <span><svg width="46" height="14"><line x1="2" y1="7" x2="38" y2="7" stroke="#7fa6b8" stroke-width="1.6" marker-end="url(#lg)"/><defs><marker id="lg" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#7fa6b8"/></marker></defs></svg> arrow = <b>deliverable / info</b></span>
+    <span><svg width="40" height="20"><rect x="4" y="3" width="32" height="14" rx="3" fill="none" stroke="#9ac8d8" stroke-width="1.4" stroke-dasharray="4 3"/></svg> <b>external system</b></span>
+    <span><svg width="58" height="16"><rect x="2" y="2" width="24" height="12" rx="2" fill="rgba(212,175,55,0.13)" stroke="#D4AF37"/><rect x="30" y="2" width="24" height="12" rx="2" fill="rgba(212,175,55,0.13)" stroke="#D4AF37"/></svg> <b>pattern №s</b> under System steps</span>
+    <span>Lanes: <b style="color:#5ab9ff">System</b> &middot; <b style="color:#D4AF37">Regulatory &amp; Compliance Lead</b> &middot; <b style="color:#4ec9a1">Claims / Scientific owner (internal)</b> &middot; <b style="color:#c98bdb">Brand / Portfolio</b></span>
+  </div>
+
+  <div id="diagrams"></div>
+
+  <div class="foot">
+    <b>Roles (lanes):</b> the actors in the process table &mdash; <b>System</b> (the tool, <span style="color:var(--info)">[O]</span>), <b>Regulatory &amp; Compliance Lead</b> (S2, D1) and <b>Brand / Portfolio</b> (D2, named in Yassine input B.1), plus the internal <b>Claims / Regulatory owner</b> (claims origin, A1) and <b>Regulatory &amp; Scientific Affairs</b> (evidence in the chase loop, C2). VitaPet has <b>no supplier lane</b> &mdash; claims originate internally, so the green lane is the internal claims / scientific owner, not a supplier feed. External systems (MSC register, PIM, product passport / PLM, channels) are dashed boxes, not lanes.<br>
+    <b>Multiple states:</b> phase B closes on two (clean &rarr; D &middot; flags &rarr; C); phase C opens on three blockers (unsubstantiated claim &middot; parity drift &middot; expired cert); phase D closes on three (approve &middot; amend &middot; reject); phase F closes on two deliverables (audit pack &middot; DPP payload, forward). Each phase&rsquo;s end state(s) are the next phase&rsquo;s start state(s).<br>
+    <b>The wedge:</b> <b>B3</b> translate with a claim-parity lock &mdash; the step that kills the hand re-keying across FR/DE/US &mdash; and <b>E2</b> feeds validated claims back <b>upstream</b> into the product passport (PLM), closing the packaging-tool &harr; PIM desync. <b>New patterns: none.</b> <span class="q">P27</span> (live external-authority validation, MSC) is reused from the library; <span class="q">claim-parity is a specialisation</span> of <span class="q">P26</span> (canonical-claim-lock) + a <span class="q">P22</span> cross-language consistency category, not a new pattern. <b>DPP</b> framed as &ldquo;coming&rdquo; (MSC / sustainability adjacency), not a registry-write deadline.
+  </div>
+</div>
+
+<script>
+const LANE_H = 150, LANE_TOP = 16, CAP = 70, PANEL_W = 140, X0 = 250;
+const COLOR = { sys:'#5ab9ff', gold:'#D4AF37', good:'#4ec9a1', port:'#c98bdb', ext:'#9ac8d8' };
+// pattern numbers per System (AI) step — from PATTERN_LIBRARY_MASTER, mirroring VitaPet_process_table.html
+const PATS = {
+  S1:['P01','P12','P16'],
+  A2:['P02'], A3:['P02','P16'],
+  B1:['P14','P26'], B2:['P26'], B3:['P26','P22'], B4:['P12','P16'], B5:['P27','P16'], B6:['P16','P15'],
+  C1:['P21','P20'], C3:['P12','P22'],
+  E1:['P01','P26'], E2:['P10','P17'], E3:['P10'],
+  F1:['P10','P15'], F2:['P17'], F3:['P17']
+};
+
+const PHASES = [
+{
+  id:'S', title:'S · Setup — rule sources & spine', colW:300, endCol:3,
+  lanes:[{label:'System',color:'sys'},{label:'Regulatory & Compliance Lead',color:'gold'}],
+  nodes:[
+    {id:'st0',type:'state',side:'start',name:'Rule sources\nunindexed'},
+    {id:'S1',name:'Index rule sources',lane:0,col:1},
+    {id:'S2',name:'Publish rule corpus',lane:1,col:2},
+    {id:'en0',type:'state',side:'end',name:'Rule corpus\npublished v1'}
+  ],
+  edges:[
+    {from:'st0',to:'S1',label:'rule sources: 767/2009 · 1831/2003,\nFEDIAF, PARNUTs / 2020-354,\nUS FDA-CVM + AAFCO,\nself-substantiation studies, TOV'},
+    {from:'S1',to:'S2',label:'indexed, citable rule set\n(clause-level; authority + date)'},
+    {from:'S2',to:'en0',label:'published rule corpus v1\n(dated, cited; EU + US regimes)'}
+  ]
+},
+{
+  id:'A', title:'A · Intake & Extract  (per SKU · internal origin, no supplier feed)', colW:325, endCol:4,
+  lanes:[{label:'Claims / Regulatory owner',color:'good'},{label:'System',color:'sys'}],
+  nodes:[
+    {id:'st0',type:'state',side:'start',name:'Claims internal,\nnot in system'},
+    {id:'A1',name:'Open claims spreadsheet',lane:0,col:1},
+    {id:'A2',name:'Ingest & normalise',lane:1,col:2},
+    {id:'A3',name:'Extract & route claims',lane:1,col:3},
+    {id:'en0',type:'state',side:'end',name:'Structured claims;\nrouted to rules'}
+  ],
+  edges:[
+    {from:'st0',to:'A1',label:'internal trigger:\nnew / updated SKU claims'},
+    {from:'A1',to:'A2',label:'claims row: SKU · Claim territory ·\nClaim text (EN) · Analytical\nconstituents · Feeding/rationing ·\nLegal text'},
+    {from:'A2',to:'A3',label:'normalised records + source-cell\ntrace; territory-tagged'},
+    {from:'A3',to:'en0',label:'structured + routed (therapeutic→\nmedicinal line · marine→MSC ·\nnutrient→FEDIAF/AAFCO)'}
+  ]
+},
+{
+  id:'B', title:'B · Enrich, Translate & Validate  (advisory · P14 sandbox)', colW:272, endCol:7,
+  lanes:[{label:'System',color:'sys'},{label:'Public register (MSC)',color:'ext'}],
+  nodes:[
+    {id:'st0',type:'state',side:'start',name:'Structured claims\n(sandbox)'},
+    {id:'B1',name:'Enrich to brand voice',lane:0,col:1},
+    {id:'B2',name:'Generate variants',lane:0,col:2},
+    {id:'B3',name:'Translate · claim-parity lock',lane:0,col:3},
+    {id:'B4',name:'Validate feed / claim rules',lane:0,col:4},
+    {id:'B5',name:'Validate certificates live',lane:0,col:5},
+    {id:'B6',name:'Score & gate variants',lane:0,col:6},
+    {id:'MSC',type:'ext',name:'MSC public\nregister / API',lane:1,col:5},
+    {id:'enClean',type:'state',side:'end',name:'Clean variants\n→ Review (D)'},
+    {id:'enGap',type:'state',side:'end',name:'Flags\n→ Substantiate (C)'}
+  ],
+  edges:[
+    {from:'st0',to:'B1',label:'structured claims\n+ VitaPet TOV'},
+    {from:'B1',to:'B2',label:'draft copy\n(vet register · retail register)'},
+    {from:'B2',to:'B3',label:'{vet · breed-retail} ×\n{FR · DE · US}; vet =\nsupervision wording'},
+    {from:'B3',to:'B4',label:'parity-locked multilingual copy\n(regulated wording identical-\nin-substance)'},
+    {from:'B4',to:'B5',label:'claim-validated copy +\ncitations (767/2009 · FEDIAF ·\nPARNUTs · FDA/AAFCO);\nmedicinal line held'},
+    {from:'B5',to:'MSC',label:'MSC cert ID + scope query',dashed:true},
+    {from:'MSC',to:'B5',label:'valid / expired /\nmismatched',dashed:true},
+    {from:'B5',to:'B6',label:'cert-validated copy\n(expiry-checked)'},
+    {from:'B6',to:'enClean',label:'all checks pass'},
+    {from:'B6',to:'enGap',label:'unsubstantiated claim /\nparity drift / expired cert'}
+  ]
+},
+{
+  id:'C', title:'C · Substantiate & Resolve', colW:305, endCol:4,
+  lanes:[{label:'System',color:'sys'},{label:'Regulatory & Scientific Affairs',color:'good'}],
+  nodes:[
+    {id:'stUns',type:'state',side:'start',name:'Unsubstantiated\nclaim'},
+    {id:'stDrift',type:'state',side:'start',name:'Parity\ndrift'},
+    {id:'stCert',type:'state',side:'start',name:'Expired\ncert'},
+    {id:'C1',name:'Open substantiation request',lane:0,col:1},
+    {id:'C2',name:'Supply evidence / studies',lane:1,col:2},
+    {id:'C3',name:'Re-validate item',lane:0,col:3},
+    {id:'en0',type:'state',side:'end',name:'Gap closed;\nre-validated\n→ B / D'}
+  ],
+  edges:[
+    {from:'stUns',to:'C1',label:'claim lacks\nsubstantiation'},
+    {from:'stDrift',to:'C1',label:'translation drifts\nfrom locked claim'},
+    {from:'stCert',to:'C1',label:'cert expired /\nunverifiable'},
+    {from:'C1',to:'C2',label:'tracked P21 request + SLA\n(variant held)'},
+    {from:'C2',to:'C3',label:'study / composition note /\ncorrected wording'},
+    {from:'C3',to:'en0',label:'re-validated variant\n(B3/B4/B5 re-run clean)'}
+  ]
+},
+{
+  id:'D', title:'D · Review & Sign-off  (governed · two desks · regulatory-led)', colW:335, endCol:3,
+  lanes:[{label:'Sr. Regulatory & Compliance Lead',color:'gold'},{label:'Brand / Portfolio',color:'port'}],
+  nodes:[
+    {id:'st0',type:'state',side:'start',name:'Gated variants\nawaiting review'},
+    {id:'D1',name:'Review wording & medicinal line',lane:0,col:1},
+    {id:'D2',name:'Sign off expression',lane:1,col:2},
+    {id:'enAmend',type:'state',side:'end',name:'Amend\n→ re-enter B3'},
+    {id:'enAppr',type:'state',side:'end',name:'Approved\n(committing) → E'},
+    {id:'enRej',type:'state',side:'end',name:'Reject\n→ re-enter B1/B2'}
+  ],
+  edges:[
+    {from:'st0',to:'D1',label:'gated variants + rule\ncitations + evidence'},
+    {from:'D1',to:'D2',label:'regulatory decision + note\n(core wording confirmed FR/DE/US)'},
+    {from:'D1',to:'enAmend',label:'amend → re-validate parity',dashed:true},
+    {from:'D2',to:'enAppr',label:'binding approval (approve)'},
+    {from:'D2',to:'enRej',label:'reject → re-generate',dashed:true}
+  ]
+},
+{
+  id:'E', title:'E · Publish & Sync  (governed · committing)', colW:300, endCol:4,
+  lanes:[{label:'System',color:'sys'},{label:'PIM · passport · channels',color:'ext'}],
+  nodes:[
+    {id:'st0',type:'state',side:'start',name:'Approved\nvariants'},
+    {id:'E1',name:'Render final variants',lane:0,col:1},
+    {id:'E2',name:'Push to PIM + passport',lane:0,col:2},
+    {id:'E3',name:'Feed channels',lane:0,col:3},
+    {id:'PIM',type:'ext',name:'PIM + product\npassport (PLM)',lane:1,col:2},
+    {id:'CHAN',type:'ext',name:'retail · D2C · B2B\n· .com · print',lane:1,col:3},
+    {id:'en0',type:'state',side:'end',name:'Live across\nchannels; PIM +\npassport in sync'}
+  ],
+  edges:[
+    {from:'st0',to:'E1',label:'approved variants'},
+    {from:'E1',to:'E2',label:'final variants ({vet·retail}×\n{FR·DE·US}; on-pack + online)'},
+    {from:'E2',to:'PIM',label:'validated claims + legal text +\naudit hash → PIM and fed back\nupstream into the passport (PLM)',dashed:true},
+    {from:'E2',to:'E3',label:'PIM-synced records'},
+    {from:'E3',to:'CHAN',label:'publish payloads\nper channel',dashed:true},
+    {from:'E3',to:'en0',label:'live across channels & regions'}
+  ]
+},
+{
+  id:'F', title:'F · Audit & Passport  (continuous + on demand)', colW:315, endCol:4,
+  lanes:[{label:'System',color:'sys'}],
+  nodes:[
+    {id:'st0',type:'state',side:'start',name:'Decisions\ncommitted'},
+    {id:'F1',name:'Record signed events',lane:0,col:1},
+    {id:'F2',name:'Export audit pack',lane:0,col:2},
+    {id:'F3',name:'Compose DPP / QR payload',lane:0,col:3},
+    {id:'en0',type:'state',side:'end',name:'Audit pack +\nDPP / QR\npayload (fwd)'}
+  ],
+  edges:[
+    {from:'st0',to:'F1',label:'all step events + overrides\n(claim · rule · decision · who)'},
+    {from:'F1',to:'F2',label:'immutable signed\nevent chain'},
+    {from:'F2',to:'F3',label:'audit-linked record'},
+    {from:'F2',to:'en0',label:'signed JSON/CSV/PDF\naudit pack'},
+    {from:'F3',to:'en0',label:'DPP / QR payload\n(forward · adjacency)'}
+  ]
+}
+];
+
+function colX(col,colW){ return X0 + col*colW; }
+function laneCenter(i){ return LANE_TOP + i*LANE_H + LANE_H/2; }
+
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function wrap(text,max){
+  const words=text.split(' '); const lines=[]; let cur='';
+  for(const w of words){ if((cur+' '+w).trim().length>max){ if(cur)lines.push(cur); cur=w; } else { cur=(cur+' '+w).trim(); } }
+  if(cur)lines.push(cur); return lines;
+}
+function lineify(text,max){ return text.split('\n').reduce((a,seg)=>a.concat(wrap(seg,max)),[]); }
+function dims(node){
+  if(node.type==='state') return {w:80,h:80,r:40};
+  if(node.type==='ext') return {w:178,h:50};
+  return {w:160,h:56};
+}
+function layout(ph){
+  const nLanes=ph.lanes.length, blockH=nLanes*LANE_H;
+  const starts=ph.nodes.filter(n=>n.type==='state'&&n.side==='start');
+  const ends=ph.nodes.filter(n=>n.type==='state'&&n.side==='end');
+  const P={};
+  starts.forEach((n,i)=>{ P[n.id]={x:colX(0,ph.colW), y:LANE_TOP+blockH*(i+0.5)/starts.length, t:'state'}; });
+  ends.forEach((n,i)=>{ P[n.id]={x:colX(ph.endCol,ph.colW), y:LANE_TOP+blockH*(i+0.5)/ends.length, t:'state'}; });
+  ph.nodes.forEach(n=>{ if(n.type==='state')return; P[n.id]={x:colX(n.col,ph.colW), y:laneCenter(n.lane), t:n.type||'step'}; });
+  return P;
+}
+function anchor(node,P,tx,ty){
+  const p=P[node.id]; const d=dims(node);
+  let dx=tx-p.x, dy=ty-p.y; const len=Math.hypot(dx,dy)||1; dx/=len; dy/=len;
+  if(node.type==='state'){ return {x:p.x+dx*(d.r+2), y:p.y+dy*(d.r+2)}; }
+  const hw=d.w/2+4, hh=d.h/2+4;
+  const sx = dx===0?Infinity:hw/Math.abs(dx);
+  const sy = dy===0?Infinity:hh/Math.abs(dy);
+  const s=Math.min(sx,sy);
+  return {x:p.x+dx*s, y:p.y+dy*s};
+}
+
+function renderPhase(ph){
+  const nLanes=ph.lanes.length, blockH=nLanes*LANE_H;
+  const H = LANE_TOP + blockH + CAP;
+  const W = colX(ph.endCol,ph.colW) + 170;
+  const byId={}; ph.nodes.forEach(n=>byId[n.id]=n);
+  const P=layout(ph);
+  const pairCount={}; ph.edges.forEach(e=>{const k=[e.from,e.to].slice().sort().join('|'); pairCount[k]=(pairCount[k]||0)+1;});
+  const LH=11;
+
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, sans-serif">`;
+  s += `<defs><marker id="ar${ph.id}" markerWidth="9" markerHeight="9" refX="7.5" refY="3" orient="auto"><path d="M0,0 L7.5,3 L0,6 Z" fill="#7fa6b8"/></marker></defs>`;
+
+  // lane bands + dividers
+  for(let i=0;i<nLanes;i++){
+    const yt=LANE_TOP+i*LANE_H;
+    const fill = i%2===0 ? 'rgba(255,255,255,0.018)' : 'rgba(255,255,255,0.045)';
+    s += `<rect x="0" y="${yt}" width="${W}" height="${LANE_H}" fill="${fill}"/>`;
+    s += `<line x1="0" y1="${yt}" x2="${W}" y2="${yt}" stroke="#143845" stroke-width="1"/>`;
+  }
+  s += `<line x1="0" y1="${LANE_TOP+blockH}" x2="${W}" y2="${LANE_TOP+blockH}" stroke="#143845" stroke-width="1"/>`;
+
+  // edges (under nodes)
+  for(const e of ph.edges){
+    const a=byId[e.from], b=byId[e.to];
+    let A=anchor(a,P,P[e.to].x,P[e.to].y), B=anchor(b,P,P[e.from].x,P[e.from].y);
+    const key=[e.from,e.to].slice().sort().join('|');
+    const bidir = pairCount[key]>1;
+    let dyv=B.y-A.y, dxv=B.x-A.x;
+    const verticalish = Math.abs(dxv)<28;
+    const horizontalish = Math.abs(dyv)<28;
+    let xo=0;
+    if(verticalish){ xo = dyv>0 ? -50 : 50; A={x:A.x+xo,y:A.y}; B={x:B.x+xo,y:B.y}; }  // clear the pattern chips under System steps
+    const dash = e.dashed ? ' stroke-dasharray="5 4"' : '';
+    const col = e.dashed ? '#6f93a6' : '#7fa6b8';
+    s += `<line x1="${A.x.toFixed(1)}" y1="${A.y.toFixed(1)}" x2="${B.x.toFixed(1)}" y2="${B.y.toFixed(1)}" stroke="${col}" stroke-width="1.6"${dash} marker-end="url(#ar${ph.id})"/>`;
+
+    const segs = lineify(e.label,28);
+    let lx, ly, anc;
+    if(horizontalish){
+      anc='middle'; lx=(A.x+B.x)/2;
+      const boxTop = A.y - 28;
+      ly = boxTop - 8 - (segs.length-1)*LH;
+    } else if(verticalish){
+      const my=(A.y+B.y)/2;
+      if(xo<0){ anc='end'; lx=A.x-8; } else { anc='start'; lx=A.x+8; }
+      ly = my - (segs.length-1)*LH/2;
+    } else {
+      anc='middle'; lx=(A.x+B.x)/2; ly=(A.y+B.y)/2 - 6 - (segs.length-1)*LH;
+    }
+    let t=`<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anc}" font-size="9.5" fill="#dceaf0" style="paint-order:stroke; stroke:#04223a; stroke-width:3.4px; stroke-linejoin:round">`;
+    segs.forEach((l,k)=> t+=`<tspan x="${lx.toFixed(1)}" dy="${k===0?0:LH}">${esc(l)}</tspan>`);
+    t+=`</text>`; s+=t;
+  }
+
+  // nodes (over edges)
+  for(const n of ph.nodes){
+    const p=P[n.id], d=dims(n);
+    if(n.type==='state'){
+      const lines=lineify(n.name,12);
+      s += `<circle cx="${p.x}" cy="${p.y}" r="${d.r}" fill="#06121b" stroke="${COLOR.gold}" stroke-width="2.2"/>`;
+      const startY = p.y + 3 - (lines.length-1)*5;
+      let t=`<text x="${p.x}" y="${startY.toFixed(1)}" text-anchor="middle" font-size="8.7" fill="#F2E6C4" font-weight="600">`;
+      lines.forEach((l,k)=> t+=`<tspan x="${p.x}" dy="${k===0?0:10}">${esc(l)}</tspan>`);
+      t+=`</text>`; s+=t;
+    } else {
+      const isExt = n.type==='ext';
+      const col = isExt ? COLOR.ext : COLOR[ph.lanes[n.lane].color];
+      const fill = isExt ? 'rgba(154,200,216,0.06)' : '#103048';
+      const dash = isExt ? ' stroke-dasharray="5 4"' : '';
+      s += `<rect x="${p.x-d.w/2}" y="${p.y-d.h/2}" width="${d.w}" height="${d.h}" rx="8" fill="${fill}" stroke="${col}" stroke-width="1.6"${dash}/>`;
+      if(!isExt){ s += `<text x="${p.x-d.w/2+9}" y="${p.y-d.h/2+15}" font-size="9.5" font-weight="700" fill="${COLOR.gold}" font-family="Consolas,monospace">${n.id}</text>`; }
+      const lines = lineify(n.name,20);
+      const startY = p.y + 5 - (lines.length-1)*6 + (isExt?0:3);
+      let t=`<text x="${p.x}" y="${startY.toFixed(1)}" text-anchor="middle" font-size="${isExt?10.5:11}" fill="${isExt?'#cfe3ea':'#F7F6F3'}" font-weight="${isExt?400:600}">`;
+      lines.forEach((l,k)=> t+=`<tspan x="${p.x}" dy="${k===0?0:12}">${esc(l)}</tspan>`);
+      t+=`</text>`; s+=t;
+      if(!isExt && ph.lanes[n.lane].color==='sys' && PATS[n.id]){
+        const pats=PATS[n.id], cw=30, cg=5, ch=15, tot=pats.length*30+(pats.length-1)*5;
+        let cx0=p.x-tot/2; const cy0=p.y+d.h/2+4;
+        pats.forEach(function(code){
+          s+=`<rect x="${cx0.toFixed(1)}" y="${cy0}" width="${cw}" height="${ch}" rx="3" fill="rgba(212,175,55,0.13)" stroke="#D4AF37" stroke-width="1"/>`;
+          s+=`<text x="${(cx0+cw/2).toFixed(1)}" y="${cy0+ch/2+3}" text-anchor="middle" font-size="8.5" font-weight="700" fill="#e6cf73" font-family="Consolas,monospace">${code}</text>`;
+          cx0+=cw+cg;
+        });
+      }
+    }
+  }
+
+  // lane-label panel + labels (opaque, single copy, on top)
+  s += `<rect x="0" y="${LANE_TOP}" width="${PANEL_W}" height="${blockH}" fill="#0b2438"/>`;
+  s += `<line x1="${PANEL_W}" y1="${LANE_TOP}" x2="${PANEL_W}" y2="${LANE_TOP+blockH}" stroke="#1A4A5C" stroke-width="1.2"/>`;
+  for(let i=0;i<nLanes;i++){
+    const yt=LANE_TOP+i*LANE_H; const col=COLOR[ph.lanes[i].color];
+    const lines=wrap(ph.lanes[i].label,13); const startY=yt+LANE_H/2-(lines.length-1)*7;
+    let t=`<text x="14" y="${startY}" fill="${col}" font-size="11" font-weight="700" style="text-transform:uppercase; letter-spacing:.03em">`;
+    lines.forEach((l,k)=> t+=`<tspan x="14" dy="${k===0?0:14}">${esc(l)}</tspan>`);
+    t+=`</text>`; s+=t;
+  }
+
+  s += `</svg>`;
+  return s;
+}
+
+function stateNames(ph,side){
+  return ph.nodes.filter(n=>n.type==='state'&&n.side===side).map(n=>n.name.replace(/\n/g,' ')).join(' &middot; ');
+}
+
+const root=document.getElementById('diagrams');
+for(const ph of PHASES){
+  const card=document.createElement('div'); card.className='diagram'; card.id='phase-'+ph.id;
+  card.innerHTML = `<h2>${esc(ph.title)}</h2>`+
+    `<div class="stateline"><b>Start:</b> ${stateNames(ph,'start')} &nbsp;&rarr;&nbsp; <b>End:</b> ${stateNames(ph,'end')}</div>`+
+    `<div class="scroll">${renderPhase(ph)}</div>`;
+  root.appendChild(card);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,3284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LegalOS — Practice Operating System · SAFWAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:       #1a2b4a;
+  --navy-dark:  #0f1d35;
+  --navy-mid:   #243656;
+  --blue:       #2563eb;
+  --blue-mid:   #3b82f6;
+  --blue-light: #eff6ff;
+  --blue-pale:  #dbeafe;
+  --green:      #16a34a;
+  --green-light:#f0fdf4;
+  --green-pale: #dcfce7;
+  --amber:      #d97706;
+  --amber-mid:  #f59e0b;
+  --amber-light:#fffbeb;
+  --amber-pale: #fef3c7;
+  --red:        #dc2626;
+  --red-light:  #fef2f2;
+  --red-pale:   #fee2e2;
+  --slate-50:   #f8fafc;
+  --slate-100:  #f1f5f9;
+  --slate-200:  #e2e8f0;
+  --slate-300:  #cbd5e1;
+  --slate-400:  #94a3b8;
+  --slate-500:  #64748b;
+  --slate-600:  #475569;
+  --slate-700:  #334155;
+  --slate-800:  #1e293b;
+  --slate-900:  #0f172a;
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #0a1628;
+  font-family: var(--font);
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  user-select: none;
+}
+
+/* ── Deck scaling ── */
+#deck {
+  position: absolute;
+  top: 0; left: 0;
+  transform-origin: top left;
+  width: 1440px;
+  height: 900px;
+}
+
+.slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 1440px;
+  height: 900px;
+  display: none;
+}
+.slide.active { display: block; }
+
+/* ── Navigation ── */
+.nav-dots {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  z-index: 9999;
+}
+.nd {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+.nd.active { background: rgba(255,255,255,0.9); transform: scale(1.4); }
+.nd:hover { background: rgba(255,255,255,0.6); }
+
+.nav-arr {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 50%;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  transition: all 0.2s;
+  z-index: 9999;
+  opacity: 0;
+}
+.nav-arr:hover { background: rgba(255,255,255,0.18); opacity: 1 !important; }
+body:hover .nav-arr { opacity: 0.5; }
+#nav-prev { left: 14px; }
+#nav-next { right: 14px; }
+
+/* ══════════════════════════════════════
+   CONTEXT SLIDES — dark navy
+══════════════════════════════════════ */
+.slide.ctx {
+  background: var(--navy);
+  background-image:
+    radial-gradient(ellipse at 75% 15%, rgba(37,99,235,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 15% 85%, rgba(37,99,235,0.10) 0%, transparent 50%);
+  color: #fff;
+}
+
+.ctx-inner {
+  position: absolute;
+  inset: 0;
+  padding: 72px 80px 60px 80px;
+  display: flex;
+  flex-direction: column;
+}
+
+.ctx-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--blue-mid);
+  margin-bottom: 20px;
+}
+.ctx-eyebrow.mod-a { color: var(--blue-mid); }
+.ctx-eyebrow.mod-b { color: var(--amber-mid); }
+.ctx-eyebrow.mod-c { color: #34d399; }
+
+.ctx-h1 {
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  line-height: 1.08;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.ctx-h1 span { color: var(--blue-mid); }
+
+.ctx-h2 {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  line-height: 1.15;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.ctx-subtitle {
+  font-size: 18px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.55;
+  margin-bottom: 36px;
+  max-width: 640px;
+}
+
+.ctx-body {
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.65;
+  max-width: 680px;
+}
+.ctx-body p { margin-bottom: 14px; }
+.ctx-body p:last-child { margin-bottom: 0; }
+
+.ctx-split {
+  display: flex;
+  gap: 48px;
+  flex: 1;
+  align-items: flex-start;
+}
+.ctx-split-left { flex: 0 0 580px; }
+.ctx-split-right { flex: 1; }
+
+/* Process list on screen 1 */
+.process-group { margin-bottom: 28px; }
+.process-group-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.process-group-label.expertise { color: var(--blue-mid); }
+.process-group-label.infra { color: var(--amber-mid); }
+
+.process-list { list-style: none; }
+.process-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.process-item.expertise {
+  background: rgba(37,99,235,0.12);
+  color: rgba(255,255,255,0.85);
+  border-left: 3px solid var(--blue-mid);
+}
+.process-item.infra {
+  background: rgba(217,119,6,0.12);
+  color: rgba(255,255,255,0.7);
+  border-left: 3px solid var(--amber-mid);
+}
+.process-item-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.expertise .process-item-dot { background: var(--blue-mid); }
+.infra .process-item-dot { background: var(--amber-mid); }
+
+/* Cost cards on screen 2 */
+.cost-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.cost-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 18px 20px;
+}
+.cost-card-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--amber-mid);
+  margin-bottom: 8px;
+}
+.cost-card-text {
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.55;
+}
+.cost-card.span2 { grid-column: span 2; }
+.cost-statement {
+  font-size: 18px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.92);
+  line-height: 1.45;
+  padding: 20px 24px;
+  background: rgba(37,99,235,0.15);
+  border-left: 4px solid var(--blue-mid);
+  border-radius: 0 8px 8px 0;
+}
+
+/* Module boxes on screen 3 */
+.module-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.module-box {
+  border-radius: 10px;
+  padding: 20px 22px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.module-box.mod-a { background: rgba(37,99,235,0.12); border-color: rgba(37,99,235,0.3); }
+.module-box.mod-b { background: rgba(217,119,6,0.12); border-color: rgba(217,119,6,0.3); }
+.module-box.mod-c { background: rgba(22,163,74,0.08); border-color: rgba(22,163,74,0.2); opacity: 0.75; }
+
+.module-box-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.mod-letter {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  flex-shrink: 0;
+}
+.mod-a .mod-letter { background: var(--blue); color: #fff; }
+.mod-b .mod-letter { background: var(--amber); color: #fff; }
+.mod-c .mod-letter { background: var(--green); color: #fff; }
+
+.module-box-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+}
+.module-box-tag {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 3px;
+  margin-left: auto;
+}
+.mod-c .module-box-tag { background: rgba(22,163,74,0.2); color: #34d399; }
+
+.module-box-items {
+  list-style: none;
+}
+.module-box-items li {
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.55);
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.module-box-items li:last-child { border-bottom: none; }
+
+.sovereignty-bar {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+  flex-wrap: wrap;
+}
+.sovereignty-bar span { color: rgba(255,255,255,0.25); }
+.sovereignty-bar .lock-icon { color: var(--blue-mid); font-size: 14px; margin-right: 4px; }
+
+/* Module intro slides (4, 9, 13) */
+.module-intro-wrap {
+  display: flex;
+  gap: 64px;
+  align-items: flex-start;
+  flex: 1;
+}
+.module-intro-left { flex: 0 0 560px; }
+.module-intro-right { flex: 1; }
+
+.module-badge-large {
+  width: 56px; height: 56px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; font-weight: 800;
+  margin-bottom: 24px;
+}
+.badge-a { background: var(--blue); color: #fff; }
+.badge-b { background: var(--amber); color: #fff; }
+.badge-c { background: var(--green); color: #fff; }
+
+.component-list { list-style: none; }
+.component-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.component-item:last-child { border-bottom: none; }
+.component-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.ci-blue { background: rgba(37,99,235,0.2); }
+.ci-amber { background: rgba(217,119,6,0.2); }
+.ci-green { background: rgba(22,163,74,0.2); }
+
+.component-text-title {
+  font-size: 14px; font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 3px;
+}
+.component-text-body {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.5;
+}
+
+.persona-intro-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 20px 22px;
+  margin-top: 24px;
+}
+.persona-intro-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 12px;
+}
+.persona-intro-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.persona-avatar-large {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+.persona-intro-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+}
+.persona-intro-role {
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+  margin-top: 2px;
+}
+
+/* Recap + roadmap slides */
+.recap-modules {
+  display: flex;
+  gap: 12px;
+  margin: 24px 0;
+}
+.recap-module-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.recap-module-chip.active-a { background: rgba(37,99,235,0.18); border: 1px solid rgba(37,99,235,0.35); color: rgba(255,255,255,0.85); }
+.recap-module-chip.active-b { background: rgba(217,119,6,0.18); border: 1px solid rgba(217,119,6,0.35); color: rgba(255,255,255,0.85); }
+.recap-module-chip.active-c { background: rgba(22,163,74,0.18); border: 1px solid rgba(22,163,74,0.35); color: rgba(255,255,255,0.85); }
+.recap-module-chip .mod-letter-sm {
+  width: 20px; height: 20px;
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff;
+}
+
+.recap-points { list-style: none; margin: 0; }
+.recap-point {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-size: 15px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.5;
+}
+.recap-point:last-child { border-bottom: none; }
+.recap-check {
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.roadmap-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+}
+.roadmap-table th {
+  text-align: left;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  padding: 0 16px 10px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.roadmap-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  vertical-align: top;
+}
+.roadmap-table tr:last-child td { border-bottom: none; }
+.phase-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.phase-1 { background: rgba(37,99,235,0.2); color: #93c5fd; }
+.phase-2 { background: rgba(217,119,6,0.2); color: #fcd34d; }
+.phase-3 { background: rgba(22,163,74,0.2); color: #6ee7b7; }
+.phase-4 { background: rgba(148,163,184,0.15); color: rgba(255,255,255,0.5); }
+
+.roadmap-what { font-size: 13.5px; color: rgba(255,255,255,0.7); line-height: 1.5; }
+.roadmap-when {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+  white-space: nowrap;
+}
+.roadmap-principles {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+.roadmap-principle {
+  flex: 1;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 7px;
+  padding: 12px 14px;
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.5;
+}
+
+/* Ask cards on screen 19 */
+.ask-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  flex: 1;
+  margin-top: 8px;
+}
+.ask-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s;
+  cursor: default;
+}
+.ask-card:hover { border-color: rgba(255,255,255,0.22); }
+.ask-card-num {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  margin-bottom: 6px;
+}
+.ask-card-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-bottom: 14px;
+}
+.ask-card-tag.lightest { background: rgba(148,163,184,0.15); color: rgba(255,255,255,0.5); }
+.ask-card-tag.deeper { background: rgba(37,99,235,0.2); color: #93c5fd; }
+.ask-card-tag.founding { background: rgba(217,119,6,0.2); color: #fcd34d; }
+
+.ask-card-time {
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 10px;
+}
+.ask-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+.ask-card-body {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+  flex: 1;
+}
+.ask-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 18px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+.ask-card-cta.light-cta { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
+.ask-card-cta.blue-cta { background: var(--blue); color: #fff; }
+.ask-card-cta.amber-cta { background: var(--amber); color: #fff; }
+.ask-card-cta:hover { opacity: 0.85; }
+
+.ask-close {
+  font-size: 13px;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.6;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+
+/* ══════════════════════════════════════
+   DEMO SLIDES
+══════════════════════════════════════ */
+.slide.demo {
+  background: var(--slate-50);
+}
+
+.demo-wrap {
+  position: absolute;
+  inset: 0;
+  padding: 14px 20px 0 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Browser chrome */
+.browser {
+  width: 100%;
+  border-radius: 10px 10px 0 0;
+  overflow: hidden;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.14), 0 1px 4px rgba(0,0,0,0.08);
+  flex: 0 0 664px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chrome-bar {
+  height: 42px;
+  background: #e4e4e4;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.traffic-lights {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.tl {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+}
+.tl.r { background: #ff5f57; }
+.tl.y { background: #ffbd2e; }
+.tl.g { background: #28c840; }
+
+.addr-bar {
+  flex: 0 0 340px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 5px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--slate-600);
+  font-family: var(--font);
+  letter-spacing: 0;
+}
+
+/* App UI */
+.app-ui {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  overflow: hidden;
+}
+
+.app-topnav {
+  height: 52px;
+  background: #fff;
+  border-bottom: 1px solid var(--slate-200);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 16px;
+  flex-shrink: 0;
+}
+.app-logo {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--navy);
+  letter-spacing: -0.5px;
+  flex-shrink: 0;
+}
+.app-logo span { color: var(--blue); }
+.app-breadcrumb {
+  font-size: 13px;
+  color: var(--slate-500);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.app-breadcrumb .crumb-sep { color: var(--slate-300); }
+.app-breadcrumb .crumb-active { color: var(--slate-700); font-weight: 500; }
+.app-topnav-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ann-toggle-btn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid var(--slate-200);
+  background: var(--slate-50);
+  color: var(--slate-600);
+  cursor: pointer;
+  font-family: var(--font);
+  transition: all 0.15s;
+}
+.ann-toggle-btn:hover { background: var(--slate-100); }
+.ann-off .ann-toggle-btn { background: var(--slate-200); }
+
+.persona-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px 4px 4px;
+  border: 1px solid var(--slate-200);
+  border-radius: 20px;
+  background: var(--slate-50);
+}
+.persona-av {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+.av-blue { background: var(--blue); }
+.av-amber { background: var(--amber); }
+
+.persona-name { font-size: 12px; font-weight: 600; color: var(--slate-700); }
+.persona-role { font-size: 10.5px; color: var(--slate-400); }
+.persona-chevron { font-size: 10px; color: var(--slate-400); margin-left: 2px; }
+
+/* App body */
+.app-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--slate-50);
+  border-right: 1px solid var(--slate-200);
+  display: flex;
+  flex-direction: column;
+  padding: 14px 0;
+}
+.sidebar-module {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px 12px 14px;
+  border-bottom: 1px solid var(--slate-200);
+  margin-bottom: 8px;
+}
+.sidebar-mod-badge {
+  width: 22px; height: 22px;
+  border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+.sb-a { background: var(--blue); }
+.sb-b { background: var(--amber); }
+.sb-c { background: var(--green); }
+
+.sidebar-mod-name {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--slate-600);
+  line-height: 1.3;
+}
+
+.sidebar-nav { flex: 1; padding: 0 8px; }
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--slate-500);
+  cursor: pointer;
+  text-decoration: none;
+  margin-bottom: 1px;
+}
+.sidebar-nav a:hover { background: var(--slate-100); color: var(--slate-700); }
+.sidebar-nav a.active { background: var(--blue-light); color: var(--blue); font-weight: 600; }
+.sidebar-nav a.active-b { background: var(--amber-light); color: var(--amber); font-weight: 600; }
+.sidebar-nav a.active-c { background: var(--green-light); color: var(--green); font-weight: 600; }
+
+.sidebar-footer {
+  padding: 10px 14px 0 14px;
+  border-top: 1px solid var(--slate-200);
+  font-size: 11.5px;
+  color: var(--slate-400);
+  cursor: pointer;
+}
+.sidebar-footer:hover { color: var(--blue); }
+
+/* Main content area */
+.app-main {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-header {
+  padding: 16px 24px 12px 24px;
+  border-bottom: 1px solid var(--slate-100);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.page-header-text { flex: 1; }
+.page-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--slate-900);
+  letter-spacing: -0.3px;
+  margin-bottom: 2px;
+}
+.page-subtitle {
+  font-size: 12.5px;
+  color: var(--slate-500);
+}
+.page-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+.btn-sm {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 5px;
+  border: 1px solid var(--slate-200);
+  background: #fff;
+  color: var(--slate-600);
+  cursor: pointer;
+  font-family: var(--font);
+}
+.btn-sm.primary {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+.btn-sm.primary-b {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: #fff;
+}
+.btn-sm.primary-c {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+
+.summary-bar {
+  padding: 10px 24px;
+  background: var(--slate-50);
+  border-bottom: 1px solid var(--slate-100);
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  flex-shrink: 0;
+}
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+}
+.stat-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.stat-green .stat-dot { background: var(--green); }
+.stat-green { color: var(--green); }
+.stat-amber .stat-dot { background: var(--amber); }
+.stat-amber { color: var(--amber); }
+.stat-red .stat-dot { background: var(--red); }
+.stat-red { color: var(--red); }
+.stat-slate .stat-dot { background: var(--slate-400); }
+.stat-slate { color: var(--slate-500); }
+.stat-blue .stat-dot { background: var(--blue); }
+.stat-blue { color: var(--blue); }
+
+.stat-divider { width: 1px; height: 16px; background: var(--slate-200); }
+
+/* Content padding */
+.content-pad { padding: 16px 24px; flex: 1; }
+
+/* Status badge */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+.status-complete { background: var(--green-light); color: var(--green); }
+.status-processing { background: var(--amber-light); color: var(--amber); }
+.status-failed { background: var(--red-light); color: var(--red); }
+.status-pending { background: var(--slate-100); color: var(--slate-500); }
+.status-draft { background: var(--blue-light); color: var(--blue); }
+
+/* Table */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.data-table th {
+  text-align: left;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--slate-400);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--slate-200);
+  background: var(--slate-50);
+}
+.data-table td {
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--slate-700);
+  border-bottom: 1px solid var(--slate-100);
+  vertical-align: middle;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--slate-50); }
+
+/* Two-column layout */
+.two-col { display: flex; gap: 16px; flex: 1; }
+.col-main { flex: 1; }
+.col-side { flex: 0 0 260px; }
+
+/* Info panel (environment card etc) */
+.info-panel {
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.info-panel-title {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--slate-400);
+  margin-bottom: 10px;
+}
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  font-size: 12px;
+  border-bottom: 1px solid var(--slate-100);
+}
+.info-row:last-child { border-bottom: none; }
+.info-label { color: var(--slate-500); }
+.info-value { font-weight: 500; color: var(--slate-700); }
+.info-value.green { color: var(--green); }
+.info-value.blue { color: var(--blue); }
+
+/* Chat / research interface */
+.query-bar {
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--slate-100);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--slate-50);
+  flex-shrink: 0;
+}
+.query-input-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1.5px solid var(--blue);
+  border-radius: 7px;
+  padding: 9px 14px;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.08);
+}
+.query-text {
+  font-size: 13.5px;
+  color: var(--slate-800);
+  font-weight: 500;
+  flex: 1;
+  font-family: var(--font);
+}
+.query-icon { font-size: 16px; color: var(--blue); }
+
+.response-wrap { padding: 16px 24px; flex: 1; overflow-y: auto; }
+
+.response-card {
+  background: #fff;
+  border: 1px solid var(--slate-200);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.response-section {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--slate-100);
+}
+.response-section:last-child { border-bottom: none; }
+.response-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--slate-400);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.src-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.src-internal { background: var(--blue); }
+.src-public { background: var(--amber); }
+
+.response-body {
+  font-size: 13.5px;
+  color: var(--slate-700);
+  line-height: 1.65;
+}
+
+.source-list { list-style: none; margin-top: 8px; }
+.source-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 5px 0;
+  font-size: 12.5px;
+  color: var(--slate-600);
+  border-bottom: 1px solid var(--slate-100);
+}
+.source-item:last-child { border-bottom: none; }
+.source-item-icon { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+.source-name { font-weight: 500; color: var(--slate-700); }
+.source-ref { color: var(--slate-400); margin-left: 4px; }
+
+.response-footer {
+  padding: 8px 18px;
+  background: var(--slate-50);
+  border-top: 1px solid var(--slate-100);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 11px;
+  color: var(--slate-400);
+}
+.legend-item { display: flex; align-items: center; gap: 5px; }
+
+/* Synthesis table */
+.synth-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.synth-table th {
+  text-align: left;
+  padding: 8px 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--slate-400);
+  background: var(--slate-50);
+  border-bottom: 1px solid var(--slate-200);
+}
+.synth-table td {
+  padding: 10px 10px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--slate-100);
+  color: var(--slate-700);
+  line-height: 1.45;
+}
+.synth-table tr:last-child td { border-bottom: none; }
+.synth-table tr:hover td { background: var(--slate-50); }
+.synth-outcome-held { color: var(--green); font-weight: 600; }
+.synth-outcome-part { color: var(--amber); font-weight: 600; }
+.synth-outcome-agreed { color: var(--slate-500); font-weight: 500; }
+
+/* Matter cards */
+.matter-list { padding: 12px 24px; flex: 1; }
+.matter-card {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--slate-200);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  background: #fff;
+  transition: box-shadow 0.15s;
+}
+.matter-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.matter-severity { width: 4px; align-self: stretch; flex-shrink: 0; }
+.sev-red { background: var(--red); }
+.sev-amber { background: var(--amber); }
+.sev-green { background: var(--green); }
+
+.matter-body { flex: 1; padding: 12px 16px; }
+.matter-name { font-size: 13.5px; font-weight: 600; color: var(--slate-800); margin-bottom: 3px; }
+.matter-meta { font-size: 11.5px; color: var(--slate-400); display: flex; gap: 12px; }
+.matter-meta-item { display: flex; align-items: center; gap: 4px; }
+
+.matter-deadline {
+  padding: 12px 16px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.deadline-label { font-size: 11px; color: var(--slate-400); margin-bottom: 3px; }
+.deadline-value { font-size: 13.5px; font-weight: 700; }
+.deadline-red { color: var(--red); }
+.deadline-amber { color: var(--amber); }
+.deadline-green { color: var(--green); }
+
+.matter-collapsed {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 20px;
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: 8px;
+  font-size: 12.5px;
+  color: var(--slate-500);
+}
+
+/* Intake form */
+.intake-form { padding: 16px 24px; }
+.form-section-title {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--slate-400);
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--slate-100);
+}
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.form-group label {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--slate-600);
+  margin-bottom: 5px;
+}
+.form-input {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--slate-200);
+  border-radius: 5px;
+  font-size: 13px;
+  color: var(--slate-800);
+  background: #fff;
+  font-family: var(--font);
+}
+
+/* Conflict check panel */
+.conflict-panel {
+  border: 1px solid var(--slate-200);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.conflict-panel-header {
+  padding: 10px 14px;
+  background: var(--slate-50);
+  border-bottom: 1px solid var(--slate-200);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--slate-400);
+}
+.conflict-result {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--slate-100);
+}
+.conflict-clear {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green);
+  margin-bottom: 6px;
+}
+.conflict-flag {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--amber);
+  margin-bottom: 4px;
+}
+.conflict-flag-text { color: var(--slate-600); line-height: 1.45; }
+
+.engagement-preview {
+  border: 1px solid var(--slate-200);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 12px;
+}
+.engagement-doc {
+  background: #fff;
+  padding: 12px 16px;
+}
+.engagement-doc-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--slate-800);
+  margin-bottom: 8px;
+  text-align: center;
+}
+.engagement-section {
+  font-size: 11.5px;
+  color: var(--slate-600);
+  padding: 4px 0;
+  border-bottom: 1px solid var(--slate-100);
+}
+.engagement-section:last-child { border-bottom: none; }
+.engagement-section strong { color: var(--slate-700); }
+.engagement-footer {
+  padding: 6px 16px;
+  background: var(--amber-light);
+  font-size: 11px;
+  color: var(--amber);
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Compliance timeline */
+.compliance-header {
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--slate-100);
+  flex-shrink: 0;
+}
+.compliance-matter-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--slate-900);
+  margin-bottom: 3px;
+}
+.compliance-matter-sub {
+  font-size: 12px;
+  color: var(--slate-500);
+}
+
+.timeline-wrap {
+  padding: 20px 24px;
+  flex-shrink: 0;
+}
+.timeline-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  position: relative;
+}
+.timeline-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  right: -50%;
+  height: 2px;
+  background: var(--slate-200);
+  z-index: 0;
+}
+.timeline-item:last-child::before { display: none; }
+.timeline-item.done::before { background: var(--green); }
+.timeline-item.critical-before::before { background: var(--slate-200); }
+
+.timeline-circle {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 8px;
+}
+.tc-done { background: var(--green); color: #fff; }
+.tc-critical { background: var(--red); color: #fff; animation: pulse-red 1.5s infinite; }
+.tc-future { background: var(--slate-200); color: var(--slate-400); }
+
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220,38,38,0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(220,38,38,0); }
+}
+
+.timeline-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--slate-600);
+  text-align: center;
+  margin-bottom: 2px;
+}
+.timeline-date {
+  font-size: 11px;
+  color: var(--slate-400);
+  text-align: center;
+}
+.timeline-critical-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--red);
+  text-align: center;
+}
+
+.compliance-body { display: flex; gap: 16px; flex: 1; padding: 0 24px 16px 24px; }
+.compliance-main { flex: 1; }
+.compliance-side { flex: 0 0 240px; }
+
+.rules-ref {
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: 7px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+}
+.rules-ref-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--slate-400);
+  margin-bottom: 5px;
+}
+.rules-ref-text {
+  font-size: 12px;
+  color: var(--slate-600);
+}
+
+.reminder-log .log-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--slate-100);
+  font-size: 12px;
+}
+.log-item:last-child { border-bottom: none; }
+.log-icon { font-size: 12px; flex-shrink: 0; margin-top: 1px; }
+.log-text { color: var(--slate-600); }
+.log-date { color: var(--slate-400); font-size: 11px; margin-top: 2px; }
+
+/* Time capture */
+.entry-card {
+  border: 1px solid var(--slate-200);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+.entry-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--slate-50);
+  border-bottom: 1px solid var(--slate-100);
+}
+.entry-matter { font-size: 12.5px; font-weight: 600; color: var(--slate-700); }
+.entry-source {
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--blue-light);
+  color: var(--blue);
+  font-weight: 500;
+}
+.entry-time { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--slate-800); }
+.entry-body { padding: 10px 14px; display: flex; align-items: center; gap: 12px; }
+.entry-narrative {
+  flex: 1;
+  font-size: 13px;
+  color: var(--slate-600);
+  line-height: 1.45;
+}
+.entry-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.btn-approve {
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  background: var(--green);
+  color: #fff;
+  cursor: pointer;
+  font-family: var(--font);
+}
+.btn-edit-sm {
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid var(--slate-200);
+  background: #fff;
+  color: var(--slate-500);
+  cursor: pointer;
+  font-family: var(--font);
+}
+
+/* WIP / Invoice */
+.wip-summary {
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+.wip-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 13px;
+  border-bottom: 1px solid var(--slate-100);
+}
+.wip-row:last-child { border-bottom: none; }
+.wip-label { color: var(--slate-500); }
+.wip-value { font-weight: 600; color: var(--slate-800); }
+.wip-total-row { border-top: 2px solid var(--slate-200) !important; padding-top: 8px; }
+.wip-total-label { font-size: 14px; font-weight: 700; color: var(--slate-800); }
+.wip-total-value { font-size: 16px; font-weight: 800; color: var(--slate-900); }
+
+.invoice-preview {
+  background: #fff;
+  border: 1px solid var(--slate-200);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.invoice-header {
+  background: var(--navy);
+  color: #fff;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.invoice-firm { font-size: 14px; font-weight: 700; }
+.invoice-label { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.6; margin-top: 2px; }
+.invoice-meta { font-size: 11px; opacity: 0.7; text-align: right; }
+.invoice-body { padding: 10px 16px; }
+.invoice-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  font-size: 12px;
+  color: var(--slate-700);
+  border-bottom: 1px solid var(--slate-100);
+}
+.invoice-line:last-child { border-bottom: none; }
+.invoice-total-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: var(--slate-50);
+  border-top: 2px solid var(--slate-200);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--slate-900);
+}
+.invoice-draft-footer {
+  padding: 6px 16px;
+  background: var(--amber-light);
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--amber);
+}
+.invoice-actions { display: flex; gap: 8px; padding: 12px 0; }
+
+.xero-panel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--green-light);
+  border: 1px solid var(--green-pale);
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--green);
+}
+.xero-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse-green 2s infinite; }
+@keyframes pulse-green {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Comms draft */
+.comms-trigger {
+  padding: 10px 24px;
+  background: var(--amber-light);
+  border-bottom: 1px solid var(--amber-pale);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  color: var(--amber);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.comms-trigger-icon { font-size: 15px; flex-shrink: 0; }
+
+.email-draft {
+  padding: 16px 24px;
+  flex: 1;
+}
+.email-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--slate-100);
+  font-size: 13px;
+}
+.email-field-label { font-weight: 600; color: var(--slate-500); width: 60px; flex-shrink: 0; }
+.email-field-value { color: var(--slate-700); }
+
+.email-body-area {
+  margin-top: 12px;
+  padding: 14px;
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: 7px;
+  font-size: 13px;
+  color: var(--slate-700);
+  line-height: 1.65;
+}
+.email-edit { background: rgba(254,243,199,0.5); text-decoration: line-through; color: var(--amber); }
+.email-new { background: rgba(220,252,231,0.5); color: var(--green); font-weight: 500; }
+
+.email-actions { display: flex; gap: 8px; margin-top: 12px; }
+.btn-approve-lg {
+  padding: 8px 16px;
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font);
+}
+.btn-edit-lg {
+  padding: 8px 16px;
+  background: #fff;
+  color: var(--slate-600);
+  border: 1px solid var(--slate-200);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font);
+}
+.email-footer {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--slate-400);
+}
+
+/* ── Annotation layer ── */
+.ann-strip {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0 0 0;
+  height: 172px;
+  flex-shrink: 0;
+}
+.ann-card {
+  flex: 1;
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  gap: 10px;
+  overflow: hidden;
+}
+.ann-num {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.ann-blue { background: var(--blue); }
+.ann-amber { background: var(--amber); }
+.ann-green { background: var(--green); }
+
+.ann-text { flex: 1; }
+.ann-title { font-size: 12px; font-weight: 700; color: var(--slate-800); margin-bottom: 4px; }
+.ann-body { font-size: 11.5px; color: var(--slate-500); line-height: 1.5; margin-bottom: 5px; }
+.ann-value { font-size: 11.5px; color: var(--slate-700); font-weight: 500; line-height: 1.45; }
+.ann-arrow { color: var(--blue); }
+
+/* Annotation badges on UI elements */
+.ann-badge {
+  position: absolute;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: #fff;
+  z-index: 10;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  pointer-events: none;
+}
+
+/* Toggle annotations */
+.ann-off .ann-strip { visibility: hidden; opacity: 0; }
+.ann-off .ann-badge { display: none; }
+
+/* Relative wrapper for badge positioning */
+.rel { position: relative; }
+
+/* Slide counter */
+.slide-counter {
+  position: fixed;
+  bottom: 18px;
+  right: 24px;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.3);
+  z-index: 9999;
+  font-family: var(--font);
+}
+
+/* ══════════════════════════════════════
+   MOBILE PORTRAIT ROTATION PROMPT
+══════════════════════════════════════ */
+.rotate-prompt {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, var(--navy) 0%, var(--navy-dark) 100%);
+  z-index: 99999;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  text-align: center;
+  font-family: var(--font);
+}
+.rotate-prompt-inner { max-width: 380px; width: 100%; }
+.rotate-phone-icon {
+  width: 44px; height: 68px;
+  border: 2.5px solid rgba(255,255,255,0.85);
+  border-radius: 7px;
+  margin: 0 auto 32px;
+  position: relative;
+  animation: phoneRotate 2.8s cubic-bezier(.4,0,.2,1) infinite;
+}
+.rotate-phone-icon::before {
+  content: ''; position: absolute;
+  top: 7px; left: 50%;
+  transform: translateX(-50%);
+  width: 14px; height: 2.5px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 2px;
+}
+.rotate-phone-icon::after {
+  content: ''; position: absolute;
+  bottom: 7px; left: 50%;
+  transform: translateX(-50%);
+  width: 5px; height: 5px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 50%;
+}
+@keyframes phoneRotate {
+  0%, 35% { transform: rotate(0deg); }
+  60%, 100% { transform: rotate(-90deg); }
+}
+.rotate-prompt-title {
+  font-size: 22px; font-weight: 700;
+  color: #fff; letter-spacing: -0.4px;
+  margin-bottom: 14px;
+}
+.rotate-prompt-subtitle {
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.6;
+  margin-bottom: 36px;
+}
+.rotate-prompt-logo { display: flex; justify-content: center; }
+
+@media (orientation: portrait) and (max-width: 900px) {
+  .rotate-prompt { display: flex; }
+  #deck, .nav-arr, .nav-dots, .slide-counter { display: none !important; }
+  body { overflow: hidden; }
+}
+</style>
+</head>
+<body>
+
+<!-- Mobile portrait rotation prompt -->
+<div class="rotate-prompt">
+  <div class="rotate-prompt-inner">
+    <div class="rotate-phone-icon"></div>
+    <div class="rotate-prompt-title">Rotate to landscape</div>
+    <div class="rotate-prompt-subtitle">This walkthrough is designed for landscape viewing. Rotate your device, or open this link on a laptop for the full experience.</div>
+    <div class="rotate-prompt-logo">
+      <div style="background:#fff;padding:7px 12px;border-radius:6px;display:inline-flex;">
+        <img src="safwai-logo-h.svg" style="height:20px;width:auto;display:block;" alt="Safwai AI Solutions LLC">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="deck">
+
+<!-- ═══════════════════════════════════════════
+  SLIDE 1 — Problem statement
+════════════════════════════════════════════ -->
+<div class="slide ctx active" id="s1">
+  <div class="ctx-inner">
+    <div class="ctx-eyebrow">The Problem</div>
+    <div class="ctx-split" style="margin-top:0;">
+      <div class="ctx-split-left">
+        <div class="ctx-h1">The expertise<br>is there.<br><span>The infrastructure</span><br>is not.</div>
+        <div class="ctx-body" style="margin-top:24px;">
+          <p>When you were at a firm, there was infrastructure around you. Conflict checks happened. Deadlines were tracked. Time was captured. Documents lived somewhere findable. You could concentrate on the work that required your judgment because the work <em style="color:rgba(255,255,255,0.85);font-style:normal;">around</em> the work was handled.</p>
+          <p>That infrastructure is absent from boutique practice — or was never built to the standard a 5–20 partner firm needs. The result is predictable: partners spending billable hours on work that does not require a partner.</p>
+          <p>This is not a resourcing problem. Hiring more people scales the cost. It is a structural problem, and it has a precise solution.</p>
+        </div>
+      </div>
+      <div class="ctx-split-right" style="padding-top:8px;">
+        <div class="process-group">
+          <div class="process-group-label expertise">Requires legal expertise</div>
+          <ul class="process-list">
+            <li class="process-item expertise"><span class="process-item-dot"></span>Legal Research &amp; Analysis</li>
+            <li class="process-item expertise"><span class="process-item-dot"></span>Document Drafting &amp; Negotiation</li>
+            <li class="process-item expertise"><span class="process-item-dot"></span>Knowledge Management</li>
+          </ul>
+        </div>
+        <div class="process-group">
+          <div class="process-group-label infra">Requires process &amp; infrastructure</div>
+          <ul class="process-list">
+            <li class="process-item infra"><span class="process-item-dot"></span>Client Intake &amp; Conflict Checks</li>
+            <li class="process-item infra"><span class="process-item-dot"></span>Matter Management</li>
+            <li class="process-item infra"><span class="process-item-dot"></span>Compliance &amp; Deadline Monitoring</li>
+            <li class="process-item infra"><span class="process-item-dot"></span>Time Recording &amp; Billing</li>
+            <li class="process-item infra"><span class="process-item-dot"></span>Client Communications</li>
+          </ul>
+        </div>
+        <div style="margin-top:20px;padding:14px 16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">
+          Of the eight core operational processes of a boutique legal practice, five require process and infrastructure more than legal expertise. All five are currently being handled by lawyers.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  SLIDE 2 — What this costs
+════════════════════════════════════════════ -->
+<div class="slide ctx" id="s2">
+  <div class="ctx-inner">
+    <div class="ctx-eyebrow">The Cost</div>
+    <div class="ctx-h2">What this costs, specifically</div>
+    <div class="cost-grid" style="margin-top:20px;">
+      <div class="cost-card">
+        <div class="cost-card-label">Legal Research</div>
+        <div class="cost-card-text">2–3 hours to retrieve and synthesise what a well-configured system returns in under 5 minutes. Per query. Every query begins from scratch because prior research is buried in old files or memory.</div>
+      </div>
+      <div class="cost-card">
+        <div class="cost-card-label">Knowledge Retrieval</div>
+        <div class="cost-card-text">Decades of negotiated positions, argued points, and matter-specific know-how exist in documents. Finding the right precedent takes 45 minutes of manual search. The answer is in the files — the system to surface it is not.</div>
+      </div>
+      <div class="cost-card">
+        <div class="cost-card-label">Time Recording</div>
+        <div class="cost-card-text">The average solo practitioner reconstructs 2+ hours of billable work from memory each day. The reconstruction is always conservative. Revenue leakage is structural — no prompt, no infrastructure, no one whose job it is to make sure the six-minute client email gets recorded.</div>
+      </div>
+      <div class="cost-card">
+        <div class="cost-card-label">Compliance Monitoring</div>
+        <div class="cost-card-text">A missed ADGM or DIFC filing date is a career event. The monitoring system in most boutique practices is a diary entry and a spreadsheet that someone has to remember to open. Tracked across multiple matters simultaneously, the risk is real.</div>
+      </div>
+      <div class="cost-card span2">
+        <div class="cost-card-label">Client Intake &amp; Conflicts</div>
+        <div class="cost-card-text">A new instruction triggers 40 minutes of information gathering, a manual conflict check against memory, and a drafted engagement letter built from scratch. Every time. The matter cannot begin substantively until this is done — and it requires a partner to do it.</div>
+      </div>
+    </div>
+    <div class="cost-statement">A firm of 8 lawyers is carrying the operational drag of a 12-lawyer firm. The difference is going to administration, not clients — and it is invisible until you measure it.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  SLIDE 3 — Solution overview
+════════════════════════════════════════════ -->
+<div class="slide ctx" id="s3">
+  <div class="ctx-inner">
+    <div class="ctx-eyebrow">The Solution</div>
+    <div class="ctx-h1" style="font-size:44px;margin-bottom:6px;">Legal<span>OS</span></div>
+    <div class="ctx-subtitle" style="margin-bottom:24px;">The practice operating system for boutique legal practice in the GCC. AI agents handle the administrative and first-draft cognitive load across all eight processes. Lawyers retain control over every professional judgment and every client-facing action.</div>
+    <div class="module-grid">
+      <div class="module-box mod-a">
+        <div class="module-box-header">
+          <div class="mod-letter">A</div>
+          <div class="module-box-title">Knowledge &amp; Research</div>
+        </div>
+        <ul class="module-box-items">
+          <li>Document corpus ingestion &amp; retrieval</li>
+          <li>Semantic search across own precedents</li>
+          <li>Real-time public legal source research</li>
+          <li>UAE federal · DIFC · ADGM · Maritime</li>
+        </ul>
+      </div>
+      <div class="module-box mod-b">
+        <div class="module-box-header">
+          <div class="mod-letter">B</div>
+          <div class="module-box-title">Matter Operations</div>
+        </div>
+        <ul class="module-box-items">
+          <li>Client intake &amp; automated conflict checks</li>
+          <li>Live matter record &amp; unified dashboard</li>
+          <li>Compliance &amp; deadline engine</li>
+          <li>Jurisdiction-specific procedural rules</li>
+        </ul>
+      </div>
+      <div class="module-box mod-c">
+        <div class="module-box-header">
+          <div class="mod-letter">C</div>
+          <div class="module-box-title">Billing &amp; Communications</div>
+          <div class="module-box-tag">Phase 3</div>
+        </div>
+        <ul class="module-box-items">
+          <li>Inferred time capture from system activity</li>
+          <li>Invoice drafting &amp; accounting integration</li>
+          <li>Proactive client communications agent</li>
+          <li>Attorney approval gate on every action</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sovereignty-bar">
+      <span class="lock-icon">🔒</span>
+      <span>Client-dedicated environment</span>
+      <span>·</span>
+      <span>AES-256 encryption at rest</span>
+      <span>·</span>
+      <span>TLS in transit</span>
+      <span>·</span>
+      <span>No model training on client data</span>
+      <span>·</span>
+      <span>Attorney approval required before every consequential action</span>
+    </div>
+    <div style="margin-top:14px;display:flex;align-items:center;gap:12px;">
+      <div style="background:#fff;padding:4px 8px;border-radius:4px;flex-shrink:0;">
+        <img src="safwai-logo-text.svg" style="height:12px;width:auto;display:block;" alt="Safwai AI Solutions LLC">
+      </div>
+      <span style="font-size:12px;color:rgba(255,255,255,0.35);">Built on production-proven infrastructure · Designed end-to-end across all eight processes</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  SLIDE 4 — Module A intro
+════════════════════════════════════════════ -->
+<div class="slide ctx" id="s4">
+  <div class="ctx-inner">
+    <div class="ctx-eyebrow mod-a">Module A</div>
+    <div class="ctx-h2">Knowledge &amp; Research</div>
+    <div class="ctx-subtitle">Where we start. Your accumulated work — every precedent, negotiated position, matter file, and template — made retrievable in seconds. Supplemented by real-time public legal sources where your internal record is silent.</div>
+    <div class="module-intro-wrap">
+      <div class="module-intro-left">
+        <div class="module-badge-large badge-a">A</div>
+        <ul class="component-list">
+          <li class="component-item">
+            <div class="component-icon ci-blue">📚</div>
+            <div>
+              <div class="component-text-title">Corpus Ingestion</div>
+              <div class="component-text-body">Precedents, matter files, templates, and correspondence processed into a persistent encrypted knowledge store in a dedicated environment. Every chunk retains its source reference end-to-end.</div>
+            </div>
+          </li>
+          <li class="component-item">
+            <div class="component-icon ci-blue">🔍</div>
+            <div>
+              <div class="component-text-title">Internal Retrieval</div>
+              <div class="component-text-body">Plain-language queries retrieve semantically relevant content from the firm's own corpus. Multi-document synthesis. Comparative analysis across matters. Gap acknowledgement when the internal record is silent.</div>
+            </div>
+          </li>
+          <li class="component-item">
+            <div class="component-icon ci-blue">🌐</div>
+            <div>
+              <div class="component-text-title">Public Source Research</div>
+              <div class="component-text-body">Real-time retrieval from UAE federal statutes, DIFC and ADGM rules and case law, maritime instruments. Always clearly distinguished from internal results. Current instruments, not archived snapshots.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="module-intro-right" style="padding-top:56px;">
+        <div class="persona-intro-card">
+          <div class="persona-intro-label">Walkthrough Persona</div>
+          <div class="persona-intro-row">
+            <div class="persona-avatar-large" style="background:var(--blue);">LAR</div>
+            <div>
+              <div class="persona-intro-name">Layla Al-Rashidi</div>
+              <div class="persona-intro-role">Founding Partner · Khalid &amp; Associates · DIFC</div>
+            </div>
+          </div>
+          <div style="margin-top:12px;font-size:12.5px;color:rgba(255,255,255,0.45);line-height:1.55;">14 years at White &amp; Case Dubai. Launched independent practice January 2026. Practice areas: corporate M&amp;A and JV, DIFC/ADGM dispute resolution, maritime contracts. 47 documents ingested from prior work.</div>
+        </div>
+        <div style="margin-top:16px;padding:14px 16px;background:rgba(37,99,235,0.1);border:1px solid rgba(37,99,235,0.2);border-radius:8px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;">The walkthrough uses a fictional practitioner</div>
+          <div style="font-size:12.5px;color:rgba(255,255,255,0.5);line-height:1.5;">Khalid &amp; Associates is a fictional firm. The system shown is built around your documents, your jurisdictions, your practice areas — not theirs.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+  SLIDE 5 — Corpus Status (Module A demo)
+════════════════════════════════════════════ -->
+<div class="slide demo" id="s5">
+  <div class="demo-wrap">
+    <div class="browser">
+      <div class="chrome-bar">
+        <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+        <div class="addr-bar">legalos.app/knowledge/corpus</div>
+      </div>
+      <div class="app-ui">
+        <div class="app-topnav">
+          <div class="app-logo">Legal<span>OS</span></div>
+          <div class="app-breadcrumb">Knowledge &amp; Research <span class="crumb-sep">›</span> <span class="crumb-active">Corpus Status</span></div>
+          <div class="app-topnav-right">
+            <button class="ann-toggle-btn" onclick="toggleAnnotations()">Annotations ON</button>
+            <div class="persona-pill"><div class="persona-av av-blue">LAR</div><div><div class="persona-name">Layla Al-Rashidi</div><div class="persona-role">Founding Partner</div></div><span class="persona-chevron">▾</span></div>
+          </div>
+        </div>
+        <div class="app-body">
+          <div class="sidebar">
+            <div class="sidebar-module"><div class="sidebar-mod-badge sb-a">A</div><div class="sidebar-mod-name">Knowledge &amp; Research</div></div>
+            <nav class="sidebar-nav">
+              <a class="active">📋 Corpus Status</a>
+              <a>🔍 Research</a>
+              <a>🕐 Query History</a>
+            </nav>
+            <div class="sidebar-footer">All modules ↗</div>
+          </div>
+          <div class="app-main">
+            <div class="page-header">
+              <div class="page-header-text">
+                <div class="page-title">Knowledge Base</div>
+                <div class="page-subtitle">Khalid &amp; Associates · 47 documents · Last updated 08 May 2026, 09:14</div>
+              </div>
+              <div class="page-header-actions">
+                <button class="btn-sm">Filter</button>
+                <button class="btn-sm primary rel">+ Add Documents<span class="ann-badge ann-blue" style="top:-10px;right:-10px;">3</span></button>
+              </div>
+            </div>
+            <div class="summary-bar">
+              <div class="stat-item stat-green"><span class="stat-dot"></span>44 Complete</div>
+              <div class="stat-divider"></div>
+              <div class="stat-item stat-amber"><span class="stat-dot"></span>2 Processing</div>
+              <div class="stat-divider"></div>
+              <div class="stat-item stat-red"><span class="stat-dot"></span>1 Failed</div>
+              <div class="stat-divider"></div>
+              <div class="stat-item stat-slate"><span class="stat-dot"></span>3 practice areas covered</div>
+            </div>
+            <div class="content-pad" style="padding-top:12px;">
+              <div class="two-col">
+                <div class="col-main">
+                  <table class="data-table">
+                    <thead><tr><th>Document</th><th>Type</th><th>Fmt</th><th>Source ref</th><th>Status</th></tr></thead>
+                    <tbody>
+                      <tr><td style="font-weight:500;">Al Futtaim Holdings JV Agreement 2023</td><td>JV Agreement</td><td>PDF</td><td style="font-size:11.5px;color:var(--blue);">§8.4 tagged</td><td><span class="status-badge status-complete">✓ Complete</span></td></tr>
+                      <tr><td style="font-weight:500;">Mubadala Infrastructure JV 2022</td><td>JV Agreement</td><td>PDF</td><td style="font-size:11.5px;color:var(--blue);">§11.2 tagged</td><td><span class="status-badge status-complete">✓ Complete</span></td></tr>
+                      <tr><td style="font-weight:500;">Port Rashid Partners Ltd 2021</td><td>JV Agreement</td><td>Word</td><td style="font-size:11.5px;color:var(--blue);">§9.1 tagged</td><td><span class="status-badge status-complete">✓ Complete</span></td></tr>
+                      <tr><td style="font-weight:500;">Gulf Maritime Services Ltd — MOA 2024</td><td>Maritime MOA</td><td>PDF</td><td style="font-size:11.5px;color:var(--blue);">§6.3 tagged</td><td><span class="status-badge status-complete">✓ Complete</span></td></tr>
+                      <tr><td style="font-weight:500;">DIFC Arbitration Files (4 documents)</td><td>Arbitration</td><td>PDF</td><td style="font-size:11.5px;color:var(--blue);">Sections tagged</td><td><span class="status-badge status-complete">✓ Complete</span></td></tr>
+                      <tr><td style="font-weight:500;">Standard Services Framework — Draft</td><td>Template</td><td>Word</td><td style="font-size:11.5px;color:var(--slate-400);">Pending</td><td><span class="status-badge status-processing">⏳ Processing</span></td></tr>
+                      <tr><td style="font-weight:500;">Offshore MOA — Port Rashid 2019 <span style="font-size:11px;color:var(--red);">(scanned PDF)</span></td><td>Maritime MOA</td><td>PDF</td><td style="font-size:11.5px;color:var(--red);">Extraction failed</td><td><span class="status-badge status-failed">✗ Failed</span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="col-side">
+                  <div class="info-panel rel" style="margin-bottom:12px;">
+                    <span class="ann-badge ann-blue" style="top:-8px;right:-8px;">1</span>
+                    <div class="info-panel-title">Dedicated Environment</div>
+                    <div class="info-row"><span class="info-label">Environment</span><span class="info-value green">● Khalid &amp; Associates</span></div>
+                    <div class="info-row"><span class="info-label">Isolation</span><span class="info-value">Dedicated · No shared infra</span></div>
+                    <div class="info-row"><span class="info-label">Encryption at rest</span><span class="info-value">AES-256</span></div>
+                    <div class="info-row"><span class="info-label">In transit</span><span class="info-value">TLS</span></div>
+                    <div class="info-row"><span class="info-label">Model training</span><span class="info-value" style="color:var(--red);">Never</span></div>
+                    <div class="info-row"><span class="info-label">Last sync</span><span class="info-value">08 May 2026, 09:14</span></div>
+                  </div>
+                  <div class="info-panel rel">
+                    <span class="ann-badge ann-blue" style="top:-8px;right:-8px;">2</span>
+                    <div class="info-panel-title">Corpus Breakdown</div>
+                    <div class="info-row"><span class="info-label">JV Agreements</span><span class="info-value blue">12</span></div>
+                    <div class="info-row"><span class="info-label">Maritime MOAs</span><span class="info-value blue">9</span></div>
+                    <div class="info-row"><span class="info-label">DIFC / ADGM files</span><span class="info-value blue">8</span></div>
+                    <div class="info-row"><span class="info-label">Templates &amp; Correspondence</span><span class="info-value blue">18</span></div>
+                    <div style="margin-top:8px;font-size:11px;color:var(--slate-400);line-height:1.5;">Source reference retained on every chunk through the full retrieval pipeline.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ann-strip" style="margin-top:10px;">
+      <div class="ann-card"><div class="ann-num ann-blue">1</div><div class="ann-text"><div class="ann-title">Dedicated sovereign environment</div><div class="ann-body">Khalid &amp; Associates' corpus is stored and processed in a fully isolated environment. No shared infrastructure, no shared databases with any other practice.</div><div class="ann-value"><span class="ann-arrow">→</span> Professional confidentiality obligations are met by design, not by policy.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-blue">2</div><div class="ann-text"><div class="ann-title">Source attribution preserved end-to-end</div><div class="ann-body">Every ingested chunk retains its document reference through chunking, embedding, and into every response. The system cannot return an answer without showing where it came from.</div><div class="ann-value"><span class="ann-arrow">→</span> Layla can verify every claim against the original document, in seconds.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-blue">3</div><div class="ann-text"><div class="ann-title">Incremental ingestion</div><div class="ann-body">New documents are added without re-ingesting the full corpus. As the practice grows, so does the knowledge base — without re-starting the build.</div><div class="ann-value"><span class="ann-arrow">→</span> The corpus on day one is the floor, not the ceiling.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  SLIDE 6 — Query Response (Module A demo)
+════════════════════════════════════════════ -->
+<div class="slide demo" id="s6">
+  <div class="demo-wrap">
+    <div class="browser">
+      <div class="chrome-bar">
+        <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+        <div class="addr-bar">legalos.app/knowledge/research</div>
+      </div>
+      <div class="app-ui">
+        <div class="app-topnav">
+          <div class="app-logo">Legal<span>OS</span></div>
+          <div class="app-breadcrumb">Knowledge &amp; Research <span class="crumb-sep">›</span> <span class="crumb-active">Research</span></div>
+          <div class="app-topnav-right">
+            <button class="ann-toggle-btn" onclick="toggleAnnotations()">Annotations ON</button>
+            <div class="persona-pill"><div class="persona-av av-blue">LAR</div><div><div class="persona-name">Layla Al-Rashidi</div><div class="persona-role">Founding Partner</div></div><span class="persona-chevron">▾</span></div>
+          </div>
+        </div>
+        <div class="app-body">
+          <div class="sidebar">
+            <div class="sidebar-module"><div class="sidebar-mod-badge sb-a">A</div><div class="sidebar-mod-name">Knowledge &amp; Research</div></div>
+            <nav class="sidebar-nav">
+              <a>📋 Corpus Status</a>
+              <a class="active">🔍 Research</a>
+              <a>🕐 Query History</a>
+            </nav>
+            <div class="sidebar-footer">All modules ↗</div>
+          </div>
+          <div class="app-main">
+            <div class="query-bar">
+              <div class="query-input-wrap rel">
+                <span class="ann-badge ann-blue" style="top:-10px;right:-10px;">3</span>
+                <span class="query-icon">🔍</span>
+                <span class="query-text">What is our standard position on indemnity caps in infrastructure JV agreements?</span>
+              </div>
+            </div>
+            <div class="response-wrap">
+              <div class="response-card">
+                <div class="response-section">
+                  <div class="response-section-label">Summary</div>
+                  <div class="response-body">Across three precedent JV agreements, the firm's settled position is a <strong>12-month aggregate cap equal to total fees paid</strong>, with a carve-out for fraud, wilful misconduct, and IP infringement. The cap has been held in all three matters; no negotiated concession on the carve-out structure appears in the corpus.</div>
+                </div>
+                <div class="response-section rel">
+                  <span class="ann-badge ann-blue" style="top:-2px;right:8px;">1</span>
+                  <div class="response-section-label"><span class="src-dot src-internal"></span> Internal Corpus · 3 precedents retrieved</div>
+                  <ul class="source-list">
+                    <li class="source-item"><span class="source-item-icon">📄</span><span><span class="source-name">Al Futtaim Holdings JV Agreement 2023</span><span class="source-ref">· §8.4 — Limitation of Liability</span></span></li>
+                    <li class="source-item"><span class="source-item-icon">📄</span><span><span class="source-name">Mubadala Infrastructure JV 2022</span><span class="source-ref">· §11.2 — Liability Cap</span></span></li>
+                    <li class="source-item"><span class="source-item-icon">📄</span><span><span class="source-name">Port Rashid Partners Ltd 2021</span><span class="source-ref">· §9.1 — Indemnification</span></span></li>
+                  </ul>
+                </div>
+                <div class="response-section rel" style="background:var(--slate-50);">
+                  <span class="ann-badge ann-blue" style="top:-2px;right:8px;">2</span>
+                  <div class="response-section-label"><span class="src-dot src-public"></span> Public Sources Consulted</div>
+                  <div class="response-body" style="font-size:12.5px;color:var(--slate-500);font-style:italic;">No supplementary public source material retrieved — internal record is sufficient to answer this query.</div>
+                </div>
+                <div class="response-footer">
+                  <div class="legend-item"><span class="src-dot src-internal" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--blue);margin-right:4px;"></span>Internal corpus</div>
+                  <div class="legend-item"><span class="src-dot src-public" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--amber);margin-right:4px;"></span>Public sources</div>
+                  <span style="margin-left:auto;">Response generated 08 May 2026 · 10:52 GST</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ann-strip" style="margin-top:10px;">
+      <div class="ann-card"><div class="ann-num ann-blue">1</div><div class="ann-text"><div class="ann-title">Grounded in the firm's own work</div><div class="ann-body">The response is constructed from Khalid &amp; Associates' own negotiated positions — not a generic template, not a model trained on other firms' documents. The system knows what this practice has actually agreed to.</div><div class="ann-value"><span class="ann-arrow">→</span> Layla starts every new matter from her best prior work, not from scratch.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-blue">2</div><div class="ann-text"><div class="ann-title">Gap acknowledgement — explicit</div><div class="ann-body">When the internal record is insufficient, the system says so clearly and routes to public sources. It does not fabricate a position Layla has not taken, and it never presents a gap as a settled answer.</div><div class="ann-value"><span class="ann-arrow">→</span> Silence in the corpus is surfaced as information, not hidden as a blank response.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-blue">3</div><div class="ann-text"><div class="ann-title">Plain language in, sourced answer out</div><div class="ann-body">No search syntax. No Boolean operators. Layla asks as she would brief a research associate, and receives a structured, sourced response she can act on — not a raw document dump.</div><div class="ann-value"><span class="ann-arrow">→</span> Attorney reviews, attorney decides. The research starting point is already prepared.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  SLIDE 7 — Cross-Matter Synthesis (Module A demo)
+════════════════════════════════════════════ -->
+<div class="slide demo" id="s7">
+  <div class="demo-wrap">
+    <div class="browser">
+      <div class="chrome-bar">
+        <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+        <div class="addr-bar">legalos.app/knowledge/research</div>
+      </div>
+      <div class="app-ui">
+        <div class="app-topnav">
+          <div class="app-logo">Legal<span>OS</span></div>
+          <div class="app-breadcrumb">Knowledge &amp; Research <span class="crumb-sep">›</span> <span class="crumb-active">Research</span></div>
+          <div class="app-topnav-right">
+            <button class="ann-toggle-btn" onclick="toggleAnnotations()">Annotations ON</button>
+            <div class="persona-pill"><div class="persona-av av-blue">LAR</div><div><div class="persona-name">Layla Al-Rashidi</div><div class="persona-role">Founding Partner</div></div><span class="persona-chevron">▾</span></div>
+          </div>
+        </div>
+        <div class="app-body">
+          <div class="sidebar">
+            <div class="sidebar-module"><div class="sidebar-mod-badge sb-a">A</div><div class="sidebar-mod-name">Knowledge &amp; Research</div></div>
+            <nav class="sidebar-nav">
+              <a>📋 Corpus Status</a>
+              <a class="active">🔍 Research</a>
+              <a>🕐 Query History</a>
+            </nav>
+            <div class="sidebar-footer">All modules ↗</div>
+          </div>
+          <div class="app-main">
+            <div class="query-bar">
+              <div class="query-input-wrap">
+                <span class="query-icon">🔍</span>
+                <span class="query-text">How have I handled force majeure clauses across maritime contracts — full scope and carve-outs?</span>
+              </div>
+            </div>
+            <div class="response-wrap">
+              <div class="response-card">
+                <div class="response-section">
+                  <div class="response-section-label">Summary · 3 matters synthesised</div>
+                  <div class="response-body" style="margin-bottom:10px;">The firm's standard position is ICA/CMI scope with carve-outs for war, piracy, and MARPOL events. The carve-out structure has been held in all three matters reviewed. One minor concession was made on notice period (30 to 14 days) in the 2024 matter.</div>
+                </div>
+                <div class="response-section rel" style="padding:0;">
+                  <span class="ann-badge ann-blue" style="top:6px;right:8px;">1</span>
+                  <table class="synth-table">
+                    <thead>
+                      <tr><th>Matter</th><th>Year</th><th>FM Scope</th><th>Carve-outs held</th><th>Counter-position</th><th>Outcome</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style="font-weight:500;font-size:12px;">Port Rashid Partners Ltd</td>
+                        <td>2021</td>
+                        <td>Standard ICA/CMI</td>
+                        <td>War · Piracy · MARPOL event</td>
+                        <td style="font-size:11.5px;">Wider epidemiological exclusion sought</td>
+                        <td><span class="synth-outcome-held">Held</span></td>
+                      </tr>
+                      <tr>
+                        <td style="font-weight:500;font-size:12px;">Mubadala Infrastructure JV</td>
+                        <td>2022</td>
+                        <td>Standard + regulatory action</td>
+                        <td>War · Force of state</td>
+                        <td style="font-size:11.5px;">Counterparty accepted standard</td>
+                        <td><span class="synth-outcome-agreed">Agreed first mark-up</span></td>
+                      </tr>
+                      <tr>
+                        <td style="font-weight:500;font-size:12px;">Gulf Maritime Services Ltd</td>
+                        <td>2024</td>
+                        <td>Standard ICA/CMI</td>
+                        <td>War · Piracy · MARPOL event</td>
+                        <td style="font-size:11.5px;">Covid-era precedent cited; 30-day notice challenged</td>
+                        <td><span class="synth-outcome-part">Held — notice 30→14 days</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="response-section rel" style="background:var(--slate-50);padding:10px 18px;">
+                  <span class="ann-badge ann-blue" style="top:-2px;right:8px;">2</span>
+                  <div style="display:flex;gap:16px;align-items:center;">
+                    <div style="font-size:12px;color:var(--slate-500);">
+                      <span class="src-dot src-internal" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--blue);margin-right:4px;"></span>
+                      3 internal precedents synthesised · Public maritime sources: no supplementary material retrieved
+                    </div>
+                  </div>
+                </div>
+                <div class="response-section rel" style="padding:8px 18px;">
+                  <span class="ann-badge ann-blue" style="top:-2px;right:8px;">3</span>
+                  <div style="font-size:11.5px;color:var(--slate-500);line-height:1.5;">
+                    Sources: <span style="color:var(--blue);font-weight:500;">Port Rashid Partners Ltd 2021 · §FM-2.1</span> · <span style="color:var(--blue);font-weight:500;">Mubadala Infrastructure JV 2022 · §FM-3.0</span> · <span style="color:var(--blue);font-weight:500;">Gulf Maritime Services Ltd MOA 2024 · §8.4</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ann-strip" style="margin-top:10px;">
+      <div class="ann-card"><div class="ann-num ann-blue">1</div><div class="ann-text"><div class="ann-title">Negotiating range, made visible</div><div class="ann-body">Layla sees where the firm has held its position, where it has moved, and by how much — across every matter in the corpus. This is institutional knowledge that previously existed only in memory.</div><div class="ann-value"><span class="ann-arrow">→</span> The next negotiation starts from an evidence base, not a feeling.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-blue">2</div><div class="ann-text"><div class="ann-title">Multi-document synthesis in a single query</div><div class="ann-body">A single question draws from three separate matter files and synthesises across them. No manual search, no opening tabs, no reconstructing from memory. Research that would take 45 minutes takes under a minute.</div><div class="ann-value"><span class="ann-arrow">→</span> Layla's time goes to judgment, not retrieval.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-blue">3</div><div class="ann-text"><div class="ann-title">Source references travel with every row</div><div class="ann-body">Every synthesised point is traceable back to its source document and section. Layla can open the original and read the full clause before relying on the synthesis. Nothing floats free of its source.</div><div class="ann-value"><span class="ann-arrow">→</span> The system assists. Layla verifies. That sequence is non-negotiable.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  SLIDE 8 — Public Sources (Module A demo)
+════════════════════════════════════════════ -->
+<div class="slide demo" id="s8">
+  <div class="demo-wrap">
+    <div class="browser">
+      <div class="chrome-bar">
+        <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+        <div class="addr-bar">legalos.app/knowledge/research</div>
+      </div>
+      <div class="app-ui">
+        <div class="app-topnav">
+          <div class="app-logo">Legal<span>OS</span></div>
+          <div class="app-breadcrumb">Knowledge &amp; Research <span class="crumb-sep">›</span> <span class="crumb-active">Research</span></div>
+          <div class="app-topnav-right">
+            <button class="ann-toggle-btn" onclick="toggleAnnotations()">Annotations ON</button>
+            <div class="persona-pill"><div class="persona-av av-blue">LAR</div><div><div class="persona-name">Layla Al-Rashidi</div><div class="persona-role">Founding Partner</div></div><span class="persona-chevron">▾</span></div>
+          </div>
+        </div>
+        <div class="app-body">
+          <div class="sidebar">
+            <div class="sidebar-module"><div class="sidebar-mod-badge sb-a">A</div><div class="sidebar-mod-name">Knowledge &amp; Research</div></div>
+            <nav class="sidebar-nav">
+              <a>📋 Corpus Status</a>
+              <a class="active">🔍 Research</a>
+              <a>🕐 Query History</a>
+            </nav>
+            <div class="sidebar-footer">All modules ↗</div>
+          </div>
+          <div class="app-main">
+            <div class="query-bar">
+              <div class="query-input-wrap rel">
+                <span class="ann-badge ann-blue" style="top:-10px;right:-10px;">3</span>
+                <span class="query-icon">🔍</span>
+                <span class="query-text">What is the current ADGM position on limitation of liability in service agreements — and how does it compare to the DIFC-LCIA position?</span>
+              </div>
+            </div>
+            <div class="response-wrap">
+              <div class="response-card">
+                <div class="response-section">
+                  <div class="response-section-label"><span class="src-dot src-internal" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--blue);margin-right:4px;"></span>Internal Corpus</div>
+                  <div class="response-body" style="font-size:13px;">1 relevant precedent — <span style="color:var(--blue);font-weight:500;">Gulf Maritime Services Ltd engagement terms 2024 · §6.3</span>. Limitation clause at 12 months' fees. No ADGM arbitration-specific carve-out was tested in that matter.</div>
+                </div>
+                <div class="response-section rel" style="background:rgba(253,246,220,0.3);">
+                  <span class="ann-badge ann-blue" style="top:-2px;right:8px;">1</span>
+                  <div class="response-section-label"><span class="src-dot src-public" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--amber);margin-right:4px;"></span>Public Sources — Retrieved live · 08 May 2026, 11:43 GST</div>
+                  <ul class="source-list">
+                    <li class="source-item"><span class="source-item-icon">⚖️</span><span><span class="source-name">ADGM Arbitration Centre Rules 2023</span><span class="source-ref">· Rule 34.2</span></span></li>
+                    <li class="source-item"><span class="source-item-icon">📋</span><span><span class="source-name">ADGM Court Practice Direction No. 1/2024</span><span class="source-ref">· §8 — Commercial Services Disputes</span></span></li>
+                    <li class="source-item"><span class="source-item-icon">⚖️</span><span><span class="source-name">DIFC-LCIA Arbitration Rules 2021</span><span class="source-ref">· Art. 36.2</span></span></li>
+                  </ul>
+                  <div style="margin-top:10px;padding:10px 12px;background:rgba(255,255,255,0.7);border-radius:6px;font-size:13px;color:var(--slate-700);line-height:1.6;" class="rel">
+                    <span class="ann-badge ann-blue" style="top:-8px;right:-8px;">2</span>
+                    <strong style="color:var(--slate-800);">Synthesised comparison:</strong> ADGM and DIFC-LCIA positions are substantially aligned on proportionality of limitation. The ADGM 2023 rules introduced a <em>presumption against blanket exclusion of consequential loss</em> in commercial services disputes that has no direct DIFC-LCIA equivalent — a material distinction for the Oasis Shipping matter.
+                  </div>
+                </div>
+                <div class="response-footer">
+                  <div class="legend-item"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--blue);margin-right:4px;"></span>Internal corpus</div>
+                  <div class="legend-item"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--amber);margin-right:4px;"></span>Public sources — live retrieval</div>
+                  <span style="margin-left:auto;color:var(--amber);">⚡ Real-time · 11:43 GST</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ann-strip" style="margin-top:10px;">
+      <div class="ann-card"><div class="ann-num ann-blue">1</div><div class="ann-text"><div class="ann-title">Real-time public retrieval</div><div class="ann-body">Public sources are retrieved live at query time — not from a static index. The response reflects current rules and practice directions, not last year's snapshot. Timestamp is shown on every public retrieval.</div><div class="ann-value"><span class="ann-arrow">→</span> Layla advises on live instruments. Not archived ones.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-blue">2</div><div class="ann-text"><div class="ann-title">Internal and public, always distinguished</div><div class="ann-body">Blue for the firm's own documents. Amber for public sources. The distinction is visual and textual in every response. Layla never has to guess where an answer came from or what weight to give it.</div><div class="ann-value"><span class="ann-arrow">→</span> The weight of each source is transparent. Layla judges; the system does not.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-blue">3</div><div class="ann-text"><div class="ann-title">One query, two layers</div><div class="ann-body">A single question draws from both the internal corpus and public sources in one synthesised response. No switching tools, no reconciling two separate searches. The synthesis is complete before Layla applies her judgment.</div><div class="ann-value"><span class="ann-arrow">→</span> Complete picture. One conversation.</div></div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+  SLIDE 9 — Module B intro
+════════════════════════════════════════════ -->
+<div class="slide ctx" id="s9">
+  <div class="ctx-inner">
+    <div class="ctx-eyebrow mod-b">Module B</div>
+    <div class="ctx-h2">Matter Operations</div>
+    <div class="ctx-subtitle">What gets built next. Intake and conflict checks, the live matter record, and the compliance engine — built on top of the same knowledge store established in Module A. Nothing is discarded. Everything compounds.</div>
+    <div class="module-intro-wrap">
+      <div class="module-intro-left">
+        <div class="module-badge-large badge-b">B</div>
+        <ul class="component-list">
+          <li class="component-item">
+            <div class="component-icon ci-amber">📥</div>
+            <div>
+              <div class="component-text-title">Intake &amp; Conflict Checks</div>
+              <div class="component-text-body">A guided intake flow collects structured matter data. The conflict check runs automatically against the full matter database — the same corpus that powers Module A retrieval. An engagement letter draft is ready for partner review before the file is opened.</div>
+            </div>
+          </li>
+          <li class="component-item">
+            <div class="component-icon ci-amber">📊</div>
+            <div>
+              <div class="component-text-title">Matter Record &amp; Dashboard</div>
+              <div class="component-text-body">A live matter record for every active file: parties, status, deadlines, document index, communications log. One dashboard view across all open matters — updated as each matter moves, not when someone remembers to update a spreadsheet.</div>
+            </div>
+          </li>
+          <li class="component-item">
+            <div class="component-icon ci-amber">⏰</div>
+            <div>
+              <div class="component-text-title">Compliance &amp; Deadline Engine</div>
+              <div class="component-text-body">Trigger dates feed an engine that calculates every derived deadline from the procedural rules of the relevant jurisdiction — DIFC, ADGM, UAE federal courts, maritime authorities. Reminders and escalations are automatic. The docket does not rely on anyone's memory.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="module-intro-right" style="padding-top:56px;">
+        <div style="padding:18px 20px;background:rgba(217,119,6,0.1);border:1px solid rgba(217,119,6,0.2);border-radius:10px;margin-bottom:16px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:8px;">The Module A connection</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;">The conflict check in Module B runs against the same matter database that stores the corpus ingested in Module A. The engagement letter draft draws from the firm's own precedent templates. The matter record is the data layer that powers the drafting agent, the research agent, and the comms agent in later phases.</div>
+        </div>
+        <div style="padding:18px 20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:10px;">Screens in this module</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.65);"><span style="color:var(--amber-mid);">●</span> Matter Dashboard — active matters overview</div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.65);"><span style="color:var(--amber-mid);">●</span> Intake — new matter with automated conflict check</div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.65);"><span style="color:var(--amber-mid);">●</span> Compliance engine — live deadline monitoring</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  SLIDE 10 — Matter Dashboard (Module B demo)
+════════════════════════════════════════════ -->
+<div class="slide demo" id="s10">
+  <div class="demo-wrap">
+    <div class="browser">
+      <div class="chrome-bar">
+        <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+        <div class="addr-bar">legalos.app/matters/dashboard</div>
+      </div>
+      <div class="app-ui">
+        <div class="app-topnav">
+          <div class="app-logo">Legal<span>OS</span></div>
+          <div class="app-breadcrumb">Matter Operations <span class="crumb-sep">›</span> <span class="crumb-active">Dashboard</span></div>
+          <div class="app-topnav-right">
+            <button class="ann-toggle-btn" onclick="toggleAnnotations()">Annotations ON</button>
+            <div class="persona-pill"><div class="persona-av av-blue">LAR</div><div><div class="persona-name">Layla Al-Rashidi</div><div class="persona-role">Founding Partner</div></div><span class="persona-chevron">▾</span></div>
+          </div>
+        </div>
+        <div class="app-body">
+          <div class="sidebar">
+            <div class="sidebar-module"><div class="sidebar-mod-badge sb-b">B</div><div class="sidebar-mod-name">Matter Operations</div></div>
+            <nav class="sidebar-nav">
+              <a class="active-b">📊 Dashboard</a>
+              <a>📥 Intake</a>
+              <a>📁 Matters</a>
+              <a>⏰ Compliance</a>
+            </nav>
+            <div class="sidebar-footer">All modules ↗</div>
+          </div>
+          <div class="app-main">
+            <div class="page-header">
+              <div class="page-header-text">
+                <div class="page-title">Active Matters</div>
+                <div class="page-subtitle">Khalid &amp; Associates · 08 May 2026</div>
+              </div>
+              <div class="page-header-actions">
+                <button class="btn-sm">Filter</button>
+                <button class="btn-sm primary-b">+ New Matter</button>
+              </div>
+            </div>
+            <div class="summary-bar rel">
+              <span class="ann-badge ann-amber" style="top:-8px;right:80px;">2</span>
+              <div class="stat-item stat-slate"><span class="stat-dot"></span>6 active matters</div>
+              <div class="stat-divider"></div>
+              <div class="stat-item stat-red"><span class="stat-dot"></span>2 critical deadlines this week</div>
+              <div class="stat-divider"></div>
+              <div class="stat-item stat-amber"><span class="stat-dot"></span>1 compliance alert</div>
+              <div class="stat-divider"></div>
+              <div class="stat-item stat-blue"><span class="stat-dot"></span>AED 47,250 WIP</div>
+            </div>
+            <div class="matter-list">
+              <div class="matter-card rel">
+                <span class="ann-badge ann-amber" style="top:-8px;left:8px;">3</span>
+                <div class="matter-severity sev-red"></div>
+                <div class="matter-body">
+                  <div class="matter-name">Oasis Shipping LLC v. Gulf Maritime Services Ltd</div>
+                  <div class="matter-meta">
+                    <span class="matter-meta-item">⚖️ ADGM Arbitration</span>
+                    <span class="matter-meta-item">📋 Statement of Defence due</span>
+                    <span class="matter-meta-item" style="color:var(--red);">⚠ Compliance alert active</span>
+                  </div>
+                </div>
+                <div class="matter-deadline">
+                  <div class="deadline-label">Next deadline</div>
+                  <div class="deadline-value deadline-red">T+8 · 16 May 2026</div>
+                </div>
+              </div>
+              <div class="matter-card">
+                <div class="matter-severity sev-amber"></div>
+                <div class="matter-body">
+                  <div class="matter-name">Al Zubair Holdings JV Restructuring</div>
+                  <div class="matter-meta">
+                    <span class="matter-meta-item">🏢 Corporate M&amp;A</span>
+                    <span class="matter-meta-item">📄 Shareholder agreement review</span>
+                  </div>
+                </div>
+                <div class="matter-deadline">
+                  <div class="deadline-label">Client deadline</div>
+                  <div class="deadline-value deadline-amber">T+14 · 22 May 2026</div>
+                </div>
+              </div>
+              <div class="matter-card">
+                <div class="matter-severity sev-amber"></div>
+                <div class="matter-body">
+                  <div class="matter-name">Al Noor Medical Holdings LLC — JV Advisory</div>
+                  <div class="matter-meta">
+                    <span class="matter-meta-item">🏢 Corporate Advisory · DIFC</span>
+                    <span class="matter-meta-item">📬 Engagement letter countersigned today</span>
+                  </div>
+                </div>
+                <div class="matter-deadline">
+                  <div class="deadline-label">Client update</div>
+                  <div class="deadline-value deadline-amber">Pending</div>
+                </div>
+              </div>
+              <div class="matter-collapsed rel">
+                <span class="ann-badge ann-amber" style="top:-8px;right:8px;">1</span>
+                <span>📁</span>
+                <span style="flex:1;">3 further active matters — next action &gt; 30 days</span>
+                <span style="color:var(--green);font-weight:600;font-size:12px;">● All on track</span>
+                <span style="font-size:12px;color:var(--slate-400);">Show all ↓</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ann-strip" style="margin-top:10px;">
+      <div class="ann-card"><div class="ann-num ann-amber">1</div><div class="ann-text"><div class="ann-title">Live matter record</div><div class="ann-body">Every active file in one view. Status updates as the matter moves — no manual refresh, no spreadsheet that is always slightly out of date. Matters that need attention surface; those that don't stay collapsed.</div><div class="ann-value"><span class="ann-arrow" style="color:var(--amber);">→</span> Layla sees where everything stands before she opens a single file.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-amber">2</div><div class="ann-text"><div class="ann-title">Deadline severity — calculated, not entered</div><div class="ann-body">The red border on Oasis Shipping was not manually flagged. The compliance engine calculated it from the ADGM arbitration procedural timetable against the trigger date. The amber borders follow the same logic.</div><div class="ann-value"><span class="ann-arrow" style="color:var(--amber);">→</span> Critical dates surface before they become crises.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-amber">3</div><div class="ann-text"><div class="ann-title">Compliance escalation built in</div><div class="ann-body">The compliance alert on Oasis Shipping corresponds to the Statement of Defence at T+8 days. At T+5, the engine escalated to Layla's attention automatically — regardless of whether she opened the dashboard.</div><div class="ann-value"><span class="ann-arrow" style="color:var(--amber);">→</span> Monitoring does not rely on Layla remembering to check.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  SLIDE 11 — Intake (Module B demo)
+════════════════════════════════════════════ -->
+<div class="slide demo" id="s11">
+  <div class="demo-wrap">
+    <div class="browser">
+      <div class="chrome-bar">
+        <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+        <div class="addr-bar">legalos.app/matters/intake/new</div>
+      </div>
+      <div class="app-ui">
+        <div class="app-topnav">
+          <div class="app-logo">Legal<span>OS</span></div>
+          <div class="app-breadcrumb">Matter Operations <span class="crumb-sep">›</span> Intake <span class="crumb-sep">›</span> <span class="crumb-active">New Matter</span></div>
+          <div class="app-topnav-right">
+            <button class="ann-toggle-btn" onclick="toggleAnnotations()">Annotations ON</button>
+            <div class="persona-pill"><div class="persona-av av-blue">LAR</div><div><div class="persona-name">Layla Al-Rashidi</div><div class="persona-role">Founding Partner</div></div><span class="persona-chevron">▾</span></div>
+          </div>
+        </div>
+        <div class="app-body">
+          <div class="sidebar">
+            <div class="sidebar-module"><div class="sidebar-mod-badge sb-b">B</div><div class="sidebar-mod-name">Matter Operations</div></div>
+            <nav class="sidebar-nav">
+              <a>📊 Dashboard</a>
+              <a class="active-b">📥 Intake</a>
+              <a>📁 Matters</a>
+              <a>⏰ Compliance</a>
+            </nav>
+            <div class="sidebar-footer">All modules ↗</div>
+          </div>
+          <div class="app-main">
+            <div class="page-header">
+              <div class="page-header-text">
+                <div class="page-title">New Matter — Al Noor Medical Holdings LLC</div>
+                <div class="page-subtitle">Intake in progress · Conflict check complete</div>
+              </div>
+              <div class="page-header-actions">
+                <button class="btn-sm">Save draft</button>
+                <button class="btn-sm primary-b">Open matter file →</button>
+              </div>
+            </div>
+            <div style="display:flex;gap:0;flex:1;overflow:hidden;">
+              <div style="flex:1;padding:12px 16px;overflow-y:auto;border-right:1px solid var(--slate-100);">
+                <div class="form-section-title">Matter Details</div>
+                <div class="form-grid-2">
+                  <div class="form-group"><label>Client</label><div class="form-input" style="background:var(--slate-50);">Al Noor Medical Holdings LLC</div></div>
+                  <div class="form-group"><label>Matter type</label><div class="form-input" style="background:var(--slate-50);">JV Structuring Advisory</div></div>
+                  <div class="form-group"><label>Governing law</label><div class="form-input" style="background:var(--slate-50);">DIFC Law</div></div>
+                  <div class="form-group"><label>Counterparty</label><div class="form-input" style="background:var(--slate-50);">Apex Capital Partners</div></div>
+                  <div class="form-group"><label>Responsible attorney</label><div class="form-input" style="background:var(--slate-50);">Layla Al-Rashidi</div></div>
+                  <div class="form-group"><label>Source of instruction</label><div class="form-input" style="background:var(--slate-50);">Direct referral — F. Al Ghurair</div></div>
+                </div>
+                <div class="engagement-preview rel">
+                  <span class="ann-badge ann-amber" style="top:-8px;right:-8px;">3</span>
+                  <div style="padding:8px 14px;background:var(--slate-50);border-bottom:1px solid var(--slate-200);border-radius:8px 8px 0 0;">
+                    <span style="font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--slate-400);">Engagement Letter Draft</span>
+                    <span style="float:right;font-size:11px;color:var(--blue);font-weight:500;cursor:pointer;">Review full draft ↗</span>
+                  </div>
+                  <div class="engagement-doc">
+                    <div class="engagement-doc-title">KHALID &amp; ASSOCIATES — ENGAGEMENT LETTER</div>
+                    <div class="engagement-section"><strong>§1 Scope of Engagement</strong> — JV structuring advisory for proposed joint venture between Al Noor Medical Holdings LLC and Apex Capital Partners under DIFC law...</div>
+                    <div class="engagement-section"><strong>§2 Fees and Billing</strong> — Time and materials at standard hourly rates; monthly invoicing; payment terms 30 days from invoice date...</div>
+                    <div class="engagement-section"><strong>§3 Confidentiality</strong> — Standard DIFC confidentiality provisions apply to both parties for the duration of the engagement...</div>
+                  </div>
+                  <div class="engagement-footer">⚠ Draft — not issued · Awaiting attorney review and approval</div>
+                </div>
+              </div>
+              <div style="flex:0 0 300px;padding:12px 14px;overflow-y:auto;">
+                <div class="form-section-title">Conflict Check</div>
+                <div class="conflict-panel rel">
+                  <span class="ann-badge ann-amber" style="top:-8px;right:-8px;">2</span>
+                  <div class="conflict-panel-header">Checked against 47 matters &amp; 6 former client records</div>
+                  <div class="conflict-result">
+                    <div class="conflict-clear">✓ No direct conflicts found</div>
+                    <div style="font-size:11px;color:var(--slate-500);margin-bottom:10px;">3 related-party relationships flagged for review:</div>
+                    <div class="conflict-flag">⚠ <div class="conflict-flag-text">Apex Capital Partners appeared as counterparty — <span style="font-weight:500;">Mubadala Infrastructure JV 2022</span></div></div>
+                    <div class="conflict-flag">⚠ <div class="conflict-flag-text">Apex Capital Partners appeared as counterparty — <span style="font-weight:500;">Al Futtaim Holdings JV 2023</span></div></div>
+                    <div style="margin-top:8px;padding:8px 10px;background:var(--amber-light);border-radius:5px;font-size:11.5px;color:var(--amber);">Review recommended before engagement confirmed. Two prior matters on record.</div>
+                  </div>
+                </div>
+                <div style="margin-top:12px;" class="rel">
+                  <span class="ann-badge ann-amber" style="top:-8px;right:-8px;">1</span>
+                  <div class="info-panel">
+                    <div class="info-panel-title">Matter Record — Pre-populated</div>
+                    <div class="info-row"><span class="info-label">Matter ref</span><span class="info-value blue">KA-2026-051</span></div>
+                    <div class="info-row"><span class="info-label">Opened</span><span class="info-value">08 May 2026</span></div>
+                    <div class="info-row"><span class="info-label">Status</span><span class="info-value" style="color:var(--amber);">Pending approval</span></div>
+                    <div class="info-row"><span class="info-label">Practice area</span><span class="info-value">Corporate · DIFC</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ann-strip" style="margin-top:10px;">
+      <div class="ann-card"><div class="ann-num ann-amber">1</div><div class="ann-text"><div class="ann-title">Structured intake from the start</div><div class="ann-body">The matter record is populated at intake — parties, jurisdiction, type, source of instruction. Every subsequent module draws from this structured record. Unstructured intake produces gaps that compound throughout the matter lifecycle.</div><div class="ann-value"><span class="ann-arrow" style="color:var(--amber);">→</span> The matter record is complete on day one.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-amber">2</div><div class="ann-text"><div class="ann-title">Conflict check against the full matter database</div><div class="ann-body">The check runs against every ingested document and every prior matter record — not from memory. The Apex Capital flags were surfaced because the counterparty appeared in two prior matters, three years apart. That connection does not exist in anyone's memory.</div><div class="ann-value"><span class="ann-arrow" style="color:var(--amber);">→</span> Professional risk that lives in institutional memory is made systematic.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-amber">3</div><div class="ann-text"><div class="ann-title">Engagement letter drafted before the folder is opened</div><div class="ann-body">The intake agent generates a draft engagement letter for Layla's review before any substantive work begins. Layla reviews and approves — or amends. The agent drafts; the lawyer decides. Every time.</div><div class="ann-value"><span class="ann-arrow" style="color:var(--amber);">→</span> The first substantive action is judgment, not assembly.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  SLIDE 12 — Compliance Engine (Module B demo)
+════════════════════════════════════════════ -->
+<div class="slide demo" id="s12">
+  <div class="demo-wrap">
+    <div class="browser">
+      <div class="chrome-bar">
+        <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+        <div class="addr-bar">legalos.app/matters/KA-2026-047/compliance</div>
+      </div>
+      <div class="app-ui">
+        <div class="app-topnav">
+          <div class="app-logo">Legal<span>OS</span></div>
+          <div class="app-breadcrumb">Matter Operations <span class="crumb-sep">›</span> Compliance <span class="crumb-sep">›</span> <span class="crumb-active">Oasis Shipping</span></div>
+          <div class="app-topnav-right">
+            <button class="ann-toggle-btn" onclick="toggleAnnotations()">Annotations ON</button>
+            <div class="persona-pill"><div class="persona-av av-blue">LAR</div><div><div class="persona-name">Layla Al-Rashidi</div><div class="persona-role">Founding Partner</div></div><span class="persona-chevron">▾</span></div>
+          </div>
+        </div>
+        <div class="app-body">
+          <div class="sidebar">
+            <div class="sidebar-module"><div class="sidebar-mod-badge sb-b">B</div><div class="sidebar-mod-name">Matter Operations</div></div>
+            <nav class="sidebar-nav">
+              <a>📊 Dashboard</a>
+              <a>📥 Intake</a>
+              <a>📁 Matters</a>
+              <a class="active-b">⏰ Compliance</a>
+            </nav>
+            <div class="sidebar-footer">All modules ↗</div>
+          </div>
+          <div class="app-main">
+            <div class="compliance-header rel">
+              <span class="ann-badge ann-amber" style="top:50%;right:16px;transform:translateY(-50%);">1</span>
+              <div class="compliance-matter-title">Oasis Shipping LLC v. Gulf Maritime Services Ltd</div>
+              <div class="compliance-matter-sub">KA-2026-047 · ADGM Arbitration Centre · Case No. ADGM/2026/047 · Filed 2 April 2026</div>
+            </div>
+            <div class="timeline-wrap rel">
+              <span class="ann-badge ann-amber" style="top:0;right:16px;">2</span>
+              <div class="timeline-line">
+                <div class="timeline-item done">
+                  <div class="timeline-circle tc-done">✓</div>
+                  <div class="timeline-label">Request filed</div>
+                  <div class="timeline-date">2 Apr 2026</div>
+                </div>
+                <div class="timeline-item done">
+                  <div class="timeline-circle tc-done">✓</div>
+                  <div class="timeline-label">Notice served</div>
+                  <div class="timeline-date">9 Apr 2026</div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-circle tc-critical">!</div>
+                  <div class="timeline-critical-label">Statement of Defence</div>
+                  <div class="timeline-date" style="color:var(--red);font-weight:600;">16 May 2026 · T+8</div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-circle tc-future">◯</div>
+                  <div class="timeline-label">Disclosure closes</div>
+                  <div class="timeline-date">30 May 2026</div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-circle tc-future">◯</div>
+                  <div class="timeline-label">Hearing</div>
+                  <div class="timeline-date">18 Jun 2026</div>
+                </div>
+              </div>
+            </div>
+            <div class="compliance-body">
+              <div class="compliance-main">
+                <div class="rules-ref rel">
+                  <span class="ann-badge ann-amber" style="top:-8px;right:-8px;">3</span>
+                  <div class="rules-ref-label">Rules Source</div>
+                  <div class="rules-ref-text">ADGM Arbitration Centre Rules 2023 · Schedule 1 — Procedural timetable. Deadlines calculated from trigger date (request filed) per Rule 12.1. All derived deadlines updated automatically if trigger date is amended.</div>
+                </div>
+                <div style="padding:10px 12px;background:var(--red-light);border:1px solid var(--red-pale);border-radius:7px;margin-top:10px;">
+                  <div style="font-size:11px;font-weight:700;color:var(--red);margin-bottom:4px;">⚠ ACTIVE ESCALATION</div>
+                  <div style="font-size:12px;color:var(--slate-700);">Statement of Defence due in 8 days. Final escalation scheduled 14 May 2026. Audit ref: KA-2026-COMP-047</div>
+                </div>
+              </div>
+              <div class="compliance-side">
+                <div class="info-panel-title" style="margin-bottom:8px;">Reminder &amp; Escalation Log</div>
+                <div class="reminder-log">
+                  <div class="log-item"><span class="log-icon">📧</span><div><div class="log-text">Reminder sent to Layla Al-Rashidi</div><div class="log-date">6 May 2026</div></div></div>
+                  <div class="log-item"><span class="log-icon">🔴</span><div><div class="log-text" style="color:var(--red);font-weight:500;">Escalation sent — T+5 threshold</div><div class="log-date">8 May 2026 (today)</div></div></div>
+                  <div class="log-item"><span class="log-icon">⏳</span><div><div class="log-text">Final escalation scheduled</div><div class="log-date">14 May 2026 · T+2</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ann-strip" style="margin-top:10px;">
+      <div class="ann-card"><div class="ann-num ann-amber">1</div><div class="ann-text"><div class="ann-title">The same matter — end to end</div><div class="ann-body">Oasis Shipping appeared in public source research (slide 8) and as a critical item on the dashboard (slide 10). This is the third time the same matter appears — same matter reference, same parties, one coherent record across three modules.</div><div class="ann-value"><span class="ann-arrow" style="color:var(--amber);">→</span> This is what "practice operating system" means. Not five tools. One system.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-amber">2</div><div class="ann-text"><div class="ann-title">Jurisdiction-specific rules — not manual entry</div><div class="ann-body">Deadlines are calculated from the ADGM arbitration procedural timetable encoded in the engine. Layla entered one date: the trigger. Everything else is derived. A change in rules updates the calculation — not her diary.</div><div class="ann-value"><span class="ann-arrow" style="color:var(--amber);">→</span> Compliance monitoring that does not depend on anyone updating a spreadsheet.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-amber">3</div><div class="ann-text"><div class="ann-title">Escalation protocol — not a reminder</div><div class="ann-body">T+8 days is not a yellow note on a calendar. The engine escalated to Layla at T+5 and again today. At T+2 it escalates again. Every escalation is logged for professional indemnity purposes. The difference between a reminder and an escalation is accountability.</div><div class="ann-value"><span class="ann-arrow" style="color:var(--amber);">→</span> Critical dates cannot slip through without a documented trail.</div></div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+  SLIDE 13 — Module C intro
+════════════════════════════════════════════ -->
+<div class="slide ctx" id="s13">
+  <div class="ctx-inner">
+    <div class="ctx-eyebrow mod-c">Module C</div>
+    <div class="ctx-h2">Billing &amp; Communications</div>
+    <div class="ctx-subtitle">The revenue and the relationship. Two processes that should be invisible — time recording and client updates — consume disproportionate partner attention in every boutique practice. Both leak value when handled manually.</div>
+    <div class="module-intro-wrap">
+      <div class="module-intro-left">
+        <div class="module-badge-large badge-c">C</div>
+        <ul class="component-list">
+          <li class="component-item">
+            <div class="component-icon ci-green">⏱️</div>
+            <div>
+              <div class="component-text-title">Billing Agent — Time Capture &amp; Invoice</div>
+              <div class="component-text-body">The billing agent observes what happens in the system — calendar events, document activity, email threads — and drafts time entries in real time. Layla reviews and approves. Approved entries post to the accounting system automatically. The structural cause of under-recording is addressed at source, not patched with a reminder.</div>
+            </div>
+          </li>
+          <li class="component-item">
+            <div class="component-icon ci-green">✉️</div>
+            <div>
+              <div class="component-text-title">Communications Agent — Draft &amp; Approve</div>
+              <div class="component-text-body">The comms agent monitors the matter record for events that warrant a client update — a milestone reached, a document filed, a deadline approaching. It drafts the update. Layla reviews, edits if needed, and approves. Every communication that leaves Khalid &amp; Associates carries Layla's professional judgment. The agent drafts; the lawyer decides.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="module-intro-right" style="padding-top:56px;">
+        <div style="padding:18px 20px;background:rgba(22,163,74,0.1);border:1px solid rgba(22,163,74,0.2);border-radius:10px;margin-bottom:16px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:8px;">The silent revenue problem</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;">The average solo practitioner reconstructs 2+ hours of billable work from memory each day. The reconstruction is always conservative. There is no prompt, no infrastructure, no one whose job it is to make sure the six-minute client email gets recorded. The leakage is structural — and invisible until it is measured.</div>
+        </div>
+        <div style="padding:18px 20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:10px;">Screens in this module</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.65);"><span style="color:#34d399;">●</span> Time Capture — inferred draft entries for the day</div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.65);"><span style="color:#34d399;">●</span> Billing — WIP to invoice, post to accounting</div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.65);"><span style="color:#34d399;">●</span> Client Communications — draft, approve, send</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  SLIDE 14 — Time Capture (Module C demo)
+════════════════════════════════════════════ -->
+<div class="slide demo" id="s14">
+  <div class="demo-wrap">
+    <div class="browser">
+      <div class="chrome-bar">
+        <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+        <div class="addr-bar">legalos.app/billing/time-capture</div>
+      </div>
+      <div class="app-ui">
+        <div class="app-topnav">
+          <div class="app-logo">Legal<span>OS</span></div>
+          <div class="app-breadcrumb">Billing &amp; Communications <span class="crumb-sep">›</span> <span class="crumb-active">Time Capture</span></div>
+          <div class="app-topnav-right">
+            <button class="ann-toggle-btn" onclick="toggleAnnotations()">Annotations ON</button>
+            <div class="persona-pill"><div class="persona-av av-blue">LAR</div><div><div class="persona-name">Layla Al-Rashidi</div><div class="persona-role">Founding Partner</div></div><span class="persona-chevron">▾</span></div>
+          </div>
+        </div>
+        <div class="app-body">
+          <div class="sidebar">
+            <div class="sidebar-module"><div class="sidebar-mod-badge sb-c">C</div><div class="sidebar-mod-name">Billing &amp; Communications</div></div>
+            <nav class="sidebar-nav">
+              <a class="active-c">⏱️ Time Capture</a>
+              <a>🧾 Billing &amp; WIP</a>
+              <a>✉️ Communications</a>
+            </nav>
+            <div class="sidebar-footer">All modules ↗</div>
+          </div>
+          <div class="app-main">
+            <div class="page-header">
+              <div class="page-header-text">
+                <div class="page-title">Draft Time Entries — 8 May 2026</div>
+                <div class="page-subtitle">4 entries awaiting review · 3h 50m inferred · AED 5,750 at standard rate</div>
+              </div>
+              <div class="page-header-actions">
+                <button class="btn-sm">Approve all</button>
+              </div>
+            </div>
+            <div class="summary-bar rel">
+              <span class="ann-badge ann-green" style="top:-8px;right:80px;">1</span>
+              <div class="stat-item stat-slate"><span class="stat-dot"></span>0 approved today</div>
+              <div class="stat-divider"></div>
+              <div class="stat-item stat-amber"><span class="stat-dot"></span>4 pending review</div>
+              <div class="stat-divider"></div>
+              <div class="stat-item stat-green"><span class="stat-dot"></span>3h 50m inferred</div>
+              <div class="stat-divider"></div>
+              <div class="stat-item stat-blue"><span class="stat-dot"></span>AED 5,750 pending</div>
+            </div>
+            <div class="content-pad" style="padding-top:12px;">
+              <div class="entry-card rel">
+                <span class="ann-badge ann-green" style="top:-8px;right:8px;">2</span>
+                <div class="entry-card-header">
+                  <span class="entry-matter">Al Noor Medical Holdings LLC</span>
+                  <span class="entry-source">📅 Calendar · intake call 09:30</span>
+                  <span class="entry-time">1h 00m</span>
+                </div>
+                <div class="entry-body">
+                  <div class="entry-narrative">"Initial consultation — JV structuring advisory, DIFC; parties, scope, and timeline discussed"</div>
+                  <div class="entry-actions"><button class="btn-approve">Approve</button><button class="btn-edit-sm">Edit</button><button class="btn-edit-sm">Dismiss</button></div>
+                </div>
+              </div>
+              <div class="entry-card rel">
+                <span class="ann-badge ann-green" style="top:-8px;right:8px;">3</span>
+                <div class="entry-card-header">
+                  <span class="entry-matter">Oasis Shipping v. Gulf Maritime Services Ltd</span>
+                  <span class="entry-source">🔍 Research session · 10:45</span>
+                  <span class="entry-time">0h 45m</span>
+                </div>
+                <div class="entry-body">
+                  <div class="entry-narrative">"Research: ADGM limitation of liability in service agreements; reviewed Practice Direction No. 1/2024 and DIFC-LCIA Rules comparison"</div>
+                  <div class="entry-actions"><button class="btn-approve">Approve</button><button class="btn-edit-sm">Edit</button><button class="btn-edit-sm">Dismiss</button></div>
+                </div>
+              </div>
+              <div class="entry-card">
+                <div class="entry-card-header">
+                  <span class="entry-matter">Oasis Shipping v. Gulf Maritime Services Ltd</span>
+                  <span class="entry-source">📄 Document activity · 11:30</span>
+                  <span class="entry-time">0h 45m</span>
+                </div>
+                <div class="entry-body">
+                  <div class="entry-narrative">"Review and annotation of Statement of Defence draft"</div>
+                  <div class="entry-actions"><button class="btn-approve">Approve</button><button class="btn-edit-sm">Edit</button><button class="btn-edit-sm">Dismiss</button></div>
+                </div>
+              </div>
+              <div class="entry-card">
+                <div class="entry-card-header">
+                  <span class="entry-matter">Al Zubair Holdings JV Restructuring</span>
+                  <span class="entry-source">📧 Email thread · 14:00</span>
+                  <span class="entry-time">0h 20m</span>
+                </div>
+                <div class="entry-body">
+                  <div class="entry-narrative">"Client correspondence re. shareholder agreement review timeline and next steps"</div>
+                  <div class="entry-actions"><button class="btn-approve">Approve</button><button class="btn-edit-sm">Edit</button><button class="btn-edit-sm">Dismiss</button></div>
+                </div>
+              </div>
+              <div style="margin-top:10px;padding:8px 12px;background:var(--slate-50);border:1px solid var(--slate-200);border-radius:6px;font-size:11.5px;color:var(--slate-500);">Entries post to the accounting system on approval. No entry is posted without attorney review.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ann-strip" style="margin-top:10px;">
+      <div class="ann-card"><div class="ann-num ann-green">1</div><div class="ann-text"><div class="ann-title">Inferred from activity — not reconstructed from memory</div><div class="ann-body">The billing agent observed Layla's calendar, document activity, and email threads throughout the day and drafted four entries in real time. She is reviewing four entries, not writing four entries. Without the system, this happens at 6pm from memory — and the result is always conservative.</div><div class="ann-value"><span class="ann-arrow" style="color:var(--green);">→</span> The structural cause of under-recording is removed at source.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-green">2</div><div class="ann-text"><div class="ann-title">Source signal on every entry</div><div class="ann-body">Each entry shows what triggered the inference: calendar event, document activity, email thread. Layla can verify the inference before approving. If the system misread the activity, she edits the narrative or the time. The signal is transparent.</div><div class="ann-value"><span class="ann-arrow" style="color:var(--green);">→</span> Attorney approval is not a formality. It is the quality gate.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-green">3</div><div class="ann-text"><div class="ann-title">The research session on slide 8 appears here</div><div class="ann-body">The 10:45 ADGM research session — the same session that produced the Oasis Shipping public source response — is captured as a 45-minute billable entry. Without the system, this is the entry most likely to disappear at end of day. The system saw it. It did not disappear.</div><div class="ann-value"><span class="ann-arrow" style="color:var(--green);">→</span> Every piece of work Layla does is seen. None of it disappears.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  SLIDE 15 — WIP to Invoice (Module C demo)
+════════════════════════════════════════════ -->
+<div class="slide demo" id="s15">
+  <div class="demo-wrap">
+    <div class="browser">
+      <div class="chrome-bar">
+        <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+        <div class="addr-bar">legalos.app/billing/wip/KA-2026-047</div>
+      </div>
+      <div class="app-ui">
+        <div class="app-topnav">
+          <div class="app-logo">Legal<span>OS</span></div>
+          <div class="app-breadcrumb">Billing &amp; Communications <span class="crumb-sep">›</span> WIP <span class="crumb-sep">›</span> <span class="crumb-active">Oasis Shipping</span></div>
+          <div class="app-topnav-right">
+            <button class="ann-toggle-btn" onclick="toggleAnnotations()">Annotations ON</button>
+            <div class="persona-pill"><div class="persona-av av-blue">LAR</div><div><div class="persona-name">Layla Al-Rashidi</div><div class="persona-role">Founding Partner</div></div><span class="persona-chevron">▾</span></div>
+          </div>
+        </div>
+        <div class="app-body">
+          <div class="sidebar">
+            <div class="sidebar-module"><div class="sidebar-mod-badge sb-c">C</div><div class="sidebar-mod-name">Billing &amp; Communications</div></div>
+            <nav class="sidebar-nav">
+              <a>⏱️ Time Capture</a>
+              <a class="active-c">🧾 Billing &amp; WIP</a>
+              <a>✉️ Communications</a>
+            </nav>
+            <div class="sidebar-footer">All modules ↗</div>
+          </div>
+          <div class="app-main">
+            <div class="page-header">
+              <div class="page-header-text">
+                <div class="page-title">Oasis Shipping LLC v. Gulf Maritime Services Ltd</div>
+                <div class="page-subtitle">KA-2026-047 · ADGM Arbitration · WIP review as at 08 May 2026</div>
+              </div>
+              <div class="page-header-actions">
+                <button class="btn-sm">View all entries</button>
+              </div>
+            </div>
+            <div class="content-pad" style="padding-top:12px;">
+              <div class="two-col">
+                <div class="col-main">
+                  <div class="wip-summary rel">
+                    <span class="ann-badge ann-green" style="top:-8px;right:-8px;">1</span>
+                    <div class="wip-row"><span class="wip-label">Prior approved entries</span><span class="wip-value">14h 20m · AED 21,500</span></div>
+                    <div class="wip-row"><span class="wip-label">Today's entries (1h 30m pending approval)</span><span class="wip-value" style="color:var(--amber);">AED 2,250</span></div>
+                    <div class="wip-row wip-total-row"><span class="wip-total-label">Total WIP</span><span class="wip-total-value">AED 23,750</span></div>
+                    <div class="wip-row"><span class="wip-label">VAT (5%)</span><span class="wip-value">AED 1,187.50</span></div>
+                    <div class="wip-row" style="border-top:2px solid var(--slate-200);padding-top:8px;"><span style="font-size:15px;font-weight:800;color:var(--slate-900);">Invoice total</span><span style="font-size:17px;font-weight:800;color:var(--slate-900);">AED 24,937.50</span></div>
+                  </div>
+                  <div class="invoice-actions">
+                    <button class="btn-approve" style="padding:8px 16px;font-size:13px;" >Approve &amp; Post to Accounting</button>
+                    <button class="btn-edit-sm" style="padding:8px 16px;font-size:13px;">Edit</button>
+                    <button class="btn-edit-sm" style="padding:8px 16px;font-size:13px;">Save as draft</button>
+                  </div>
+                </div>
+                <div class="col-side">
+                  <div class="invoice-preview rel">
+                    <span class="ann-badge ann-green" style="top:-8px;right:-8px;">2</span>
+                    <div class="invoice-header">
+                      <div><div class="invoice-firm">Khalid &amp; Associates</div><div class="invoice-label">Tax Invoice · Draft</div></div>
+                      <div class="invoice-meta">Invoice #: KA-2026-INV-032<br>Date: 08 May 2026<br>Matter: KA-2026-047</div>
+                    </div>
+                    <div class="invoice-body">
+                      <div class="invoice-line"><span>Legal services — ADGM arbitration</span><span>14h 20m</span></div>
+                      <div class="invoice-line"><span>Research: limitation of liability</span><span>0h 45m</span></div>
+                      <div class="invoice-line"><span>Review: Statement of Defence draft</span><span>0h 45m</span></div>
+                      <div class="invoice-line" style="font-weight:600;"><span>Subtotal</span><span>AED 23,750</span></div>
+                      <div class="invoice-line"><span>VAT 5%</span><span>AED 1,187.50</span></div>
+                    </div>
+                    <div class="invoice-total-line"><span>TOTAL DUE</span><span>AED 24,937.50</span></div>
+                    <div class="invoice-draft-footer">Draft — not issued · Awaiting attorney approval</div>
+                  </div>
+                  <div class="xero-panel rel" style="margin-top:10px;">
+                    <span class="ann-badge ann-green" style="top:-8px;right:-8px;">3</span>
+                    <span class="xero-pulse"></span>
+                    <span style="font-weight:600;">Accounting — connected</span>
+                    <span style="margin-left:auto;font-size:11px;">Last sync 14:02 · Will post on approval</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ann-strip" style="margin-top:10px;">
+      <div class="ann-card"><div class="ann-num ann-green">1</div><div class="ann-text"><div class="ann-title">Billing becomes a review task, not a construction task</div><div class="ann-body">WIP accumulates from approved time entries. When Layla is ready to bill, the invoice is already drafted — not assembled from a spreadsheet. The WIP figure reflects every approved entry, including today's research session from slide 14.</div><div class="ann-value"><span class="ann-arrow" style="color:var(--green);">→</span> Revenue that was being silently lost is now systematically captured.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-green">2</div><div class="ann-text"><div class="ann-title">Invoice draft — professional, ready to issue</div><div class="ann-body">The invoice is generated from approved entries: matter reference, itemised time, VAT calculation, total. Layla reviews the draft, approves, and it posts. If she amends, the amendment is tracked. Nothing posts without her sign-off.</div><div class="ann-value"><span class="ann-arrow" style="color:var(--green);">→</span> Professional invoices, issued on time, with zero assembly work from Layla.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-green">3</div><div class="ann-text"><div class="ann-title">Posts to accounting on approval — nothing else</div><div class="ann-body">The accounting integration is one-directional at the point of action: approved invoices post. The accounting system does not see matter files, research memos, or client communications. The integration boundary is the right boundary.</div><div class="ann-value"><span class="ann-arrow" style="color:var(--green);">→</span> The accountant sees what they need. The privilege boundary is maintained.</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+  SLIDE 16 — Client Communications (Module C demo)
+════════════════════════════════════════════ -->
+<div class="slide demo" id="s16">
+  <div class="demo-wrap">
+    <div class="browser">
+      <div class="chrome-bar">
+        <div class="traffic-lights"><span class="tl r"></span><span class="tl y"></span><span class="tl g"></span></div>
+        <div class="addr-bar">legalos.app/communications/drafts</div>
+      </div>
+      <div class="app-ui">
+        <div class="app-topnav">
+          <div class="app-logo">Legal<span>OS</span></div>
+          <div class="app-breadcrumb">Billing &amp; Communications <span class="crumb-sep">›</span> <span class="crumb-active">Communications</span></div>
+          <div class="app-topnav-right">
+            <button class="ann-toggle-btn" onclick="toggleAnnotations()">Annotations ON</button>
+            <div class="persona-pill"><div class="persona-av av-blue">LAR</div><div><div class="persona-name">Layla Al-Rashidi</div><div class="persona-role">Founding Partner</div></div><span class="persona-chevron">▾</span></div>
+          </div>
+        </div>
+        <div class="app-body">
+          <div class="sidebar">
+            <div class="sidebar-module"><div class="sidebar-mod-badge sb-c">C</div><div class="sidebar-mod-name">Billing &amp; Communications</div></div>
+            <nav class="sidebar-nav">
+              <a>⏱️ Time Capture</a>
+              <a>🧾 Billing &amp; WIP</a>
+              <a class="active-c">✉️ Communications</a>
+            </nav>
+            <div class="sidebar-footer">All modules ↗</div>
+          </div>
+          <div class="app-main">
+            <div class="page-header">
+              <div class="page-header-text">
+                <div class="page-title">Communications</div>
+                <div class="page-subtitle">1 draft awaiting review · 0 sent today</div>
+              </div>
+            </div>
+            <div class="comms-trigger rel">
+              <span class="ann-badge ann-green" style="top:50%;right:16px;transform:translateY(-50%);">1</span>
+              <span class="comms-trigger-icon">⚡</span>
+              <span><strong>Milestone detected:</strong> Al Noor Medical Holdings — engagement letter countersigned 08 May 2026 · Draft update generated</span>
+            </div>
+            <div class="email-draft">
+              <div class="email-field"><span class="email-field-label">To</span><span class="email-field-value">Fatima Al Ghurair · General Counsel · Al Noor Medical Holdings LLC</span></div>
+              <div class="email-field"><span class="email-field-label">From</span><span class="email-field-value">layla@khalidassociates.com</span></div>
+              <div class="email-field"><span class="email-field-label">Subject</span><span class="email-field-value" style="font-weight:500;">Khalid &amp; Associates — Matter Opened: JV Structuring Advisory</span></div>
+              <div class="email-body-area rel">
+                <span class="ann-badge ann-green" style="top:-8px;right:-8px;">2</span>
+                <p style="margin-bottom:10px;">Dear Ms. Al Ghurair,</p>
+                <p style="margin-bottom:10px;">I am writing to confirm that Khalid &amp; Associates has formally opened your matter file following receipt of your countersigned engagement letter, received today. We are pleased to be acting for Al Noor Medical Holdings in connection with the proposed joint venture structuring with Apex Capital Partners under DIFC law.</p>
+                <p style="margin-bottom:10px;">Our initial review of the matter scope is underway. Our first substantive working session is scheduled for 15 May 2026, following which I will provide you with a detailed update on strategy and next steps.</p>
+                <p><span class="email-edit">I will revert</span> <span class="email-new">I will be in touch</span> with any preliminary observations before then if anything material arises. In the meantime, please do not hesitate to contact me directly.</p>
+                <p style="margin-top:10px;">Warm regards,<br><strong>Layla Al-Rashidi</strong><br>Founding Partner · Khalid &amp; Associates</p>
+              </div>
+              <div class="email-actions rel">
+                <span class="ann-badge ann-green" style="top:-8px;right:0px;">3</span>
+                <button class="btn-approve-lg">Approve &amp; Send</button>
+                <button class="btn-edit-lg">Edit further</button>
+                <button class="btn-edit-lg">Discard</button>
+              </div>
+              <div class="email-footer">Not sent · Awaiting attorney approval · Will send from layla@khalidassociates.com on approval</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ann-strip" style="margin-top:10px;">
+      <div class="ann-card"><div class="ann-num ann-green">1</div><div class="ann-text"><div class="ann-title">Triggered by a matter milestone — not by Layla remembering</div><div class="ann-body">The comms agent monitors the matter record for events that warrant a client update. The engagement letter countersignature from the intake on slide 11 is one such event. The draft existed before Layla thought to write it.</div><div class="ann-value"><span class="ann-arrow" style="color:var(--green);">→</span> Proactive client communication becomes the default, not the exception.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-green">2</div><div class="ann-text"><div class="ann-title">One edit. One approval. Client hears from their lawyer today.</div><div class="ann-body">Layla changed four words — "I will revert" to "I will be in touch." Everything else was accurate, professional, and on-brand. The time from milestone to sent email: under two minutes of attorney attention.</div><div class="ann-value"><span class="ann-arrow" style="color:var(--green);">→</span> The reputation for responsiveness that generates referrals is maintained without the overhead that would otherwise make it unsustainable.</div></div></div>
+      <div class="ann-card"><div class="ann-num ann-green">3</div><div class="ann-text"><div class="ann-title">The approval gate is non-negotiable</div><div class="ann-body">Nothing is sent without Layla's explicit approval. The Approve &amp; Send button is not a suggestion — it is the gate. Every client communication that leaves Khalid &amp; Associates carries Layla's professional judgment, not just the system's draft.</div><div class="ann-value"><span class="ann-arrow" style="color:var(--green);">→</span> The system drafts. Layla decides. Every time, without exception.</div></div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ─────────────────────────────── SLIDE 17 · System Recap ─── -->
+<div class="slide ctx" id="s17">
+  <div class="ctx-wrap" style="max-width:960px;margin:0 auto;padding:0 60px;">
+    <div style="font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:18px;">System overview</div>
+    <h1 style="font-size:44px;font-weight:800;letter-spacing:-1.5px;color:#fff;margin-bottom:12px;line-height:1.1;">The full system —<br>end to end.</h1>
+    <p style="font-size:16px;color:rgba(255,255,255,0.6);margin-bottom:44px;line-height:1.6;max-width:600px;">Three modules. One shared knowledge base. Every matter record, every billable moment, every client communication — connected.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:36px;">
+      <!-- Module A -->
+      <div style="background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.35);border-radius:12px;padding:24px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <span style="background:var(--blue);color:#fff;font-size:11px;font-weight:800;letter-spacing:1.5px;padding:4px 8px;border-radius:4px;">A</span>
+          <span style="font-size:13px;font-weight:700;color:#fff;">Knowledge &amp; Research</span>
+        </div>
+        <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:9px;">
+          <li style="font-size:12.5px;color:rgba(255,255,255,0.75);display:flex;align-items:flex-start;gap:8px;"><span style="color:var(--blue);flex-shrink:0;margin-top:1px;">✓</span>Practice corpus ingested — 47 documents, structured and searchable</li>
+          <li style="font-size:12.5px;color:rgba(255,255,255,0.75);display:flex;align-items:flex-start;gap:8px;"><span style="color:var(--blue);flex-shrink:0;margin-top:1px;">✓</span>Research query returns cited precedent, jurisdiction, and confidence score</li>
+          <li style="font-size:12.5px;color:rgba(255,255,255,0.75);display:flex;align-items:flex-start;gap:8px;"><span style="color:var(--blue);flex-shrink:0;margin-top:1px;">✓</span>Interview transcript structured into verified matter brief</li>
+        </ul>
+      </div>
+      <!-- Module B -->
+      <div style="background:rgba(217,119,6,0.12);border:1px solid rgba(217,119,6,0.35);border-radius:12px;padding:24px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <span style="background:var(--amber);color:#fff;font-size:11px;font-weight:800;letter-spacing:1.5px;padding:4px 8px;border-radius:4px;">B</span>
+          <span style="font-size:13px;font-weight:700;color:#fff;">Matter Operations</span>
+        </div>
+        <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:9px;">
+          <li style="font-size:12.5px;color:rgba(255,255,255,0.75);display:flex;align-items:flex-start;gap:8px;"><span style="color:var(--amber);flex-shrink:0;margin-top:1px;">✓</span>Intake brief auto-populated from interview — zero re-entry</li>
+          <li style="font-size:12.5px;color:rgba(255,255,255,0.75);display:flex;align-items:flex-start;gap:8px;"><span style="color:var(--amber);flex-shrink:0;margin-top:1px;">✓</span>Deadline and dependency map with daily risk digest</li>
+          <li style="font-size:12.5px;color:rgba(255,255,255,0.75);display:flex;align-items:flex-start;gap:8px;"><span style="color:var(--amber);flex-shrink:0;margin-top:1px;">✓</span>Document drafts drawn from verified precedent, not blank pages</li>
+        </ul>
+      </div>
+      <!-- Module C -->
+      <div style="background:rgba(22,163,74,0.12);border:1px solid rgba(22,163,74,0.35);border-radius:12px;padding:24px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <span style="background:var(--green);color:#fff;font-size:11px;font-weight:800;letter-spacing:1.5px;padding:4px 8px;border-radius:4px;">C</span>
+          <span style="font-size:13px;font-weight:700;color:#fff;">Billing &amp; Communications</span>
+        </div>
+        <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:9px;">
+          <li style="font-size:12.5px;color:rgba(255,255,255,0.75);display:flex;align-items:flex-start;gap:8px;"><span style="color:var(--green);flex-shrink:0;margin-top:1px;">✓</span>Every time entry captured in real time — no end-of-day reconstruction</li>
+          <li style="font-size:12.5px;color:rgba(255,255,255,0.75);display:flex;align-items:flex-start;gap:8px;"><span style="color:var(--green);flex-shrink:0;margin-top:1px;">✓</span>Invoice narrative drafted from actual work — not approximated from memory</li>
+          <li style="font-size:12.5px;color:rgba(255,255,255,0.75);display:flex;align-items:flex-start;gap:8px;"><span style="color:var(--green);flex-shrink:0;margin-top:1px;">✓</span>Client updates triggered by matter milestones — never missed</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:20px 28px;display:flex;align-items:flex-start;gap:20px;">
+      <div style="font-size:28px;flex-shrink:0;margin-top:2px;">⚡</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">The knowledge store built in Module A powers every subsequent module.</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;">The precedent retrieved in a research query appears in the intake brief. The brief populates the matter plan. The matter plan feeds the time capture record. The time capture record drafts the invoice. Nothing is re-entered. Nothing is lost between systems. One record, shared across the full workflow.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────────── SLIDE 18 · Path Forward ─── -->
+<div class="slide ctx" id="s18">
+  <div class="ctx-wrap" style="max-width:960px;margin:0 auto;padding:0 60px;">
+    <div style="font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:18px;">Build sequence</div>
+    <h1 style="font-size:44px;font-weight:800;letter-spacing:-1.5px;color:#fff;margin-bottom:12px;line-height:1.1;">The path from here.</h1>
+    <p style="font-size:16px;color:rgba(255,255,255,0.6);margin-bottom:40px;line-height:1.6;max-width:640px;">A single practice area. Ten working days to prove Module A. Then each phase extends the same system — no rework, no migrations, no technical debt to carry forward.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:36px;">
+      <div style="background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.35);border-radius:10px;padding:20px;">
+        <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:10px;">Phase 1</div>
+        <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.3;">Knowledge &amp; Research</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);font-weight:600;margin-bottom:12px;">10 working days</div>
+        <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:7px;">
+          <li style="font-size:12px;color:rgba(255,255,255,0.65);display:flex;gap:6px;"><span style="color:var(--blue);">·</span>Practice corpus ingested</li>
+          <li style="font-size:12px;color:rgba(255,255,255,0.65);display:flex;gap:6px;"><span style="color:var(--blue);">·</span>Research queries live</li>
+          <li style="font-size:12px;color:rgba(255,255,255,0.65);display:flex;gap:6px;"><span style="color:var(--blue);">·</span>Interview-to-brief pipeline</li>
+        </ul>
+      </div>
+      <div style="background:rgba(217,119,6,0.12);border:1px solid rgba(217,119,6,0.35);border-radius:10px;padding:20px;">
+        <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:10px;">Phase 2</div>
+        <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.3;">Matter Operations</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);font-weight:600;margin-bottom:12px;">Weeks 2 – 6</div>
+        <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:7px;">
+          <li style="font-size:12px;color:rgba(255,255,255,0.65);display:flex;gap:6px;"><span style="color:var(--amber);">·</span>Intake brief generation</li>
+          <li style="font-size:12px;color:rgba(255,255,255,0.65);display:flex;gap:6px;"><span style="color:var(--amber);">·</span>Deadline &amp; plan tracking</li>
+          <li style="font-size:12px;color:rgba(255,255,255,0.65);display:flex;gap:6px;"><span style="color:var(--amber);">·</span>Document drafting queue</li>
+        </ul>
+      </div>
+      <div style="background:rgba(22,163,74,0.12);border:1px solid rgba(22,163,74,0.35);border-radius:10px;padding:20px;">
+        <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:10px;">Phase 3</div>
+        <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.3;">Billing &amp; Comms</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.5);font-weight:600;margin-bottom:12px;">Weeks 6 – 12</div>
+        <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:7px;">
+          <li style="font-size:12px;color:rgba(255,255,255,0.65);display:flex;gap:6px;"><span style="color:var(--green);">·</span>Time capture &amp; WIP</li>
+          <li style="font-size:12px;color:rgba(255,255,255,0.65);display:flex;gap:6px;"><span style="color:var(--green);">·</span>Invoice generation</li>
+          <li style="font-size:12px;color:rgba(255,255,255,0.65);display:flex;gap:6px;"><span style="color:var(--green);">·</span>Client comms agent</li>
+        </ul>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:20px;">
+        <div style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:10px;">Phase 4</div>
+        <div style="font-size:15px;font-weight:700;color:rgba(255,255,255,0.7);margin-bottom:8px;line-height:1.3;">Full integration</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);font-weight:600;margin-bottom:12px;">Weeks 12+</div>
+        <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:7px;">
+          <li style="font-size:12px;color:rgba(255,255,255,0.45);display:flex;gap:6px;"><span style="color:rgba(255,255,255,0.3);">·</span>Cross-practice expansion</li>
+          <li style="font-size:12px;color:rgba(255,255,255,0.45);display:flex;gap:6px;"><span style="color:rgba(255,255,255,0.3);">·</span>Client portal &amp; intake</li>
+          <li style="font-size:12px;color:rgba(255,255,255,0.45);display:flex;gap:6px;"><span style="color:rgba(255,255,255,0.3);">·</span>Full-practice analytics</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="width:32px;height:32px;background:rgba(255,255,255,0.06);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">📄</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;">Your documents, your practice</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.5;">Built on your actual case files, precedents, and workflow — not a generic legal template.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="width:32px;height:32px;background:rgba(255,255,255,0.06);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🔒</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;">Attorney approval at every gate</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.5;">The system drafts. You decide. Nothing is sent, filed, or invoiced without your explicit sign-off.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div style="width:32px;height:32px;background:rgba(255,255,255,0.06);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">📈</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;">Infrastructure cost, not headcount</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.5;">The system expands the capacity of the lawyers you already have — before adding a seat.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────────── SLIDE 19 · The Ask ─── -->
+<div class="slide ctx" id="s19">
+  <div class="ctx-wrap" style="max-width:960px;margin:0 auto;padding:0 60px;">
+    <div style="font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:18px;">Next steps</div>
+    <h1 style="font-size:44px;font-weight:800;letter-spacing:-1.5px;color:#fff;margin-bottom:12px;line-height:1.1;">Three ways to start.</h1>
+    <p style="font-size:16px;color:rgba(255,255,255,0.6);margin-bottom:36px;line-height:1.6;max-width:640px;">Pick the level of engagement that fits where you are. There is no wrong choice — each one is a door.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:32px;">
+      <!-- 01 Lightest -->
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:24px;display:flex;flex-direction:column;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <span style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);">01</span>
+          <span style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);padding:3px 8px;border-radius:20px;letter-spacing:0.5px;">30 minutes</span>
+        </div>
+        <div style="font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:8px;">LIGHTEST</div>
+        <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:12px;line-height:1.3;">A conversation</div>
+        <p style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;flex:1;margin-bottom:20px;">Tell me which part of this landed, which part didn't, and what your actual workflow looks like. I'll tell you honestly whether the system fits.</p>
+        <a href="mailto:jeroen.hendriks@safwai.com?subject=LegalOS%20—%20conversation" style="display:block;text-align:center;padding:10px 16px;border:1px solid rgba(255,255,255,0.2);border-radius:7px;color:rgba(255,255,255,0.8);font-size:13px;font-weight:600;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='transparent'">Book 30 minutes →</a>
+      </div>
+      <!-- 02 Deeper -->
+      <div style="background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.4);border-radius:12px;padding:24px;display:flex;flex-direction:column;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <span style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);">02</span>
+          <span style="font-size:10px;font-weight:700;background:rgba(37,99,235,0.25);color:var(--blue-mid);padding:3px 8px;border-radius:20px;letter-spacing:0.5px;">10 working days</span>
+        </div>
+        <div style="font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:8px;">DEEPER</div>
+        <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:12px;line-height:1.3;">Module A on your documents</div>
+        <p style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;flex:1;margin-bottom:20px;">We ingest one practice area from your actual case files and precedents. You run live research queries on your own corpus. No generic data. No abstraction. You either see the value or you don't.</p>
+        <a href="mailto:jeroen.hendriks@safwai.com?subject=LegalOS%20—%20Module%20A%20build" style="display:block;text-align:center;padding:10px 16px;background:var(--blue);border-radius:7px;color:#fff;font-size:13px;font-weight:600;text-decoration:none;">Start the build →</a>
+      </div>
+      <!-- 03 Founding Partner -->
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:24px;display:flex;flex-direction:column;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--amber),var(--green));"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <span style="font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);">03</span>
+          <span style="font-size:10px;font-weight:700;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);padding:3px 8px;border-radius:20px;letter-spacing:0.5px;">ongoing</span>
+        </div>
+        <div style="font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:8px;">FOUNDING PARTNER</div>
+        <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:12px;line-height:1.3;">Co-build the full system</div>
+        <p style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;flex:1;margin-bottom:20px;">You become a named founding firm. We build all four phases around your practice. Your workflow shapes the product. In exchange: a reference, a recorded conversation, and introductions to firms you'd choose to be associated with.</p>
+        <a href="mailto:jeroen.hendriks@safwai.com?subject=LegalOS%20—%20Founding%20Partner" style="display:block;text-align:center;padding:10px 16px;border:1px solid rgba(255,255,255,0.25);border-radius:7px;color:rgba(255,255,255,0.85);font-size:13px;font-weight:600;text-decoration:none;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='transparent'">Start a conversation →</a>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:22px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="background:#fff;padding:6px 11px;border-radius:6px;flex-shrink:0;">
+          <img src="safwai-logo-h.svg" style="height:20px;width:auto;display:block;" alt="Safwai AI Solutions LLC">
+        </div>
+        <div>
+          <div style="font-size:12.5px;font-weight:600;color:rgba(255,255,255,0.85);">Jeroen Hendriks · Safwai AI Solutions LLC</div>
+          <div style="font-size:11.5px;color:rgba(255,255,255,0.45);margin-top:2px;">jeroen.hendriks@safwai.com · safwai.com</div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.35);text-align:right;max-width:380px;line-height:1.6;">Built on production-proven infrastructure · Designed end-to-end across all eight processes · The system handles the administrative load. You retain every professional judgment.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- #deck -->
+
+
+
+
+<!-- Navigation -->
+<button class="nav-arr" id="nav-prev" onclick="prevSlide()">&#8592;</button>
+<button class="nav-arr" id="nav-next" onclick="nextSlide()">&#8594;</button>
+<div class="nav-dots" id="nav-dots"></div>
+<div class="slide-counter" id="slide-counter">1 / 19</div>
+
+<script>
+const TOTAL = 19;
+let cur = 0;
+let annOn = true;
+
+const slides = document.querySelectorAll('.slide');
+const dotsEl = document.getElementById('nav-dots');
+const counter = document.getElementById('slide-counter');
+
+// Build dots
+for (let i = 0; i < TOTAL; i++) {
+  const d = document.createElement('button');
+  d.className = 'nd' + (i === 0 ? ' active' : '');
+  d.title = 'Slide ' + (i + 1);
+  d.addEventListener('click', () => goTo(i));
+  dotsEl.appendChild(d);
+}
+
+function goTo(n) {
+  if (n < 0 || n >= TOTAL) return;
+  slides[cur].classList.remove('active');
+  dotsEl.children[cur].classList.remove('active');
+  cur = n;
+  slides[cur].classList.add('active');
+  dotsEl.children[cur].classList.add('active');
+  counter.textContent = (cur + 1) + ' / ' + TOTAL;
+}
+
+function nextSlide() { goTo(cur + 1); }
+function prevSlide() { goTo(cur - 1); }
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextSlide();
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prevSlide();
+});
+
+function toggleAnnotations() {
+  annOn = !annOn;
+  document.body.classList.toggle('ann-off', !annOn);
+  document.querySelectorAll('.ann-toggle-btn').forEach(b => {
+    b.textContent = annOn ? 'Annotations ON' : 'Annotations OFF';
+  });
+}
+
+// Scale deck to viewport
+function scaleDeck() {
+  const deck = document.getElementById('deck');
+  const sx = window.innerWidth / 1440;
+  const sy = window.innerHeight / 900;
+  const s = Math.min(sx, sy);
+  deck.style.transform = 'scale(' + s + ')';
+  deck.style.left = ((window.innerWidth - 1440 * s) / 2) + 'px';
+  deck.style.top = ((window.innerHeight - 900 * s) / 2) + 'px';
+}
+window.addEventListener('resize', scaleDeck);
+scaleDeck();
+</script>
+</body>
+</html>

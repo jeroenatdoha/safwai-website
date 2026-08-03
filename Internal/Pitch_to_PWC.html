@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safwai — Compliance Architecture</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    height: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: #002D49;
+    color: #F7F6F3;
+    font-family: 'Segoe UI', Inter, sans-serif;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  /* ── Fixed Header ── */
+  .page-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    height: 64px;
+    background: #002D49;
+    border-bottom: 1px solid #122a3a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 52px;
+  }
+  .slide-counter {
+    font-size: 10px;
+    color: #2a5a6a;
+    letter-spacing: 0.12em;
+    font-style: italic;
+  }
+
+  /* ── Slides ── */
+  .slide {
+    height: 100vh;
+    scroll-snap-align: start;
+    padding: 80px 64px 44px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+  }
+
+  /* ── Section label ── */
+  .slide-section {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    flex-shrink: 0;
+  }
+  .slide-section .ss-line { flex: 1; height: 1px; background: #1A4A5C; }
+  .slide-section .ss-label {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #4a7a8a;
+    white-space: nowrap;
+  }
+
+  /* ── Title slide ── */
+  .slide-title {
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .title-context {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #5a8fa0;
+    margin-bottom: 20px;
+  }
+  .title-heading {
+    font-size: 44px;
+    font-weight: 700;
+    color: #F7F6F3;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .title-heading span { color: #D4AF37; }
+  .title-rule {
+    width: 40px;
+    height: 2px;
+    background: #0E5C4D;
+    margin-top: 28px;
+  }
+  .title-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    padding-bottom: 4px;
+  }
+  .title-date {
+    font-size: 12px;
+    color: #5a8fa0;
+    margin-bottom: 10px;
+  }
+  .title-presenter {
+    font-size: 13px;
+    color: #9ac8d8;
+    font-weight: 500;
+  }
+  .title-company {
+    font-size: 10px;
+    color: #5a8fa0;
+    margin-top: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Agenda slide ── */
+  .slide-agenda { justify-content: center; }
+  .agenda-inner {
+    display: flex;
+    gap: 80px;
+    align-items: flex-start;
+    background: #0a1e2e;
+    border: 1px solid #1A4A5C;
+    border-radius: 12px;
+    padding: 52px 60px;
+  }
+  .agenda-left { min-width: 180px; flex-shrink: 0; }
+  .agenda-label {
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #3a6a7a;
+    margin-bottom: 20px;
+  }
+  .agenda-heading {
+    font-size: 36px;
+    font-weight: 700;
+    color: #F7F6F3;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .agenda-divider {
+    width: 32px;
+    height: 2px;
+    background: #0E5C4D;
+    margin-top: 18px;
+  }
+  .agenda-items {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .agenda-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 14px 0;
+    border-bottom: 1px solid #112a3a;
+  }
+  .agenda-item:last-child { border-bottom: none; }
+  .agenda-num {
+    font-size: 10px;
+    font-weight: 600;
+    color: #2a5a6a;
+    min-width: 20px;
+    letter-spacing: 0.08em;
+  }
+  .agenda-text {
+    font-size: 17px;
+    font-weight: 400;
+    color: #9ac8d8;
+  }
+
+  /* ── Use cases ── */
+  .slide-title-row {
+    font-size: 15px;
+    font-weight: 600;
+    color: #F7F6F3;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+    letter-spacing: 0.01em;
+  }
+  .usecase-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    flex: 1;
+    min-height: 0;
+  }
+  .usecase-card {
+    background: #0a1e2e;
+    border: 1px solid #1A4A5C;
+    border-radius: 10px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+  }
+  .uc-number {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #5a8fa0;
+    margin-bottom: 12px;
+  }
+  .uc-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #F7F6F3;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .uc-desc {
+    font-size: 12px;
+    color: #9ac8d8;
+    line-height: 1.65;
+    flex: 1;
+  }
+  .uc-value {
+    font-size: 11.5px;
+    color: #D4AF37;
+    line-height: 1.55;
+    padding-top: 18px;
+    border-top: 1px solid #1A4A5C;
+    margin-top: 18px;
+  }
+
+  /* ── Diagram ── */
+  .diagram-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #F7F6F3;
+    margin-bottom: 12px;
+    letter-spacing: 0.01em;
+    flex-shrink: 0;
+  }
+  .diagram-block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .diagram {
+    display: grid;
+    grid-template-columns: 30% 40% 30%;
+    gap: 0;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* ── Zones ── */
+  .zone {
+    padding: 16px 15px;
+    position: relative;
+  }
+  .zone-1 { background: #0a1e2e; border-radius: 10px 0 0 10px; }
+  .zone-2 { background: #0a1e2e; position: relative; }
+  .zone-3 { background: #0a1e2e; border-radius: 0 10px 10px 0; }
+  .zone-divider-left  { border-left: 1px solid #1A4A5C; }
+  .zone-divider-right { border-right: 1px solid #1A4A5C; }
+  .zone-label {
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #5a8fa0;
+    margin-bottom: 10px;
+    display: block;
+    flex-shrink: 0;
+  }
+
+  /* ── Guardrail band ── */
+  .guardrail-band {
+    position: absolute;
+    inset: 8px 6px 8px 6px;
+    border: 1px dashed rgba(212, 175, 55, 0.4);
+    border-radius: 8px;
+    background: transparent;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .guardrail-label {
+    margin-top: auto;
+    padding-top: 10px;
+    z-index: 1;
+  }
+  .guardrail-label .gl-title {
+    font-size: 8px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #D4AF37;
+    margin-bottom: 4px;
+  }
+  .guardrail-label .gl-lines {
+    font-size: 8.5px;
+    color: rgba(212, 175, 55, 0.7);
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .zone-2-inner {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Boxes ── */
+  .box {
+    background: #0d2030;
+    border: 1px solid #1a4055;
+    border-radius: 7px;
+    padding: 8px 11px;
+    margin-bottom: 7px;
+    flex-shrink: 0;
+  }
+  .box.optional { border-style: dashed; }
+
+  .box-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #F7F6F3;
+    margin-bottom: 3px;
+  }
+  .box-desc {
+    font-size: 9.5px;
+    color: #9ac8d8;
+    line-height: 1.4;
+  }
+
+  /* ── Arrows ── */
+  .arrow-down {
+    width: 1px;
+    height: 10px;
+    background: #1a4a5c;
+    margin: 1px auto;
+    position: relative;
+    display: block;
+    flex-shrink: 0;
+  }
+  .arrow-down::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #1a4a5c;
+  }
+  .arrow-cross {
+    position: absolute;
+    right: -1px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    z-index: 10;
+  }
+  .arrow-cross .ac-line { width: 18px; height: 1px; background: #2a6a7a; }
+  .arrow-cross .ac-head {
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 6px solid #2a6a7a;
+  }
+  .split-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 5px;
+    margin-bottom: 7px;
+    flex-shrink: 0;
+  }
+  .split-row .box { margin-bottom: 0; }
+
+  /* ── PoC slide ── */
+  .poc-angles {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+  }
+  .poc-angle {
+    background: #0a1e2e;
+    border: 1px solid #1A4A5C;
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .poc-angle-label {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #5a8fa0;
+    margin-bottom: 10px;
+  }
+  .poc-angle-text {
+    font-size: 11.5px;
+    color: #9ac8d8;
+    line-height: 1.65;
+  }
+  .poc-ask {
+    background: #0d2234;
+    border: 1px solid #1a5c7a;
+    border-radius: 8px;
+    padding: 22px 28px;
+    flex-shrink: 0;
+  }
+  .poc-ask-label {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #c49a00;
+    margin-bottom: 10px;
+  }
+  .poc-engagement-text {
+    font-size: 11.5px;
+    color: #9ac8d8;
+    line-height: 1.55;
+    margin-bottom: 4px;
+  }
+  .poc-ask-divider {
+    height: 1px;
+    background: #1A4A5C;
+    margin: 14px 0;
+  }
+  .poc-ask-items { display: flex; flex-direction: column; gap: 9px; }
+  .poc-ask-item { display: flex; gap: 16px; align-items: flex-start; }
+  .poc-ask-num {
+    font-size: 10px;
+    font-weight: 600;
+    color: #D4AF37;
+    min-width: 18px;
+    padding-top: 2px;
+  }
+  .poc-ask-text { font-size: 12px; color: #F7F6F3; line-height: 1.5; }
+  .poc-timeline {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #1A4A5C;
+    font-size: 11px;
+    color: #D4AF37;
+    font-style: italic;
+  }
+
+  /* ── Next Steps ── */
+  .nextsteps-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex: 1;
+    justify-content: center;
+  }
+  .nextstep-row {
+    background: #0a1e2e;
+    border: 1px solid #1A4A5C;
+    border-radius: 8px;
+    padding: 24px 28px;
+    display: grid;
+    grid-template-columns: 28px 1fr auto auto;
+    align-items: center;
+    gap: 24px;
+  }
+  .ns-num { font-size: 10px; font-weight: 600; color: #5a8fa0; }
+  .ns-label { font-size: 15px; font-weight: 600; color: #F7F6F3; margin-bottom: 4px; }
+  .ns-desc { font-size: 11.5px; color: #9ac8d8; }
+  .ns-duration { font-size: 10px; color: #5a8fa0; white-space: nowrap; }
+  .ns-date {
+    font-size: 12px;
+    color: #D4AF37;
+    background: rgba(212,175,55,0.07);
+    border: 1px solid rgba(212,175,55,0.22);
+    border-radius: 5px;
+    padding: 8px 22px;
+    min-width: 150px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .slide-footer {
+    text-align: center;
+    font-size: 10px;
+    color: #2a5a6a;
+    padding-top: 16px;
+    font-style: italic;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Fixed Header ── -->
+<div class="page-header">
+  <svg style="height:48px;width:auto;display:block;" viewBox="0 0 2124 637.499986" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><g/><clipPath id="f6f2f2e328"><path d="M 2070.054688 391.964844 L 2122.511719 391.964844 L 2122.511719 564.328125 L 2070.054688 564.328125 Z M 2070.054688 391.964844 " clip-rule="nonzero"/></clipPath><clipPath id="747bb8be96"><path d="M 0.0546875 0.964844 L 52.511719 0.964844 L 52.511719 173.328125 L 0.0546875 173.328125 Z M 0.0546875 0.964844 " clip-rule="nonzero"/></clipPath><clipPath id="db8526e694"><rect x="0" width="53" y="0" height="174"/></clipPath><clipPath id="cb1aea00b0"><path d="M 1849.746094 391.488281 L 2122.515625 391.488281 L 2122.515625 443.945312 L 1849.746094 443.945312 Z M 1849.746094 391.488281 " clip-rule="nonzero"/></clipPath><clipPath id="fda73e64dd"><path d="M 0.746094 0.488281 L 273.515625 0.488281 L 273.515625 52.945312 L 0.746094 52.945312 Z M 0.746094 0.488281 " clip-rule="nonzero"/></clipPath><clipPath id="3261e4b5ee"><rect x="0" width="274" y="0" height="53"/></clipPath><clipPath id="23b60900a4"><path d="M 1714 392 L 1887 392 L 1887 565 L 1714 565 Z M 1714 392 " clip-rule="nonzero"/></clipPath><clipPath id="8fd226b966"><path d="M 1751.816406 564.328125 L 1714.722656 527.234375 L 1849.851562 392.109375 L 1886.945312 429.203125 Z M 1751.816406 564.328125 " clip-rule="nonzero"/></clipPath><clipPath id="8b625a1bc2"><path d="M 0.527344 0.09375 L 172.953125 0.09375 L 172.953125 172.515625 L 0.527344 172.515625 Z M 0.527344 0.09375 " clip-rule="nonzero"/></clipPath><clipPath id="b876f9769d"><path d="M 37.816406 172.328125 L 0.722656 135.234375 L 135.851562 0.109375 L 172.945312 37.203125 Z M 37.816406 172.328125 " clip-rule="nonzero"/></clipPath><clipPath id="0df8fb1bb9"><rect x="0" width="173" y="0" height="173"/></clipPath><clipPath id="4edf46454a"><path d="M 1699.097656 152.152344 L 1751.554688 152.152344 L 1751.554688 564.328125 L 1699.097656 564.328125 Z M 1699.097656 152.152344 " clip-rule="nonzero"/></clipPath><clipPath id="1ee3729520"><path d="M 0.0976562 0.152344 L 52.554688 0.152344 L 52.554688 412.328125 L 0.0976562 412.328125 Z M 0.0976562 0.152344 " clip-rule="nonzero"/></clipPath><clipPath id="a5f943bf81"><rect x="0" width="53" y="0" height="413"/></clipPath><clipPath id="2d5d6f4672"><path d="M 1499 152 L 1736 152 L 1736 389 L 1499 389 Z M 1499 152 " clip-rule="nonzero"/></clipPath><clipPath id="9adff9a60f"><path d="M 1537.050781 388.015625 L 1499.957031 350.921875 L 1698.726562 152.152344 L 1735.820312 189.246094 Z M 1537.050781 388.015625 " clip-rule="nonzero"/></clipPath><clipPath id="01409d9a1f"><path d="M 0.894531 0.0390625 L 236.871094 0.0390625 L 236.871094 236.015625 L 0.894531 236.015625 Z M 0.894531 0.0390625 " clip-rule="nonzero"/></clipPath><clipPath id="28ab56da17"><path d="M 38.050781 236.015625 L 0.957031 198.921875 L 199.726562 0.152344 L 236.820312 37.246094 Z M 38.050781 236.015625 " clip-rule="nonzero"/></clipPath><clipPath id="53c853c141"><rect x="0" width="237" y="0" height="237"/></clipPath><clipPath id="03b9a8f810"><path d="M 1336 151 L 1574 151 L 1574 389 L 1336 389 Z M 1336 151 " clip-rule="nonzero"/></clipPath><clipPath id="9be7b8abac"><path d="M 1573.335938 350.921875 L 1536.242188 388.015625 L 1336.378906 188.152344 L 1373.472656 151.058594 Z M 1573.335938 350.921875 " clip-rule="nonzero"/></clipPath><clipPath id="99951e52e2"><path d="M 0.34375 0 L 237.519531 0 L 237.519531 237.015625 L 0.34375 237.015625 Z M 0.34375 0 " clip-rule="nonzero"/></clipPath><clipPath id="337b3db9fd"><path d="M 237.335938 199.921875 L 200.242188 237.015625 L 0.378906 37.152344 L 37.472656 0.0585938 Z M 237.335938 199.921875 " clip-rule="nonzero"/></clipPath><clipPath id="ca219d8970"><rect x="0" width="238" y="0" height="238"/></clipPath><clipPath id="77e56a5487"><path d="M 1320.644531 151.058594 L 1373.101562 151.058594 L 1373.101562 563.238281 L 1320.644531 563.238281 Z M 1320.644531 151.058594 " clip-rule="nonzero"/></clipPath><clipPath id="7125ecf9fc"><path d="M 0.644531 0.0585938 L 53.101562 0.0585938 L 53.101562 412.238281 L 0.644531 412.238281 Z M 0.644531 0.0585938 " clip-rule="nonzero"/></clipPath><clipPath id="77733c4968"><rect x="0" width="54" y="0" height="413"/></clipPath><clipPath id="822979f06c"><path d="M 1185 391 L 1358 391 L 1358 564 L 1185 564 Z M 1185 391 " clip-rule="nonzero"/></clipPath><clipPath id="3f4e4fc034"><path d="M 1357.363281 526.144531 L 1320.269531 563.238281 L 1185.144531 428.109375 L 1222.238281 391.015625 Z M 1357.363281 526.144531 " clip-rule="nonzero"/></clipPath><clipPath id="72232db85f"><path d="M 0.0234375 0 L 172.449219 0 L 172.449219 172.316406 L 0.0234375 172.316406 Z M 0.0234375 0 " clip-rule="nonzero"/></clipPath><clipPath id="a89bab482e"><path d="M 172.363281 135.144531 L 135.269531 172.238281 L 0.144531 37.109375 L 37.238281 0.015625 Z M 172.363281 135.144531 " clip-rule="nonzero"/></clipPath><clipPath id="4bfbdbf923"><rect x="0" width="173" y="0" height="173"/></clipPath><clipPath id="914ecd6267"><path d="M 949.707031 391.488281 L 1222.472656 391.488281 L 1222.472656 443.945312 L 949.707031 443.945312 Z M 949.707031 391.488281 " clip-rule="nonzero"/></clipPath><clipPath id="9ac700767b"><path d="M 0.707031 0.488281 L 273.472656 0.488281 L 273.472656 52.945312 L 0.707031 52.945312 Z M 0.707031 0.488281 " clip-rule="nonzero"/></clipPath><clipPath id="af65a0a279"><rect x="0" width="274" y="0" height="53"/></clipPath><clipPath id="b3dc033a25"><path d="M 949.828125 392.109375 L 1002.285156 392.109375 L 1002.285156 564.472656 L 949.828125 564.472656 Z M 949.828125 392.109375 " clip-rule="nonzero"/></clipPath><clipPath id="ab0fd71df7"><path d="M 0.828125 0.109375 L 53.285156 0.109375 L 53.285156 172.472656 L 0.828125 172.472656 Z M 0.828125 0.109375 " clip-rule="nonzero"/></clipPath><clipPath id="2a25e5115f"><rect x="0" width="54" y="0" height="173"/></clipPath><clipPath id="0b9c4b24aa"><path d="M 1508.742188 184.972656 L 1562.703125 184.972656 L 1562.703125 564.46875 L 1508.742188 564.46875 Z M 1508.742188 184.972656 " clip-rule="nonzero"/></clipPath><clipPath id="6b2afd11e6"><path d="M 0.742188 0.972656 L 54.703125 0.972656 L 54.703125 380.46875 L 0.742188 380.46875 Z M 0.742188 0.972656 " clip-rule="nonzero"/></clipPath><clipPath id="71ea6fa842"><rect x="0" width="55" y="0" height="381"/></clipPath><clipPath id="44d3f65ebe"><path d="M 1463.78125 492.527344 L 1607.667969 492.527344 L 1607.667969 636.417969 L 1463.78125 636.417969 Z M 1463.78125 492.527344 " clip-rule="nonzero"/></clipPath><clipPath id="d31c8af8e2"><path d="M 1535.726562 492.527344 C 1495.992188 492.527344 1463.78125 524.738281 1463.78125 564.472656 C 1463.78125 604.207031 1495.992188 636.417969 1535.726562 636.417969 C 1575.457031 636.417969 1607.667969 604.207031 1607.667969 564.472656 C 1607.667969 524.738281 1575.457031 492.527344 1535.726562 492.527344 Z M 1535.726562 492.527344 " clip-rule="nonzero"/></clipPath><clipPath id="d45d2f6627"><path d="M 0.78125 0.527344 L 144.667969 0.527344 L 144.667969 144.417969 L 0.78125 144.417969 Z M 0.78125 0.527344 " clip-rule="nonzero"/></clipPath><clipPath id="c277ced117"><path d="M 72.726562 0.527344 C 32.992188 0.527344 0.78125 32.738281 0.78125 72.472656 C 0.78125 112.207031 32.992188 144.417969 72.726562 144.417969 C 112.457031 144.417969 144.667969 112.207031 144.667969 72.472656 C 144.667969 32.738281 112.457031 0.527344 72.726562 0.527344 Z M 72.726562 0.527344 " clip-rule="nonzero"/></clipPath><clipPath id="fe94e5ff38"><rect x="0" width="145" y="0" height="145"/></clipPath><clipPath id="ae77ae87ff"><path d="M 1464.164062 79.117188 L 1608.050781 79.117188 L 1608.050781 223.003906 L 1464.164062 223.003906 Z M 1464.164062 79.117188 " clip-rule="nonzero"/></clipPath><clipPath id="309e7ab29a"><path d="M 1536.109375 79.117188 C 1496.375 79.117188 1464.164062 111.328125 1464.164062 151.058594 C 1464.164062 190.792969 1496.375 223.003906 1536.109375 223.003906 C 1575.839844 223.003906 1608.050781 190.792969 1608.050781 151.058594 C 1608.050781 111.328125 1575.839844 79.117188 1536.109375 79.117188 Z M 1536.109375 79.117188 " clip-rule="nonzero"/></clipPath><clipPath id="d7dbf08e5b"><path d="M 0.164062 0.117188 L 144.050781 0.117188 L 144.050781 144.003906 L 0.164062 144.003906 Z M 0.164062 0.117188 " clip-rule="nonzero"/></clipPath><clipPath id="53b133f37d"><path d="M 72.109375 0.117188 C 32.375 0.117188 0.164062 32.328125 0.164062 72.058594 C 0.164062 111.792969 32.375 144.003906 72.109375 144.003906 C 111.839844 144.003906 144.050781 111.792969 144.050781 72.058594 C 144.050781 32.328125 111.839844 0.117188 72.109375 0.117188 Z M 72.109375 0.117188 " clip-rule="nonzero"/></clipPath><clipPath id="7bb504f9b9"><rect x="0" width="145" y="0" height="145"/></clipPath><clipPath id="a31b8cc05c"><rect x="0" width="1167" y="0" height="334"/></clipPath></defs><g clip-path="url(#f6f2f2e328)"><g transform="matrix(1, 0, 0, 1, 2070, 391)"><g clip-path="url(#db8526e694)"><g clip-path="url(#747bb8be96)"><path fill="#0e5c4d" d="M 0.0546875 0.964844 L 52.511719 0.964844 L 52.511719 173.300781 L 0.0546875 173.300781 Z M 0.0546875 0.964844 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#cb1aea00b0)"><g transform="matrix(1, 0, 0, 1, 1849, 391)"><g clip-path="url(#3261e4b5ee)"><g clip-path="url(#fda73e64dd)"><path fill="#0e5c4d" d="M 0.746094 52.945312 L 0.746094 0.488281 L 273.492188 0.488281 L 273.492188 52.945312 Z M 0.746094 52.945312 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#23b60900a4)"><g clip-path="url(#8fd226b966)"><g transform="matrix(1, 0, 0, 1, 1714, 392)"><g clip-path="url(#0df8fb1bb9)"><g clip-path="url(#8b625a1bc2)"><g clip-path="url(#b876f9769d)"><path fill="#0e5c4d" d="M 37.816406 172.328125 L 0.722656 135.234375 L 135.910156 0.046875 L 173.007812 37.140625 Z M 37.816406 172.328125 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g></g></g><g clip-path="url(#4edf46454a)"><g transform="matrix(1, 0, 0, 1, 1699, 152)"><g clip-path="url(#a5f943bf81)"><g clip-path="url(#1ee3729520)"><path fill="#0e5c4d" d="M 0.0976562 0.152344 L 52.554688 0.152344 L 52.554688 412.242188 L 0.0976562 412.242188 Z M 0.0976562 0.152344 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#2d5d6f4672)"><g clip-path="url(#9adff9a60f)"><g transform="matrix(1, 0, 0, 1, 1499, 152)"><g clip-path="url(#53c853c141)"><g clip-path="url(#01409d9a1f)"><g clip-path="url(#28ab56da17)"><path fill="#0e5c4d" d="M 38.050781 236.015625 L 0.957031 198.921875 L 199.757812 0.121094 L 236.851562 37.214844 Z M 38.050781 236.015625 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g></g></g><g clip-path="url(#03b9a8f810)"><g clip-path="url(#9be7b8abac)"><g transform="matrix(1, 0, 0, 1, 1336, 151)"><g clip-path="url(#ca219d8970)"><g clip-path="url(#99951e52e2)"><g clip-path="url(#337b3db9fd)"><path fill="#0e5c4d" d="M 237.335938 199.921875 L 200.242188 237.015625 L 0.429688 37.199219 L 37.523438 0.105469 Z M 237.335938 199.921875 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g></g></g><g clip-path="url(#77e56a5487)"><g transform="matrix(1, 0, 0, 1, 1320, 151)"><g clip-path="url(#77733c4968)"><g clip-path="url(#7125ecf9fc)"><path fill="#0e5c4d" d="M 0.644531 0.0585938 L 53.101562 0.0585938 L 53.101562 412.148438 L 0.644531 412.148438 Z M 0.644531 0.0585938 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#822979f06c)"><g clip-path="url(#3f4e4fc034)"><g transform="matrix(1, 0, 0, 1, 1185, 391)"><g clip-path="url(#4bfbdbf923)"><g clip-path="url(#72232db85f)"><g clip-path="url(#a89bab482e)"><path fill="#0e5c4d" d="M 172.363281 135.144531 L 135.269531 172.238281 L 0.0820312 37.046875 L 37.175781 -0.046875 Z M 172.363281 135.144531 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g></g></g><g clip-path="url(#914ecd6267)"><g transform="matrix(1, 0, 0, 1, 949, 391)"><g clip-path="url(#af65a0a279)"><g clip-path="url(#9ac700767b)"><path fill="#0e5c4d" d="M 0.707031 52.945312 L 0.707031 0.488281 L 273.449219 0.488281 L 273.449219 52.945312 Z M 0.707031 52.945312 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#b3dc033a25)"><g transform="matrix(1, 0, 0, 1, 949, 392)"><g clip-path="url(#2a25e5115f)"><g clip-path="url(#ab0fd71df7)"><path fill="#0e5c4d" d="M 0.828125 0.109375 L 53.285156 0.109375 L 53.285156 172.441406 L 0.828125 172.441406 Z M 0.828125 0.109375 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#0b9c4b24aa)"><g transform="matrix(1, 0, 0, 1, 1508, 184)"><g clip-path="url(#71ea6fa842)"><g clip-path="url(#6b2afd11e6)"><path fill="#d4af37" d="M 0.742188 380.46875 L 0.742188 0.871094 L 54.703125 0.871094 L 54.703125 380.46875 Z M 0.742188 380.46875 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g><g clip-path="url(#44d3f65ebe)"><g clip-path="url(#d31c8af8e2)"><g transform="matrix(1, 0, 0, 1, 1463, 492)"><g clip-path="url(#fe94e5ff38)"><g clip-path="url(#d45d2f6627)"><g clip-path="url(#c277ced117)"><path fill="#d4af37" d="M 0.78125 0.527344 L 144.667969 0.527344 L 144.667969 144.417969 L 0.78125 144.417969 Z M 0.78125 0.527344 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g></g></g><g clip-path="url(#ae77ae87ff)"><g clip-path="url(#309e7ab29a)"><g transform="matrix(1, 0, 0, 1, 1464, 79)"><g clip-path="url(#7bb504f9b9)"><g clip-path="url(#d7dbf08e5b)"><g clip-path="url(#53b133f37d)"><path fill="#d4af37" d="M 0.164062 0.117188 L 144.050781 0.117188 L 144.050781 144.003906 L 0.164062 144.003906 Z M 0.164062 0.117188 " fill-opacity="1" fill-rule="nonzero"/></g></g></g></g></g></g><g transform="matrix(1, 0, 0, 1, 80, 76)"><g clip-path="url(#a31b8cc05c)"><g fill="#0e5c4d" fill-opacity="1"><g transform="translate(0.938003, 263.986972)"><g><path d="M 85.53125 3.28125 C 70.414062 3.28125 55.796875 1.234375 41.671875 -2.859375 C 27.554688 -6.960938 16.21875 -12.296875 7.65625 -18.859375 L 22.6875 -52.203125 C 30.882812 -46.179688 40.628906 -41.347656 51.921875 -37.703125 C 63.210938 -34.066406 74.507812 -32.25 85.8125 -32.25 C 98.382812 -32.25 107.675781 -34.113281 113.6875 -37.84375 C 119.695312 -41.582031 122.703125 -46.550781 122.703125 -52.75 C 122.703125 -57.300781 120.925781 -61.078125 117.375 -64.078125 C 113.820312 -67.085938 109.265625 -69.503906 103.703125 -71.328125 C 98.148438 -73.148438 90.640625 -75.15625 81.171875 -77.34375 C 66.585938 -80.800781 54.648438 -84.257812 45.359375 -87.71875 C 36.066406 -91.1875 28.097656 -96.742188 21.453125 -104.390625 C 14.804688 -112.046875 11.484375 -122.25 11.484375 -135 C 11.484375 -146.113281 14.488281 -156.175781 20.5 -165.1875 C 26.507812 -174.207031 35.570312 -181.359375 47.6875 -186.640625 C 59.800781 -191.929688 74.601562 -194.578125 92.09375 -194.578125 C 104.300781 -194.578125 116.234375 -193.117188 127.890625 -190.203125 C 139.554688 -187.285156 149.757812 -183.097656 158.5 -177.640625 L 144.84375 -144.015625 C 127.164062 -154.035156 109.492188 -159.046875 91.828125 -159.046875 C 79.429688 -159.046875 70.269531 -157.039062 64.34375 -153.03125 C 58.425781 -149.03125 55.46875 -143.75 55.46875 -137.1875 C 55.46875 -130.625 58.882812 -125.75 65.71875 -122.5625 C 72.550781 -119.375 82.984375 -116.234375 97.015625 -113.140625 C 111.585938 -109.679688 123.519531 -106.21875 132.8125 -102.75 C 142.101562 -99.289062 150.070312 -93.828125 156.71875 -86.359375 C 163.375 -78.890625 166.703125 -68.773438 166.703125 -56.015625 C 166.703125 -45.085938 163.648438 -35.113281 157.546875 -26.09375 C 151.441406 -17.082031 142.285156 -9.929688 130.078125 -4.640625 C 117.867188 0.640625 103.019531 3.28125 85.53125 3.28125 Z M 85.53125 3.28125 "/></g></g></g><g fill="#0e5c4d" fill-opacity="1"><g transform="translate(175.29205, 263.986972)"><g><path d="M 148.671875 -41 L 59.84375 -41 L 42.90625 0 L -2.453125 0 L 82.796875 -191.296875 L 126.53125 -191.296875 L 212.0625 0 L 165.609375 0 Z M 134.734375 -74.609375 L 104.390625 -147.84375 L 74.0625 -74.609375 Z M 134.734375 -74.609375 "/></g></g></g><g fill="#0e5c4d" fill-opacity="1"><g transform="translate(384.626246, 263.986972)"><g><path d="M 66.953125 -155.765625 L 66.953125 -105.21875 L 155.5 -105.21875 L 155.5 -69.6875 L 66.953125 -69.6875 L 66.953125 0 L 22.6875 0 L 22.6875 -191.296875 L 167.25 -191.296875 L 167.25 -155.765625 Z M 66.953125 -155.765625 "/></g></g></g><g fill="#0e5c4d" fill-opacity="1"><g transform="translate(559.253582, 263.986972)"><g><path d="M 311.8125 -191.296875 L 249.234375 0 L 201.6875 0 L 159.59375 -129.53125 L 116.140625 0 L 68.859375 0 L 6.015625 -191.296875 L 51.921875 -191.296875 L 95.109375 -56.84375 L 140.1875 -191.296875 L 181.1875 -191.296875 L 224.90625 -55.75 L 269.453125 -191.296875 Z M 311.8125 -191.296875 "/></g></g></g><g fill="#d4af37" fill-opacity="1"><g transform="translate(866.698768, 263.986972)"><g><path d="M 148.671875 -41 L 59.84375 -41 L 42.90625 0 L -2.453125 0 L 82.796875 -191.296875 L 126.53125 -191.296875 L 212.0625 0 L 165.609375 0 Z M 134.734375 -74.609375 L 104.390625 -147.84375 L 74.0625 -74.609375 Z M 134.734375 -74.609375 "/></g></g></g><g fill="#d4af37" fill-opacity="1"><g transform="translate(1076.032941, 263.986972)"><g><path d="M 22.6875 -191.296875 L 66.953125 -191.296875 L 66.953125 0 L 22.6875 0 Z M 22.6875 -191.296875 "/></g></g></g></g></g></svg>
+  <div class="slide-counter" id="counter">1 / 7</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SLIDE 1 — TITLE                                        -->
+<!-- ══════════════════════════════════════════════════════ -->
+<section class="slide slide-title">
+  <div>
+    <div class="title-context">Wissam Mahfouz &nbsp;·&nbsp; PwC</div>
+    <div class="title-heading">Compliance Validation<br><span>Architecture &amp; Next Steps</span></div>
+    <div class="title-rule"></div>
+  </div>
+  <div class="title-meta">
+    <div class="title-date">May 2026</div>
+    <div class="title-presenter">Jeroen Hendriks</div>
+    <div class="title-presenter">Sander de Hoogh</div>
+    <div class="title-company">Safwai AI Solutions</div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SLIDE 2 — AGENDA                                       -->
+<!-- ══════════════════════════════════════════════════════ -->
+<section class="slide slide-agenda">
+  <div class="agenda-inner">
+    <div class="agenda-left">
+      <div class="agenda-label">Today's session</div>
+      <div class="agenda-heading">Agenda</div>
+      <div class="agenda-divider"></div>
+    </div>
+    <div class="agenda-items">
+      <div class="agenda-item">
+        <div class="agenda-num">01</div>
+        <div class="agenda-text">Check in</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">02</div>
+        <div class="agenda-text">The use cases</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">03</div>
+        <div class="agenda-text">The architecture</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">04</div>
+        <div class="agenda-text">The demo</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">05</div>
+        <div class="agenda-text">The PoC</div>
+      </div>
+      <div class="agenda-item">
+        <div class="agenda-num">06</div>
+        <div class="agenda-text">Next steps</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SLIDE 3 — USE CASES                                    -->
+<!-- ══════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide-section">
+    <div class="ss-line"></div>
+    <div class="ss-label">The use cases</div>
+    <div class="ss-line"></div>
+  </div>
+  <div class="slide-title-row">What we heard on the 24th</div>
+  <div class="usecase-grid">
+
+    <div class="usecase-card">
+      <div class="uc-number">Use Case 01</div>
+      <div class="uc-title">Regulator Investment<br>Plan Validator</div>
+      <div class="uc-desc">A utility client submits investment plans to an energy regulator. The regulator accepts or rejects. Today the client submits and waits — with no visibility into whether the draft will land until the decision arrives.</div>
+      <div class="uc-value">The value is in the prediction — knowing before submission whether the document will be accepted, and exactly what is reducing the probability.</div>
+    </div>
+
+    <div class="usecase-card">
+      <div class="uc-number">Use Case 02</div>
+      <div class="uc-title">Solution Design<br>Document Reviewer</div>
+      <div class="uc-desc">An enterprise with a defined architecture standard needs every solution design reviewed against it before sign-off. Today that review depends on the availability of senior architects and produces inconsistent outcomes.</div>
+      <div class="uc-value">The value is consistency at scale — every design held to the same standard, every gap traced to a specific rule, without the bottleneck of manual review.</div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SLIDE 4 — DIAGRAM 1                                    -->
+<!-- ══════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide-section">
+    <div class="ss-line"></div>
+    <div class="ss-label">The architecture — Use Case 1</div>
+    <div class="ss-line"></div>
+  </div>
+  <div class="diagram-block">
+    <div class="diagram-title">Regulator Investment Plan Validator</div>
+
+    <div class="diagram">
+
+      <!-- ZONE 1 -->
+      <div class="zone zone-1">
+        <span class="zone-label">Zone 1 — Input &amp; Rule Store</span>
+
+        <div class="box">
+          <div class="box-title">Historical Propositions</div>
+          <div class="box-desc">Previous investment plans — PDF, Word, email attachments</div>
+        </div>
+
+        <div class="box">
+          <div class="box-title">Evaluation Records</div>
+          <div class="box-desc">Regulator responses — acceptance and rejection letters, feedback correspondence, annotated returns</div>
+        </div>
+
+        <svg width="100%" height="20" style="display:block; margin:1px 0; flex-shrink:0;">
+          <line x1="25%" y1="2" x2="50%" y2="18" stroke="#2a6a7a" stroke-width="1"/>
+          <line x1="75%" y1="2" x2="50%" y2="18" stroke="#2a6a7a" stroke-width="1"/>
+          <polygon points="50,12 46,20 54,20" fill="#2a6a7a"/>
+        </svg>
+
+        <div class="box">
+          <div class="box-title">Rule Derivation</div>
+          <div class="box-desc">AI layer — induces rule set from submission outcomes; identifies acceptance and rejection patterns across the corpus</div>
+        </div>
+
+        <div class="arrow-down"></div>
+
+        <div class="box">
+          <div class="box-title">Rule Store</div>
+          <div class="box-desc">Living, versioned vector corpus — reviewable and updatable by human reviewer; grows as new submissions are ingested</div>
+        </div>
+
+        <div class="arrow-cross">
+          <div class="ac-line"></div>
+          <div class="ac-head"></div>
+        </div>
+      </div>
+
+      <!-- ZONE 2 -->
+      <div class="zone zone-divider-left zone-divider-right zone-2">
+        <div class="guardrail-band"></div>
+        <div class="zone-2-inner">
+          <span class="zone-label">Zone 2 — Evaluation Engine</span>
+
+          <div class="box">
+            <div class="box-title">New Investment Proposition</div>
+            <div class="box-desc">Uploaded document — evaluated against the derived rule set</div>
+          </div>
+
+          <svg width="100%" height="20" style="display:block; margin:1px 0; flex-shrink:0;">
+            <line x1="50%" y1="2" x2="17%" y2="18" stroke="#2a6a7a" stroke-width="1"/>
+            <line x1="50%" y1="2" x2="50%" y2="18" stroke="#2a6a7a" stroke-width="1"/>
+            <line x1="50%" y1="2" x2="83%" y2="18" stroke="#2a6a7a" stroke-width="1"/>
+            <polygon points="13,12 21,12 17,20" fill="#2a6a7a"/>
+            <polygon points="46,12 54,12 50,20" fill="#2a6a7a"/>
+            <polygon points="79,12 87,12 83,20" fill="#2a6a7a"/>
+          </svg>
+
+          <div class="split-row">
+            <div class="box" style="margin-bottom:0;">
+              <div class="box-title">Compliance Matching Agent</div>
+              <div class="box-desc">How well does this document satisfy the derived acceptance criteria?</div>
+            </div>
+            <div class="box" style="margin-bottom:0;">
+              <div class="box-title">Document Consistency Agent</div>
+              <div class="box-desc">Quantitative discrepancies, allocation conflicts, temporal contradictions, definitional drift across sections</div>
+            </div>
+            <div class="box" style="margin-bottom:0;">
+              <div class="box-title">Risk Pattern Detection Agent</div>
+              <div class="box-desc">Does this document contain language or omissions associated with historical rejections?</div>
+            </div>
+          </div>
+
+          <svg width="100%" height="20" style="display:block; margin:1px 0; flex-shrink:0;">
+            <line x1="17%" y1="2" x2="50%" y2="18" stroke="#2a6a7a" stroke-width="1"/>
+            <line x1="50%" y1="2" x2="50%" y2="18" stroke="#2a6a7a" stroke-width="1"/>
+            <line x1="83%" y1="2" x2="50%" y2="18" stroke="#2a6a7a" stroke-width="1"/>
+            <polygon points="46,12 54,12 50,20" fill="#2a6a7a"/>
+          </svg>
+
+          <div class="box">
+            <div class="box-title">Scoring Engine</div>
+            <div class="box-desc">Combines compliance match, consistency audit, and risk pattern signals into a single probability estimate</div>
+          </div>
+
+          <div class="guardrail-label">
+            <div class="gl-title">Six-Layer Guardrail System</div>
+            <div class="gl-lines">
+              Rule derivation — no rules induced without evidential basis<br>
+              Consistency audit — no issue flagged without cross-section evidence<br>
+              Output generation — no recommendations beyond the observation register
+            </div>
+          </div>
+        </div>
+
+        <div class="arrow-cross">
+          <div class="ac-line"></div>
+          <div class="ac-head"></div>
+        </div>
+      </div>
+
+      <!-- ZONE 3 -->
+      <div class="zone zone-3">
+        <span class="zone-label">Zone 3 — Output</span>
+
+        <div class="box">
+          <div class="box-title">Acceptance Probability Score</div>
+          <div class="box-desc">Single confidence figure with band — estimated likelihood of regulatory acceptance</div>
+        </div>
+
+        <div class="box">
+          <div class="box-title">Observation Register</div>
+          <div class="box-desc">Per-item findings that reduce the score — each traced to source rule and historical evidence</div>
+        </div>
+
+        <div class="box">
+          <div class="box-title">Improvement Recommendations</div>
+          <div class="box-desc">Per observation — specific action with estimated score impact if applied</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SLIDE 5 — DIAGRAM 2                                    -->
+<!-- ══════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide-section">
+    <div class="ss-line"></div>
+    <div class="ss-label">The architecture — Use Case 2</div>
+    <div class="ss-line"></div>
+  </div>
+  <div class="diagram-block">
+    <div class="diagram-title">Solution Design Document Reviewer</div>
+
+    <div class="diagram">
+
+      <!-- ZONE 1 -->
+      <div class="zone zone-1">
+        <span class="zone-label">Zone 1 — Input &amp; Rule Store</span>
+
+        <div class="box">
+          <div class="box-title">Enterprise Architecture Rule Set</div>
+          <div class="box-desc">Canonical EA standards, architecture principles, and non-negotiables — uploaded and maintained</div>
+        </div>
+
+        <div class="box optional">
+          <div class="box-title">Golden Templates <span style="font-weight:400; color:#4a7a8a; font-size:9px;">optional</span></div>
+          <div class="box-desc">Representative compliant solution design documents — calibrate the engine's interpretation of rules in context</div>
+        </div>
+
+        <svg width="100%" height="20" style="display:block; margin:1px 0; flex-shrink:0;">
+          <line x1="25%" y1="2" x2="50%" y2="18" stroke="#2a6a7a" stroke-width="1"/>
+          <line x1="75%" y1="2" x2="50%" y2="18" stroke="#2a6a7a" stroke-width="1"/>
+          <polygon points="50,12 46,20 54,20" fill="#2a6a7a"/>
+        </svg>
+
+        <div class="box">
+          <div class="box-title">Rule Store</div>
+          <div class="box-desc">Versioned vector corpus of EA standards and templates — reviewable and updatable as standards evolve</div>
+        </div>
+
+        <div class="arrow-cross">
+          <div class="ac-line"></div>
+          <div class="ac-head"></div>
+        </div>
+      </div>
+
+      <!-- ZONE 2 -->
+      <div class="zone zone-divider-left zone-divider-right zone-2">
+        <div class="guardrail-band"></div>
+        <div class="zone-2-inner">
+          <span class="zone-label">Zone 2 — Evaluation Engine</span>
+
+          <div class="box">
+            <div class="box-title">Solution Design Document</div>
+            <div class="box-desc">Single document uploaded for review against the EA rule set</div>
+          </div>
+
+          <svg width="100%" height="20" style="display:block; margin:1px 0; flex-shrink:0;">
+            <line x1="50%" y1="2" x2="17%" y2="18" stroke="#2a6a7a" stroke-width="1"/>
+            <line x1="50%" y1="2" x2="50%" y2="18" stroke="#2a6a7a" stroke-width="1"/>
+            <line x1="50%" y1="2" x2="83%" y2="18" stroke="#2a6a7a" stroke-width="1"/>
+            <polygon points="13,12 21,12 17,20" fill="#2a6a7a"/>
+            <polygon points="46,12 54,12 50,20" fill="#2a6a7a"/>
+            <polygon points="79,12 87,12 83,20" fill="#2a6a7a"/>
+          </svg>
+
+          <div class="split-row">
+            <div class="box" style="margin-bottom:0;">
+              <div class="box-title">Requirements Coverage Agent</div>
+              <div class="box-desc">For each rule — satisfied, partially satisfied, or absent? Produces a coverage map by domain</div>
+            </div>
+            <div class="box" style="margin-bottom:0;">
+              <div class="box-title">Document Consistency Agent</div>
+              <div class="box-desc">Quantitative discrepancies, allocation conflicts, temporal contradictions, definitional drift across sections</div>
+            </div>
+            <div class="box" style="margin-bottom:0;">
+              <div class="box-title">Quality &amp; Template Alignment Agent</div>
+              <div class="box-desc">Deviations from golden templates, undeclared omissions, structural gaps</div>
+            </div>
+          </div>
+
+          <svg width="100%" height="20" style="display:block; margin:1px 0; flex-shrink:0;">
+            <line x1="17%" y1="2" x2="50%" y2="18" stroke="#2a6a7a" stroke-width="1"/>
+            <line x1="50%" y1="2" x2="50%" y2="18" stroke="#2a6a7a" stroke-width="1"/>
+            <line x1="83%" y1="2" x2="50%" y2="18" stroke="#2a6a7a" stroke-width="1"/>
+            <polygon points="46,12 54,12 50,20" fill="#2a6a7a"/>
+          </svg>
+
+          <div class="box">
+            <div class="box-title">Scoring Engine</div>
+            <div class="box-desc">Combines coverage, consistency audit, and template alignment signals into a weighted compliance score by domain</div>
+          </div>
+
+          <div class="guardrail-label">
+            <div class="gl-title">Six-Layer Guardrail System</div>
+            <div class="gl-lines">
+              Rule ingestion — only uploaded EA standards enter the rule store<br>
+              Consistency audit — no issue flagged without cross-section evidence<br>
+              Output generation — no recommendations beyond what the rule set supports
+            </div>
+          </div>
+        </div>
+
+        <div class="arrow-cross">
+          <div class="ac-line"></div>
+          <div class="ac-head"></div>
+        </div>
+      </div>
+
+      <!-- ZONE 3 -->
+      <div class="zone zone-3">
+        <span class="zone-label">Zone 3 — Output</span>
+
+        <div class="box">
+          <div class="box-title">Compliance Score</div>
+          <div class="box-desc">Headline figure with domain breakdown — e.g. 74% of EA requirements satisfied across security, integration, data, infrastructure</div>
+        </div>
+
+        <div class="box">
+          <div class="box-title">Observation Register</div>
+          <div class="box-desc">Per-requirement findings — rule referenced, document section cited, gap severity indicated</div>
+        </div>
+
+        <div class="box">
+          <div class="box-title">Improvement Recommendations</div>
+          <div class="box-desc">Per observation — what to add, change, or remove, with estimated score impact</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SLIDE 6 — POC                                          -->
+<!-- ══════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide-section">
+    <div class="ss-line"></div>
+    <div class="ss-label">The PoC</div>
+    <div class="ss-line"></div>
+  </div>
+  <div class="slide-title-row">Starting with Use Case 1</div>
+
+  <div class="poc-angles">
+    <div class="poc-angle">
+      <div class="poc-angle-label">Commercial</div>
+      <div class="poc-angle-text">In two weeks you have working software on your client's actual documents — not a deck. That is a different conversation from anything they will have heard from anyone else, and it is live while the CoE discussions are still open.</div>
+    </div>
+    <div class="poc-angle">
+      <div class="poc-angle-label">Political</div>
+      <div class="poc-angle-text">The PoC gives the CoE a working pattern to refine, not a blank sheet. Whether they run the production build or we do — under their governance — that decision gets made with software running, not a slide deck.</div>
+    </div>
+    <div class="poc-angle">
+      <div class="poc-angle-label">Operational</div>
+      <div class="poc-angle-text">You estimated three to four months to production at 70–80% accuracy on the 24th — and that is the right horizon. The PoC is how you validate the pattern on real data before that investment begins. The production build starts from something that works.</div>
+    </div>
+  </div>
+
+  <div class="poc-ask">
+    <div class="poc-ask-label">Engagement model</div>
+    <div class="poc-engagement-text">Safwai delivers as PwC subcontractor — work presented in PwC's name to the client, under your governance. Mutual NDA between Safwai and PwC, plus a one-page engagement letter for the PoC, in place before any introduction.</div>
+
+    <div class="poc-ask-divider"></div>
+
+    <div class="poc-ask-label">What we need from you, in sequence</div>
+    <div class="poc-ask-items">
+      <div class="poc-ask-item">
+        <div class="poc-ask-num">1</div>
+        <div class="poc-ask-text">NDA and one-page PoC engagement letter — Safwai &amp; PwC. Drives the calendar; everything else waits on this</div>
+      </div>
+      <div class="poc-ask-item">
+        <div class="poc-ask-num">2</div>
+        <div class="poc-ask-text">Introduction to the right person on the client side — direct referral from you or through your engagement team</div>
+      </div>
+      <div class="poc-ask-item">
+        <div class="poc-ask-num">3</div>
+        <div class="poc-ask-text">A thirty-minute kick-off following that introduction — Jeroen, Sander, the client lead, you welcome to attend</div>
+      </div>
+      <div class="poc-ask-item">
+        <div class="poc-ask-num">4</div>
+        <div class="poc-ask-text">Ten historical investment plans with their regulator outcomes — accepted, rejected, and what the regulator said — handed over at or after the kick-off</div>
+      </div>
+    </div>
+    <div class="poc-timeline">One active working week from kick-off — rule store built from the ten submissions, evaluation engine configured, working demonstrator on your client's document the following week.</div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SLIDE 7 — NEXT STEPS                                   -->
+<!-- ══════════════════════════════════════════════════════ -->
+<section class="slide">
+  <div class="slide-section">
+    <div class="ss-line"></div>
+    <div class="ss-label">Next steps</div>
+    <div class="ss-line"></div>
+  </div>
+  <div class="slide-title-row">Two dates in the diary</div>
+
+  <div class="nextsteps-rows">
+    <div class="nextstep-row">
+      <div class="ns-num">01</div>
+      <div class="ns-content">
+        <div class="ns-label">PoC kick-off</div>
+        <div class="ns-desc">Jeroen · Sander · Wissam &nbsp;—&nbsp; confirm introduction to client side, hand over documents, align on week-one scope</div>
+      </div>
+      <div class="ns-duration">30 min</div>
+      <div class="ns-date">Date TBC</div>
+    </div>
+    <div class="nextstep-row">
+      <div class="ns-num">02</div>
+      <div class="ns-content">
+        <div class="ns-label">Wider proposition conversation</div>
+        <div class="ns-desc">Jeroen · Sander · Wissam &nbsp;—&nbsp; the broader Safwai proposition, once PoC 1 has landed &nbsp;·&nbsp; late June / early July</div>
+      </div>
+      <div class="ns-duration">60 min</div>
+      <div class="ns-date">Date TBC</div>
+    </div>
+  </div>
+
+  <div class="slide-footer">Safwai AI Solutions — Internal reference &nbsp;·&nbsp; May 2026</div>
+</section>
+
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const counter = document.getElementById('counter');
+  const total = slides.length;
+  let currentIndex = 0;
+
+  function setCounter(idx) {
+    currentIndex = idx;
+    counter.textContent = (idx + 1) + ' / ' + total;
+  }
+
+  // Track which slide is most visible
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+        const idx = slides.indexOf(entry.target);
+        if (idx !== -1) setCounter(idx);
+      }
+    });
+  }, { threshold: [0.5, 0.75, 1.0] });
+
+  slides.forEach(slide => observer.observe(slide));
+  setCounter(0);
+
+  document.addEventListener('keydown', e => {
+    if (['ArrowDown', 'ArrowRight', 'PageDown', ' '].includes(e.key)) {
+      e.preventDefault();
+      if (currentIndex < total - 1) slides[currentIndex + 1].scrollIntoView({ behavior: 'smooth' });
+    } else if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) {
+      e.preventDefault();
+      if (currentIndex > 0) slides[currentIndex - 1].scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+</script>
+
+</body>
+</html>

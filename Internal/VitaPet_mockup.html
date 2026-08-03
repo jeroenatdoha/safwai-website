@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProductCopyOS &times; VitaPet &middot; Annotated Mockup</title>
+<style>
+  :root{
+    --navy:#002D49; --navy-2:#063350; --navy-3:#0a2c45; --navy-4:#103a5a;
+    --gold:#D4AF37; --gold-soft:#f3e7bd; --gold-deep:#8a6d15;
+    --ink:#0d1b27; --slate-900:#0f2433; --slate-800:#1c3346; --slate-700:#334a5c; --slate-600:#4b6273;
+    --slate-500:#6b8294; --slate-400:#94a8b6; --slate-300:#cbd8e0; --slate-200:#e2eaef;
+    --slate-100:#eef3f6; --slate-50:#f6f9fb; --paper:#ffffff;
+    --blue:#1d4ed8; --blue-soft:#eff4ff; --blue-line:#bcd0f7;
+    --green:#15803d; --green-soft:#eefbf2; --green-line:#b7e4c6;
+    --amber:#b45309; --amber-soft:#fff7ea; --amber-line:#f3d9a8;
+    --red:#c0271c; --red-soft:#fdf1ef; --red-line:#f3c4bd;
+    --sticky:#fff7c2; --sticky-edge:#e6cf6a; --sticky-ink:#5a4a12;
+    --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --mono:'SFMono-Regular',Consolas,'Liberation Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:var(--font); background:#01202f; color:var(--ink); -webkit-font-smoothing:antialiased; line-height:1.5; overflow:hidden}
+
+  /* ============ DECK BAR ============ */
+  .deckbar{position:fixed; top:0; left:0; right:0; height:46px; z-index:100; background:rgba(0,28,44,.96); backdrop-filter:blur(8px);
+    border-bottom:1px solid #0c3a57; color:#dbe7ef; display:flex; align-items:center; gap:12px; padding:0 16px; font-size:12px}
+  .deckbar .brand{display:flex; align-items:center; gap:9px; font-weight:600; letter-spacing:-.01em; color:#fff; white-space:nowrap}
+  .deckbar .brand .mk{width:18px; height:18px; border-radius:5px; background:linear-gradient(135deg,var(--gold),#b8902a); display:inline-block}
+  .deckbar .brand .x{color:var(--gold); font-weight:400; margin:0 1px}
+  .deckbar .spacer{flex:1}
+  .deckbar .counter{font-variant-numeric:tabular-nums; color:#9fbccf; min-width:46px; text-align:right; white-space:nowrap}
+  .deckbar .counter b{color:#fff}
+  .navbtn{background:#0d3650; border:1px solid #185175; color:#dbe7ef; border-radius:7px; width:30px; height:28px; cursor:pointer; font-size:14px; line-height:1; display:inline-flex; align-items:center; justify-content:center}
+  .navbtn:hover{background:#15486a; border-color:var(--gold)}
+  .toggle{display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none; background:#0a3149; border:1px solid #16486b; border-radius:20px; padding:4px 11px 4px 8px; color:#cfe0eb; white-space:nowrap}
+  .toggle .sw{width:24px; height:14px; border-radius:9px; background:#2b526d; position:relative; transition:.16s; flex:none}
+  .toggle .sw::after{content:""; position:absolute; top:1.5px; left:1.5px; width:11px; height:11px; border-radius:50%; background:#9db6c6; transition:.16s}
+  .toggle.on .sw{background:var(--gold)}
+  .toggle.on .sw::after{left:10.5px; background:#1a2b1a}
+  .glossbtn{background:#0a3149; border:1px solid #16486b; color:#cfe0eb; border-radius:20px; padding:4px 13px; font-size:12px; cursor:pointer; white-space:nowrap}
+  .glossbtn:hover{border-color:var(--gold); color:#fff}
+  .dots{display:flex; gap:5px; align-items:center}
+  .dot{width:8px; height:8px; border-radius:50%; background:#2b526d; cursor:pointer; border:none; padding:0; transition:.15s}
+  .dot:hover{background:#4d7491}
+  .dot.active{background:var(--gold); transform:scale(1.25)}
+  .dot.demo{border-radius:2px}
+
+  /* ============ DECK / SLIDES ============ */
+  .deck{position:fixed; inset:46px 0 0 0; overflow-y:auto; overflow-x:hidden}
+  .slide{display:none; min-height:100%; animation:fade .26s ease}
+  .slide.active{display:block}
+  @keyframes fade{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+
+  /* ---- context (framing) slide ---- */
+  .ctx{min-height:calc(100vh - 46px); background:
+      radial-gradient(1200px 600px at 80% -10%, #0a3a59 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, #073050 0%, transparent 55%), var(--navy);
+      color:#eaf2f7; padding:50px 64px 70px; position:relative}
+  .ctx .eyebrow{font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); font-weight:600; margin-bottom:16px}
+  .ctx h1{font-size:42px; line-height:1.05; letter-spacing:-1.2px; font-weight:700; color:#fff; max-width:21ch}
+  .ctx h1 .g{color:var(--gold)}
+  .ctx .lead{font-size:17px; color:#bcd2df; max-width:66ch; margin-top:16px; line-height:1.5}
+  .ctx .rule{height:3px; width:64px; background:var(--gold); border-radius:2px; margin:22px 0}
+  .wedge{margin-top:26px; border-left:3px solid var(--gold); padding:6px 0 6px 20px; max-width:74ch}
+  .wedge .q{font-size:20px; color:#fff; font-weight:600; line-height:1.4; letter-spacing:-.3px}
+  .wedge .q em{color:var(--gold); font-style:normal}
+
+  .cards{display:grid; gap:15px; margin-top:30px}
+  .cards.c3{grid-template-columns:repeat(3,1fr)} .cards.c4{grid-template-columns:repeat(4,1fr)} .cards.c2{grid-template-columns:1fr 1fr}
+  .card{background:rgba(255,255,255,.04); border:1px solid #14466a; border-radius:13px; padding:17px 17px 15px}
+  .card.gold{border-color:#3c4a2a; background:linear-gradient(180deg,rgba(212,175,55,.10),rgba(212,175,55,.02))}
+  .card .k{font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--gold); font-weight:600}
+  .card .t{font-size:16px; font-weight:600; color:#fff; margin:8px 0 6px; letter-spacing:-.3px}
+  .card .d{font-size:12.5px; color:#a9c2d2; line-height:1.5}
+  .card .role{font-size:11.5px; color:#8fb0c4; margin-top:8px}
+  .card .role b{color:#dbe9f1}
+  .card .d b{color:#dbe9f1}
+
+  .ctxfoot{position:absolute; left:64px; right:64px; bottom:22px; display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#6f93a8; border-top:1px solid #0e3a57; padding-top:12px}
+  .pillg{display:inline-block; background:rgba(212,175,55,.14); color:var(--gold); border:1px solid #3a4a28; border-radius:20px; padding:3px 11px; font-size:11px; font-weight:600}
+
+  /* flow (how it works) */
+  .flow{display:flex; align-items:stretch; gap:0; margin-top:26px; flex-wrap:nowrap}
+  .step{flex:1; min-width:0; background:rgba(255,255,255,.04); border:1px solid #14466a; border-radius:11px; padding:13px 11px; position:relative; margin-right:20px}
+  .step:last-child{margin-right:0}
+  .step::after{content:"\203A"; position:absolute; right:-14px; top:50%; transform:translateY(-50%); color:var(--gold); font-size:18px; font-weight:700}
+  .step:last-child::after{content:""}
+  .step .ph{font-family:var(--mono); font-size:12px; color:var(--gold); font-weight:700}
+  .step .nm{font-size:13px; font-weight:600; color:#fff; margin:5px 0 4px; letter-spacing:-.2px}
+  .step .sc{font-size:10.5px; color:#8fb0c4; line-height:1.4}
+  .step.human{border-color:#2f5a3a; background:linear-gradient(180deg,rgba(34,197,94,.08),transparent)}
+
+  /* chain (how claims drift) */
+  .chain{display:flex; align-items:center; gap:0; margin-top:8px; flex-wrap:wrap}
+  .cn{background:rgba(255,255,255,.04); border:1px solid #14466a; border-radius:9px; padding:9px 12px; font-size:12px; color:#dbe9f1; position:relative; margin:4px 22px 4px 0}
+  .cn::after{content:"\203A"; position:absolute; right:-15px; top:50%; transform:translateY(-50%); color:var(--gold); font-size:16px; font-weight:700}
+  .cn:last-child{margin-right:0} .cn:last-child::after{content:""}
+  .cn.origin{border-color:#3c4a2a; background:linear-gradient(180deg,rgba(212,175,55,.12),transparent)}
+  .cn small{display:block; color:#8fb0c4; font-size:10px; margin-top:2px}
+  .srcnote{font-size:10.5px; color:#5d8398; margin-top:14px; font-style:italic}
+
+  /* ============ DEMO SCREEN ============ */
+  .demowrap{min-height:calc(100vh - 46px); background:#06283b; padding:26px 34px 50px; display:flex; flex-direction:column; align-items:center}
+  .demohead{width:100%; max-width:1320px; display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:12px}
+  .demohead .ttl{color:#fff}
+  .demohead .ttl .eye{font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); font-weight:600}
+  .demohead .ttl h2{font-size:21px; font-weight:700; letter-spacing:-.5px; margin-top:5px}
+  .demohead .rgt{display:flex; flex-direction:column; align-items:flex-end; gap:8px}
+  .procbtn{display:inline-flex; align-items:center; gap:7px; font-size:11.5px; font-weight:600; color:#06283b; background:var(--gold); border:1px solid var(--gold); border-radius:8px; padding:7px 13px; text-decoration:none; white-space:nowrap}
+  .procbtn:hover{filter:brightness(1.07)}
+  .procbtn .ar{font-weight:700}
+  .demohead .cut{font-size:11px; color:#86a7bc; text-align:right; max-width:42ch; line-height:1.4}
+
+  /* objective strip (toggleable, body.l3) */
+  .objective{width:100%; max-width:1320px; margin-bottom:13px; display:none; grid-template-columns:repeat(3,1fr); background:#083253; border:1px solid #12466a; border-left:3px solid var(--gold); border-radius:11px; overflow:hidden}
+  body.l3 .objective{display:grid}
+  .objective .ocol{padding:11px 17px; border-right:1px solid #0e3a57}
+  .objective .ocol:last-child{border-right:none}
+  .objective .ol{font-size:9px; letter-spacing:.15em; text-transform:uppercase; color:var(--gold); font-weight:700}
+  .objective .ot{font-size:12.5px; color:#eaf2f7; margin-top:4px; line-height:1.45}
+
+  .browser{width:100%; max-width:1320px; background:var(--paper); border-radius:12px; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,.4); border:1px solid #0c2a3f}
+  .bbar{height:42px; background:#e7eef2; border-bottom:1px solid var(--slate-200); display:flex; align-items:center; gap:8px; padding:0 14px}
+  .bbar .tl{display:flex; gap:7px} .bbar .tl i{width:12px; height:12px; border-radius:50%; display:block}
+  .bbar .tl .r{background:#ff5f57} .bbar .tl .y{background:#febc2e} .bbar .tl .g{background:#28c840}
+  .bbar .addr{flex:1; height:26px; background:#fff; border:1px solid var(--slate-200); border-radius:7px; display:flex; align-items:center; gap:8px; padding:0 11px; font-size:12px; color:var(--slate-600); max-width:560px; margin:0 auto}
+  .bbar .addr .lock{color:var(--green)}
+  .bbar .chip{font-size:11px; color:var(--slate-500); display:flex; align-items:center; gap:6px; white-space:nowrap}
+  .bbody{background:var(--slate-50); padding:22px 24px 26px; min-height:540px}
+
+  .eyebrow-d{font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--slate-500); font-weight:600}
+  .sku-head{display:flex; justify-content:space-between; align-items:flex-start; gap:20px; margin-bottom:18px}
+  .sku-head h3{font-size:19px; color:var(--slate-900); letter-spacing:-.4px; font-weight:700}
+  .sku-head .meta{font-size:12px; color:var(--slate-600); margin-top:6px; display:flex; gap:14px; flex-wrap:wrap}
+  .sku-head .meta span b{color:var(--slate-900)}
+  .sku-head .meta code{font-family:var(--mono); font-size:11.5px; background:var(--slate-100); padding:1px 6px; border-radius:5px; color:var(--slate-700)}
+
+  .audsw{display:inline-flex; gap:4px; background:var(--slate-100); border:1px solid var(--slate-200); border-radius:8px; padding:3px}
+  .audsw span{font-size:11px; padding:4px 11px; border-radius:6px; color:var(--slate-600); font-weight:600}
+  .audsw span.on{background:#fff; color:var(--navy); box-shadow:0 1px 2px rgba(0,0,0,.08)}
+
+  .gridcols{display:grid; gap:16px}
+  .g3{grid-template-columns:repeat(3,1fr)} .g2{grid-template-columns:1fr 1fr}
+
+  /* variant card */
+  .variant{background:#fff; border:1px solid var(--slate-200); border-radius:12px; overflow:hidden; display:flex; flex-direction:column}
+  .variant .vh{padding:12px 14px; border-bottom:1px solid var(--slate-200); display:flex; align-items:center; justify-content:space-between; background:var(--slate-50)}
+  .flag{display:inline-flex; align-items:center; gap:8px; font-weight:700; color:var(--slate-900); font-size:14px}
+  .flag .fl{width:22px; height:15px; border-radius:3px; box-shadow:inset 0 0 0 1px rgba(0,0,0,.12); display:inline-block}
+  .fl.fr{background:linear-gradient(90deg,#0055A4 33%,#fff 33% 66%,#EF4135 66%)}
+  .fl.de{background:linear-gradient(180deg,#000 33%,#DD0000 33% 66%,#FFCE00 66%)}
+  .fl.us{background:repeating-linear-gradient(180deg,#B22234 0 2.14px,#fff 2.14px 4.28px); position:relative; overflow:hidden}
+  .fl.us::before{content:""; position:absolute; top:0; left:0; width:44%; height:54%; background:#3C3B6E}
+  .vh .reg{font-size:10.5px; font-family:var(--mono); color:var(--slate-500)}
+  .chtabs{display:flex; gap:4px; padding:9px 14px 0; flex-wrap:wrap}
+  .chtab{font-size:10.5px; padding:4px 9px; border-radius:6px 6px 0 0; border:1px solid var(--slate-200); border-bottom:none; background:var(--slate-100); color:var(--slate-600)}
+  .chtab.on{background:#fff; color:var(--blue); font-weight:600; border-color:var(--blue-line)}
+  .vcopy{padding:13px 15px; font-size:12.5px; color:var(--slate-700); line-height:1.6; flex:1; border-top:1px solid var(--slate-200)}
+  .vcopy .pname{font-weight:700; color:var(--slate-900); display:block; margin-bottom:5px; font-size:13px}
+  .hl{border-bottom:2px solid; padding-bottom:1px; cursor:help}
+  .hl.spec{border-color:var(--gold)} .hl.reg{border-color:var(--blue)} .hl.val{border-color:var(--green)} .hl.warn{border-color:var(--amber)}
+  .vchecks{padding:11px 15px; border-top:1px solid var(--slate-200); display:flex; flex-direction:column; gap:6px; background:var(--slate-50)}
+  .chk{display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--slate-700)}
+  .chk .ico{width:16px; height:16px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:10px; color:#fff; flex:none; font-weight:700}
+  .ico.ok{background:var(--green)} .ico.no{background:var(--red)} .ico.wn{background:var(--amber)}
+  .vactions{display:flex; gap:7px; padding:12px 14px; border-top:1px solid var(--slate-200)}
+  .btn{flex:1; border:1px solid; border-radius:8px; padding:8px 6px; font-size:11.5px; font-weight:600; text-align:center}
+  .btn.appr{background:var(--green-soft); border-color:var(--green-line); color:var(--green)}
+  .btn.amend{background:var(--amber-soft); border-color:var(--amber-line); color:var(--amber)}
+  .btn.rej{background:#fff; border-color:var(--slate-200); color:var(--slate-500)}
+
+  .hitl{display:inline-flex; align-items:center; gap:7px; background:var(--green-soft); border:1px solid var(--green-line); color:var(--green); border-radius:20px; padding:4px 11px; font-size:11px; font-weight:600}
+  .hitl .d{width:7px; height:7px; border-radius:50%; background:var(--green)}
+  .await{display:inline-flex; align-items:center; gap:7px; background:var(--amber-soft); border:1px solid var(--amber-line); color:var(--amber); border-radius:20px; padding:4px 11px; font-size:11px; font-weight:600}
+  .await .d{width:7px; height:7px; border-radius:50%; background:var(--amber)}
+
+  /* validation expanded / parity */
+  .valwrap{display:grid; grid-template-columns:340px 1fr; gap:20px; align-items:start}
+  .stickycopy{position:sticky; top:8px; background:#fff; border:1px solid var(--slate-200); border-radius:12px; padding:16px}
+  .stickycopy h4{font-size:12px; color:var(--slate-900); margin-bottom:4px; display:flex; align-items:center; gap:8px}
+  .stickycopy .sub{font-size:11px; color:var(--slate-500); margin-bottom:12px}
+  .stickycopy .body{font-size:13px; line-height:1.7; color:var(--slate-700)}
+  .legend{display:flex; gap:13px; flex-wrap:wrap; margin-top:14px; padding-top:12px; border-top:1px dashed var(--slate-200); font-size:10.5px; color:var(--slate-500)}
+  .legend span{display:inline-flex; align-items:center; gap:5px}
+  .legend i{width:14px; height:0; border-bottom:2px solid; display:inline-block}
+
+  .rulelist{display:flex; flex-direction:column; gap:9px}
+  .rrow{background:#fff; border:1px solid var(--slate-200); border-radius:10px; padding:12px 14px; display:grid; grid-template-columns:18px 1fr auto; gap:11px; align-items:start}
+  .rrow.warnr{border-color:var(--amber-line); background:var(--amber-soft)}
+  .rrow.blockr{border-color:var(--red-line); background:var(--red-soft)}
+  .rrow .st{width:18px; height:18px; border-radius:50%; color:#fff; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:1px}
+  .rrow .rt{font-size:13px; color:var(--slate-900); font-weight:600}
+  .rrow .rd{font-size:11.5px; color:var(--slate-600); margin-top:3px; line-height:1.5}
+  .rrow .rd b{color:var(--slate-900)}
+  .cite{display:inline-flex; align-items:center; gap:6px; margin-top:7px; font-size:10.5px; font-family:var(--mono); color:var(--blue); background:var(--blue-soft); border:1px solid var(--blue-line); border-radius:6px; padding:2px 8px}
+  .rrow .ch{font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:3px 8px; border-radius:6px; white-space:nowrap}
+  .ch.pass{background:var(--green-soft); color:var(--green); border:1px solid var(--green-line)}
+  .ch.warnc{background:#fff; color:var(--amber); border:1px solid var(--amber-line)}
+  .ch.blockc{background:#fff; color:var(--red); border:1px solid var(--red-line)}
+  .perchan{display:flex; gap:5px; margin-top:8px; flex-wrap:wrap}
+  .perchan .pc{font-size:9.5px; font-family:var(--mono); border:1px solid var(--slate-200); border-radius:5px; padding:1px 6px; color:var(--slate-500)}
+  .perchan .pc.p{border-color:var(--green-line); color:var(--green); background:var(--green-soft)}
+  .perchan .pc.f{border-color:var(--red-line); color:var(--red); background:var(--red-soft)}
+
+  .breakbar{background:linear-gradient(90deg,var(--red-soft),#fff); border:1px solid var(--red-line); border-left:4px solid var(--red); border-radius:10px; padding:13px 16px; margin-bottom:16px; display:flex; align-items:center; gap:14px}
+  .breakbar .bx{font-size:12.5px; color:#5a1a14; line-height:1.5}
+  .breakbar .bx b{color:var(--red)}
+  .breakbar .tag{font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--red); background:#fff; border:1px solid var(--red-line); padding:4px 9px; border-radius:6px; white-space:nowrap}
+
+  /* cert (registry) */
+  .certrow{background:#fff; border:1px solid var(--slate-200); border-radius:12px; padding:15px 17px; margin-bottom:12px; display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:16px; align-items:center}
+  .certrow.exp{border-color:var(--red-line)}
+  .certcell .lb{font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:var(--slate-500); font-weight:600}
+  .certcell .vl{font-size:13.5px; color:var(--slate-900); font-weight:600; margin-top:4px}
+  .certcell .vl.mono{font-family:var(--mono); font-size:12px}
+  .certcell .sub{font-size:11px; color:var(--slate-500); margin-top:2px}
+  .vstamp{text-align:center; padding:8px 14px; border-radius:9px; font-weight:700; font-size:12px; white-space:nowrap}
+  .vstamp.valid{background:var(--green-soft); color:var(--green); border:1px solid var(--green-line)}
+  .vstamp.expired{background:var(--red-soft); color:var(--red); border:1px solid var(--red-line)}
+  .regline{display:flex; align-items:center; gap:10px; font-size:11px; color:var(--slate-500); margin:2px 0 14px}
+  .regline .live{display:inline-flex; align-items:center; gap:6px; color:var(--green); font-weight:600}
+  .regline .live .pulse{width:8px; height:8px; border-radius:50%; background:var(--green)}
+
+  /* chase workflow object */
+  .chaseobj{background:#fff; border:1px solid var(--slate-200); border-radius:12px; overflow:hidden; margin-bottom:14px}
+  .chaseobj.open{border-color:var(--amber-line)}
+  .chaseobj .coh{padding:13px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--slate-50); border-bottom:1px solid var(--slate-200)}
+  .chaseobj .coh .sub{font-size:14px; font-weight:700; color:var(--slate-900)}
+  .chaseobj .coh .sub small{display:block; font-weight:400; font-size:11px; color:var(--slate-500); margin-top:2px}
+  .statpill{font-size:10.5px; font-weight:700; padding:5px 10px; border-radius:7px; white-space:nowrap}
+  .statpill.open{background:var(--amber-soft); color:var(--amber); border:1px solid var(--amber-line)}
+  .sla{font-size:11px; color:var(--slate-600); display:flex; align-items:center; gap:6px}
+  .sla b{color:var(--amber)}
+  .cobody{padding:14px 16px; display:grid; grid-template-columns:1.1fr 1fr; gap:18px}
+  .cogrid{display:grid; grid-template-columns:auto 1fr; gap:7px 14px; font-size:12px; align-self:start}
+  .cogrid .lb{color:var(--slate-500)} .cogrid .vl{color:var(--slate-900); font-weight:600}
+  .coaction{background:var(--green-soft); border:1px solid var(--green-line); border-radius:10px; padding:12px 14px}
+  .coaction .at{font-size:12px; color:#14532d; line-height:1.5} .coaction .at b{color:#14532d}
+  .coaction .ts{font-size:10.5px; color:var(--green); font-family:var(--mono); margin-top:6px}
+  .miniline{margin-top:12px; border-top:1px dashed var(--slate-200); padding-top:11px}
+  .me{display:grid; grid-template-columns:16px 1fr; gap:9px; font-size:11px; color:var(--slate-600); padding-bottom:8px; position:relative}
+  .me .md{width:11px; height:11px; border-radius:50%; background:var(--slate-300); margin-top:2px; margin-left:2px}
+  .me.done .md{background:var(--green)} .me.now .md{background:var(--amber)}
+  .me b{color:var(--slate-900)}
+
+  /* two-desk */
+  .desks{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+  .desk{background:#fff; border:1px solid var(--slate-200); border-radius:12px; overflow:hidden}
+  .desk .dh{padding:14px 16px; border-bottom:1px solid var(--slate-200)}
+  .desk.compl .dh{background:linear-gradient(180deg,#faf3df,#fff); border-bottom-color:var(--gold-soft)}
+  .desk.port .dh{background:linear-gradient(180deg,var(--blue-soft),#fff); border-bottom-color:var(--blue-line)}
+  .desk .who{font-size:14px; font-weight:700; color:var(--slate-900)}
+  .desk .ro{font-size:11.5px; color:var(--slate-600); margin-top:2px}
+  .desk .owns{font-size:11px; margin-top:8px; padding:6px 10px; border-radius:7px; display:inline-block; font-weight:600}
+  .desk.compl .owns{background:#faf3df; color:var(--gold-deep)}
+  .desk.port .owns{background:var(--blue-soft); color:var(--blue)}
+  .desk .lead{font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--gold-deep); background:#faf3df; border:1px solid var(--gold-soft); border-radius:5px; padding:2px 7px; margin-left:8px}
+  .desk .db{padding:14px 16px; display:flex; flex-direction:column; gap:10px}
+  .dcheck{display:flex; gap:9px; align-items:flex-start; font-size:12px; color:var(--slate-700)}
+  .dcheck .ico{margin-top:1px; width:16px; height:16px; border-radius:50%; font-size:10px; display:inline-flex; align-items:center; justify-content:center; color:#fff; font-weight:700; flex:none}
+  .dcheck b{color:var(--slate-900)}
+  .split-note{margin:0 0 16px; background:#fff; border:1px dashed var(--slate-300); border-radius:10px; padding:12px 16px; font-size:12px; color:var(--slate-600); line-height:1.55}
+  .split-note b{color:var(--slate-900)}
+
+  /* rule sources */
+  .srcgrid{display:grid; grid-template-columns:repeat(2,1fr); gap:13px}
+  .src{background:#fff; border:1px solid var(--slate-200); border-radius:11px; padding:14px 16px}
+  .src .sh{display:flex; align-items:center; gap:10px; margin-bottom:9px}
+  .src .ic{width:30px; height:30px; border-radius:8px; background:var(--navy); color:var(--gold); display:flex; align-items:center; justify-content:center; font-size:14px; flex:none}
+  .src .nm{font-size:13.5px; font-weight:700; color:var(--slate-900)}
+  .src .au{font-size:11px; color:var(--slate-500)}
+  .src .clause{font-size:11.5px; color:var(--slate-600); padding:6px 0; border-top:1px solid var(--slate-100); display:flex; justify-content:space-between; gap:10px}
+  .src .clause code{font-family:var(--mono); font-size:10.5px; color:var(--blue)}
+  .src .clause .dt{color:var(--slate-400); font-size:10.5px; white-space:nowrap}
+
+  /* audit / passport */
+  .auditcol{display:grid; grid-template-columns:1.15fr 1fr; gap:20px; align-items:start}
+  .timeline{position:relative; padding-left:6px}
+  .tev{display:grid; grid-template-columns:20px 1fr; gap:12px; padding-bottom:14px; position:relative}
+  .tev::before{content:""; position:absolute; left:9px; top:18px; bottom:-2px; width:2px; background:var(--slate-200)}
+  .tev:last-child::before{display:none}
+  .tev .tdot{width:18px; height:18px; border-radius:50%; border:3px solid #fff; box-shadow:0 0 0 1.5px var(--slate-300); background:var(--slate-400); margin-top:1px}
+  .tev.h .tdot{background:var(--green); box-shadow:0 0 0 1.5px var(--green)}
+  .tev.s .tdot{background:var(--gold); box-shadow:0 0 0 1.5px var(--gold)}
+  .tev .te{font-size:12.5px; color:var(--slate-900); font-weight:600}
+  .tev .tm{font-size:11px; color:var(--slate-500); margin-top:2px; line-height:1.5}
+  .tev .tm code{font-family:var(--mono); font-size:10.5px; color:var(--slate-600)}
+  .dpp{background:linear-gradient(180deg,var(--navy),var(--navy-2)); border-radius:14px; padding:20px; color:#eaf2f7; position:sticky; top:8px}
+  .dpp .dt{font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); font-weight:600}
+  .dpp h4{font-size:18px; color:#fff; margin:6px 0 4px; letter-spacing:-.4px}
+  .dpp .ds{font-size:12px; color:#a9c2d2; line-height:1.5; margin-bottom:16px}
+  .dppbox{display:flex; flex-direction:column; gap:5px; background:rgba(255,255,255,.05); border:1px solid #1a4e70; border-radius:11px; padding:14px}
+  .dppfields{display:flex; flex-direction:column; gap:6px; font-size:11.5px}
+  .dppfields .f{display:flex; justify-content:space-between; gap:10px; color:#bcd2df}
+  .dppfields .f b{color:#fff; font-weight:600}
+  .dppfields .f .ok{color:#7ee0a3}
+  .upstream{display:flex; align-items:center; gap:10px; margin-top:14px; background:rgba(212,175,55,.10); border:1px solid #3c4a2a; border-radius:11px; padding:12px 14px}
+  .upstream .ua{font-size:11.5px; color:#eaf2f7; line-height:1.5} .upstream .ua b{color:var(--gold)}
+  .fwdbox{display:flex; gap:14px; align-items:center; margin-top:12px; background:rgba(255,255,255,.03); border:1px dashed #2a5d7a; border-radius:11px; padding:13px}
+  .qr{width:66px; height:66px; border-radius:9px; background:#fff; padding:6px; flex:none}
+  .qr svg{width:100%; height:100%; display:block}
+  .fwdbox .ft{font-size:11px; color:#a9c2d2; line-height:1.5} .fwdbox .ft b{color:#cfe0ea}
+  .fwdbox .pendtag{display:inline-block; font-size:9px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--gold); border:1px solid #3c4a2a; border-radius:5px; padding:1px 6px; margin-bottom:5px}
+  .dppfoot{margin-top:14px; font-size:11px; color:#8fb0c4; line-height:1.5; border-top:1px solid #14466a; padding-top:12px}
+  .exports{display:flex; gap:9px; margin-top:14px; flex-wrap:wrap}
+  .exp{font-size:11px; color:var(--slate-600); border:1px solid var(--slate-200); background:#fff; border-radius:7px; padding:6px 11px; display:flex; align-items:center; gap:7px}
+  .exp .e{font-family:var(--mono); font-size:9.5px; color:#fff; background:var(--slate-600); border-radius:4px; padding:1px 5px}
+
+  /* outro */
+  .qgrid{display:grid; grid-template-columns:repeat(4,1fr); gap:13px; margin-top:24px}
+  .qcard{background:rgba(255,255,255,.04); border:1px solid #14466a; border-radius:12px; padding:14px}
+  .qcard .qn{font-family:var(--mono); font-size:11px; color:var(--gold); font-weight:700}
+  .qcard .qq{font-size:12.5px; color:#fff; font-weight:600; margin:7px 0 7px; line-height:1.4}
+  .qcard .qa{font-size:11px; color:#9fbccf; line-height:1.5}
+  .qcard .qa b{color:#cfe0ea; font-weight:600}
+  .scopecard{margin-top:20px; background:linear-gradient(180deg,rgba(212,175,55,.10),rgba(212,175,55,.02)); border:1px solid #3c4a2a; border-radius:12px; padding:16px 18px}
+  .scopecard .k{font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--gold); font-weight:600}
+  .scopecard .d{font-size:14px; color:#eaf2f7; margin-top:6px; line-height:1.5} .scopecard .d b{color:#fff}
+  .attrib{display:flex; align-items:center; gap:14px; margin-top:24px; padding-top:18px; border-top:1px solid #0e3a57}
+  .attrib .lg{width:38px; height:38px; border-radius:9px; background:linear-gradient(135deg,var(--gold),#a8801f); display:flex; align-items:center; justify-content:center; font-weight:800; color:var(--navy); font-size:15px}
+  .attrib .who b{color:#fff; font-weight:600} .attrib .who{font-size:12.5px; color:#9fbccf}
+
+  /* annotations strip (Layer 1) */
+  .annstrip{width:100%; max-width:1320px; margin-top:14px; display:none; gap:12px}
+  body.l1 .annstrip{display:grid; grid-template-columns:repeat(3,1fr)}
+  .acard{background:#072a3f; border:1px solid #114663; border-radius:11px; padding:13px 15px; border-top:3px solid}
+  .acard.b1{border-top-color:var(--gold)} .acard.b2{border-top-color:#4ea1ff} .acard.b3{border-top-color:#52c98a}
+  .acard .an{width:20px; height:20px; border-radius:50%; color:#fff; font-size:11px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-bottom:8px}
+  .acard.b1 .an{background:var(--gold-deep)} .acard.b2 .an{background:#2563eb} .acard.b3 .an{background:var(--green)}
+  .acard .at{font-size:12.5px; font-weight:600; color:#fff; margin-bottom:4px}
+  .acard .av{font-size:11.5px; color:#a9c2d2; line-height:1.5}
+  .acard .av .vs{display:block; margin-top:6px; color:var(--gold); font-weight:600}
+
+  /* assumptions (Layer 2, sticky) */
+  body.l2 .sticky{display:block}
+  .sticky{display:none; position:absolute; width:212px; background:var(--sticky); color:var(--sticky-ink);
+    font-family:'Caveat','Bradley Hand','Segoe Script',cursive; font-size:16px; line-height:1.32; padding:16px 15px 14px; border-radius:2px; box-shadow:2px 5px 14px rgba(0,0,0,.32); z-index:8; border:1px solid var(--sticky-edge)}
+  .sticky::before{content:""; position:absolute; top:-9px; left:50%; transform:translateX(-50%) rotate(-3deg); width:62px; height:19px; background:rgba(212,175,55,.5); border:1px solid rgba(160,120,20,.4)}
+  .sticky .tag{font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.05em; color:var(--gold-deep); display:block; margin-bottom:5px}
+  .sticky.r1{transform:rotate(-2deg)} .sticky.r2{transform:rotate(1.6deg)} .sticky.r3{transform:rotate(-1deg)}
+
+  .demofoot{width:100%; max-width:1320px; display:flex; justify-content:space-between; align-items:center; margin-top:14px; color:#86a7bc; font-size:11px}
+  .demofoot .pill{background:rgba(212,175,55,.14); color:var(--gold); border:1px solid #3a4a28; border-radius:20px; padding:3px 11px; font-weight:600; font-size:11px}
+
+  /* glossary overlay */
+  .glossover{position:fixed; inset:0; z-index:200; background:rgba(0,18,30,.74); backdrop-filter:blur(5px); display:none; align-items:center; justify-content:center; padding:46px}
+  .glossover.open{display:flex}
+  .glosscard{background:linear-gradient(180deg,#063150,#04263c); border:1px solid #14466a; border-radius:16px; max-width:1040px; width:100%; max-height:84vh; overflow:auto; padding:24px 30px 28px; color:#dbe7ef; position:relative}
+  .glosscard .ge{font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); font-weight:600}
+  .glosscard h3{font-size:22px; color:#fff; margin:6px 0 2px; letter-spacing:-.4px}
+  .glosscard .gsub{font-size:12px; color:#9fbccf; margin-bottom:18px}
+  .glossgrid{display:grid; grid-template-columns:1fr 1fr; gap:11px 26px}
+  .gterm{font-size:12px; line-height:1.5; color:#bcd2df}
+  .gterm b{color:var(--gold)}
+  .glossclose{position:absolute; top:16px; right:18px; cursor:pointer; background:#0d3650; border:1px solid #185175; color:#dbe7ef; width:30px; height:30px; border-radius:8px; font-size:16px; line-height:1}
+  .glossclose:hover{border-color:var(--gold)}
+
+  @media (max-width:1180px){
+    .valwrap,.cobody,.auditcol{grid-template-columns:1fr} .stickycopy,.dpp{position:static}
+    .qgrid{grid-template-columns:repeat(2,1fr)} .cards.c4{grid-template-columns:repeat(2,1fr)}
+    .glossgrid{grid-template-columns:1fr} .sticky{display:none!important}
+  }
+</style>
+</head>
+<body class="l1 l2 l3">
+
+<!-- ============ DECK BAR ============ -->
+<div class="deckbar">
+  <span class="brand"><span class="mk"></span>ProductCopyOS <span class="x">&times;</span> VitaPet</span>
+  <span class="spacer"></span>
+  <div class="dots" id="dots"></div>
+  <span class="spacer"></span>
+  <span class="toggle on" id="tg1" title="Annotations (Layer 1)"><span class="sw"></span>Annotations</span>
+  <span class="toggle on" id="tg2" title="Assumptions (Layer 2)"><span class="sw"></span>Assumptions</span>
+  <span class="toggle on" id="tg3" title="Objective strip (Layer 3)"><span class="sw"></span>Objective</span>
+  <button class="glossbtn" id="glossOpen" title="Glossary">Glossary</button>
+  <button class="navbtn" id="prev" title="Previous (left arrow)">&#8249;</button>
+  <span class="counter"><b id="cur">1</b>/<span id="tot">12</span></span>
+  <button class="navbtn" id="next" title="Next (right arrow)">&#8250;</button>
+</div>
+
+<main class="deck" id="deck">
+
+  <!-- ===== F1 · THE CAST ===== -->
+  <section class="slide active" id="f1" data-label="Framing 1 / 4 · The cast" data-type="ctx">
+    <div class="ctx">
+      <div class="eyebrow">ProductCopyOS &middot; VitaPet prospect &middot; pet nutrition, retail and veterinary (de-identified)</div>
+      <h1>One regulated <span class="g">claim</span>. Two audiences. Three markets. It has to mean the same thing in all of them.</h1>
+      <div class="lead">Before the walk-through: who is in the room, the one product family we follow end to end, and the two desks that hold the gate. The claim originates inside the company, not from a supplier.</div>
+      <div class="cards c4">
+        <div class="card gold"><div class="k">The brand</div><div class="t">VitaPet</div><div class="d">Enterprise pet-nutrition brand. Its flagship is veterinary diets, the heaviest regulatory load in the category. Markets FR, DE and US.</div></div>
+        <div class="card"><div class="k">The hero product family</div><div class="t">Veterinary renal diet</div><div class="d">A vet renal diet for dogs, plus a breed-specific retail line off the same family. One family, two audiences, two registers.</div></div>
+        <div class="card"><div class="k">Regulatory desk · lead gate</div><div class="t">Dr. Claire Fontaine</div><div class="role">Sr. Regulatory and Compliance Lead.<br><b>Owns the core claim wording and the nutrition-vs-medicinal line.</b></div></div>
+        <div class="card"><div class="k">Brand desk</div><div class="t">Marc Devlin</div><div class="role">Pet-Owner Experience, Portfolio and Digital.<br><b>Owns the online and on-pack expression.</b></div></div>
+      </div>
+      <div class="cards c3" style="margin-top:15px">
+        <div class="card"><div class="k">Markets</div><div class="d" style="margin-top:6px"><b>FR</b> and <b>DE</b> on EU feed law, FEDIAF and PARNUTs. <b>US</b> on FDA-CVM and AAFCO. The EU intended-use wording versus US AAFCO is the core contrast.</div></div>
+        <div class="card"><div class="k">Where the claim begins</div><div class="d" style="margin-top:6px">Inside an internal Excel claims spreadsheet, today's source of truth. There is no supplier feed; the claim originates in-house.</div></div>
+        <div class="card"><div class="k">Where we sit</div><div class="d" style="margin-top:6px">Beside the PIM, as the compliance layer it never had, and we feed the validated claim back upstream into the product passport. Augment, never replace.</div></div>
+      </div>
+      <div class="ctxfoot"><span>Single fixture. The same product family, people and certificates appear on every screen.</span><span class="pillg">Framing 1 / 4</span></div>
+    </div>
+  </section>
+
+  <!-- ===== F2 · THE RE-KEYING TAX ===== -->
+  <section class="slide" id="f2" data-label="Framing 2 / 4 · The re-keying tax" data-type="ctx">
+    <div class="ctx">
+      <div class="eyebrow">The complication &middot; what breaks today</div>
+      <h1>The claim is right once, on paper. Then it <span class="g">degrades</span> every time a human re-keys it.</h1>
+      <div class="lead">VitaPet's claims, legal text and rationing are written once, correctly. They then get copied by hand across FR, DE and US, drifting between the packaging tool and the PIM. Translation and manual copy-paste is the number-one time sink on this account.</div>
+      <div class="rule"></div>
+      <div class="cards c3">
+        <div class="card"><div class="k">Failure 1 · re-keyed by hand</div><div class="t" style="font-size:15px">Translated, not transferred</div><div class="d">Claims and legal text are re-typed market by market instead of flowing through. Every re-key is a chance for the regulated wording to drift.</div></div>
+        <div class="card"><div class="k">Failure 2 · desync</div><div class="t" style="font-size:15px">Packaging tool and PIM drift apart</div><div class="d">A new version drops and the packaging tool and the PIM fall out of sync. The legal claims are not controlled and become inaccurate.</div></div>
+        <div class="card gold"><div class="k">Failure 3 · the blind spot</div><div class="t" style="font-size:15px">Filled is not compliant</div><div class="d">The PIM checks that a field is filled, never that the value is compliant. An inaccurate therapeutic claim clears the check and reaches the live site.</div></div>
+      </div>
+      <div class="wedge"><div class="q">Your PIM confirms the field is filled. It never confirms the claim is still <em>true</em> after it has been translated and re-typed across three markets. On a veterinary diet, that gap is a market withdrawal.</div></div>
+      <div class="ctxfoot"><span>This is the tax we remove. Screen 2 is where we close it.</span><span class="pillg">Framing 2 / 4</span></div>
+    </div>
+  </section>
+
+  <!-- ===== F3 · HOW IT WORKS ===== -->
+  <section class="slide" id="f3" data-label="Framing 3 / 4 · How it works" data-type="ctx">
+    <div class="ctx">
+      <div class="eyebrow">The end-to-end flow &middot; beside the PIM, feeding the passport</div>
+      <h1>Lock the claim once. Let it flow <span class="g">validated</span>, never re-keyed, into every market.</h1>
+      <div class="lead">Seven phases, S through F. The system enriches, translates under a parity lock and validates in a sandbox, routes only what is uncertain to two human desks, then publishes and feeds the validated claim back upstream into the product passport, with a signed audit trail.</div>
+      <div class="flow">
+        <div class="step"><div class="ph">S</div><div class="nm">Setup</div><div class="sc">Rule corpus, EU and US</div></div>
+        <div class="step"><div class="ph">A</div><div class="nm">Intake</div><div class="sc">Internal claims spreadsheet in</div></div>
+        <div class="step"><div class="ph">B</div><div class="nm">Parity and validate</div><div class="sc">Lock, check, live cert</div></div>
+        <div class="step"><div class="ph">C</div><div class="nm">Substantiate</div><div class="sc">Evidence chased, not lost</div></div>
+        <div class="step human"><div class="ph">D</div><div class="nm">Review</div><div class="sc">Two desks, regulatory-led</div></div>
+        <div class="step"><div class="ph">E</div><div class="nm">Publish</div><div class="sc">PIM and the passport</div></div>
+        <div class="step"><div class="ph">F</div><div class="nm">Audit</div><div class="sc">Signed trail, DPP coming</div></div>
+      </div>
+      <div class="cards c4" style="margin-top:28px">
+        <div class="card"><div class="k">Screens 1 to 2 cut here</div><div class="d" style="margin-top:6px"><b>Outcome and the parity lock</b>, phase B, the re-keying closed.</div></div>
+        <div class="card"><div class="k">Screens 3 to 4 cut here</div><div class="d" style="margin-top:6px"><b>Claim validation and live MSC</b>, phase B, the medicinal line held.</div></div>
+        <div class="card"><div class="k">Screens 5 to 6 cut here</div><div class="d" style="margin-top:6px"><b>Two-desk review and rule sources</b>, phases D and S.</div></div>
+        <div class="card gold"><div class="k">Screen 7 cuts here</div><div class="d" style="margin-top:6px"><b>Push-back and audit</b>, phases E and F. The claim returns upstream.</div></div>
+      </div>
+      <div class="ctxfoot"><span>Intake (phase A) is the inverted, internal-origin step. It is folded into this map, not its own screen.</span><span class="pillg">Framing 3 / 4</span></div>
+    </div>
+  </section>
+
+  <!-- ===== F4 · CREATED ONCE, TRUSTED EVERYWHERE ===== -->
+  <section class="slide" id="f4" data-label="Framing 4 / 4 · Created once, trusted everywhere" data-type="ctx">
+    <div class="ctx">
+      <div class="eyebrow">Why this matters now &middot; the architecture</div>
+      <h1>The claim is born in the passport. Today it <span class="g">drifts</span> on the way out and never comes back.</h1>
+      <div class="lead">The claim originates inside the company and flows downstream to every channel. Each manual re-key drifts it, and nothing flows back to where it began. The fix is to feed the validated claim back upstream into the product passport, so the source of truth stays true.</div>
+      <div class="cards c2" style="margin-top:24px; align-items:start">
+        <div class="card">
+          <div class="k">Where the claim is born, and how it drifts</div>
+          <div class="chain">
+            <div class="cn origin">Claims spreadsheet<small>source of truth</small></div>
+            <div class="cn">MDM</div>
+            <div class="cn">Packaging tool</div>
+            <div class="cn">PIM</div>
+            <div class="cn">Syndication<small>retail, D2C, print</small></div>
+          </div>
+          <div class="d" style="margin-top:14px; font-size:12.5px">A master and local <b>product passport</b> sits as the PLM layer where claims originate. Today the flow is one-way: every downstream re-key drifts the claim and desyncs the packaging tool from the PIM.</div>
+        </div>
+        <div class="card gold">
+          <div class="k">What changes</div>
+          <div class="d" style="margin-top:8px; font-size:13px">The validated claim is written back <b>upstream</b> into the product passport, not just out to the channels. One validated claim, fed back where it was born, instead of five hand re-keys that drift. That closes the packaging-tool and PIM desync at its root.</div>
+          <div class="d" style="margin-top:12px; font-size:12px; color:#8fb0c4">On the Digital Product Passport: pet food is not a regulatory front-runner here, so the DPP is framed as <b style="color:#cfe0ea">coming</b>, a sustainability and MSC adjacency built off the same audit trail, not a dated obligation.</div>
+        </div>
+      </div>
+      <div class="srcnote">Source: VitaPet claims chain and PLM context, Yassine input 18 Jun 2026. The passport feedback is the architecture point; the DPP is adjacency, confirmed before any scope is fixed.</div>
+      <div class="ctxfoot"><span>Created once, correctly. Then locked, validated, and fed back, so it stays true everywhere.</span><span class="pillg">Framing 4 / 4</span></div>
+    </div>
+  </section>
+
+  <!-- ===== S1 · OUTCOME ===== -->
+  <section class="slide" id="screen-1" data-label="Screen 1 / 7 · Outcome" data-type="demo">
+    <div class="demowrap">
+      <div class="demohead">
+        <div class="ttl"><div class="eye">Screen 1 of 7 · outcome</div><h2>Two audiences, three markets, validated and ready to ship</h2></div>
+        <div class="rgt"><a class="procbtn" href="VitaPet_swimlanes.html#phase-B" target="_blank" rel="noopener">View process step <span class="ar">&#8250;</span></a><div class="cut">Phase B. The proof comes first, the workflow comes after.</div></div>
+      </div>
+      <div class="objective">
+        <div class="ocol"><div class="ol">What it does</div><div class="ot">Shows the finished, validated copy for the vet renal diet across FR, DE and US, with the sign-off controls, and the retail register one click away.</div></div>
+        <div class="ocol"><div class="ol">What it produces</div><div class="ot">An Approve, Amend or Reject decision per market variant.</div></div>
+        <div class="ocol"><div class="ol">Objective</div><div class="ot">Prove the outcome, compliant copy ready to ship, before showing how it is made.</div></div>
+      </div>
+      <div class="browser" style="position:relative">
+        <div class="bbar"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="addr"><span class="lock">&#128274;</span> vitapet &middot; productcopyos &middot; review console</span><span class="chip">family 1 of 1 &middot; ready for sign-off</span></div>
+        <div class="bbody">
+          <div class="sku-head">
+            <div>
+              <div class="eyebrow-d">Veterinary diet &middot; claims origin: internal spreadsheet</div>
+              <h3>VitaPet Veterinary Diet, Renal Support, adult dog</h3>
+              <div class="meta"><span>SKU <code>VP-VET-RENAL-DOG</code></span><span><b>Phosphorus</b> 0.40% (restricted)</span><span><b>Protein</b> adapted, high quality</span><span><b>EPA and DHA</b> 0.55%</span></div>
+            </div>
+            <div class="audsw" title="Audience register, same family"><span class="on">Vet register</span><span>Retail (breed) register</span></div>
+          </div>
+          <div class="gridcols g3">
+            <div class="variant">
+              <div class="vh"><span class="flag"><span class="fl fr"></span>France</span><span class="reg">EU &middot; PARNUTs</span></div>
+              <div class="chtabs"><span class="chtab on">.com</span><span class="chtab">vet portal</span><span class="chtab">pack legal text</span><span class="chtab">marketplace</span></div>
+              <div class="vcopy"><span class="pname">Aliment diététique, soutien rénal, chien adulte</span>Formulé pour <span class="hl reg" title="Locked claim, PARNUTs intended use">soutenir la fonction rénale</span> du chien adulte. <span class="hl spec" title="Analytical constituent, locked term">Teneur réduite en phosphore</span> et protéines adaptées. <span class="hl val" title="Mandatory vet-diet wording">À utiliser sous contrôle vétérinaire.</span> Voir les constituants analytiques et le guide de rationnement.</div>
+              <div class="vchecks"><div class="chk"><span class="ico ok">&#10003;</span> Parity: regulated wording locked to EN source</div><div class="chk"><span class="ico ok">&#10003;</span> Claim rules: PARNUTs, FEDIAF, 767/2009</div><div class="chk"><span class="ico ok">&#10003;</span> Medicinal line: held</div></div>
+              <div class="vactions"><span class="btn appr">Approve</span><span class="btn amend">Amend</span><span class="btn rej">Reject</span></div>
+            </div>
+            <div class="variant">
+              <div class="vh"><span class="flag"><span class="fl de"></span>Germany</span><span class="reg">EU &middot; PARNUTs</span></div>
+              <div class="chtabs"><span class="chtab">.com</span><span class="chtab on">vet portal</span><span class="chtab">pack legal text</span><span class="chtab">marketplace</span></div>
+              <div class="vcopy"><span class="pname">Diätetisches Ergänzungsfuttermittel, Nierenunterstützung</span>Formuliert zur <span class="hl reg" title="Locked claim, identical in substance to FR and US">Unterstützung der Nierenfunktion</span> bei erwachsenen Hunden. <span class="hl spec" title="Locked constituent term">Reduzierter Phosphorgehalt</span>, angepasstes Protein. <span class="hl val" title="Mandatory vet-diet wording">Unter tierärztlicher Aufsicht zu verwenden.</span></div>
+              <div class="vchecks"><div class="chk"><span class="ico ok">&#10003;</span> Parity: identical in substance to FR and US</div><div class="chk"><span class="ico ok">&#10003;</span> Claim rules: PARNUTs, FEDIAF, 767/2009</div><div class="chk"><span class="ico ok">&#10003;</span> Medicinal line: held</div></div>
+              <div class="vactions"><span class="btn appr">Approve</span><span class="btn amend">Amend</span><span class="btn rej">Reject</span></div>
+            </div>
+            <div class="variant">
+              <div class="vh"><span class="flag"><span class="fl us"></span>United States</span><span class="reg">US &middot; AAFCO</span></div>
+              <div class="chtabs"><span class="chtab on">.com</span><span class="chtab">vet portal</span><span class="chtab">pack legal text</span><span class="chtab">marketplace</span></div>
+              <div class="vcopy"><span class="pname">Veterinary Diet, Renal Support, adult dog</span>Formulated to <span class="hl reg" title="Locked claim, function support not treatment">support kidney function</span> in adult dogs. <span class="hl spec" title="Locked constituent term">Restricted phosphorus</span>, adapted protein. <span class="hl val" title="US regime wording, AAFCO and FDA direction">Use only under the direction of a veterinarian.</span></div>
+              <div class="vchecks"><div class="chk"><span class="ico ok">&#10003;</span> Parity: identical in substance, US wording</div><div class="chk"><span class="ico wn">!</span> Regime: AAFCO nutrient profile, state registration</div><div class="chk"><span class="ico ok">&#10003;</span> Medicinal line: held</div></div>
+              <div class="vactions"><span class="btn appr">Approve</span><span class="btn amend">Amend</span><span class="btn rej">Reject</span></div>
+            </div>
+          </div>
+          <div class="sticky r1" style="top:150px; right:16px"><span class="tag">VA8 · audience</span>I'm assuming one family carries two audiences, vet and breed-retail, in two registers. Right?</div>
+        </div>
+      </div>
+      <div class="annstrip">
+        <div class="acard b1"><span class="an">1</span><div class="at">Open on the outcome, not the pipeline</div><div class="av">The buyer sees validated copy as it ships, two audiences, three markets, before any workflow.<span class="vs">Result: the value lands before the mechanism.</span></div></div>
+        <div class="acard b2"><span class="an">2</span><div class="at">The same claim, every market</div><div class="av">EU follows the PARNUTs intended-use wording; US follows AAFCO and veterinary direction. The claim means the same thing in all three.<span class="vs">Result: the jurisdictional difference is visible, not buried.</span></div></div>
+        <div class="acard b3"><span class="an">3</span><div class="at">The gate stays human</div><div class="av">Approve, Amend, Reject sits on every variant; nothing publishes without a named human.<span class="vs">Result: the engine does the lift, the desk holds the decision.</span></div></div>
+      </div>
+      <div class="demofoot"><span>Pause here. Confirm relevance before walking back through the workflow.</span><span class="pill">Screen 1 / 7</span></div>
+    </div>
+  </section>
+
+  <!-- ===== S2 · CLAIM-PARITY LOCK ===== -->
+  <section class="slide" id="screen-2" data-label="Screen 2 / 7 · Claim-parity lock" data-type="demo">
+    <div class="demowrap">
+      <div class="demohead">
+        <div class="ttl"><div class="eye">Screen 2 of 7 · claim-parity lock</div><h2>The same regulated claim, locked across three markets</h2></div>
+        <div class="rgt"><a class="procbtn" href="VitaPet_swimlanes.html#phase-B" target="_blank" rel="noopener">View process step <span class="ar">&#8250;</span></a><div class="cut">Phase B3. The PIM re-types the claim per market; this locks it to mean one thing.</div></div>
+      </div>
+      <div class="objective">
+        <div class="ocol"><div class="ol">What it does</div><div class="ot">Locks claims, legal text and rationing to mean the same thing in FR, DE and US, with fixed terminology, and flags any drift.</div></div>
+        <div class="ocol"><div class="ol">What it produces</div><div class="ot">Parity-locked multilingual copy, with drifted terms held for a human.</div></div>
+        <div class="ocol"><div class="ol">Objective</div><div class="ot">Keep every regulated claim identical in substance across markets, so re-keying cannot drift it.</div></div>
+      </div>
+      <div class="browser" style="position:relative">
+        <div class="bbar"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="addr"><span class="lock">&#128274;</span> vitapet &middot; productcopyos &middot; parity lock &middot; FR / DE / US</span><span class="chip">5 terms locked &middot; 1 drift held</span></div>
+        <div class="bbody">
+          <div class="breakbar"><span class="tag">Would have drifted</span><span class="bx"><b>Caught on the re-key.</b> A German draft rendered "supports renal function" as <b>"behandelt Nierenerkrankungen"</b> (treats kidney disease). On a hand copy-paste that ships. Here it is held: it breaks parity with the locked term and crosses the nutrition-vs-medicinal line.</span></div>
+          <div class="valwrap">
+            <div class="stickycopy">
+              <h4>Canonical claim, EN source <span class="hitl" style="padding:2px 8px; font-size:10px"><span class="d"></span>locked</span></h4>
+              <div class="sub">The source claim stays in view. Each highlighted term has one locked rendering per market.</div>
+              <div class="body">Veterinary renal diet, formulated to <span class="hl reg" title="T01, locked claim">support renal function</span> in adult dogs. <span class="hl spec" title="T02, locked constituent term">Restricted phosphorus</span> and <span class="hl spec" title="T05, locked constituent term">adapted protein levels</span>. <span class="hl val" title="T03, mandatory vet-diet wording">To be used under veterinary supervision.</span> See analytical constituents and feeding guide.</div>
+              <div class="legend"><span><i style="border-color:var(--blue)"></i> regulated claim</span><span><i style="border-color:var(--gold)"></i> constituent term</span><span><i style="border-color:var(--green)"></i> mandatory wording</span><span><i style="border-color:var(--amber)"></i> drift held</span></div>
+            </div>
+            <div class="rulelist">
+              <div class="rrow"><span class="st" style="background:var(--green)">&#10003;</span><div><div class="rt">T01 · "support renal function" (the regulated claim)</div><div class="rd">Function-support claim, locked. Renders to one fixed term per market, never paraphrased.</div><span class="cite">PARNUTs 2020/354 · FEDIAF</span><div class="perchan"><span class="pc p">FR soutient la fonction rénale</span><span class="pc p">DE unterstützt die Nierenfunktion</span><span class="pc p">US support kidney function</span></div></div><span class="ch pass">Locked</span></div>
+              <div class="rrow"><span class="st" style="background:var(--green)">&#10003;</span><div><div class="rt">T02 · "restricted phosphorus" (analytical constituent)</div><div class="rd">Constituent term fixed across markets and paired with the declared 0.40% value.</div><span class="cite">Reg. 767/2009 · analytical constituents</span><div class="perchan"><span class="pc p">FR teneur réduite en phosphore</span><span class="pc p">DE reduzierter Phosphorgehalt</span><span class="pc p">US restricted phosphorus</span></div></div><span class="ch pass">Locked</span></div>
+              <div class="rrow"><span class="st" style="background:var(--green)">&#10003;</span><div><div class="rt">T03 · "to be used under veterinary supervision"</div><div class="rd">Mandatory vet-diet wording. The EU phrasing follows PARNUTs; the US phrasing follows veterinary direction, each locked per regime.</div><span class="cite">PARNUTs 2020/354 · US FDA direction</span><div class="perchan"><span class="pc p">FR sous contrôle vétérinaire</span><span class="pc p">DE unter tierärztlicher Aufsicht</span><span class="pc p">US under the direction of a veterinarian</span></div></div><span class="ch pass">Locked</span></div>
+              <div class="rrow warnr"><span class="st" style="background:var(--amber)">!</span><div><div class="rt">T04 · DE draft drifted from the locked claim</div><div class="rd">Draft rendered T01 as <b>"behandelt Nierenerkrankungen"</b> (treats kidney disease). <b>Held:</b> breaks parity with the locked term and crosses the medicinal line. Re-aligned to "unterstützt die Nierenfunktion" or referred to Dr. Fontaine.</div><span class="cite">parity lock T01 · medicinal-line guardrail</span><div class="perchan"><span class="pc f">DE drift ✕</span><span class="pc p">FR ✓</span><span class="pc p">US ✓</span></div></div><span class="ch warnc">Held</span></div>
+              <div class="rrow"><span class="st" style="background:var(--green)">&#10003;</span><div><div class="rt">T05 · "adapted protein levels" (analytical constituent)</div><div class="rd">Constituent term fixed; the rationing table is locked to the same values in all three markets.</div><span class="cite">FEDIAF · Reg. 767/2009</span><div class="perchan"><span class="pc p">FR protéines adaptées</span><span class="pc p">DE angepasstes Protein</span><span class="pc p">US adapted protein</span></div></div><span class="ch pass">Locked</span></div>
+            </div>
+          </div>
+          <div class="sticky r2" style="top:118px; right:16px"><span class="tag">VA3 · the wedge</span>I'm assuming claim-parity is the number-one time sink and the headline workflow, not enrichment.</div>
+        </div>
+      </div>
+      <div class="annstrip">
+        <div class="acard b1"><span class="an">1</span><div class="at">One meaning, three markets</div><div class="av">Each regulated term has exactly one locked rendering per market. The same claim cannot say two different things.<span class="vs">Result: translation can no longer drift a claim.</span></div></div>
+        <div class="acard b2"><span class="an">2</span><div class="at">The drift is the silent error, caught</div><div class="av">A DE draft drifted "supports function" into "treats disease". On a re-key that ships; here it is flagged before publication.<span class="vs">Result: the re-keying error surfaces, not at audit.</span></div></div>
+        <div class="acard b3"><span class="an">3</span><div class="at">Terminology is fixed, never creative</div><div class="av">Constituent terms and rationing are locked to the declared values across markets, not re-phrased per language.<span class="vs">Result: the claim and its numbers stay identical in substance.</span></div></div>
+      </div>
+      <div class="demofoot"><span>The drifted term never reaches a market. It is held and re-aligned, or referred to Regulatory.</span><span class="pill">Screen 2 / 7</span></div>
+    </div>
+  </section>
+
+  <!-- ===== S3 · CLAIM VALIDATION & MEDICINAL LINE ===== -->
+  <section class="slide" id="screen-3" data-label="Screen 3 / 7 · Claim validation and the medicinal line" data-type="demo">
+    <div class="demowrap">
+      <div class="demohead">
+        <div class="ttl"><div class="eye">Screen 3 of 7 · claim validation and the medicinal line</div><h2>Support function, never treat. And surface what cannot be proven</h2></div>
+        <div class="rgt"><a class="procbtn" href="VitaPet_swimlanes.html#phase-B" target="_blank" rel="noopener">View process step <span class="ar">&#8250;</span></a><div class="cut">Phase B4 and C. Each claim is checked against the rules; the medicinal line is the hard guardrail.</div></div>
+      </div>
+      <div class="objective">
+        <div class="ocol"><div class="ol">What it does</div><div class="ot">Checks each claim against the EU and US feed and vet-diet rules, holds the nutrition-vs-medicinal boundary, and surfaces any claim without evidence.</div></div>
+        <div class="ocol"><div class="ol">What it produces</div><div class="ot">A pass, hold or block per claim, with held items routed to a tracked substantiation request.</div></div>
+        <div class="ocol"><div class="ol">Objective</div><div class="ot">Stop a therapeutic or unproven claim before it reaches a pet owner.</div></div>
+      </div>
+      <div class="browser" style="position:relative">
+        <div class="bbar"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="addr"><span class="lock">&#128274;</span> vitapet &middot; productcopyos &middot; claim validation &middot; renal diet</span><span class="chip">2 pass &middot; 1 held &middot; 1 blocked</span></div>
+        <div class="bbody">
+          <div class="breakbar"><span class="tag">The hard line</span><span class="bx"><b>A feed may support function. It may never diagnose, treat or cure.</b> A draft claim "treats chronic kidney disease" is blocked at the boundary. The system surfaces it for a human; it does not quietly re-phrase around it.</span></div>
+          <div class="rulelist">
+            <div class="rrow"><span class="st" style="background:var(--green)">&#10003;</span><div><div class="rt">C01 · "supports renal function"</div><div class="rd">Permitted function-support claim for a veterinary diet. EU follows the PARNUTs intended-use list; US follows AAFCO nutrient adequacy and veterinary direction.</div><span class="cite">PARNUTs 2020/354 · AAFCO · FDA-CVM</span></div><span class="ch pass">Pass</span></div>
+            <div class="rrow"><span class="st" style="background:var(--green)">&#10003;</span><div><div class="rt">C02 · "restricted phosphorus, adapted protein"</div><div class="rd">Analytical-constituent claims consistent with the declared values (phosphorus 0.40%) and the FEDIAF nutritional guidance.</div><span class="cite">Reg. 767/2009 · FEDIAF</span></div><span class="ch pass">Pass</span></div>
+            <div class="rrow warnr"><span class="st" style="background:var(--amber)">!</span><div><div class="rt">C03 · "clinically shown to improve quality of life"</div><div class="rd"><b>Held, not written around.</b> A self-substantiated claim with no listed basis. The system surfaces it and refers it to Dr. Brandt for the internal study, rather than softening or deleting it.</div><span class="cite">self-substantiation · evidence required</span></div><span class="ch warnc">Held</span></div>
+            <div class="rrow blockr"><span class="st" style="background:var(--red)">&#10005;</span><div><div class="rt">C04 · "treats chronic kidney disease"</div><div class="rd"><b>Blocked at the nutrition-vs-medicinal line.</b> A feed may support function, never treat or cure. The claim cannot ship in any market and is referred to Regulatory.</div><span class="cite">nutrition-vs-medicinal boundary · VitaPet TOV</span></div><span class="ch blockc">Blocked</span></div>
+          </div>
+          <div class="chaseobj open" style="margin-top:16px">
+            <div class="coh">
+              <div class="sub">Substantiation request, C03<small>Request SR-0207 &middot; opened 19 Jun 2026</small></div>
+              <div style="display:flex; align-items:center; gap:14px">
+                <span class="sla">SLA <b>due in 5 working days</b></span>
+                <span class="statpill open">Open &middot; awaiting evidence</span>
+              </div>
+            </div>
+            <div class="cobody">
+              <div class="cogrid">
+                <span class="lb">Claim</span><span class="vl">"clinically shown to improve quality of life"</span>
+                <span class="lb">Owner</span><span class="vl">Dr. Anja Brandt, Regulatory and Scientific Affairs</span>
+                <span class="lb">Needs</span><span class="vl">Internal study or composition evidence</span>
+                <span class="lb">Holds</span><span class="vl">The claim, until evidence is attached</span>
+              </div>
+              <div class="coaction">
+                <div class="at"><b>The human-in-the-loop action.</b> The system drafts the request and refers it to Dr. Brandt. She supplies the study or withdraws the claim. On receipt, the claim re-enters validation automatically.</div>
+                <div class="ts">referred_to = a.brandt &middot; 2026-06-19T10:14:00+02:00</div>
+                <div style="margin-top:10px"><span class="hitl"><span class="d"></span>Human in the loop: only Scientific Affairs supplies the evidence</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="sticky r3" style="top:118px; right:16px"><span class="tag">VA5 · the line</span>I'm assuming the medicinal line is hard, and we surface unproven claims rather than generate around them. Confirm?</div>
+        </div>
+      </div>
+      <div class="annstrip">
+        <div class="acard b1"><span class="an">1</span><div class="at">Support, never treat</div><div class="av">The system holds the nutrition-vs-medicinal line in every market. A "treats disease" claim is blocked, not softened.<span class="vs">Result: every vet claim stays on the legal side of the line.</span></div></div>
+        <div class="acard b2"><span class="an">2</span><div class="at">Surface, do not generate around</div><div class="av">An unproven claim is held and referred to Dr. Brandt for the study, never quietly deleted or re-phrased to dodge the gap.<span class="vs">Result: the gap is closed on the record, with evidence.</span></div></div>
+        <div class="acard b3"><span class="an">3</span><div class="at">Every check carries its rule</div><div class="av">PARNUTs, FEDIAF, AAFCO, FDA-CVM; each row cites the authority and links back to Screen 6.<span class="vs">Result: a held claim is defensible, not a judgment call.</span></div></div>
+      </div>
+      <div class="demofoot"><span>The blocked claim never ships; the held claim waits for evidence, then re-validates.</span><span class="pill">Screen 3 / 7</span></div>
+    </div>
+  </section>
+
+  <!-- ===== S4 · LIVE CERT CHECK (MSC) ===== -->
+  <section class="slide" id="screen-4" data-label="Screen 4 / 7 · Live certificate check (MSC)" data-type="demo">
+    <div class="demowrap">
+      <div class="demohead">
+        <div class="ttl"><div class="eye">Screen 4 of 7 · live certificate check</div><h2>Declared certified is not the same as valid</h2></div>
+        <div class="rgt"><a class="procbtn" href="VitaPet_swimlanes.html#phase-B" target="_blank" rel="noopener">View process step <span class="ar">&#8250;</span></a><div class="cut">Phase B5. Marine-sourcing certificates are checked live against the public MSC register, not taken on declaration.</div></div>
+      </div>
+      <div class="objective">
+        <div class="ocol"><div class="ol">What it does</div><div class="ot">Checks each declared certificate against its public register in real time, expiry-aware.</div></div>
+        <div class="ocol"><div class="ol">What it produces</div><div class="ot">A valid or expired verdict per certificate, and a chase for anything expired.</div></div>
+        <div class="ocol"><div class="ol">Objective</div><div class="ot">Make sure a sourcing claim is current, not just claimed.</div></div>
+      </div>
+      <div class="browser" style="position:relative">
+        <div class="bbar"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="addr"><span class="lock">&#128274;</span> vitapet &middot; productcopyos &middot; certificates &middot; live register check</span><span class="chip">2 declared &middot; 1 expired</span></div>
+        <div class="bbody">
+          <div class="regline"><span class="live"><span class="pulse"></span>Live</span> checked against the public MSC register at 19 Jun 2026, 10:41 CET. Supplier declaration on the left, register verdict on the right.</div>
+          <div class="certrow exp">
+            <div class="certcell"><div class="lb">Certificate</div><div class="vl">MSC, marine-sourced fish</div><div class="sub">Public register &middot; expiry-cycle renewal</div></div>
+            <div class="certcell"><div class="lb">Declared</div><div class="vl mono">MSC-C-58421</div><div class="sub">"valid", stated for the breed line</div></div>
+            <div class="certcell"><div class="lb">Public register says</div><div class="vl mono" style="color:var(--red)">expired 28 Feb 2026</div><div class="sub">renewal not yet filed</div></div>
+            <div class="vstamp expired">&#10005; Expired</div>
+          </div>
+          <div style="margin:-2px 0 16px; padding:11px 16px; background:var(--amber-soft); border:1px solid var(--amber-line); border-radius:10px; display:flex; align-items:center; gap:14px">
+            <span class="await"><span class="d"></span>Flagged by the system &middot; awaiting human action</span>
+            <span style="font-size:12px; color:#7a4a08">The "with MSC-certified fish" sourcing claim cannot be substantiated until MSC is renewed. The system drafts a chase and refers it. A human approves and owns it.</span>
+          </div>
+          <div class="certrow">
+            <div class="certcell"><div class="lb">Certificate</div><div class="vl">FSSC 22000, manufacturing</div><div class="sub">Food-safety certification scheme</div></div>
+            <div class="certcell"><div class="lb">Declared</div><div class="vl mono">FSSC-009-2241</div><div class="sub">"valid"</div></div>
+            <div class="certcell"><div class="lb">Public register says</div><div class="vl mono" style="color:var(--green)">valid to 30 Sep 2027</div><div class="sub">scope matches plant</div></div>
+            <div class="vstamp valid">&#10003; Valid</div>
+          </div>
+          <div class="sticky r3" style="top:150px; right:16px"><span class="tag">VA7 · registries</span>I'm assuming MSC is queryable live with an expiry cycle, and "declared is not valid" is the real case. Confirm?</div>
+        </div>
+      </div>
+      <div class="annstrip">
+        <div class="acard b1"><span class="an">1</span><div class="at">The textbook case</div><div class="av">MSC runs on an expiry cycle. The declaration still says valid; the register says it expired in February.<span class="vs">Result: an expired sourcing claim never reaches a pet owner.</span></div></div>
+        <div class="acard b2"><span class="an">2</span><div class="at">A distinct capability</div><div class="av">Kept separate from claim validation on purpose. It is a second, independent proof point, against a live authority.<span class="vs">Result: two reasons to trust the output, not one.</span></div></div>
+        <div class="acard b3"><span class="an">3</span><div class="at">Declared is not validated</div><div class="av">The system flags the expiry and drafts a chase, but it does not act alone; a named human approves and owns the renewal.<span class="vs">Result: certificates stop living on a declaration.</span></div></div>
+      </div>
+      <div class="demofoot"><span>Today this check is manual. The MSC public register makes it automatable, and the expiry is the catch.</span><span class="pill">Screen 4 / 7</span></div>
+    </div>
+  </section>
+
+  <!-- ===== S5 · TWO-DESK REVIEW (REGULATORY-LED) ===== -->
+  <section class="slide" id="screen-5" data-label="Screen 5 / 7 · Two-desk review, regulatory-led" data-type="demo">
+    <div class="demowrap">
+      <div class="demohead">
+        <div class="ttl"><div class="eye">Screen 5 of 7 · two-desk review, regulatory-led</div><h2>Regulatory holds the core wording. Brand owns the expression</h2></div>
+        <div class="rgt"><a class="procbtn" href="VitaPet_swimlanes.html#phase-D" target="_blank" rel="noopener">View process step <span class="ar">&#8250;</span></a><div class="cut">Phase D. On claim-sensitive vet copy, Regulatory is the primary gate, not a light first pass.</div></div>
+      </div>
+      <div class="objective">
+        <div class="ocol"><div class="ol">What it does</div><div class="ot">Routes the core claim wording and the medicinal line to Regulatory, the lead gate, and the channel expression to Brand.</div></div>
+        <div class="ocol"><div class="ol">What it produces</div><div class="ot">A binding approval, or an amend that re-validates the parity lock.</div></div>
+        <div class="ocol"><div class="ol">Objective</div><div class="ot">Put the right decision in front of the right person, with the human accountable for what is legally true.</div></div>
+      </div>
+      <div class="browser" style="position:relative">
+        <div class="bbar"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="addr"><span class="lock">&#128274;</span> vitapet &middot; productcopyos &middot; review and sign-off</span><span class="chip">2 desks &middot; regulatory-led</span></div>
+        <div class="bbody">
+          <div class="split-note"><b>Why Regulatory leads here.</b> On a veterinary diet the claim sensitivity is the risk. Regulatory owns the <b>core claim wording</b> and the <b>nutrition-vs-medicinal line</b> across FR, DE and US, and is the primary gate. Brand owns the <b>expression</b>, online and on-pack, and gives the binding sign-off. Nothing publishes until both agree.</div>
+          <div class="desks">
+            <div class="desk compl">
+              <div class="dh"><div class="who">Dr. Claire Fontaine <span class="lead">Lead gate</span></div><div class="ro">Sr. Regulatory and Compliance Lead, US and Global Data, EU</div><span class="owns">Owns the core claim wording and the medicinal line</span></div>
+              <div class="db">
+                <div class="dcheck"><span class="ico ok">&#10003;</span> "Supports renal function" confirmed as a function-support claim, FR, DE and US</div>
+                <div class="dcheck"><span class="ico ok">&#10003;</span> Mandatory vet-diet wording present in every market</div>
+                <div class="dcheck"><span class="ico no">&#10005;</span> "Treats chronic kidney disease" blocked at the medicinal line <span style="color:var(--slate-400)">(from Screen 3)</span></div>
+                <div style="margin-top:6px"><span class="hitl"><span class="d"></span>Human in the loop: core wording confirmed</span></div>
+              </div>
+            </div>
+            <div class="desk port">
+              <div class="dh"><div class="who">Marc Devlin</div><div class="ro">Pet-Owner Experience, Portfolio and Digital</div><span class="owns">Owns the online and on-pack expression</span></div>
+              <div class="db">
+                <div class="dcheck"><span class="ico ok">&#10003;</span> .com cut, science-led, calm, VitaPet voice, no anthropomorphism</div>
+                <div class="dcheck"><span class="ico ok">&#10003;</span> Pack legal text, verbatim constituents and rationing retained</div>
+                <div class="dcheck"><span class="ico wn">!</span> Retail register for the breed line, awaiting MSC renewal <span style="color:var(--slate-400)">(from Screen 4)</span></div>
+                <div style="margin-top:6px"><span class="hitl"><span class="d"></span>Human in the loop: expression approved</span></div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex; gap:9px; margin-top:16px; max-width:600px"><span class="btn appr" style="flex:none; padding:9px 18px">Approve (binding)</span><span class="btn amend" style="flex:none; padding:9px 18px">Amend, re-validate parity</span><span class="btn rej" style="flex:none; padding:9px 18px">Reject, re-generate</span></div>
+          <div class="sticky r2" style="top:120px; right:16px"><span class="tag">VA6 · two desks</span>I'm assuming Regulatory leads and owns the wording, Brand owns the expression. One desk or two, and which leads?</div>
+        </div>
+      </div>
+      <div class="annstrip">
+        <div class="acard b1"><span class="an">1</span><div class="at">Regulatory leads, not rubber-stamps</div><div class="av">Claim sensitivity makes the regulatory desk the primary gate. Dr. Fontaine owns what is legally true across all three markets.<span class="vs">Result: the human accountable for the law holds the lead gate.</span></div></div>
+        <div class="acard b2"><span class="an">2</span><div class="at">An amplifier for the expert</div><div class="av">The system pre-checks parity, the rules and the certs, and refers only what is uncertain. Dr. Fontaine's time goes to judgment, not to re-reading clean copy.<span class="vs">Result: the expert is amplified, not replaced.</span></div></div>
+        <div class="acard b3"><span class="an">3</span><div class="at">Two desks, one binding decision</div><div class="av">Brand approves the expression and binds the publish. An amend re-enters the parity lock; the loop is governed.<span class="vs">Result: nothing publishes until both desks agree.</span></div></div>
+      </div>
+      <div class="demofoot"><span>Only the uncertain is referred to a human. The rest flows through.</span><span class="pill">Screen 5 / 7</span></div>
+    </div>
+  </section>
+
+  <!-- ===== S6 · RULE SOURCES ===== -->
+  <section class="slide" id="screen-6" data-label="Screen 6 / 7 · Rule sources" data-type="demo">
+    <div class="demowrap">
+      <div class="demohead">
+        <div class="ttl"><div class="eye">Screen 6 of 7 · rule sources</div><h2>Every claim traces to a clause, an authority, a date</h2></div>
+        <div class="rgt"><a class="procbtn" href="VitaPet_swimlanes.html#phase-S" target="_blank" rel="noopener">View process step <span class="ar">&#8250;</span></a><div class="cut">Phase S. Every rule cited on Screens 2 and 3 is a link, not a label; it traces back to here.</div></div>
+      </div>
+      <div class="objective">
+        <div class="ocol"><div class="ol">What it does</div><div class="ot">Shows where every rule comes from, EU and US, with its authority and date.</div></div>
+        <div class="ocol"><div class="ol">What it produces</div><div class="ot">A citable rule corpus that every claim check links back to.</div></div>
+        <div class="ocol"><div class="ol">Objective</div><div class="ot">Make every check traceable to a real clause, in both regimes.</div></div>
+      </div>
+      <div class="browser" style="position:relative">
+        <div class="bbar"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="addr"><span class="lock">&#128274;</span> vitapet &middot; productcopyos &middot; rule corpus v1 &middot; dated and cited</span><span class="chip">6 sources &middot; clause-level</span></div>
+        <div class="bbody">
+          <div style="margin-bottom:14px; font-size:12px; color:var(--slate-600)">Published, dated and citable. Every claim check on Screens 2 and 3 carries one of these as its source. <b style="color:var(--slate-900)">One engine, two regulatory regimes.</b></div>
+          <div class="srcgrid">
+            <div class="src"><div class="sh"><div class="ic">&#9878;</div><div><div class="nm">EU feed law</div><div class="au">Reg. 767/2009 labelling and 1831/2003 additives</div></div></div><div class="clause"><span>Claim and labelling obligations</span><code>767/2009</code></div><div class="clause"><span>Analytical constituents declaration</span><span class="dt">in force</span></div></div>
+            <div class="src"><div class="sh"><div class="ic">&#128138;</div><div><div class="nm">PARNUTs, veterinary diets</div><div class="au">Reg. (EU) 2020/354, particular nutritional purposes</div></div></div><div class="clause"><span>Renal-support intended-use wording</span><code>2020/354</code></div><div class="clause"><span>"Under veterinary supervision"</span><span class="dt">mandatory</span></div></div>
+            <div class="src"><div class="sh"><div class="ic">&#127859;</div><div><div class="nm">FEDIAF code</div><div class="au">EU pet-food nutritional and labelling guide</div></div></div><div class="clause"><span>Nutritional guidelines, adult dog</span><code>FEDIAF</code></div><div class="clause"><span>Self-regulatory labelling code</span><span class="dt">2024</span></div></div>
+            <div class="src"><div class="sh"><div class="ic">&#127482;&#127480;</div><div><div class="nm">US FDA-CVM and AAFCO</div><div class="au">Nutrient profiles and state feed registration</div></div></div><div class="clause"><span>AAFCO nutrient adequacy, adult dog</span><code>AAFCO</code></div><div class="clause"><span>Use under veterinary direction</span><span class="dt">FDA-CVM</span></div></div>
+            <div class="src"><div class="sh"><div class="ic">&#9878;</div><div><div class="nm">Nutrition-vs-medicinal boundary</div><div class="au">The category guardrail, EU and US</div></div></div><div class="clause"><span>Feed may support function, never treat</span><code>guardrail</code></div><div class="clause"><span>Status</span><span class="dt" style="color:var(--red)">hard line</span></div></div>
+            <div class="src"><div class="sh"><div class="ic">&#128300;</div><div><div class="nm">Self-substantiation studies</div><div class="au">Internal &middot; VitaPet Regulatory and Scientific Affairs</div></div></div><div class="clause"><span>Evidence for claims not on a list</span><code>internal</code></div><div class="clause"><span>Owner</span><span class="dt">Dr. Brandt</span></div></div>
+          </div>
+          <div class="src" style="margin-top:13px"><div class="sh"><div class="ic" style="background:var(--gold); color:var(--navy)">&#10003;</div><div><div class="nm">VitaPet Tone of Voice</div><div class="au">Internal &middot; precise, science-led, calm, no anthropomorphism</div></div></div><div class="clause"><span>Pair every benefit with its nutritional reason; never imply a cure; same term translated identically</span><code>TOV §compliance</code></div></div>
+          <div class="sticky r3" style="top:120px; right:16px"><span class="tag">VA2 · sources</span>I'm assuming the EU and US rule sets and the TOV can be indexed and cited from their sources. True?</div>
+        </div>
+      </div>
+      <div class="annstrip">
+        <div class="acard b1"><span class="an">1</span><div class="at">Two regimes, one engine</div><div class="av">EU feed law, FEDIAF and PARNUTs sit beside US FDA-CVM and AAFCO. The same claim is checked against both.<span class="vs">Result: the FR, DE and US contrast is handled in one place.</span></div></div>
+        <div class="acard b2"><span class="an">2</span><div class="at">The citation chain is the payload</div><div class="av">Every citation on Screens 2 and 3 is a live link back to a clause here. Read once, trace anywhere.<span class="vs">Result: no claim check without a source.</span></div></div>
+        <div class="acard b3"><span class="an">3</span><div class="at">A named human owns the corpus</div><div class="av">PARNUTs and AAFCO both evolve; the corpus is dated, versioned and kept current by Regulatory.<span class="vs">Result: the rules a claim is held to are themselves auditable.</span></div></div>
+      </div>
+      <div class="demofoot"><span>The rules and the brand voice read from here. No acronyms on the glass; every term is in the glossary.</span><span class="pill">Screen 6 / 7</span></div>
+    </div>
+  </section>
+
+  <!-- ===== S7 · PUSH-BACK & AUDIT ===== -->
+  <section class="slide" id="screen-7" data-label="Screen 7 / 7 · Push-back and audit" data-type="demo">
+    <div class="demowrap">
+      <div class="demohead">
+        <div class="ttl"><div class="eye">Screen 7 of 7 · push-back and audit</div><h2>The validated claim returns upstream, and the trail is signed</h2></div>
+        <div class="rgt"><a class="procbtn" href="VitaPet_swimlanes.html#phase-F" target="_blank" rel="noopener">View process step <span class="ar">&#8250;</span></a><div class="cut">Phases E and F. The validated claim is fed back into the passport, and the audit trail is part of the definition of success.</div></div>
+      </div>
+      <div class="objective">
+        <div class="ocol"><div class="ol">What it does</div><div class="ot">Writes the validated claim to the PIM and feeds it back upstream into the product passport, then records every step in a signed trail.</div></div>
+        <div class="ocol"><div class="ol">What it produces</div><div class="ot">An updated PIM and passport, plus a signed audit pack, each claim linked to its rule and evidence.</div></div>
+        <div class="ocol"><div class="ol">Objective</div><div class="ot">Close the desync at its root, and make the result defensible to an authority.</div></div>
+      </div>
+      <div class="browser" style="position:relative">
+        <div class="bbar"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="addr"><span class="lock">&#128274;</span> vitapet &middot; productcopyos &middot; publish, sync and audit</span><span class="chip">signed chain &middot; passport in sync</span></div>
+        <div class="bbody">
+          <div class="auditcol">
+            <div>
+              <div style="font-size:12px; color:var(--slate-600); margin-bottom:14px"><b style="color:var(--slate-900)">Signed audit trail.</b> Every claim, translation, rule applied and human decision, immutable, FR, DE and US.</div>
+              <div class="timeline">
+                <div class="tev s"><span class="tdot"></span><div><div class="te">Claims spreadsheet ingested and routed</div><div class="tm">internal Excel row, 6 fields, source-cell trace kept &middot; <code>src-claims-0207</code></div></div></div>
+                <div class="tev"><span class="tdot"></span><div><div class="te">Parity lock run, 1 drift held</div><div class="tm">DE "behandelt Nierenerkrankungen" held, re-aligned to the locked term &middot; <code>T01</code></div></div></div>
+                <div class="tev h"><span class="tdot"></span><div><div class="te">Substantiation supplied and re-validated</div><div class="tm"><span class="hitl" style="font-size:10px; padding:2px 8px"><span class="d"></span>Dr. Brandt</span> study attached for the quality-of-life claim</div></div></div>
+                <div class="tev"><span class="tdot"></span><div><div class="te">MSC re-check, certificate renewed</div><div class="tm">register confirms valid to 28 Feb 2027 &middot; <code>MSC-C-58421</code></div></div></div>
+                <div class="tev h"><span class="tdot"></span><div><div class="te">Regulatory sign-off, core wording and medicinal line</div><div class="tm"><span class="hitl" style="font-size:10px; padding:2px 8px"><span class="d"></span>Dr. Fontaine</span> FR, DE and US confirmed; "treats" claim blocked</div></div></div>
+                <div class="tev h"><span class="tdot"></span><div><div class="te">Brand approval, expression</div><div class="tm"><span class="hitl" style="font-size:10px; padding:2px 8px"><span class="d"></span>Marc Devlin</span> vet and retail registers approved</div></div></div>
+                <div class="tev s"><span class="tdot"></span><div><div class="te">Published, synced, and fed upstream</div><div class="tm">PIM updated; validated claims written back to the passport &middot; <code>hash 7c4e…a19</code></div></div></div>
+              </div>
+              <div class="exports"><span class="exp"><span class="e">PDF</span> claim conformity pack</span><span class="exp"><span class="e">CSV</span> rule-by-rule audit</span><span class="exp"><span class="e">JSON</span> signed event chain</span></div>
+            </div>
+            <div class="dpp">
+              <div class="dt">Product passport (PLM) &middot; fed upstream</div>
+              <h4>The claim returns to where it was born</h4>
+              <div class="ds">No re-keying. The validated claim, legal text and audit hash are written back into the product passport, not just out to the channels.</div>
+              <div class="dppbox">
+                <div class="dppfields">
+                  <div class="f"><span>Passport record</span><b>PP-VET-RENAL-DOG</b></div>
+                  <div class="f"><span>Claim ("supports renal function")</span><b class="ok">validated</b></div>
+                  <div class="f"><span>Legal text and rationing</span><b class="ok">parity-locked</b></div>
+                  <div class="f"><span>Analytical constituents</span><b class="ok">consistent</b></div>
+                  <div class="f"><span>Certificates (MSC, FSSC)</span><b class="ok">live-checked</b></div>
+                  <div class="f"><span>Audit hash</span><b class="ok">linked</b></div>
+                </div>
+              </div>
+              <div class="upstream"><div class="ua"><b>The money-point.</b> Feeding the validated claim back upstream closes the packaging-tool and PIM desync that forced the hand re-keying.</div></div>
+              <div class="fwdbox">
+                <div class="qr"><svg viewBox="0 0 29 29" shape-rendering="crispEdges"><rect width="29" height="29" fill="#fff"/><g fill="#002D49"><rect x="0" y="0" width="7" height="7"/><rect x="1" y="1" width="5" height="5" fill="#fff"/><rect x="2" y="2" width="3" height="3" fill="#002D49"/><rect x="22" y="0" width="7" height="7"/><rect x="23" y="1" width="5" height="5" fill="#fff"/><rect x="24" y="2" width="3" height="3" fill="#002D49"/><rect x="0" y="22" width="7" height="7"/><rect x="1" y="23" width="5" height="5" fill="#fff"/><rect x="2" y="24" width="3" height="3" fill="#002D49"/><rect x="9" y="0" width="1" height="1"/><rect x="11" y="0" width="2" height="1"/><rect x="15" y="0" width="1" height="2"/><rect x="9" y="2" width="2" height="2"/><rect x="13" y="2" width="1" height="3"/><rect x="20" y="2" width="1" height="2"/><rect x="9" y="9" width="2" height="2"/><rect x="12" y="9" width="3" height="1"/><rect x="16" y="9" width="1" height="2"/><rect x="19" y="9" width="2" height="2"/><rect x="23" y="9" width="2" height="1"/><rect x="9" y="12" width="1" height="3"/><rect x="14" y="12" width="2" height="2"/><rect x="20" y="12" width="2" height="1"/><rect x="24" y="12" width="1" height="3"/><rect x="9" y="16" width="2" height="1"/><rect x="13" y="16" width="1" height="2"/><rect x="19" y="16" width="1" height="3"/><rect x="25" y="16" width="2" height="2"/><rect x="14" y="19" width="1" height="3"/><rect x="21" y="19" width="1" height="2"/><rect x="9" y="23" width="2" height="2"/><rect x="15" y="23" width="2" height="1"/><rect x="21" y="23" width="2" height="2"/></g></svg></div>
+                <div class="ft"><span class="pendtag">Coming, forward capability</span>The same signed trail can compose a <b>DPP and QR payload</b> when the obligation arrives. Adjacency via sustainability and MSC claims, not a dated deadline.</div>
+              </div>
+              <div class="dppfoot">One validated claim, checked once, reaches every channel and returns to the passport. The re-keying loop is closed.</div>
+            </div>
+          </div>
+          <div class="sticky r1" style="top:96px; right:16px"><span class="tag">VA4 · passport</span>I'm assuming we can write validated claims back upstream into the product passport (PLM). True?</div>
+        </div>
+      </div>
+      <div class="annstrip">
+        <div class="acard b1"><span class="an">1</span><div class="at">The claim returns upstream</div><div class="av">Validated claims are written back into the passport where they originate, not only out to the channels.<span class="vs">Result: the packaging tool and the PIM stop drifting apart.</span></div></div>
+        <div class="acard b2"><span class="an">2</span><div class="at">The audit trail is the product</div><div class="av">Every claim, translation, rule and decision is captured and signed, FR, DE and US, each linked to rule and evidence.<span class="vs">Result: defensible to an authority by construction.</span></div></div>
+        <div class="acard b3"><span class="an">3</span><div class="at">The passport is coming, not a deadline</div><div class="av">A DPP and QR payload composes from the same trail when the obligation arrives. It is adjacency here, not a dated buy.<span class="vs">Result: ready if the date comes, without a separate project.</span></div></div>
+      </div>
+      <div class="demofoot"><span>One validated claim, checked once, reaches three markets and returns to the passport.</span><span class="pill">Screen 7 / 7</span></div>
+    </div>
+  </section>
+
+  <!-- ===== O1 · TAKE IT FORWARD ===== -->
+  <section class="slide" id="outro" data-label="Outro · Take it forward" data-type="ctx">
+    <div class="ctx">
+      <div class="eyebrow">What we would want to confirm with you</div>
+      <h1>Eight questions in flight. Each one moves a <span class="g">part</span> of what you just saw.</h1>
+      <div class="lead">The sticky notes were not decoration. They are the open assumptions. Where your answer differs, the artefact shifts.</div>
+      <div class="qgrid">
+        <div class="qcard"><div class="qn">VA1 · origin</div><div class="qq">Claims originate internally, in a spreadsheet, not a supplier feed?</div><div class="qa">If they live structured upstream already, <b>the intake step inverts again</b>.</div></div>
+        <div class="qcard"><div class="qn">VA3 · the wedge</div><div class="qq">Is claim-parity the number-one time sink?</div><div class="qa">If enrichment is the real pain, <b>the hero screen shifts</b>.</div></div>
+        <div class="qcard"><div class="qn">VA4 · passport</div><div class="qq">Can we write validated claims back upstream into the passport?</div><div class="qa">If the passport is read-only to us, <b>the money-point shrinks to PIM-only</b>.</div></div>
+        <div class="qcard"><div class="qn">VA5 · the line</div><div class="qq">Hard medicinal line, surface unproven claims, never generate around?</div><div class="qa">If Brand wants drafting around gaps, <b>the guardrail model changes</b>.</div></div>
+        <div class="qcard"><div class="qn">VA6 · two desks</div><div class="qq">Regulatory leads, Brand owns expression?</div><div class="qa">If Brand leads, <b>the gate order flips</b>.</div></div>
+        <div class="qcard"><div class="qn">VA7 · registries</div><div class="qq">MSC queryable live, with an expiry cycle?</div><div class="qa">If not, that cert falls back to <b>a tracked-evidence chase</b>.</div></div>
+        <div class="qcard"><div class="qn">VA2 · sources</div><div class="qq">EU and US rules indexable from official sources?</div><div class="qa">If a rule lives in someone's head, that is <b>a precondition</b>.</div></div>
+        <div class="qcard"><div class="qn">VA9 · DPP</div><div class="qq">Is the DPP "coming", not a deadline?</div><div class="qa">If a real date lands, <b>the close reframes to a deadline</b>.</div></div>
+      </div>
+      <div class="scopecard"><div class="k">What a proof of concept would prove</div><div class="d">A real set of claims and legal text <b>validated across FR, DE and US</b>, flowing into the PIM <b>and back into the product passport</b>, with a <b>full signed audit trail</b>, cutting the manual copy-paste.</div></div>
+      <div class="attrib"><span class="lg">S</span><div class="who"><b>Safwai AI Solutions</b> &middot; ProductCopyOS &times; VitaPet &middot; annotated mockup, walked live<br>De-identified prospect, pet nutrition. Single fixture, real-looking, nothing fabricated beyond the stated assumptions.</div></div>
+      <div class="ctxfoot"><span>Lock the claim once. Validate it. Feed it back where it was born.</span><span class="pillg">Outro</span></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== GLOSSARY OVERLAY ===== -->
+<div class="glossover" id="glossover">
+  <div class="glosscard">
+    <button class="glossclose" id="glossClose" title="Close (Esc)">&times;</button>
+    <div class="ge">Glossary</div>
+    <h3>The terms on the glass</h3>
+    <div class="gsub">Every regulated or technical term used in this walk-through, in plain language.</div>
+    <div class="glossgrid">
+      <div class="gterm"><b>Claim parity</b> The same regulated claim must mean exactly the same thing in FR, DE and US. Terminology is fixed, never creatively varied, so translation cannot drift the claim.</div>
+      <div class="gterm"><b>Nutrition-vs-medicinal line</b> The hard boundary of the category. A feed may support a function, never diagnose, treat or cure. Every vet claim is held against it.</div>
+      <div class="gterm"><b>Product passport (PLM)</b> The master and local product record that acts as the layer where claims originate. The engine feeds validated claims back into it, upstream.</div>
+      <div class="gterm"><b>PIM</b> Product Information Management system. Holds product data and checks completeness; it does not check whether a claim is valid.</div>
+      <div class="gterm"><b>PARNUTs</b> "Particular nutritional purposes", the EU intended-use wording for veterinary diets, Reg. (EU) 2020/354. The EU side of the FR and DE variants.</div>
+      <div class="gterm"><b>FEDIAF and 767/2009</b> The EU pet-food nutritional and labelling code, and the feed-labelling regulation. The core EU rule set; 1831/2003 governs additives.</div>
+      <div class="gterm"><b>AAFCO and FDA-CVM</b> US model regulations, nutrient profiles and state feed registration. The US regime, a real contrast with EU PARNUTs.</div>
+      <div class="gterm"><b>Analytical constituents</b> The declared nutritional values (protein, phosphorus and so on). Precise terms that must translate identically and pair with each claim.</div>
+      <div class="gterm"><b>MSC</b> Marine Stewardship Council certification for fish-sourcing claims. A public register with an expiry cycle, the live-validation case here.</div>
+      <div class="gterm"><b>FSSC 22000</b> A food-safety certification scheme for manufacturing. Checked alongside MSC and any market ecolabels.</div>
+      <div class="gterm"><b>Self-substantiation</b> Where a claim is not on a regulatory list, the brand backs it with its own internal studies. The engine surfaces unsubstantiated claims for review, never generates around them.</div>
+      <div class="gterm"><b>Claims spreadsheet</b> The internal Excel where VitaPet's claims originate (SKU, territory, claim text, constituents, rationing, legal text). There is no supplier feed.</div>
+      <div class="gterm"><b>Two desks</b> Regulatory and Compliance (Dr. Fontaine, the lead gate, core wording and the medicinal line) and Brand and Portfolio (Marc Devlin, the expression). Regulatory leads on vet copy.</div>
+      <div class="gterm"><b>DPP</b> Digital Product Passport. For pet food it is framed here as "coming", a sustainability and MSC adjacency off the same audit trail, not a dated obligation.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var deck = document.getElementById('deck');
+  var slides = Array.prototype.slice.call(deck.querySelectorAll('.slide'));
+  var dotsWrap = document.getElementById('dots');
+  var cur = document.getElementById('cur');
+  var idx = 0;
+  document.getElementById('tot').textContent = slides.length;
+
+  slides.forEach(function(s, i){
+    var d = document.createElement('button');
+    d.className = 'dot' + (s.dataset.type === 'demo' ? ' demo' : '');
+    d.title = s.dataset.label || ('Slide ' + (i+1));
+    d.addEventListener('click', function(){ go(i); });
+    dotsWrap.appendChild(d);
+  });
+  var dots = Array.prototype.slice.call(dotsWrap.children);
+
+  function go(n){
+    idx = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function(s, i){ s.classList.toggle('active', i === idx); });
+    dots.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
+    cur.textContent = idx + 1;
+    deck.scrollTop = 0;
+    if (slides[idx].id){ history.replaceState(null, '', '#' + slides[idx].id); }
+  }
+
+  document.getElementById('prev').addEventListener('click', function(){ go(idx - 1); });
+  document.getElementById('next').addEventListener('click', function(){ go(idx + 1); });
+  document.addEventListener('keydown', function(e){
+    if (document.getElementById('glossover').classList.contains('open')){
+      if (e.key === 'Escape'){ closeGloss(); } return;
+    }
+    if (e.key === 'ArrowRight' || e.key === 'PageDown'){ go(idx + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp'){ go(idx - 1); }
+    else if (e.key === 'Home'){ go(0); }
+    else if (e.key === 'End'){ go(slides.length - 1); }
+  });
+
+  function bindToggle(id, cls){
+    var t = document.getElementById(id);
+    t.addEventListener('click', function(){
+      t.classList.toggle('on');
+      document.body.classList.toggle(cls, t.classList.contains('on'));
+    });
+  }
+  bindToggle('tg1', 'l1');
+  bindToggle('tg2', 'l2');
+  bindToggle('tg3', 'l3');
+
+  var glossover = document.getElementById('glossover');
+  function openGloss(){ glossover.classList.add('open'); }
+  function closeGloss(){ glossover.classList.remove('open'); }
+  document.getElementById('glossOpen').addEventListener('click', openGloss);
+  document.getElementById('glossClose').addEventListener('click', closeGloss);
+  glossover.addEventListener('click', function(e){ if (e.target === glossover){ closeGloss(); } });
+
+  function applyHash(){
+    var h = (location.hash || '').replace('#','');
+    if (!h) return;
+    var i = -1;
+    slides.forEach(function(s, j){ if (s.id === h) i = j; });
+    if (i >= 0) go(i);
+  }
+  window.addEventListener('hashchange', applyHash);
+
+  go(0);
+  applyHash();
+</script>
+</body>
+</html>

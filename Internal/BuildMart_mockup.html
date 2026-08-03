@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProductCopyOS &times; BuildMart &middot; Annotated Mockup</title>
+<style>
+  :root{
+    --navy:#002D49; --navy-2:#063350; --navy-3:#0a2c45; --navy-4:#103a5a;
+    --gold:#D4AF37; --gold-soft:#f3e7bd; --gold-deep:#8a6d15;
+    --ink:#0d1b27; --slate-900:#0f2433; --slate-800:#1c3346; --slate-700:#334a5c; --slate-600:#4b6273;
+    --slate-500:#6b8294; --slate-400:#94a8b6; --slate-300:#cbd8e0; --slate-200:#e2eaef;
+    --slate-100:#eef3f6; --slate-50:#f6f9fb; --paper:#ffffff;
+    --blue:#1d4ed8; --blue-soft:#eff4ff; --blue-line:#bcd0f7;
+    --green:#15803d; --green-soft:#eefbf2; --green-line:#b7e4c6;
+    --amber:#b45309; --amber-soft:#fff7ea; --amber-line:#f3d9a8;
+    --red:#c0271c; --red-soft:#fdf1ef; --red-line:#f3c4bd;
+    --sticky:#fff7c2; --sticky-edge:#e6cf6a; --sticky-ink:#5a4a12;
+    --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --mono:'SFMono-Regular',Consolas,'Liberation Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:var(--font); background:#01202f; color:var(--ink); -webkit-font-smoothing:antialiased; line-height:1.5; overflow:hidden}
+
+  /* ============ DECK BAR ============ */
+  .deckbar{position:fixed; top:0; left:0; right:0; height:46px; z-index:100; background:rgba(0,28,44,.96); backdrop-filter:blur(8px);
+    border-bottom:1px solid #0c3a57; color:#dbe7ef; display:flex; align-items:center; gap:12px; padding:0 16px; font-size:12px}
+  .deckbar .brand{display:flex; align-items:center; gap:9px; font-weight:600; letter-spacing:-.01em; color:#fff; white-space:nowrap}
+  .deckbar .brand .mk{width:18px; height:18px; border-radius:5px; background:linear-gradient(135deg,var(--gold),#b8902a); display:inline-block}
+  .deckbar .brand .x{color:var(--gold); font-weight:400; margin:0 1px}
+  .deckbar .spacer{flex:1}
+  .deckbar .counter{font-variant-numeric:tabular-nums; color:#9fbccf; min-width:46px; text-align:right; white-space:nowrap}
+  .deckbar .counter b{color:#fff}
+  .navbtn{background:#0d3650; border:1px solid #185175; color:#dbe7ef; border-radius:7px; width:30px; height:28px; cursor:pointer; font-size:14px; line-height:1; display:inline-flex; align-items:center; justify-content:center}
+  .navbtn:hover{background:#15486a; border-color:var(--gold)}
+  .toggle{display:inline-flex; align-items:center; gap:7px; cursor:pointer; user-select:none; background:#0a3149; border:1px solid #16486b; border-radius:20px; padding:4px 11px 4px 8px; color:#cfe0eb; white-space:nowrap}
+  .toggle .sw{width:24px; height:14px; border-radius:9px; background:#2b526d; position:relative; transition:.16s; flex:none}
+  .toggle .sw::after{content:""; position:absolute; top:1.5px; left:1.5px; width:11px; height:11px; border-radius:50%; background:#9db6c6; transition:.16s}
+  .toggle.on .sw{background:var(--gold)}
+  .toggle.on .sw::after{left:10.5px; background:#1a2b1a}
+  .glossbtn{background:#0a3149; border:1px solid #16486b; color:#cfe0eb; border-radius:20px; padding:4px 13px; font-size:12px; cursor:pointer; white-space:nowrap}
+  .glossbtn:hover{border-color:var(--gold); color:#fff}
+  .dots{display:flex; gap:5px; align-items:center}
+  .dot{width:8px; height:8px; border-radius:50%; background:#2b526d; cursor:pointer; border:none; padding:0; transition:.15s}
+  .dot:hover{background:#4d7491}
+  .dot.active{background:var(--gold); transform:scale(1.25)}
+  .dot.demo{border-radius:2px}
+
+  /* ============ DECK / SLIDES ============ */
+  .deck{position:fixed; inset:46px 0 0 0; overflow-y:auto; overflow-x:hidden}
+  .slide{display:none; min-height:100%; animation:fade .26s ease}
+  .slide.active{display:block}
+  @keyframes fade{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+
+  /* ---- context (framing) slide ---- */
+  .ctx{min-height:calc(100vh - 46px); background:
+      radial-gradient(1200px 600px at 80% -10%, #0a3a59 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, #073050 0%, transparent 55%), var(--navy);
+      color:#eaf2f7; padding:50px 64px 70px; position:relative}
+  .ctx .eyebrow{font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); font-weight:600; margin-bottom:16px}
+  .ctx h1{font-size:42px; line-height:1.05; letter-spacing:-1.2px; font-weight:700; color:#fff; max-width:20ch}
+  .ctx h1 .g{color:var(--gold)}
+  .ctx .lead{font-size:17px; color:#bcd2df; max-width:64ch; margin-top:16px; line-height:1.5}
+  .ctx .rule{height:3px; width:64px; background:var(--gold); border-radius:2px; margin:22px 0}
+  .wedge{margin-top:26px; border-left:3px solid var(--gold); padding:6px 0 6px 20px; max-width:72ch}
+  .wedge .q{font-size:20px; color:#fff; font-weight:600; line-height:1.4; letter-spacing:-.3px}
+  .wedge .q em{color:var(--gold); font-style:normal}
+
+  .cards{display:grid; gap:15px; margin-top:30px}
+  .cards.c3{grid-template-columns:repeat(3,1fr)} .cards.c4{grid-template-columns:repeat(4,1fr)} .cards.c2{grid-template-columns:repeat(2,1fr)}
+  .card{background:rgba(255,255,255,.04); border:1px solid #14466a; border-radius:13px; padding:17px 17px 15px}
+  .card.gold{border-color:#3c4a2a; background:linear-gradient(180deg,rgba(212,175,55,.10),rgba(212,175,55,.02))}
+  .card .k{font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--gold); font-weight:600}
+  .card .t{font-size:16px; font-weight:600; color:#fff; margin:8px 0 6px; letter-spacing:-.3px}
+  .card .d{font-size:12.5px; color:#a9c2d2; line-height:1.5}
+  .card .role{font-size:11.5px; color:#8fb0c4; margin-top:8px}
+  .card .role b{color:#dbe9f1}
+  .card .d b{color:#dbe9f1}
+
+  .ctxfoot{position:absolute; left:64px; right:64px; bottom:22px; display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#6f93a8; border-top:1px solid #0e3a57; padding-top:12px}
+  .pillg{display:inline-block; background:rgba(212,175,55,.14); color:var(--gold); border:1px solid #3a4a28; border-radius:20px; padding:3px 11px; font-size:11px; font-weight:600}
+
+  /* flow (how it works) */
+  .flow{display:flex; align-items:stretch; gap:0; margin-top:26px; flex-wrap:nowrap}
+  .step{flex:1; min-width:0; background:rgba(255,255,255,.04); border:1px solid #14466a; border-radius:11px; padding:13px 11px; position:relative; margin-right:20px}
+  .step:last-child{margin-right:0}
+  .step::after{content:"\203A"; position:absolute; right:-14px; top:50%; transform:translateY(-50%); color:var(--gold); font-size:18px; font-weight:700}
+  .step:last-child::after{content:""}
+  .step .ph{font-family:var(--mono); font-size:12px; color:var(--gold); font-weight:700}
+  .step .nm{font-size:13px; font-weight:600; color:#fff; margin:5px 0 4px; letter-spacing:-.2px}
+  .step .sc{font-size:10.5px; color:#8fb0c4; line-height:1.4}
+  .step.human{border-color:#2f5a3a; background:linear-gradient(180deg,rgba(34,197,94,.08),transparent)}
+
+  /* deadline list (F4) */
+  .timeline-f{display:flex; flex-direction:column; gap:0; margin-top:6px}
+  .tf{display:grid; grid-template-columns:128px 1fr; gap:16px; padding:10px 0; border-bottom:1px solid #0e3a57; align-items:baseline}
+  .tf:last-child{border-bottom:none}
+  .tf .dt{font-family:var(--mono); font-size:13px; color:var(--gold); font-weight:700}
+  .tf .dt small{display:block; color:#6f93a8; font-weight:400; font-size:10px; letter-spacing:.04em}
+  .tf .ev{font-size:13px; color:#dbe9f1; line-height:1.45}
+  .tf .ev b{color:#fff}
+  .srcnote{font-size:10.5px; color:#5d8398; margin-top:14px; font-style:italic}
+
+  /* ============ DEMO SCREEN ============ */
+  .demowrap{min-height:calc(100vh - 46px); background:#06283b; padding:26px 34px 50px; display:flex; flex-direction:column; align-items:center}
+  .demohead{width:100%; max-width:1320px; display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:12px}
+  .demohead .ttl{color:#fff}
+  .demohead .ttl .eye{font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); font-weight:600}
+  .demohead .ttl h2{font-size:21px; font-weight:700; letter-spacing:-.5px; margin-top:5px}
+  .demohead .rgt{display:flex; flex-direction:column; align-items:flex-end; gap:8px}
+  .procbtn{display:inline-flex; align-items:center; gap:7px; font-size:11.5px; font-weight:600; color:#06283b; background:var(--gold); border:1px solid var(--gold); border-radius:8px; padding:7px 13px; text-decoration:none; white-space:nowrap}
+  .procbtn:hover{filter:brightness(1.07)}
+  .procbtn .ar{font-weight:700}
+  .demohead .cut{font-size:11px; color:#86a7bc; text-align:right; max-width:40ch; line-height:1.4}
+
+  /* objective strip (toggleable, body.l3) */
+  .objective{width:100%; max-width:1320px; margin-bottom:13px; display:none; grid-template-columns:repeat(3,1fr); background:#083253; border:1px solid #12466a; border-left:3px solid var(--gold); border-radius:11px; overflow:hidden}
+  body.l3 .objective{display:grid}
+  .objective .ocol{padding:11px 17px; border-right:1px solid #0e3a57}
+  .objective .ocol:last-child{border-right:none}
+  .objective .ol{font-size:9px; letter-spacing:.15em; text-transform:uppercase; color:var(--gold); font-weight:700}
+  .objective .ot{font-size:12.5px; color:#eaf2f7; margin-top:4px; line-height:1.45}
+  .objective .ot .rc{font-weight:700}
+  .rc.sys{color:#a7c2d4} .rc.com{color:#86b4ff} .rc.por{color:#e6c84f} .rc.sup{color:#7ee0a3}
+
+  .browser{width:100%; max-width:1320px; background:var(--paper); border-radius:12px; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,.4); border:1px solid #0c2a3f}
+  .bbar{height:42px; background:#e7eef2; border-bottom:1px solid var(--slate-200); display:flex; align-items:center; gap:8px; padding:0 14px}
+  .bbar .tl{display:flex; gap:7px} .bbar .tl i{width:12px; height:12px; border-radius:50%; display:block}
+  .bbar .tl .r{background:#ff5f57} .bbar .tl .y{background:#febc2e} .bbar .tl .g{background:#28c840}
+  .bbar .addr{flex:1; height:26px; background:#fff; border:1px solid var(--slate-200); border-radius:7px; display:flex; align-items:center; gap:8px; padding:0 11px; font-size:12px; color:var(--slate-600); max-width:560px; margin:0 auto}
+  .bbar .addr .lock{color:var(--green)}
+  .bbar .chip{font-size:11px; color:var(--slate-500); display:flex; align-items:center; gap:6px; white-space:nowrap}
+  .bbody{background:var(--slate-50); padding:22px 24px 26px; min-height:540px}
+
+  .eyebrow-d{font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--slate-500); font-weight:600}
+  .sku-head{display:flex; justify-content:space-between; align-items:flex-start; gap:20px; margin-bottom:18px}
+  .sku-head h3{font-size:19px; color:var(--slate-900); letter-spacing:-.4px; font-weight:700}
+  .sku-head .meta{font-size:12px; color:var(--slate-600); margin-top:6px; display:flex; gap:14px; flex-wrap:wrap}
+  .sku-head .meta span b{color:var(--slate-900)}
+  .sku-head .meta code{font-family:var(--mono); font-size:11.5px; background:var(--slate-100); padding:1px 6px; border-radius:5px; color:var(--slate-700)}
+
+  .gridcols{display:grid; gap:16px}
+  .g3{grid-template-columns:repeat(3,1fr)} .g2{grid-template-columns:1fr 1fr}
+
+  /* variant card */
+  .variant{background:#fff; border:1px solid var(--slate-200); border-radius:12px; overflow:hidden; display:flex; flex-direction:column}
+  .variant .vh{padding:12px 14px; border-bottom:1px solid var(--slate-200); display:flex; align-items:center; justify-content:space-between; background:var(--slate-50)}
+  .flag{display:inline-flex; align-items:center; gap:8px; font-weight:700; color:var(--slate-900); font-size:14px}
+  .flag .fl{width:22px; height:15px; border-radius:3px; box-shadow:inset 0 0 0 1px rgba(0,0,0,.12); display:inline-block}
+  .fl.fr{background:linear-gradient(90deg,#0055A4 33%,#fff 33% 66%,#EF4135 66%)}
+  .fl.uk{background:#012169; position:relative; overflow:hidden}
+  .fl.uk::before{content:""; position:absolute; inset:0; background:linear-gradient(45deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(-45deg,transparent 43%,#fff 43% 57%,transparent 57%)}
+  .fl.uk::after{content:""; position:absolute; inset:0; background:linear-gradient(0deg,transparent 38%,#C8102E 38% 62%,transparent 62%),linear-gradient(90deg,transparent 38%,#C8102E 38% 62%,transparent 62%)}
+  .fl.pl{background:linear-gradient(180deg,#fff 50%,#DC143C 50%)}
+  .vh .reg{font-size:10.5px; font-family:var(--mono); color:var(--slate-500)}
+  .chtabs{display:flex; gap:4px; padding:9px 14px 0; flex-wrap:wrap}
+  .chtab{font-size:10.5px; padding:4px 9px; border-radius:6px 6px 0 0; border:1px solid var(--slate-200); border-bottom:none; background:var(--slate-100); color:var(--slate-600)}
+  .chtab.on{background:#fff; color:var(--blue); font-weight:600; border-color:var(--blue-line)}
+  .vcopy{padding:13px 15px; font-size:12.5px; color:var(--slate-700); line-height:1.6; flex:1; border-top:1px solid var(--slate-200)}
+  .vcopy .pname{font-weight:700; color:var(--slate-900); display:block; margin-bottom:5px; font-size:13px}
+  .hl{border-bottom:2px solid; padding-bottom:1px; cursor:help}
+  .hl.spec{border-color:var(--gold)} .hl.reg{border-color:var(--blue)} .hl.val{border-color:var(--green)} .hl.warn{border-color:var(--amber)}
+  .vchecks{padding:11px 15px; border-top:1px solid var(--slate-200); display:flex; flex-direction:column; gap:6px; background:var(--slate-50)}
+  .chk{display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--slate-700)}
+  .chk .ico{width:16px; height:16px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:10px; color:#fff; flex:none; font-weight:700}
+  .ico.ok{background:var(--green)} .ico.no{background:var(--red)} .ico.wn{background:var(--amber)}
+  .vactions{display:flex; gap:7px; padding:12px 14px; border-top:1px solid var(--slate-200)}
+  .btn{flex:1; border:1px solid; border-radius:8px; padding:8px 6px; font-size:11.5px; font-weight:600; text-align:center}
+  .btn.appr{background:var(--green-soft); border-color:var(--green-line); color:var(--green)}
+  .btn.amend{background:var(--amber-soft); border-color:var(--amber-line); color:var(--amber)}
+  .btn.rej{background:#fff; border-color:var(--slate-200); color:var(--slate-500)}
+
+  .hitl{display:inline-flex; align-items:center; gap:7px; background:var(--green-soft); border:1px solid var(--green-line); color:var(--green); border-radius:20px; padding:4px 11px; font-size:11px; font-weight:600}
+  .hitl .d{width:7px; height:7px; border-radius:50%; background:var(--green)}
+  .await{display:inline-flex; align-items:center; gap:7px; background:var(--amber-soft); border:1px solid var(--amber-line); color:var(--amber); border-radius:20px; padding:4px 11px; font-size:11px; font-weight:600}
+  .await .d{width:7px; height:7px; border-radius:50%; background:var(--amber)}
+
+  /* validation expanded */
+  .valwrap{display:grid; grid-template-columns:340px 1fr; gap:20px; align-items:start}
+  .stickycopy{position:sticky; top:8px; background:#fff; border:1px solid var(--slate-200); border-radius:12px; padding:16px}
+  .stickycopy h4{font-size:12px; color:var(--slate-900); margin-bottom:4px; display:flex; align-items:center; gap:8px}
+  .stickycopy .sub{font-size:11px; color:var(--slate-500); margin-bottom:12px}
+  .stickycopy .body{font-size:13px; line-height:1.7; color:var(--slate-700)}
+  .legend{display:flex; gap:13px; flex-wrap:wrap; margin-top:14px; padding-top:12px; border-top:1px dashed var(--slate-200); font-size:10.5px; color:var(--slate-500)}
+  .legend span{display:inline-flex; align-items:center; gap:5px}
+  .legend i{width:14px; height:0; border-bottom:2px solid; display:inline-block}
+
+  .rulelist{display:flex; flex-direction:column; gap:9px}
+  .rrow{background:#fff; border:1px solid var(--slate-200); border-radius:10px; padding:12px 14px; display:grid; grid-template-columns:18px 1fr auto; gap:11px; align-items:start}
+  .rrow.warnr{border-color:var(--amber-line); background:var(--amber-soft)}
+  .rrow .st{width:18px; height:18px; border-radius:50%; color:#fff; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-top:1px}
+  .rrow .rt{font-size:13px; color:var(--slate-900); font-weight:600}
+  .rrow .rd{font-size:11.5px; color:var(--slate-600); margin-top:3px; line-height:1.5}
+  .cite{display:inline-flex; align-items:center; gap:6px; margin-top:7px; font-size:10.5px; font-family:var(--mono); color:var(--blue); background:var(--blue-soft); border:1px solid var(--blue-line); border-radius:6px; padding:2px 8px}
+  .rrow .ch{font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:3px 8px; border-radius:6px; white-space:nowrap}
+  .ch.pass{background:var(--green-soft); color:var(--green); border:1px solid var(--green-line)}
+  .ch.warnc{background:#fff; color:var(--amber); border:1px solid var(--amber-line)}
+  .perchan{display:flex; gap:5px; margin-top:8px; flex-wrap:wrap}
+  .perchan .pc{font-size:9.5px; font-family:var(--mono); border:1px solid var(--slate-200); border-radius:5px; padding:1px 6px; color:var(--slate-500)}
+  .perchan .pc.p{border-color:var(--green-line); color:var(--green); background:var(--green-soft)}
+  .perchan .pc.f{border-color:var(--red-line); color:var(--red); background:var(--red-soft)}
+
+  .breakbar{background:linear-gradient(90deg,var(--red-soft),#fff); border:1px solid var(--red-line); border-left:4px solid var(--red); border-radius:10px; padding:13px 16px; margin-bottom:16px; display:flex; align-items:center; gap:14px}
+  .breakbar .bx{font-size:12.5px; color:#5a1a14; line-height:1.5}
+  .breakbar .bx b{color:var(--red)}
+  .breakbar .tag{font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--red); background:#fff; border:1px solid var(--red-line); padding:4px 9px; border-radius:6px; white-space:nowrap}
+
+  /* inputs (feed) */
+  .feedgrid{display:grid; grid-template-columns:1fr 38px 1fr; gap:14px; align-items:stretch}
+  .panel{background:#fff; border:1px solid var(--slate-200); border-radius:12px; overflow:hidden}
+  .panel .ph{padding:11px 15px; border-bottom:1px solid var(--slate-200); font-size:12px; font-weight:700; color:var(--slate-900); display:flex; justify-content:space-between; align-items:center; background:var(--slate-50)}
+  .panel .ph .tag{font-size:10px; font-weight:600; color:var(--slate-500); font-family:var(--mono)}
+  table.feed{width:100%; border-collapse:collapse; font-size:11.5px}
+  table.feed td{padding:7px 14px; border-bottom:1px solid var(--slate-100); color:var(--slate-700)}
+  table.feed td:first-child{color:var(--slate-500); width:42%}
+  table.feed td code{font-family:var(--mono); color:var(--slate-800)}
+  table.feed tr.flagrow td{background:var(--red-soft)}
+  table.feed tr.flagrow td:last-child{color:var(--red); font-weight:600}
+  .mapped td:last-child{color:var(--slate-900)}
+  .mapped .scopable{display:inline-block; font-size:9.5px; font-weight:700; color:var(--green); background:var(--green-soft); border:1px solid var(--green-line); border-radius:5px; padding:0 6px; margin-left:6px; vertical-align:middle}
+  .arrowmid{display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:22px; font-weight:700}
+
+  /* cert (registry) */
+  .certrow{background:#fff; border:1px solid var(--slate-200); border-radius:12px; padding:15px 17px; margin-bottom:12px; display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:16px; align-items:center}
+  .certrow.exp{border-color:var(--red-line)}
+  .certcell .lb{font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:var(--slate-500); font-weight:600}
+  .certcell .vl{font-size:13.5px; color:var(--slate-900); font-weight:600; margin-top:4px}
+  .certcell .vl.mono{font-family:var(--mono); font-size:12px}
+  .certcell .sub{font-size:11px; color:var(--slate-500); margin-top:2px}
+  .vstamp{text-align:center; padding:8px 14px; border-radius:9px; font-weight:700; font-size:12px; white-space:nowrap}
+  .vstamp.valid{background:var(--green-soft); color:var(--green); border:1px solid var(--green-line)}
+  .vstamp.expired{background:var(--red-soft); color:var(--red); border:1px solid var(--red-line)}
+  .regline{display:flex; align-items:center; gap:10px; font-size:11px; color:var(--slate-500); margin:2px 0 14px}
+  .regline .live{display:inline-flex; align-items:center; gap:6px; color:var(--green); font-weight:600}
+  .regline .live .pulse{width:8px; height:8px; border-radius:50%; background:var(--green)}
+
+  /* chase workflow object */
+  .chaseobj{background:#fff; border:1px solid var(--slate-200); border-radius:12px; overflow:hidden; margin-bottom:14px}
+  .chaseobj.open{border-color:var(--amber-line)}
+  .chaseobj .coh{padding:13px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--slate-50); border-bottom:1px solid var(--slate-200)}
+  .chaseobj .coh .sub{font-size:14px; font-weight:700; color:var(--slate-900)}
+  .chaseobj .coh .sub small{display:block; font-weight:400; font-size:11px; color:var(--slate-500); margin-top:2px}
+  .statpill{font-size:10.5px; font-weight:700; padding:5px 10px; border-radius:7px; white-space:nowrap}
+  .statpill.open{background:var(--amber-soft); color:var(--amber); border:1px solid var(--amber-line)}
+  .sla{font-size:11px; color:var(--slate-600); display:flex; align-items:center; gap:6px}
+  .sla b{color:var(--amber)}
+  .cobody{padding:14px 16px; display:grid; grid-template-columns:1.1fr 1fr; gap:18px}
+  .cogrid{display:grid; grid-template-columns:auto 1fr; gap:7px 14px; font-size:12px; align-self:start}
+  .cogrid .lb{color:var(--slate-500)} .cogrid .vl{color:var(--slate-900); font-weight:600}
+  .coaction{background:var(--green-soft); border:1px solid var(--green-line); border-radius:10px; padding:12px 14px}
+  .coaction .at{font-size:12px; color:#14532d; line-height:1.5} .coaction .at b{color:#14532d}
+  .coaction .ts{font-size:10.5px; color:var(--green); font-family:var(--mono); margin-top:6px}
+  .miniline{margin-top:12px; border-top:1px dashed var(--slate-200); padding-top:11px}
+  .me{display:grid; grid-template-columns:16px 1fr; gap:9px; font-size:11px; color:var(--slate-600); padding-bottom:8px; position:relative}
+  .me .md{width:11px; height:11px; border-radius:50%; background:var(--slate-300); margin-top:2px; margin-left:2px}
+  .me.done .md{background:var(--green)} .me.now .md{background:var(--amber)}
+  .me b{color:var(--slate-900)}
+
+  /* two-desk */
+  .desks{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+  .desk{background:#fff; border:1px solid var(--slate-200); border-radius:12px; overflow:hidden}
+  .desk .dh{padding:14px 16px; border-bottom:1px solid var(--slate-200)}
+  .desk.compl .dh{background:linear-gradient(180deg,var(--blue-soft),#fff); border-bottom-color:var(--blue-line)}
+  .desk.port .dh{background:linear-gradient(180deg,#faf3df,#fff); border-bottom-color:var(--gold-soft)}
+  .desk .who{font-size:14px; font-weight:700; color:var(--slate-900)}
+  .desk .ro{font-size:11.5px; color:var(--slate-600); margin-top:2px}
+  .desk .owns{font-size:11px; margin-top:8px; padding:6px 10px; border-radius:7px; display:inline-block; font-weight:600}
+  .desk.compl .owns{background:var(--blue-soft); color:var(--blue)}
+  .desk.port .owns{background:#faf3df; color:var(--gold-deep)}
+  .desk .db{padding:14px 16px; display:flex; flex-direction:column; gap:10px}
+  .dcheck{display:flex; gap:9px; align-items:flex-start; font-size:12px; color:var(--slate-700)}
+  .dcheck .ico{margin-top:1px; width:16px; height:16px; border-radius:50%; font-size:10px}
+  .split-note{margin:0 0 16px; background:#fff; border:1px dashed var(--slate-300); border-radius:10px; padding:12px 16px; font-size:12px; color:var(--slate-600); line-height:1.55}
+  .split-note b{color:var(--slate-900)}
+
+  /* rule sources */
+  .srcgrid{display:grid; grid-template-columns:repeat(2,1fr); gap:13px}
+  .src{background:#fff; border:1px solid var(--slate-200); border-radius:11px; padding:14px 16px}
+  .src .sh{display:flex; align-items:center; gap:10px; margin-bottom:9px}
+  .src .ic{width:30px; height:30px; border-radius:8px; background:var(--navy); color:var(--gold); display:flex; align-items:center; justify-content:center; font-size:14px; flex:none}
+  .src .nm{font-size:13.5px; font-weight:700; color:var(--slate-900)}
+  .src .au{font-size:11px; color:var(--slate-500)}
+  .src .clause{font-size:11.5px; color:var(--slate-600); padding:6px 0; border-top:1px solid var(--slate-100); display:flex; justify-content:space-between; gap:10px}
+  .src .clause code{font-family:var(--mono); font-size:10.5px; color:var(--blue)}
+  .src .clause .dt{color:var(--slate-400); font-size:10.5px; white-space:nowrap}
+
+  /* audit / dpp */
+  .auditcol{display:grid; grid-template-columns:1.15fr 1fr; gap:20px; align-items:start}
+  .timeline{position:relative; padding-left:6px}
+  .tev{display:grid; grid-template-columns:20px 1fr; gap:12px; padding-bottom:14px; position:relative}
+  .tev::before{content:""; position:absolute; left:9px; top:18px; bottom:-2px; width:2px; background:var(--slate-200)}
+  .tev:last-child::before{display:none}
+  .tev .tdot{width:18px; height:18px; border-radius:50%; border:3px solid #fff; box-shadow:0 0 0 1.5px var(--slate-300); background:var(--slate-400); margin-top:1px}
+  .tev.h .tdot{background:var(--green); box-shadow:0 0 0 1.5px var(--green)}
+  .tev.s .tdot{background:var(--gold); box-shadow:0 0 0 1.5px var(--gold)}
+  .tev .te{font-size:12.5px; color:var(--slate-900); font-weight:600}
+  .tev .tm{font-size:11px; color:var(--slate-500); margin-top:2px; line-height:1.5}
+  .tev .tm code{font-family:var(--mono); font-size:10.5px; color:var(--slate-600)}
+  .dpp{background:linear-gradient(180deg,var(--navy),var(--navy-2)); border-radius:14px; padding:20px; color:#eaf2f7; position:sticky; top:8px}
+  .dpp .dt{font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); font-weight:600}
+  .dpp h4{font-size:18px; color:#fff; margin:6px 0 4px; letter-spacing:-.4px}
+  .dpp .ds{font-size:12px; color:#a9c2d2; line-height:1.5; margin-bottom:16px}
+  .dppbox{display:flex; gap:14px; align-items:center; background:rgba(255,255,255,.05); border:1px solid #1a4e70; border-radius:11px; padding:14px}
+  .qr{width:78px; height:78px; border-radius:9px; background:#fff; padding:7px; flex:none}
+  .qr svg{width:100%; height:100%; display:block}
+  .dppfields{flex:1; display:flex; flex-direction:column; gap:5px; font-size:11px}
+  .dppfields .f{display:flex; justify-content:space-between; gap:10px; color:#bcd2df}
+  .dppfields .f b{color:#fff; font-weight:600}
+  .dppfields .f .ok{color:#7ee0a3}
+  .dppfoot{margin-top:14px; font-size:11px; color:#8fb0c4; line-height:1.5; border-top:1px solid #14466a; padding-top:12px}
+  .exports{display:flex; gap:9px; margin-top:14px; flex-wrap:wrap}
+  .exp{font-size:11px; color:var(--slate-600); border:1px solid var(--slate-200); background:#fff; border-radius:7px; padding:6px 11px; display:flex; align-items:center; gap:7px}
+  .exp .e{font-family:var(--mono); font-size:9.5px; color:#fff; background:var(--slate-600); border-radius:4px; padding:1px 5px}
+
+  /* outro */
+  .qgrid{display:grid; grid-template-columns:repeat(4,1fr); gap:13px; margin-top:24px}
+  .qcard{background:rgba(255,255,255,.04); border:1px solid #14466a; border-radius:12px; padding:14px}
+  .qcard .qn{font-family:var(--mono); font-size:11px; color:var(--gold); font-weight:700}
+  .qcard .qq{font-size:12.5px; color:#fff; font-weight:600; margin:7px 0 7px; line-height:1.4}
+  .qcard .qa{font-size:11px; color:#9fbccf; line-height:1.5}
+  .qcard .qa b{color:#cfe0ea; font-weight:600}
+  .scopecard{margin-top:20px; background:linear-gradient(180deg,rgba(212,175,55,.10),rgba(212,175,55,.02)); border:1px solid #3c4a2a; border-radius:12px; padding:16px 18px}
+  .scopecard .k{font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--gold); font-weight:600}
+  .scopecard .d{font-size:14px; color:#eaf2f7; margin-top:6px; line-height:1.5} .scopecard .d b{color:#fff}
+  .attrib{display:flex; align-items:center; gap:14px; margin-top:24px; padding-top:18px; border-top:1px solid #0e3a57}
+  .attrib .lg{width:38px; height:38px; border-radius:9px; background:linear-gradient(135deg,var(--gold),#a8801f); display:flex; align-items:center; justify-content:center; font-weight:800; color:var(--navy); font-size:15px}
+  .attrib .who b{color:#fff; font-weight:600} .attrib .who{font-size:12.5px; color:#9fbccf}
+
+  /* annotations strip (Layer 1) */
+  .annstrip{width:100%; max-width:1320px; margin-top:14px; display:none; gap:12px}
+  body.l1 .annstrip{display:grid; grid-template-columns:repeat(3,1fr)}
+  .acard{background:#072a3f; border:1px solid #114663; border-radius:11px; padding:13px 15px; border-top:3px solid}
+  .acard.b1{border-top-color:var(--gold)} .acard.b2{border-top-color:#4ea1ff} .acard.b3{border-top-color:#52c98a}
+  .acard .an{width:20px; height:20px; border-radius:50%; color:#fff; font-size:11px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; margin-bottom:8px}
+  .acard.b1 .an{background:var(--gold-deep)} .acard.b2 .an{background:#2563eb} .acard.b3 .an{background:var(--green)}
+  .acard .at{font-size:12.5px; font-weight:600; color:#fff; margin-bottom:4px}
+  .acard .av{font-size:11.5px; color:#a9c2d2; line-height:1.5}
+  .acard .av .vs{display:block; margin-top:6px; color:var(--gold); font-weight:600}
+
+  /* assumptions (Layer 2, sticky) */
+  body.l2 .sticky{display:block}
+  .sticky{display:none; position:absolute; width:206px; background:var(--sticky); color:var(--sticky-ink);
+    font-family:'Caveat','Bradley Hand','Segoe Script',cursive; font-size:16px; line-height:1.32; padding:16px 15px 14px; border-radius:2px; box-shadow:2px 5px 14px rgba(0,0,0,.32); z-index:8; border:1px solid var(--sticky-edge)}
+  .sticky::before{content:""; position:absolute; top:-9px; left:50%; transform:translateX(-50%) rotate(-3deg); width:62px; height:19px; background:rgba(212,175,55,.5); border:1px solid rgba(160,120,20,.4)}
+  .sticky .tag{font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.05em; color:var(--gold-deep); display:block; margin-bottom:5px}
+  .sticky.r1{transform:rotate(-2deg)} .sticky.r2{transform:rotate(1.6deg)} .sticky.r3{transform:rotate(-1deg)}
+
+  .demofoot{width:100%; max-width:1320px; display:flex; justify-content:space-between; align-items:center; margin-top:14px; color:#86a7bc; font-size:11px}
+  .demofoot .pill{background:rgba(212,175,55,.14); color:var(--gold); border:1px solid #3a4a28; border-radius:20px; padding:3px 11px; font-weight:600; font-size:11px}
+
+  /* glossary overlay */
+  .glossover{position:fixed; inset:0; z-index:200; background:rgba(0,18,30,.74); backdrop-filter:blur(5px); display:none; align-items:center; justify-content:center; padding:46px}
+  .glossover.open{display:flex}
+  .glosscard{background:linear-gradient(180deg,#063150,#04263c); border:1px solid #14466a; border-radius:16px; max-width:1040px; width:100%; max-height:84vh; overflow:auto; padding:24px 30px 28px; color:#dbe7ef; position:relative}
+  .glosscard .ge{font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); font-weight:600}
+  .glosscard h3{font-size:22px; color:#fff; margin:6px 0 2px; letter-spacing:-.4px}
+  .glosscard .gsub{font-size:12px; color:#9fbccf; margin-bottom:18px}
+  .glossgrid{display:grid; grid-template-columns:1fr 1fr; gap:11px 26px}
+  .gterm{font-size:12px; line-height:1.5; color:#bcd2df}
+  .gterm b{color:var(--gold)}
+  .glossclose{position:absolute; top:16px; right:18px; cursor:pointer; background:#0d3650; border:1px solid #185175; color:#dbe7ef; width:30px; height:30px; border-radius:8px; font-size:16px; line-height:1}
+  .glossclose:hover{border-color:var(--gold)}
+
+  @media (max-width:1180px){
+    .valwrap,.cobody{grid-template-columns:1fr} .stickycopy{position:static}
+    .qgrid{grid-template-columns:repeat(2,1fr)} .cards.c4{grid-template-columns:repeat(2,1fr)}
+    .glossgrid{grid-template-columns:1fr} .sticky{display:none!important}
+  }
+</style>
+</head>
+<body class="l1 l2 l3">
+
+<!-- ============ DECK BAR ============ -->
+<div class="deckbar">
+  <span class="brand"><span class="mk"></span>ProductCopyOS <span class="x">&times;</span> BuildMart</span>
+  <span class="spacer"></span>
+  <div class="dots" id="dots"></div>
+  <span class="spacer"></span>
+  <span class="toggle on" id="tg1" title="Annotations (Layer 1)"><span class="sw"></span>Annotations</span>
+  <span class="toggle on" id="tg2" title="Assumptions (Layer 2)"><span class="sw"></span>Assumptions</span>
+  <span class="toggle on" id="tg3" title="Objective strip (Layer 3)"><span class="sw"></span>Objective</span>
+  <button class="glossbtn" id="glossOpen" title="Glossary">Glossary</button>
+  <button class="navbtn" id="prev" title="Previous (left arrow)">&#8249;</button>
+  <span class="counter"><b id="cur">1</b>/<span id="tot">13</span></span>
+  <button class="navbtn" id="next" title="Next (right arrow)">&#8250;</button>
+</div>
+
+<main class="deck" id="deck">
+
+  <!-- ===== F1 · THE CAST ===== -->
+  <section class="slide active" id="f1" data-label="Framing 1 / 4 · The cast" data-type="ctx">
+    <div class="ctx">
+      <div class="eyebrow">ProductCopyOS &middot; BuildMart prospect &middot; building-materials retail (de-identified)</div>
+      <h1>One regulated <span class="g">SKU</span>. Three markets. Five channels. Every value has to be true.</h1>
+      <div class="lead">Before the walk-through: who is in the room, the one product we follow end to end, and the two desks that hold the gate.</div>
+      <div class="cards c4">
+        <div class="card gold"><div class="k">The retailer</div><div class="t">BuildMart</div><div class="d">Low-price pro and DIY building-materials retailer. Home market France. Sells regulated construction products at scale.</div></div>
+        <div class="card"><div class="k">The hero SKU</div><div class="t">Glass-wool insulation panel</div><div class="d">R = 4.0 m²·K/W. One SKU pulls CE, CPR, REACH and the construction Digital Product Passport at once.</div></div>
+        <div class="card"><div class="k">Compliance desk</div><div class="t">Dr. Hartmann</div><div class="role">Quality and Compliance Lead, signs DoP/CE.<br><b>Owns the regulated core wording.</b></div></div>
+        <div class="card"><div class="k">Portfolio desk</div><div class="t">Camille</div><div class="role">Category and Portfolio Manager, Building Materials.<br><b>Owns the channel expression.</b></div></div>
+      </div>
+      <div class="cards c3" style="margin-top:15px">
+        <div class="card"><div class="k">Markets</div><div class="d" style="margin-top:6px"><b>FR</b> home (CE/CPR plus A+). <b>UK</b> export and marketplace (UKCA divergence). <b>PL</b> local transposition.</div></div>
+        <div class="card"><div class="k">Channels</div><div class="d" style="margin-top:6px">.com site, print catalogue, in-store shelf labels, in-store screens, marketplace. One value, five surfaces.</div></div>
+        <div class="card"><div class="k">Where we sit</div><div class="d" style="margin-top:6px">Beside the Akeneo-class PIM, as the compliance layer it never had. Augment, never replace.</div></div>
+      </div>
+      <div class="ctxfoot"><span>Single fixture. The same SKU, people and certificates appear on every screen.</span><span class="pillg">Framing 1 / 4</span></div>
+    </div>
+  </section>
+
+  <!-- ===== F2 · THE SILENT BREAK ===== -->
+  <section class="slide" id="f2" data-label="Framing 2 / 4 · The silent break" data-type="ctx">
+    <div class="ctx">
+      <div class="eyebrow">The complication &middot; what breaks today</div>
+      <h1>The PIM already says the product is <span class="g">ready</span>. It is the wrong guarantee.</h1>
+      <div class="lead">BuildMart's PIM completeness check only verifies that a field is <em>filled</em>, never that the value is <em>valid</em>. Because each attribute holds one value for every channel, that supplier value is pushed identically to all of them.</div>
+      <div class="rule"></div>
+      <div class="cards c3">
+        <div class="card"><div class="k">Step 1 · clears the gate</div><div class="t" style="font-size:15px">A field is filled</div><div class="d">The supplier feed declares a fire-reaction Euroclass. The box is filled, so the PIM marks the SKU complete. No one checks the value against the DoP.</div></div>
+        <div class="card"><div class="k">Step 2 · fans out</div><div class="t" style="font-size:15px">One value, five channels</div><div class="d">The attribute holds one value for every channel, so the same value is pushed identically to the .com site, print, shelf labels, screens and marketplace.</div></div>
+        <div class="card gold"><div class="k">Step 3 · goes live</div><div class="t" style="font-size:15px">A wrong CE claim, public</div><div class="d">On a construction product that means deactivation, non-conformity exposure to the French authority, and at the limit a recall.</div></div>
+      </div>
+      <div class="wedge"><div class="q">The PIM confirms the box is filled. It never confirms the value is <em>true</em>, and on a CE claim that gap is a recall.</div></div>
+      <div class="ctxfoot"><span>This is the silent break. Screen 2 is where we close it.</span><span class="pillg">Framing 2 / 4</span></div>
+    </div>
+  </section>
+
+  <!-- ===== F3 · HOW IT WORKS ===== -->
+  <section class="slide" id="f3" data-label="Framing 3 / 4 · How it works" data-type="ctx">
+    <div class="ctx">
+      <div class="eyebrow">The end-to-end flow &middot; beside the PIM</div>
+      <h1>Same feed in. <span class="g">Validated</span> value out, checked once, true on every channel.</h1>
+      <div class="lead">Seven phases, S through F. The system enriches and validates in a sandbox, routes only what is uncertain to two human desks, then publishes and keeps a signed audit trail the passport is built from.</div>
+      <div class="flow">
+        <div class="step"><div class="ph">S</div><div class="nm">Setup</div><div class="sc">Rule corpus, once per category</div></div>
+        <div class="step"><div class="ph">A</div><div class="nm">Intake</div><div class="sc">Feed in, ETIM-mapped</div></div>
+        <div class="step"><div class="ph">B</div><div class="nm">Validate</div><div class="sc">Value, per channel, live cert</div></div>
+        <div class="step"><div class="ph">C</div><div class="nm">Chase</div><div class="sc">Gaps tracked, not lost</div></div>
+        <div class="step human"><div class="ph">D</div><div class="nm">Review</div><div class="sc">Two human desks</div></div>
+        <div class="step"><div class="ph">E</div><div class="nm">Publish</div><div class="sc">PIM and five channels</div></div>
+        <div class="step"><div class="ph">F</div><div class="nm">Passport</div><div class="sc">Signed trail, DPP and QR</div></div>
+      </div>
+      <div class="cards c4" style="margin-top:28px">
+        <div class="card"><div class="k">Screens 1 to 2 cut here</div><div class="d" style="margin-top:6px"><b>Outcome and value validation</b>, phase B output, the silent break closed.</div></div>
+        <div class="card"><div class="k">Screens 3 to 4 cut here</div><div class="d" style="margin-top:6px"><b>Live cert and chase</b>, phases B and C, against the public register.</div></div>
+        <div class="card"><div class="k">Screens 5 to 7 cut here</div><div class="d" style="margin-top:6px"><b>Inputs, review, rule sources</b>, phases A, D and S.</div></div>
+        <div class="card gold"><div class="k">Screen 8 cuts here</div><div class="d" style="margin-top:6px"><b>Audit and passport</b>, phase F.</div></div>
+      </div>
+      <div class="ctxfoot"><span>The orchestration runs the line between supplier and reviewer. It stays out of view.</span><span class="pillg">Framing 3 / 4</span></div>
+    </div>
+  </section>
+
+  <!-- ===== F4 · THE DPP REQUIREMENT ===== -->
+  <section class="slide" id="f4" data-label="Framing 4 / 4 · The DPP requirement" data-type="ctx">
+    <div class="ctx">
+      <div class="eyebrow">Why this matters now</div>
+      <h1>The Digital Product Passport for construction is <span class="g">law</span>. The dates are set.</h1>
+      <div class="lead">Construction has its own regulation, the revised Construction Products Regulation (EU 2024/3110), already in force. It makes a Digital Product Passport mandatory, and the milestones are dated, not hypothetical.</div>
+      <div class="cards c2" style="margin-top:24px; align-items:start">
+        <div class="card"><div class="k">What must be in place</div><div class="d" style="margin-top:8px; font-size:13px">A passport reachable from a QR data carrier, carrying the product identity, the performance and CE / DoPC data, the substances (REACH), and the certificate references, registered with tiered access. Exactly what one validated record and a signed audit trail produce.</div></div>
+        <div class="card gold">
+          <div class="k">The dated milestones</div>
+          <div class="timeline-f">
+            <div class="tf"><div class="dt">8 Jan 2026<small>in force</small></div><div class="ev"><b>CPR (EU 2024/3110) applies.</b> The DoP becomes the DoPC, including environmental data and the passport basis.</div></div>
+            <div class="tf"><div class="dt">19 Jul 2026<small>infrastructure</small></div><div class="ev">The <b>EU central DPP registry</b> must be operational.</div></div>
+            <div class="tf"><div class="dt">2027 to 2028<small>delegated act</small></div><div class="ev"><b>Construction DPP becomes mandatory</b>, phased in roughly 18 months after the delegated act that sets the format.</div></div>
+            <div class="tf"><div class="dt">2030 / 2032<small>phase-in</small></div><div class="ev">Core, then full life-cycle environmental indicators become mandatory.</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="srcnote">Source: Regulation (EU) 2024/3110 (revised CPR); ESPR (EU) 2024/1781. Exact construction DPP date follows the delegated act; confirm against the latest act before the PoC scope is fixed.</div>
+      <div class="ctxfoot"><span>Ready early means the validated values and the audit trail are already in place when the date arrives.</span><span class="pillg">Framing 4 / 4</span></div>
+    </div>
+  </section>
+
+  <!-- ===== S1 · OUTCOME ===== -->
+  <section class="slide" id="screen-1" data-label="Screen 1 / 8 · Outcome" data-type="demo">
+    <div class="demowrap">
+      <div class="demohead">
+        <div class="ttl"><div class="eye">Screen 1 of 8 · outcome</div><h2>Three markets, validated and ready to ship</h2></div>
+        <div class="rgt"><a class="procbtn" href="BuildMart_swimlanes.html#phase-E" target="_blank" rel="noopener">View process step <span class="ar">&#8250;</span></a><div class="cut">Phase E. The proof comes first, the workflow comes after.</div></div>
+      </div>
+      <div class="objective">
+        <div class="ocol"><div class="ol">On this screen</div><div class="ot"><b class="rc por">Camille · Portfolio</b> and <b class="rc com">Dr. Hartmann · Compliance</b> review the three validated variants and sign each one off.</div></div>
+        <div class="ocol"><div class="ol">What it produces</div><div class="ot">An Approve, Amend or Reject decision per market variant.</div></div>
+        <div class="ocol"><div class="ol">Objective</div><div class="ot">Prove the outcome, compliant copy ready to ship, before showing how it is made.</div></div>
+      </div>
+      <div class="browser" style="position:relative">
+        <div class="bbar"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="addr"><span class="lock">&#128274;</span> buildmart · productcopyos · review console</span><span class="chip">SKU 1 of 1 · ready for sign-off</span></div>
+        <div class="bbody">
+          <div class="sku-head">
+            <div>
+              <div class="eyebrow-d">Glass-wool insulation · supplier ISOTERM SAS</div>
+              <h3>Glass-wool thermal insulation panel, 1200 × 600 × 100 mm</h3>
+              <div class="meta"><span>EAN <code>3401592847163</code></span><span><b>R</b> 4.0 m²·K/W</span><span><b>λ<sub>D</sub></b> 0.035 W/(m·K)</span><span><b>Fire</b> A2-s1,d0</span><span>DoP <code>2024-GW40-0187</code></span></div>
+            </div>
+            <div class="hitl"><span class="d"></span>Human in the loop: sign-off held by Compliance and Portfolio</div>
+          </div>
+          <div class="gridcols g3">
+            <div class="variant">
+              <div class="vh"><span class="flag"><span class="fl fr"></span>France</span><span class="reg">CE · CPR · A+</span></div>
+              <div class="chtabs"><span class="chtab on">.com</span><span class="chtab">catalogue</span><span class="chtab">shelf label</span><span class="chtab">screen</span><span class="chtab">marketplace</span></div>
+              <div class="vcopy"><span class="pname">Panneau isolant en laine de verre</span><span class="hl spec" title="Spec, traces to the DoP">R = 4,0 m²·K/W, λ<sub>D</sub> 0,035</span>. <span class="hl reg" title="Regulated wording, EN 13501-1">Réaction au feu A2-s1,d0</span> (marquage CE, DoP fournie). Réduit les déperditions et la facture de chauffage. <span class="hl val" title="FR indoor-air emissions class">Émissions A+</span>. Facile à couper et à poser.</div>
+              <div class="vchecks"><div class="chk"><span class="ico ok">&#10003;</span> Value checks: R, λ, Euroclass match DoP</div><div class="chk"><span class="ico ok">&#10003;</span> Regulatory: CE/CPR, REACH/SVHC, A+</div><div class="chk"><span class="ico ok">&#10003;</span> Certificate: ACERMI valid <span style="color:var(--slate-400)">(Screen 3)</span></div></div>
+              <div class="vactions"><span class="btn appr">Approve</span><span class="btn amend">Amend</span><span class="btn rej">Reject</span></div>
+            </div>
+            <div class="variant">
+              <div class="vh"><span class="flag"><span class="fl uk"></span>United Kingdom</span><span class="reg">UKCA · export</span></div>
+              <div class="chtabs"><span class="chtab">.com</span><span class="chtab">catalogue</span><span class="chtab">shelf label</span><span class="chtab">screen</span><span class="chtab on">marketplace</span></div>
+              <div class="vcopy"><span class="pname">Glass wool insulation slab</span><span class="hl spec" title="Spec, traces to the DoP">R = 4.0 m²·K/W, λ<sub>D</sub> 0.035</span>. <span class="hl reg" title="UKCA, local divergence from CE">Reaction to fire A2-s1,d0. UKCA marked</span> (DoP available). Cuts heat loss and heating bills. Easy to cut and fit.</div>
+              <div class="vchecks"><div class="chk"><span class="ico ok">&#10003;</span> Value checks: match DoP</div><div class="chk"><span class="ico wn">!</span> UKCA wording: export and marketplace cut only</div><div class="chk"><span class="ico ok">&#10003;</span> Certificate: ACERMI valid</div></div>
+              <div class="vactions"><span class="btn appr">Approve</span><span class="btn amend">Amend</span><span class="btn rej">Reject</span></div>
+            </div>
+            <div class="variant">
+              <div class="vh"><span class="flag"><span class="fl pl"></span>Poland</span><span class="reg">CE · PL transposition</span></div>
+              <div class="chtabs"><span class="chtab on">.com</span><span class="chtab">catalogue</span><span class="chtab">shelf label</span><span class="chtab">screen</span><span class="chtab">marketplace</span></div>
+              <div class="vcopy"><span class="pname">Płyta izolacyjna z wełny szklanej</span><span class="hl spec" title="Spec, traces to the DoP">R = 4,0 m²·K/W, λ<sub>D</sub> 0,035</span>. <span class="hl reg" title="Harmonised CE wording, PL transposition">Reakcja na ogień A2-s1,d0</span> (oznakowanie CE, DoP dostępna). Ogranicza straty ciepła i rachunki za ogrzewanie. Łatwa w cięciu i montażu.</div>
+              <div class="vchecks"><div class="chk"><span class="ico ok">&#10003;</span> Value checks: match DoP</div><div class="chk"><span class="ico ok">&#10003;</span> Regulatory: CE/CPR, PL transposition</div><div class="chk"><span class="ico ok">&#10003;</span> Certificate: ACERMI valid</div></div>
+              <div class="vactions"><span class="btn appr">Approve</span><span class="btn amend">Amend</span><span class="btn rej">Reject</span></div>
+            </div>
+          </div>
+          <div class="sticky r1" style="top:150px; right:16px"><span class="tag">BA7 · UK</span>I'm assuming UK is export and marketplace only, UKCA divergence, not a full home market. Right?</div>
+        </div>
+      </div>
+      <div class="annstrip">
+        <div class="acard b1"><span class="an">1</span><div class="at">Open on the outcome, not the pipeline</div><div class="av">The buyer sees validated copy as it ships, three markets, channel-aware, before any workflow.<span class="vs">Result: the value lands before the mechanism.</span></div></div>
+        <div class="acard b2"><span class="an">2</span><div class="at">One value, every channel, every market</div><div class="av">The five channel tabs hang off one validated value. Print and shelf are verbatim spec; online is the adaptable cut.<span class="vs">Result: a value that was the same on every channel becomes per channel ready and correct on each.</span></div></div>
+        <div class="acard b3"><span class="an">3</span><div class="at">The gate stays human</div><div class="av">Approve, Amend, Reject sits on every variant; nothing publishes without a named human.<span class="vs">Result: AI does the lift, the desk holds the decision.</span></div></div>
+      </div>
+      <div class="demofoot"><span>Pause here. Confirm relevance before walking back through the workflow.</span><span class="pill">Screen 1 / 8</span></div>
+    </div>
+  </section>
+
+  <!-- ===== S2 · VALUE VALIDATION ===== -->
+  <section class="slide" id="screen-2" data-label="Screen 2 / 8 · Value validation" data-type="demo">
+    <div class="demowrap">
+      <div class="demohead">
+        <div class="ttl"><div class="eye">Screen 2 of 8 · value validation</div><h2>Every regulated value, not every filled field</h2></div>
+        <div class="rgt"><a class="procbtn" href="BuildMart_swimlanes.html#phase-B" target="_blank" rel="noopener">View process step <span class="ar">&#8250;</span></a><div class="cut">Phase B3. The PIM asks "is it filled?"; this asks "is it true, per channel, against the DoP?"</div></div>
+      </div>
+      <div class="objective">
+        <div class="ocol"><div class="ol">On this screen</div><div class="ot">The <b class="rc sys">system</b> validates each regulated value against the DoP, per channel; <b class="rc com">Dr. Hartmann · Compliance</b> reviews anything it holds.</div></div>
+        <div class="ocol"><div class="ol">What it produces</div><div class="ot">A pass or hold result per value, with held items routed to chase.</div></div>
+        <div class="ocol"><div class="ol">Objective</div><div class="ot">Catch a non-compliant value before it reaches a customer-facing surface.</div></div>
+      </div>
+      <div class="browser" style="position:relative">
+        <div class="bbar"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="addr"><span class="lock">&#128274;</span> buildmart · productcopyos · validation · FR variant</span><span class="chip">9 values checked · 1 held</span></div>
+        <div class="bbody">
+          <div class="breakbar"><span class="tag">Silent break</span><span class="bx"><b>Would have shipped.</b> The draft asserted fire-reaction <b>Euroclass A1</b>, a field the PIM saw as filled. The DoP declares only <b>A2-s1,d0</b>. The claim exceeds the declared value: caught here, held, and routed to the supplier, instead of fanning out to five channels.</span></div>
+          <div class="valwrap">
+            <div class="stickycopy">
+              <h4>FR · .com variant <span class="await" style="padding:2px 8px; font-size:10px"><span class="d"></span>1 held</span></h4>
+              <div class="sub">The copy stays in view while you read the rules. Highlights map phrases to checks.</div>
+              <div class="body">Panneau isolant en laine de verre. <span class="hl spec" title="R02, R-value vs DoP">R = 4,0 m²·K/W</span>, <span class="hl spec" title="R03, λ vs DoP">λ<sub>D</sub> 0,035</span>. Réaction au feu <span class="hl warn" title="R01, claim exceeds DoP (A1 vs A2-s1,d0)">A2-s1,d0</span> (marquage CE, <span class="hl reg" title="R04, DoP reference">DoP fournie</span>). Réduit les déperditions et la facture de chauffage. <span class="hl val" title="R06, FR A+ emissions">Émissions dans l'air intérieur : A+</span>. <span class="hl reg" title="R05, REACH Art. 33">Sans SVHC &gt; 0,1 %</span>. Facile à couper et à poser.</div>
+              <div class="legend"><span><i style="border-color:var(--gold)"></i> spec to DoP</span><span><i style="border-color:var(--blue)"></i> regulated wording</span><span><i style="border-color:var(--green)"></i> jurisdiction rule</span><span><i style="border-color:var(--amber)"></i> held</span></div>
+            </div>
+            <div class="rulelist">
+              <div class="rrow warnr"><span class="st" style="background:var(--amber)">!</span><div><div class="rt">R01 · Fire-reaction Euroclass, claim must not exceed DoP</div><div class="rd">Draft claimed <b>A1</b>; DoP declares <b>A2-s1,d0</b>. Held: claim exceeds the declared value. Amend to A2-s1,d0 or chase the supplier for a corrected DoP.</div><span class="cite">EN 13501-1 · DoP 2024-GW40-0187 §2</span><div class="perchan"><span class="pc f">.com ✕</span><span class="pc f">catalogue ✕</span><span class="pc f">shelf ✕</span><span class="pc f">screen ✕</span><span class="pc f">mkt ✕</span></div></div><span class="ch warnc">Held</span></div>
+              <div class="rrow"><span class="st" style="background:var(--green)">&#10003;</span><div><div class="rt">R02 · Thermal resistance R-value vs DoP</div><div class="rd">R = 4.0 m²·K/W matches the declared value. No claim beyond the DoP.</div><span class="cite">EN 12667 · DoP 2024-GW40-0187 §1</span><div class="perchan"><span class="pc p">all channels ✓</span></div></div><span class="ch pass">Pass</span></div>
+              <div class="rrow"><span class="st" style="background:var(--green)">&#10003;</span><div><div class="rt">R03 · Thermal conductivity λ<sub>D</sub></div><div class="rd">λ<sub>D</sub> 0.035 W/(m·K) consistent with R and panel thickness (100 mm).</div><span class="cite">EN 12667 · DoP §1</span><div class="perchan"><span class="pc p">all channels ✓</span></div></div><span class="ch pass">Pass</span></div>
+              <div class="rrow"><span class="st" style="background:var(--green)">&#10003;</span><div><div class="rt">R05 · REACH and SVHC statement</div><div class="rd">"No SVHC &gt; 0.1% w/w" present and consistent with the supplier SVHC flag.</div><span class="cite">REACH Art. 33 · feed SVHC flag = none</span><div class="perchan"><span class="pc p">all channels ✓</span></div></div><span class="ch pass">Pass</span></div>
+              <div class="rrow"><span class="st" style="background:var(--green)">&#10003;</span><div><div class="rt">R06 · FR indoor-air emissions class</div><div class="rd">Class A+ declared and permitted for the FR market surfaces.</div><span class="cite">Arrêté du 19 avril 2011 · class A+</span><div class="perchan"><span class="pc p">FR ✓</span><span class="pc">UK n/a</span><span class="pc">PL n/a</span></div></div><span class="ch pass">Pass</span></div>
+              <div class="rrow"><span class="st" style="background:var(--green)">&#10003;</span><div><div class="rt">R07 · Channel length, shelf label and print</div><div class="rd">Verbatim spec string fits the 120-character shelf-label cap; online cut unconstrained.</div><span class="cite">BuildMart channel spec · ESL 120ch</span><div class="perchan"><span class="pc p">shelf ✓</span><span class="pc p">print ✓</span></div></div><span class="ch pass">Pass</span></div>
+            </div>
+          </div>
+          <div class="sticky r2" style="top:118px; right:16px"><span class="tag">BA1 · feed</span>I'm assuming the claims arrive as free-text PIM fields, one value for all channels. That's the attribute we map onto ETIM.</div>
+        </div>
+      </div>
+      <div class="annstrip">
+        <div class="acard b1"><span class="an">1</span><div class="at">Value, not presence</div><div class="av">The PIM passed "Euroclass is filled". We check the value against the DoP and catch a claim that exceeds it.<span class="vs">Result: this single row is the silent break, closed.</span></div></div>
+        <div class="acard b2"><span class="an">2</span><div class="at">Every check carries its rule</div><div class="av">EN 13501-1, EN 12667, REACH Art. 33; each row cites the authority behind it and links back to Screen 7.<span class="vs">Result: a guided read of the copy, not abstract check rows.</span></div></div>
+        <div class="acard b3"><span class="an">3</span><div class="at">Per channel, not once</div><div class="av">The same value is judged for .com, catalogue, shelf, screen and marketplace, the one-value-for-every-channel problem solved.<span class="vs">Result: one check, five correct surfaces.</span></div></div>
+      </div>
+      <div class="demofoot"><span>The held value never reaches a channel. It goes to chase (Screen 4).</span><span class="pill">Screen 2 / 8</span></div>
+    </div>
+  </section>
+
+  <!-- ===== S3 · LIVE CERT CHECK ===== -->
+  <section class="slide" id="screen-3" data-label="Screen 3 / 8 · Live certificate check" data-type="demo">
+    <div class="demowrap">
+      <div class="demohead">
+        <div class="ttl"><div class="eye">Screen 3 of 8 · live certificate check</div><h2>Supplier-declared is not the same as valid</h2></div>
+        <div class="rgt"><a class="procbtn" href="BuildMart_swimlanes.html#phase-B" target="_blank" rel="noopener">View process step <span class="ar">&#8250;</span></a><div class="cut">Phase B4. Certificates are validated live against the public register, not taken on the supplier's word.</div></div>
+      </div>
+      <div class="objective">
+        <div class="ocol"><div class="ol">On this screen</div><div class="ot">The <b class="rc sys">system</b> checks each declared certificate against the public register, and flags the expired ACERMI for <b class="rc com">Dr. Hartmann · Compliance</b> to action.</div></div>
+        <div class="ocol"><div class="ol">What it produces</div><div class="ot">A valid or expired verdict per certificate, and a chase for anything expired.</div></div>
+        <div class="ocol"><div class="ol">Objective</div><div class="ot">Make sure a certificate is current, not just claimed.</div></div>
+      </div>
+      <div class="browser" style="position:relative">
+        <div class="bbar"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="addr"><span class="lock">&#128274;</span> buildmart · productcopyos · certificates · live registry check</span><span class="chip">2 declared · 1 expired</span></div>
+        <div class="bbody">
+          <div class="regline"><span class="live"><span class="pulse"></span>Live</span> checked against the public register at 19 Jun 2026, 09:41 CET. Supplier declaration on the left, registry verdict on the right.</div>
+          <div class="certrow exp">
+            <div class="certcell"><div class="lb">Certificate</div><div class="vl">ACERMI, thermal insulation</div><div class="sub">FR mandatory register · expiry-cycle renewal</div></div>
+            <div class="certcell"><div class="lb">Supplier declared</div><div class="vl mono">ACERMI 14/123/1043</div><div class="sub">"valid", stated in feed</div></div>
+            <div class="certcell"><div class="lb">Public register says</div><div class="vl mono" style="color:var(--red)">expired 31 Mar 2026</div><div class="sub">renewal not yet filed</div></div>
+            <div class="vstamp expired">✕ Expired</div>
+          </div>
+          <div style="margin:-2px 0 16px; padding:11px 16px; background:var(--amber-soft); border:1px solid var(--amber-line); border-radius:10px; display:flex; align-items:center; gap:14px">
+            <span class="await"><span class="d"></span>Flagged by the system · awaiting human action</span>
+            <span style="font-size:12px; color:#7a4a08">The λ and R declared values cannot be substantiated until ACERMI is renewed. The system has drafted a chase. A human approves and owns it on Screen 4.</span>
+          </div>
+          <div class="certrow">
+            <div class="certcell"><div class="lb">Certificate</div><div class="vl">Keymark, product certification</div><div class="sub">EU voluntary scheme</div></div>
+            <div class="certcell"><div class="lb">Supplier declared</div><div class="vl mono">011-7P-0394</div><div class="sub">"valid"</div></div>
+            <div class="certcell"><div class="lb">Public register says</div><div class="vl mono" style="color:var(--green)">valid to 14 Aug 2027</div><div class="sub">scope matches SKU</div></div>
+            <div class="vstamp valid">✓ Valid</div>
+          </div>
+          <div class="sticky r3" style="top:150px; right:16px"><span class="tag">BA3 · registries</span>I'm assuming ACERMI, FSC and Keymark are queryable live, and "declared is not valid" is the real case. Confirm?</div>
+        </div>
+      </div>
+      <div class="annstrip">
+        <div class="acard b1"><span class="an">1</span><div class="at">The textbook case</div><div class="av">ACERMI runs on an expiry cycle. The supplier still declares it valid; the register says it expired three months ago.<span class="vs">Result: a wrong cert never reaches a customer-facing surface.</span></div></div>
+        <div class="acard b2"><span class="an">2</span><div class="at">A distinct capability</div><div class="av">Kept separate from value validation on purpose. It is a second, independent proof point.<span class="vs">Result: two reasons to trust the output, not one.</span></div></div>
+        <div class="acard b3"><span class="an">3</span><div class="at">Declared is not validated</div><div class="av">The system flags the expiry and drafts a chase, but it does not act for the human; the human approves the chase on Screen 4.<span class="vs">Result: certificates stop living on the supplier's word.</span></div></div>
+      </div>
+      <div class="demofoot"><span>Today this check is fully manual. This is where the hours actually go.</span><span class="pill">Screen 3 / 8</span></div>
+    </div>
+  </section>
+
+  <!-- ===== S4 · CHASE & RESOLVE ===== -->
+  <section class="slide" id="screen-4" data-label="Screen 4 / 8 · Chase &amp; resolve" data-type="demo">
+    <div class="demowrap">
+      <div class="demohead">
+        <div class="ttl"><div class="eye">Screen 4 of 8 · chase and resolve</div><h2>A tracked request, not a lost email, and the human who approves it</h2></div>
+        <div class="rgt"><a class="procbtn" href="BuildMart_swimlanes.html#phase-C" target="_blank" rel="noopener">View process step <span class="ar">&#8250;</span></a><div class="cut">Phase C. Every gap becomes a workflow object with an owner and an SLA.</div></div>
+      </div>
+      <div class="objective">
+        <div class="ocol"><div class="ol">On this screen</div><div class="ot">The <b class="rc sys">system</b> drafts the chase; <b class="rc com">Dr. Hartmann · Compliance</b> approves and sends it and owns the SLA; <b class="rc sup">ISOTERM · supplier</b> responds.</div></div>
+        <div class="ocol"><div class="ol">What it produces</div><div class="ot">A resolved gap that re-enters validation automatically.</div></div>
+        <div class="ocol"><div class="ol">Objective</div><div class="ot">Replace the manual chasing that breaks when someone is away.</div></div>
+      </div>
+      <div class="browser" style="position:relative">
+        <div class="bbar"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="addr"><span class="lock">&#128274;</span> buildmart · productcopyos · chase and resolve · open requests</span><span class="chip">2 open · 1 awaiting supplier</span></div>
+        <div class="bbody">
+          <div class="chaseobj open">
+            <div class="coh">
+              <div class="sub">ACERMI certificate expired<small>Request CR-0188 · opened 19 Jun 2026</small></div>
+              <div style="display:flex; align-items:center; gap:14px">
+                <span class="sla">SLA <b>due in 3 working days (24 Jun 2026)</b></span>
+                <span class="statpill open">Open · awaiting supplier</span>
+              </div>
+            </div>
+            <div class="cobody">
+              <div>
+                <div class="cogrid">
+                  <span class="lb">Linked SKU</span><span class="vl">Glass-wool panel, EAN 3401592847163</span>
+                  <span class="lb">Supplier</span><span class="vl">ISOTERM SAS</span>
+                  <span class="lb">Trigger</span><span class="vl">Live register check: ACERMI 14/123/1043 expired 31 Mar 2026</span>
+                  <span class="lb">Owner</span><span class="vl">Dr. Hartmann, Compliance Lead</span>
+                  <span class="lb">Holds</span><span class="vl">λ and R substantiation until renewed</span>
+                </div>
+                <div class="miniline">
+                  <div class="me done"><span class="md"></span><div><b>System drafted the chase.</b> Renewal request prepared, addressed to ISOTERM, ACERMI reference attached.</div></div>
+                  <div class="me done"><span class="md"></span><div><b>Dr. Hartmann approved and sent it.</b> Human in the loop. 19 Jun 2026, 09:52 CET.</div></div>
+                  <div class="me done"><span class="md"></span><div><b>Supplier notified.</b> Acknowledgement received, renewal in progress.</div></div>
+                  <div class="me now"><span class="md"></span><div><b>Awaiting renewed certificate.</b> Item held; re-validation will run on receipt.</div></div>
+                </div>
+              </div>
+              <div class="coaction">
+                <div class="at"><b>The human-in-the-loop action.</b> The system does not chase on its own. It drafts the request; the named human reviews it and approves sending it, and owns the SLA. On receipt the checks re-run automatically.</div>
+                <div class="ts">approved_by = a.hartmann · 2026-06-19T09:52:00+02:00</div>
+                <div style="margin-top:10px"><span class="hitl"><span class="d"></span>Human in the loop: Compliance approved the chase</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="chaseobj open">
+            <div class="coh">
+              <div class="sub">Euroclass value held<small>Request CR-0189 · A1 claim exceeds DoP (A2-s1,d0)</small></div>
+              <div style="display:flex; align-items:center; gap:14px">
+                <span class="sla">SLA <b>due in 3 working days</b></span>
+                <span class="statpill open">Open · awaiting supplier</span>
+              </div>
+            </div>
+            <div class="cobody">
+              <div class="cogrid">
+                <span class="lb">Linked SKU</span><span class="vl">Glass-wool panel, EAN 3401592847163</span>
+                <span class="lb">Trigger</span><span class="vl">Value validation R01: claim exceeds declared value</span>
+                <span class="lb">Owner</span><span class="vl">Dr. Hartmann, Compliance Lead</span>
+                <span class="lb">Resolution</span><span class="vl">Corrected DoP, or amend the claim to A2-s1,d0</span>
+              </div>
+              <div class="coaction" style="background:var(--slate-50); border-color:var(--slate-200)"><div class="at" style="color:var(--slate-700)">Same pattern as above. The chase carries the citation (EN 13501-1, DoP §2) so the supplier sees exactly what is wrong. Held until a valid value arrives.</div></div>
+            </div>
+          </div>
+          <div class="sticky r1" style="top:150px; right:16px"><span class="tag">BA8 · audit</span>I'm assuming the chase and its SLA are part of the audit trail, and that is part of the definition of success. Agreed?</div>
+        </div>
+      </div>
+      <div class="annstrip">
+        <div class="acard b1"><span class="an">1</span><div class="at">The chase is an object, not an email</div><div class="av">Each gap becomes a tracked request with an owner, an SLA and a citation, held against the SKU.<span class="vs">Result: nothing is lost when a person is out.</span></div></div>
+        <div class="acard b2"><span class="an">2</span><div class="at">The human approves, the system runs it</div><div class="av">The system drafts the chase; Dr. Hartmann reviews and approves sending it, and owns the SLA.<span class="vs">Result: the human owns the decision, not the legwork.</span></div></div>
+        <div class="acard b3"><span class="an">3</span><div class="at">Held until valid, then auto-revalidated</div><div class="av">When the renewed cert or corrected value arrives, the checks re-run on their own.<span class="vs">Result: the gap closes itself once data arrives.</span></div></div>
+      </div>
+      <div class="demofoot"><span>This is the human-in-the-loop moment Screen 3 pointed to.</span><span class="pill">Screen 4 / 8</span></div>
+    </div>
+  </section>
+
+  <!-- ===== S5 · INPUTS & ETIM ===== -->
+  <section class="slide" id="screen-5" data-label="Screen 5 / 8 · Inputs &amp; ETIM" data-type="demo">
+    <div class="demowrap">
+      <div class="demohead">
+        <div class="ttl"><div class="eye">Screen 5 of 8 · inputs and ETIM</div><h2>Supplier feed in, ETIM-mapped values out</h2></div>
+        <div class="rgt"><a class="procbtn" href="BuildMart_swimlanes.html#phase-A" target="_blank" rel="noopener">View process step <span class="ar">&#8250;</span></a><div class="cut">Phase A. Raw on the left, structured on the right; the steps between are abstracted away.</div></div>
+      </div>
+      <div class="objective">
+        <div class="ocol"><div class="ol">On this screen</div><div class="ot"><b class="rc sup">ISOTERM · supplier</b> submits the weekly feed; the <b class="rc sys">system</b> maps each free-text attribute onto ETIM so the value becomes checkable.</div></div>
+        <div class="ocol"><div class="ol">What it produces</div><div class="ot">Structured, per-channel-ready attributes.</div></div>
+        <div class="ocol"><div class="ol">Objective</div><div class="ot">Make the supplier's data usable for value validation, with no new ask on the supplier.</div></div>
+      </div>
+      <div class="browser" style="position:relative">
+        <div class="bbar"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="addr"><span class="lock">&#128274;</span> buildmart · productcopyos · intake · ISOTERM SAS weekly feed</span><span class="chip">1 row · 11 attributes mapped</span></div>
+        <div class="bbody">
+          <div class="feedgrid">
+            <div class="panel">
+              <div class="ph">Raw supplier feed <span class="tag">ISOTERM_week24.xlsx · row 1</span></div>
+              <table class="feed">
+                <tr><td>EAN</td><td><code>3401592847163</code></td></tr>
+                <tr><td>Designation</td><td>Panneau LdV 100mm R4.0</td></tr>
+                <tr><td>Brand</td><td>ISOTERM</td></tr>
+                <tr><td>ETIM code</td><td><code>blank</code> <span style="color:var(--amber)">free-text</span></td></tr>
+                <tr><td>Weight</td><td>8.4 kg</td></tr>
+                <tr><td>Dimensions</td><td>1200×600×100</td></tr>
+                <tr><td>Lambda (λ)</td><td>0,035</td></tr>
+                <tr><td>R</td><td>4.0</td></tr>
+                <tr class="flagrow"><td>Euroclass</td><td>A1 &nbsp;⚑ exceeds DoP</td></tr>
+                <tr><td>DoP no.</td><td><code>2024-GW40-0187</code></td></tr>
+                <tr><td>SVHC flag</td><td>none</td></tr>
+              </table>
+            </div>
+            <div class="arrowmid">&#10142;</div>
+            <div class="panel">
+              <div class="ph">Structured and ETIM-mapped <span class="tag">per channel ready</span></div>
+              <table class="feed mapped">
+                <tr><td>GTIN</td><td><code>3401592847163</code></td></tr>
+                <tr><td>ETIM class</td><td><code>EC010889</code> Insulation board <span class="scopable">per channel ready</span></td></tr>
+                <tr><td>Thermal resistance R</td><td>4.0 m²·K/W <span class="scopable">per channel ready</span></td></tr>
+                <tr><td>Thermal conductivity λ<sub>D</sub></td><td>0.035 W/(m·K) <span class="scopable">per channel ready</span></td></tr>
+                <tr><td>Reaction to fire</td><td>routed to fire-class check <span class="scopable">per channel ready</span></td></tr>
+                <tr><td>DoP reference</td><td>routed to CPR check</td></tr>
+                <tr><td>SVHC</td><td>routed to REACH check</td></tr>
+                <tr><td>Dimensions and coverage</td><td>1200×600×100 · 5.76 m²/pack</td></tr>
+              </table>
+            </div>
+          </div>
+          <div style="margin-top:16px; background:#fff; border:1px solid var(--slate-200); border-radius:10px; padding:13px 16px; font-size:12px; color:var(--slate-600); line-height:1.6"><b style="color:var(--slate-900)">Why the mapping matters.</b> The supplier's claims land in free-text fields that hold one value for every channel, exactly the shape that lets a wrong value fan out unchecked. Mapping each <b>attribute</b> onto ETIM makes it <b>per channel ready</b>, which is what lets the value be validated for each channel on Screen 2. The flagged Euroclass (A1) is routed to the fire-class check, where it is caught against the DoP.</div>
+          <div class="sticky r1" style="top:120px; right:16px"><span class="tag">BA4 · PIM</span>I'm assuming we sit beside the Akeneo-class PIM, next to its native AI and buffer logic, not over it.</div>
+        </div>
+      </div>
+      <div class="annstrip">
+        <div class="acard b1"><span class="an">1</span><div class="at">The same feed they already get</div><div class="av">No new supplier ask. The weekly Excel feed row lands exactly as it does today.<span class="vs">Result: nothing changes upstream of BuildMart.</span></div></div>
+        <div class="acard b2"><span class="an">2</span><div class="at">Free-text becomes checkable</div><div class="av">ETIM mapping is the unlock: it turns free-text attributes into values the system can scope per channel.<span class="vs">Result: this is what makes per-channel validation possible.</span></div></div>
+        <div class="acard b3"><span class="an">3</span><div class="at">The line stays out of view</div><div class="av">Raw in, structured out; the orchestration that runs between is abstracted away.<span class="vs">Result: no admin panel to learn.</span></div></div>
+      </div>
+      <div class="demofoot"><span>Raw in, structured out. The steps between are the system's job, not the reviewer's.</span><span class="pill">Screen 5 / 8</span></div>
+    </div>
+  </section>
+
+  <!-- ===== S6 · TWO-DESK REVIEW ===== -->
+  <section class="slide" id="screen-6" data-label="Screen 6 / 8 · Two-desk review" data-type="demo">
+    <div class="demowrap">
+      <div class="demohead">
+        <div class="ttl"><div class="eye">Screen 6 of 8 · two-desk review</div><h2>Regulated core wording, and channel expression</h2></div>
+        <div class="rgt"><a class="procbtn" href="BuildMart_swimlanes.html#phase-D" target="_blank" rel="noopener">View process step <span class="ar">&#8250;</span></a><div class="cut">Phase D. Only what is uncertain is routed to a human; the rest flows through.</div></div>
+      </div>
+      <div class="objective">
+        <div class="ocol"><div class="ol">On this screen</div><div class="ot"><b class="rc com">Dr. Hartmann · Compliance</b> reviews the regulated core wording; <b class="rc por">Camille · Portfolio</b> approves the channel expression.</div></div>
+        <div class="ocol"><div class="ol">What it produces</div><div class="ot">A binding approval, or an amend that re-validates.</div></div>
+        <div class="ocol"><div class="ol">Objective</div><div class="ot">Put the right decision in front of the right person, and keep the gate human.</div></div>
+      </div>
+      <div class="browser" style="position:relative">
+        <div class="bbar"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="addr"><span class="lock">&#128274;</span> buildmart · productcopyos · review and sign-off</span><span class="chip">2 desks · 1 amend pending</span></div>
+        <div class="bbody">
+          <div class="split-note"><b>Why two desks.</b> Regulation often allows more flexibility online than in print. Print and shelf labels carry the <b>verbatim DoP wording</b> Compliance signs; the .com and marketplace copy is the <b>adaptable cut</b> Portfolio owns. The UK export and marketplace edge sharpens the split: harmonised CE wording, UKCA divergence, PL transposition.</div>
+          <div class="desks">
+            <div class="desk compl">
+              <div class="dh"><div class="who">Dr. Hartmann · Quality and Compliance Lead</div><div class="ro">Signs DoP/CE · legal and regulatory authority</div><span class="owns">Owns the regulated core wording</span></div>
+              <div class="db">
+                <div class="dcheck"><span class="ico ok" style="display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:700">&#10003;</span> CE/CPR declaration wording, verbatim against DoP 2024-GW40-0187</div>
+                <div class="dcheck"><span class="ico ok" style="display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:700">&#10003;</span> REACH and SVHC statement, present and correct</div>
+                <div class="dcheck"><span class="ico wn" style="display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:700">!</span> Fire-reaction claim, A1 amended to <b>A2-s1,d0</b> to match DoP <span style="color:var(--slate-400)">(from Screen 2)</span></div>
+                <div style="margin-top:6px"><span class="hitl"><span class="d"></span>Human in the loop: core wording confirmed</span></div>
+              </div>
+            </div>
+            <div class="desk port">
+              <div class="dh"><div class="who">Camille · Category and Portfolio Manager</div><div class="ro">Building Materials · brand and channel owner</div><span class="owns">Owns the channel expression</span></div>
+              <div class="db">
+                <div class="dcheck"><span class="ico ok" style="display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:700">&#10003;</span> .com cut, spec-first, value-forward, BuildMart voice</div>
+                <div class="dcheck"><span class="ico ok" style="display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:700">&#10003;</span> Shelf label, fits the 120-character cap, verbatim spec retained</div>
+                <div class="dcheck"><span class="ico ok" style="display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:700">&#10003;</span> UK marketplace, UKCA cut approved for export</div>
+                <div style="margin-top:6px"><span class="hitl"><span class="d"></span>Human in the loop: channel expression approved</span></div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex; gap:9px; margin-top:16px; max-width:560px"><span class="btn appr" style="flex:none; padding:9px 18px">Approve (binding)</span><span class="btn amend" style="flex:none; padding:9px 18px">Amend, re-validate</span><span class="btn rej" style="flex:none; padding:9px 18px">Reject, re-generate</span></div>
+          <div class="sticky r2" style="top:120px; right:16px"><span class="tag">BA5 · two desks</span>I'm assuming Compliance owns the regulated wording and Portfolio owns the channel cut. One desk or two?</div>
+        </div>
+      </div>
+      <div class="annstrip">
+        <div class="acard b1"><span class="an">1</span><div class="at">Two desks, one SKU</div><div class="av">Compliance signs the regulated core; Portfolio shapes the channel cut. Each sees only what they own.<span class="vs">Result: the right person decides the right thing.</span></div></div>
+        <div class="acard b2"><span class="an">2</span><div class="at">Print verbatim, online adaptable</div><div class="av">The print and online split is what makes the two desks legible, and where regulation gives online more room.<span class="vs">Result: compliance kept tight, marketing kept free.</span></div></div>
+        <div class="acard b3"><span class="an">3</span><div class="at">Amend loops back cleanly</div><div class="av">An amend re-enters validation; approval is binding and committing. The loop is governed.<span class="vs">Result: no edit escapes the audit trail.</span></div></div>
+      </div>
+      <div class="demofoot"><span>Only the uncertain is routed to a human. The rest flows through.</span><span class="pill">Screen 6 / 8</span></div>
+    </div>
+  </section>
+
+  <!-- ===== S7 · RULE SOURCES ===== -->
+  <section class="slide" id="screen-7" data-label="Screen 7 / 8 · Rule sources" data-type="demo">
+    <div class="demowrap">
+      <div class="demohead">
+        <div class="ttl"><div class="eye">Screen 7 of 8 · rule sources</div><h2>Every citation traces to a clause, an authority, a date</h2></div>
+        <div class="rgt"><a class="procbtn" href="BuildMart_swimlanes.html#phase-S" target="_blank" rel="noopener">View process step <span class="ar">&#8250;</span></a><div class="cut">Phase S. Every rule cited on Screen 2 is a link, not a label; it traces back to here.</div></div>
+      </div>
+      <div class="objective">
+        <div class="ocol"><div class="ol">On this screen</div><div class="ot"><b class="rc com">Dr. Hartmann · Compliance</b> maintains and publishes the rule corpus; the <b class="rc sys">system</b> cites it on every check.</div></div>
+        <div class="ocol"><div class="ol">What it produces</div><div class="ot">A citable rule corpus that every check links back to.</div></div>
+        <div class="ocol"><div class="ol">Objective</div><div class="ot">Make every check traceable to a real clause, not a vibe.</div></div>
+      </div>
+      <div class="browser" style="position:relative">
+        <div class="bbar"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="addr"><span class="lock">&#128274;</span> buildmart · productcopyos · rule corpus v1 · dated and cited</span><span class="chip">7 sources · clause-level</span></div>
+        <div class="bbody">
+          <div style="margin-bottom:14px; font-size:12px; color:var(--slate-600)">Published, dated and citable. Every check on Screen 2 carries one of these as its source. <b style="color:var(--slate-900)">9 of 9 value checks trace to a clause below.</b></div>
+          <div class="srcgrid">
+            <div class="src"><div class="sh"><div class="ic">&#9878;</div><div><div class="nm">CPR and hEN, Construction Products Regulation</div><div class="au">EU 305/2011 and 2024/3110 · harmonised standards</div></div></div><div class="clause"><span>DoP and CE marking obligations</span><code>Art. 4 to 6</code></div><div class="clause"><span>Reaction to fire classification</span><span><code>EN 13501-1</code><span class="dt"> · 2018</span></span></div><div class="clause"><span>Thermal resistance determination</span><span><code>EN 12667</code><span class="dt"> · 2001</span></span></div></div>
+            <div class="src"><div class="sh"><div class="ic">&#9763;</div><div><div class="nm">REACH and SVHC</div><div class="au">EU 1907/2006 · ECHA candidate list</div></div></div><div class="clause"><span>Substances of very high concern statement</span><code>Art. 33</code></div><div class="clause"><span>Candidate list (last update)</span><span class="dt">Jan 2026</span></div></div>
+            <div class="src"><div class="sh"><div class="ic">&#9888;</div><div><div class="nm">CLP, classification and labelling</div><div class="au">EU 1272/2008</div></div></div><div class="clause"><span>Hazard wording and pictograms</span><code>Annex I</code></div><div class="clause"><span>Applicability, glass wool</span><span class="dt">not classified</span></div></div>
+            <div class="src"><div class="sh"><div class="ic">&#127468;&#127463;</div><div><div class="nm">UKCA, post-Brexit divergence</div><div class="au">UK CPR (amended) · export market</div></div></div><div class="clause"><span>UKCA marking for GB market</span><code>SI 2019/465</code></div><div class="clause"><span>Scope, export and marketplace only</span><span class="dt">edge case</span></div></div>
+            <div class="src"><div class="sh"><div class="ic">&#127467;&#127479;</div><div><div class="nm">FR indoor-air emissions</div><div class="au">French Ministry of Ecology</div></div></div><div class="clause"><span>Emissions class label (A+ to C)</span><code>Arrêté 19 avr. 2011</code></div><div class="clause"><span>Applies to</span><span class="dt">FR surfaces</span></div></div>
+            <div class="src"><div class="sh"><div class="ic">&#128229;</div><div><div class="nm">ESPR and Digital Product Passport</div><div class="au">EU 2024/3110 (CPR) and 2024/1781 (ESPR)</div></div></div><div class="clause"><span>Passport and data-carrier requirements</span><code>CPR Chap. X</code></div><div class="clause"><span>Status</span><span class="dt" style="color:var(--amber)">phased, in force</span></div></div>
+          </div>
+          <div class="src" style="margin-top:13px"><div class="sh"><div class="ic" style="background:var(--gold); color:var(--navy)">&#10003;</div><div><div class="nm">BuildMart Tone of Voice</div><div class="au">Internal · plain, spec-first, value-forward</div></div></div><div class="clause"><span>Every performance claim traces to the DoP/CE or a named certification; flag, never invent</span><code>TOV §compliance</code></div></div>
+          <div class="sticky r3" style="top:120px; right:16px"><span class="tag">BA2 · sources</span>I'm assuming these can be indexed and cited from their official sources, TOV from BuildMart. True?</div>
+        </div>
+      </div>
+      <div class="annstrip">
+        <div class="acard b1"><span class="an">1</span><div class="at">Citable, not vibes</div><div class="av">Each rule carries its authority and date; the corpus is published as v1 and versioned.<span class="vs">Result: compliance can audit the rule, not just the result.</span></div></div>
+        <div class="acard b2"><span class="an">2</span><div class="at">The citation chain is the payload</div><div class="av">Every citation on Screen 2 is a live link back to a clause here. Read once, trace anywhere.<span class="vs">Result: no check without a source.</span></div></div>
+        <div class="acard b3"><span class="an">3</span><div class="at">DPP already in the corpus</div><div class="av">The CPR and ESPR passport source sits beside CE and REACH. The deadline rule is indexed before it bites.<span class="vs">Result: ready to ship against the date.</span></div></div>
+      </div>
+      <div class="demofoot"><span>Brand guidelines and back-office systems read here. No acronyms on the glass.</span><span class="pill">Screen 7 / 8</span></div>
+    </div>
+  </section>
+
+  <!-- ===== S8 · AUDIT & PASSPORT ===== -->
+  <section class="slide" id="screen-8" data-label="Screen 8 / 8 · Audit &amp; passport" data-type="demo">
+    <div class="demowrap">
+      <div class="demohead">
+        <div class="ttl"><div class="eye">Screen 8 of 8 · audit and passport</div><h2>The signed trail becomes the Digital Product Passport</h2></div>
+        <div class="rgt"><a class="procbtn" href="BuildMart_swimlanes.html#phase-F" target="_blank" rel="noopener">View process step <span class="ar">&#8250;</span></a><div class="cut">Phase F. The audit trail is part of the definition of success, not a bonus.</div></div>
+      </div>
+      <div class="objective">
+        <div class="ocol"><div class="ol">On this screen</div><div class="ot">The <b class="rc sys">system</b> records every decision in a signed trail and composes the passport; <b class="rc com">Dr. Hartmann · Compliance</b> and the authority read it.</div></div>
+        <div class="ocol"><div class="ol">What it produces</div><div class="ot">A conformity pack and a registered DPP with a QR data carrier.</div></div>
+        <div class="ocol"><div class="ol">Objective</div><div class="ot">Make the result defensible to an authority, and produce the passport as a by-product.</div></div>
+      </div>
+      <div class="browser" style="position:relative">
+        <div class="bbar"><span class="tl"><i class="r"></i><i class="y"></i><i class="g"></i></span><span class="addr"><span class="lock">&#128274;</span> buildmart · productcopyos · audit and Digital Product Passport</span><span class="chip">signed chain · DPP composed</span></div>
+        <div class="bbody">
+          <div class="auditcol">
+            <div>
+              <div style="font-size:12px; color:var(--slate-600); margin-bottom:14px"><b style="color:var(--slate-900)">Signed audit trail.</b> Every step, every override, every human decision, immutable.</div>
+              <div class="timeline">
+                <div class="tev s"><span class="tdot"></span><div><div class="te">Feed ingested and ETIM-mapped</div><div class="tm">ISOTERM_week24.xlsx · row 1, 11 attributes per channel ready · <code>src-feed-0187</code></div></div></div>
+                <div class="tev"><span class="tdot"></span><div><div class="te">Value validation run, 1 held</div><div class="tm">Euroclass A1 claim exceeded DoP (A2-s1,d0), held · <code>EN 13501-1</code></div></div></div>
+                <div class="tev h"><span class="tdot"></span><div><div class="te">Chase approved and corrected DoP received</div><div class="tm"><span class="hitl" style="font-size:10px; padding:2px 8px"><span class="d"></span>Dr. Hartmann</span> claim amended to A2-s1,d0</div></div></div>
+                <div class="tev"><span class="tdot"></span><div><div class="te">Certificate re-check, ACERMI renewed</div><div class="tm">register confirms valid to 31 Mar 2027 · <code>ACERMI 14/123/1043</code></div></div></div>
+                <div class="tev h"><span class="tdot"></span><div><div class="te">Compliance sign-off, core wording</div><div class="tm"><span class="hitl" style="font-size:10px; padding:2px 8px"><span class="d"></span>Dr. Hartmann</span> DoP/CE verbatim confirmed</div></div></div>
+                <div class="tev h"><span class="tdot"></span><div><div class="te">Portfolio approval, channel expression</div><div class="tm"><span class="hitl" style="font-size:10px; padding:2px 8px"><span class="d"></span>Camille</span> FR, UK, PL across 5 channels approved</div></div></div>
+                <div class="tev s"><span class="tdot"></span><div><div class="te">Published and synced</div><div class="tm">PIM updated, live on .com, catalogue, shelf, screen, marketplace · <code>hash 9f2a…c41</code></div></div></div>
+              </div>
+              <div class="exports"><span class="exp"><span class="e">PDF</span> DoP/CE conformity pack</span><span class="exp"><span class="e">CSV</span> rule-by-rule audit</span><span class="exp"><span class="e">JSON</span> signed event chain</span></div>
+            </div>
+            <div class="dpp">
+              <div class="dt">Digital Product Passport · assembled from the trail</div>
+              <h4>One validated value, the passport</h4>
+              <div class="ds">No re-keying. The DPP and its QR payload are composed from the same signed audit trail, registered with the EU DPP Registry.</div>
+              <div class="dppbox">
+                <div class="qr"><svg viewBox="0 0 29 29" shape-rendering="crispEdges"><rect width="29" height="29" fill="#fff"/><g fill="#002D49"><rect x="0" y="0" width="7" height="7"/><rect x="1" y="1" width="5" height="5" fill="#fff"/><rect x="2" y="2" width="3" height="3" fill="#002D49"/><rect x="22" y="0" width="7" height="7"/><rect x="23" y="1" width="5" height="5" fill="#fff"/><rect x="24" y="2" width="3" height="3" fill="#002D49"/><rect x="0" y="22" width="7" height="7"/><rect x="1" y="23" width="5" height="5" fill="#fff"/><rect x="2" y="24" width="3" height="3" fill="#002D49"/><rect x="9" y="0" width="1" height="1"/><rect x="11" y="0" width="2" height="1"/><rect x="15" y="0" width="1" height="2"/><rect x="18" y="1" width="2" height="1"/><rect x="9" y="2" width="2" height="2"/><rect x="13" y="2" width="1" height="3"/><rect x="17" y="3" width="2" height="1"/><rect x="20" y="2" width="1" height="2"/><rect x="9" y="9" width="2" height="2"/><rect x="12" y="9" width="3" height="1"/><rect x="16" y="9" width="1" height="2"/><rect x="19" y="9" width="2" height="2"/><rect x="23" y="9" width="2" height="1"/><rect x="26" y="9" width="1" height="2"/><rect x="9" y="12" width="1" height="3"/><rect x="11" y="13" width="2" height="1"/><rect x="14" y="12" width="2" height="2"/><rect x="17" y="13" width="1" height="2"/><rect x="20" y="12" width="2" height="1"/><rect x="24" y="12" width="1" height="3"/><rect x="27" y="12" width="1" height="2"/><rect x="9" y="16" width="2" height="1"/><rect x="13" y="16" width="1" height="2"/><rect x="16" y="17" width="2" height="1"/><rect x="19" y="16" width="1" height="3"/><rect x="22" y="16" width="2" height="1"/><rect x="25" y="16" width="2" height="2"/><rect x="9" y="19" width="3" height="1"/><rect x="14" y="19" width="1" height="3"/><rect x="17" y="20" width="2" height="1"/><rect x="21" y="19" width="1" height="2"/><rect x="24" y="20" width="2" height="1"/><rect x="27" y="19" width="1" height="3"/><rect x="9" y="23" width="2" height="2"/><rect x="12" y="24" width="1" height="2"/><rect x="15" y="23" width="2" height="1"/><rect x="18" y="24" width="1" height="2"/><rect x="21" y="23" width="2" height="2"/><rect x="25" y="24" width="2" height="1"/><rect x="9" y="27" width="1" height="1"/><rect x="13" y="27" width="2" height="1"/><rect x="17" y="27" width="1" height="1"/><rect x="20" y="27" width="3" height="1"/><rect x="25" y="27" width="1" height="1"/></g></svg></div>
+                <div class="dppfields">
+                  <div class="f"><span>Passport ID</span><b>DPP-FR-GW40-0187</b></div>
+                  <div class="f"><span>Performance (R, λ, fire)</span><b class="ok">verified</b></div>
+                  <div class="f"><span>CE / DoPC</span><b class="ok">linked</b></div>
+                  <div class="f"><span>Substances (REACH)</span><b class="ok">declared</b></div>
+                  <div class="f"><span>Certificates</span><b class="ok">live-checked</b></div>
+                  <div class="f"><span>Data carrier (QR)</span><b class="ok">registered</b></div>
+                </div>
+              </div>
+              <div class="dppfoot">Registered with the EU DPP Registry with tiered access. The public sees performance and safety; the authority sees the full conformity pack. The silent break is closed end to end.</div>
+            </div>
+          </div>
+          <div class="sticky r1" style="top:96px; right:16px"><span class="tag">BA6 · DPP</span>I'm assuming DPP ownership is still open internally, and the engine assembles the passport from the trail.</div>
+        </div>
+      </div>
+      <div class="annstrip">
+        <div class="acard b1"><span class="an">1</span><div class="at">The audit trail is the product</div><div class="av">Every rule, citation, chase and decision is captured and signed. That is what compliance-grade copy looks like underneath.<span class="vs">Result: defensible to the French authority by construction.</span></div></div>
+        <div class="acard b2"><span class="an">2</span><div class="at">The passport is a by-product, not a project</div><div class="av">The DPP and QR are composed from the same trail, no separate re-keying effort.<span class="vs">Result: ready when the obligation applies, not after.</span></div></div>
+        <div class="acard b3"><span class="an">3</span><div class="at">Checked once, true everywhere</div><div class="av">One validated value reaches all five channels and the passport.<span class="vs">Result: the silent break, closed end to end.</span></div></div>
+      </div>
+      <div class="demofoot"><span>One validated value, checked once, reaches five channels and the passport.</span><span class="pill">Screen 8 / 8</span></div>
+    </div>
+  </section>
+
+  <!-- ===== O1 · TAKE IT FORWARD ===== -->
+  <section class="slide" id="outro" data-label="Outro · Take it forward" data-type="ctx">
+    <div class="ctx">
+      <div class="eyebrow">What we would want to confirm with you</div>
+      <h1>Eight questions in flight. Each one moves a <span class="g">part</span> of what you just saw.</h1>
+      <div class="lead">The sticky notes were not decoration. They are the open assumptions. Where your answer differs, the artefact shifts.</div>
+      <div class="qgrid">
+        <div class="qcard"><div class="qn">BA1 · feed</div><div class="qq">Claims arrive free-text, one value for all channels?</div><div class="qa">If structured upstream, <b>the intake step shrinks</b>.</div></div>
+        <div class="qcard"><div class="qn">BA3 · registries</div><div class="qq">ACERMI, FSC, Keymark queryable live?</div><div class="qa">If a registry is not, that cert falls back to <b>tracked-evidence chase</b>.</div></div>
+        <div class="qcard"><div class="qn">BA5 · two desks</div><div class="qq">Compliance owns wording, Portfolio owns channel?</div><div class="qa">If one desk, <b>the print and online split collapses</b>.</div></div>
+        <div class="qcard"><div class="qn">BA6 · DPP</div><div class="qq">Is internal DPP ownership still open?</div><div class="qa">Whoever owns it is <b>the budget conversation</b>.</div></div>
+        <div class="qcard"><div class="qn">BA4 · PIM</div><div class="qq">Sit beside the PIM, not over it?</div><div class="qa">If they want replacement, <b>the whole framing changes</b>.</div></div>
+        <div class="qcard"><div class="qn">BA7 · UK</div><div class="qq">UK is export and marketplace only?</div><div class="qa">If a full market, it needs <b>its own validation regime</b>.</div></div>
+        <div class="qcard"><div class="qn">BA2 · sources</div><div class="qq">Rules indexable from official sources?</div><div class="qa">If a rule lives in someone's head, that is <b>a precondition</b>.</div></div>
+        <div class="qcard"><div class="qn">BA8 · audit</div><div class="qq">Audit trail part of the definition of success?</div><div class="qa">If out of scope, <b>the success metric is rewritten</b>.</div></div>
+      </div>
+      <div class="scopecard"><div class="k">What a proof of concept would prove</div><div class="d">A set of real SKUs <b>enriched and validated across FR, UK and PL</b>, with a <b>full signed audit trail</b>, and a <b>composed Digital Product Passport</b> for the hero SKU.</div></div>
+      <div class="attrib"><span class="lg">S</span><div class="who"><b>Safwai AI Solutions</b> &middot; ProductCopyOS &times; BuildMart &middot; annotated mockup, walked live<br>De-identified prospect, building-materials retail. Single fixture, real-looking, nothing fabricated beyond the stated assumptions.</div></div>
+      <div class="ctxfoot"><span>Validate the value, not the checkbox.</span><span class="pillg">Outro</span></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== GLOSSARY OVERLAY ===== -->
+<div class="glossover" id="glossover">
+  <div class="glosscard">
+    <button class="glossclose" id="glossClose" title="Close (Esc)">&times;</button>
+    <div class="ge">Glossary</div>
+    <h3>The terms on the glass</h3>
+    <div class="gsub">Every regulated or technical term used in this walk-through, in plain language.</div>
+    <div class="glossgrid">
+      <div class="gterm"><b>Silent break</b> A non-compliant supplier value clears the PIM's "is the field filled?" check and reaches the live site before anyone catches it. The pain this engine removes.</div>
+      <div class="gterm"><b>PIM</b> Product Information Management system (Akeneo-class here). Holds product data and checks completeness; it does not check whether a value is valid.</div>
+      <div class="gterm"><b>Per channel ready</b> An attribute that can carry a different value per channel. The opposite is one value shared across every channel, which is what the PIM does today.</div>
+      <div class="gterm"><b>DoP / DoPC / CE</b> Declaration of Performance (and, under the new CPR, Conformity) plus CE marking. The mandatory conformity basis; every performance claim must trace to it.</div>
+      <div class="gterm"><b>CPR and hEN</b> Construction Products Regulation (EU 305/2011, revised by 2024/3110) and its harmonised standards. The core jurisdictional rule set.</div>
+      <div class="gterm"><b>Euroclass</b> The EU fire-reaction classification (A1 to F). A regulated value that must match the DoP, never be claimed beyond it.</div>
+      <div class="gterm"><b>R-value and λ</b> Thermal resistance and thermal conductivity. The headline performance numbers for insulation.</div>
+      <div class="gterm"><b>REACH and SVHC</b> EU chemicals regime; Substances of Very High Concern statement. A required safety and passport data point.</div>
+      <div class="gterm"><b>CLP</b> EU classification, labelling and packaging of chemicals. Glass wool is not classified, so no hazard pictogram applies.</div>
+      <div class="gterm"><b>UKCA</b> The UK marking that diverges from CE post-Brexit. Modelled here as the export and marketplace edge case.</div>
+      <div class="gterm"><b>ACERMI</b> French insulation certification with a public register and an expiry cycle. The textbook "declared is not valid, check the register" case.</div>
+      <div class="gterm"><b>Keymark / NF / FSC</b> Voluntary certifications. Keymark and NF are EU and FR schemes; FSC applies if the panel is wood-fibre based.</div>
+      <div class="gterm"><b>ETIM</b> The technical product-classification standard. Mapping the supplier's free-text attributes onto ETIM makes each value checkable.</div>
+      <div class="gterm"><b>ESPR and DPP</b> Ecodesign for Sustainable Products Regulation and the Digital Product Passport. Construction is an early-mover with dated obligations.</div>
+      <div class="gterm"><b>ESL</b> In-store electronic shelf label. One of the five channels; character-capped, so it carries the verbatim spec.</div>
+      <div class="gterm"><b>Two desks</b> Compliance (Dr. Hartmann, regulated core wording) and Portfolio (Camille, channel expression). Each signs off only what they own.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var deck = document.getElementById('deck');
+  var slides = Array.prototype.slice.call(deck.querySelectorAll('.slide'));
+  var dotsWrap = document.getElementById('dots');
+  var cur = document.getElementById('cur');
+  var idx = 0;
+  document.getElementById('tot').textContent = slides.length;
+
+  slides.forEach(function(s, i){
+    var d = document.createElement('button');
+    d.className = 'dot' + (s.dataset.type === 'demo' ? ' demo' : '');
+    d.title = s.dataset.label || ('Slide ' + (i+1));
+    d.addEventListener('click', function(){ go(i); });
+    dotsWrap.appendChild(d);
+  });
+  var dots = Array.prototype.slice.call(dotsWrap.children);
+
+  function go(n){
+    idx = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function(s, i){ s.classList.toggle('active', i === idx); });
+    dots.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
+    cur.textContent = idx + 1;
+    deck.scrollTop = 0;
+    if (slides[idx].id){ history.replaceState(null, '', '#' + slides[idx].id); }
+  }
+
+  document.getElementById('prev').addEventListener('click', function(){ go(idx - 1); });
+  document.getElementById('next').addEventListener('click', function(){ go(idx + 1); });
+  document.addEventListener('keydown', function(e){
+    if (document.getElementById('glossover').classList.contains('open')){
+      if (e.key === 'Escape'){ closeGloss(); } return;
+    }
+    if (e.key === 'ArrowRight' || e.key === 'PageDown'){ go(idx + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp'){ go(idx - 1); }
+    else if (e.key === 'Home'){ go(0); }
+    else if (e.key === 'End'){ go(slides.length - 1); }
+  });
+
+  function bindToggle(id, cls){
+    var t = document.getElementById(id);
+    t.addEventListener('click', function(){
+      t.classList.toggle('on');
+      document.body.classList.toggle(cls, t.classList.contains('on'));
+    });
+  }
+  bindToggle('tg1', 'l1');
+  bindToggle('tg2', 'l2');
+  bindToggle('tg3', 'l3');
+
+  var glossover = document.getElementById('glossover');
+  function openGloss(){ glossover.classList.add('open'); }
+  function closeGloss(){ glossover.classList.remove('open'); }
+  document.getElementById('glossOpen').addEventListener('click', openGloss);
+  document.getElementById('glossClose').addEventListener('click', closeGloss);
+  glossover.addEventListener('click', function(e){ if (e.target === glossover){ closeGloss(); } });
+
+  function applyHash(){
+    var h = (location.hash || '').replace('#','');
+    if (!h) return;
+    var i = -1;
+    slides.forEach(function(s, j){ if (s.id === h) i = j; });
+    if (i >= 0) go(i);
+  }
+  window.addEventListener('hashchange', applyHash);
+
+  go(0);
+  applyHash();
+</script>
+</body>
+</html>

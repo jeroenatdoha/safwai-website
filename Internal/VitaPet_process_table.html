@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProductCopyOS &times; VitaPet &mdash; Full Process Table</title>
+<style>
+  :root{
+    --bg:#002D49; --panel:#0a1e2e; --panel-2:#0d2030; --panel-3:#103048;
+    --border:#1A4A5C; --border-soft:#143845;
+    --text:#F7F6F3; --text-2:#cfe3ea; --text-3:#9ac8d8; --text-4:#5d8597;
+    --gold:#D4AF37; --teal:#0E5C4D; --good:#4ec9a1; --info:#5ab9ff;
+    --sys:#5ab9ff; --human:#D4AF37;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Segoe UI', Inter, system-ui, sans-serif; font-size:13px; line-height:1.5;
+    padding:34px 30px 80px;
+  }
+  .wrap{max-width:1760px; margin:0 auto}
+
+  /* header */
+  .doc-head{border-bottom:1px solid var(--border); padding-bottom:18px; margin-bottom:8px}
+  .doc-eyebrow{font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--text-4)}
+  h1{font-size:24px; font-weight:600; letter-spacing:-.01em; margin:8px 0 6px}
+  .doc-sub{font-size:13px; color:var(--text-3); max-width:1040px; line-height:1.6}
+  .doc-meta{margin-top:12px; font-size:11px; color:var(--text-4); display:flex; gap:18px; flex-wrap:wrap}
+  .doc-meta b{color:var(--text-3); font-weight:600}
+
+  /* toolbar */
+  .toolbar{display:flex; gap:10px; flex-wrap:wrap; margin:18px 0 22px}
+  .btn{
+    background:var(--panel-2); border:1px solid var(--border); color:var(--text-2);
+    font-size:11.5px; font-family:inherit; padding:8px 14px; border-radius:6px; cursor:pointer;
+    letter-spacing:.02em; transition:all .15s; text-decoration:none; display:inline-block;
+  }
+  .btn:hover{border-color:var(--gold); color:var(--text)}
+  .btn.primary{background:var(--gold); color:#06121b; border-color:var(--gold); font-weight:600}
+  .btn.primary:hover{filter:brightness(1.08)}
+
+  /* glossary */
+  .glossary{background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:16px 20px; margin-bottom:20px}
+  .glossary h2{font-size:13px; font-weight:600; margin-bottom:11px; color:var(--text); letter-spacing:.02em}
+  .gloss-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:9px 32px}
+  .gloss-item{font-size:11.5px; color:var(--text-2); line-height:1.5}
+  .gloss-item b{color:var(--gold)}
+  @media(max-width:900px){.gloss-grid{grid-template-columns:1fr}}
+
+  /* legend */
+  .legend{display:flex; gap:22px; flex-wrap:wrap; margin-bottom:18px; font-size:11px; color:var(--text-3)}
+  .lg{display:inline-flex; align-items:center; gap:7px}
+  .swatch{width:11px; height:11px; border-radius:3px}
+  .sw-sys{background:var(--sys)} .sw-human{background:var(--human)}
+  .tag{display:inline-block; font-size:9.5px; letter-spacing:.08em; text-transform:uppercase;
+       padding:2px 7px; border-radius:4px; font-weight:700}
+  .tag-sys{background:rgba(90,185,255,.14); color:var(--sys); border:1px solid rgba(90,185,255,.35)}
+  .tag-human{background:rgba(212,175,55,.14); color:var(--gold); border:1px solid rgba(212,175,55,.4)}
+
+  /* table */
+  .tbl-scroll{overflow-x:auto; border:1px solid var(--border); border-radius:10px}
+  table{border-collapse:collapse; width:100%; min-width:1680px}
+  thead th{
+    background:var(--panel-3); color:var(--text-2); text-align:left;
+    font-size:10px; letter-spacing:.1em; text-transform:uppercase; font-weight:700;
+    padding:11px 12px; border-bottom:2px solid var(--border); position:sticky; top:0; z-index:5;
+    vertical-align:bottom;
+  }
+  thead th.plain-h{color:var(--good)}
+  tbody td{padding:11px 12px; border-bottom:1px solid var(--border-soft); vertical-align:top; font-size:12px}
+  tbody tr:hover td{background:rgba(255,255,255,.025)}
+
+  /* phase band rows */
+  tr.phase td{
+    background:linear-gradient(90deg, var(--teal), transparent 80%);
+    border-top:1px solid var(--gold); border-bottom:1px solid var(--border);
+    padding:9px 12px;
+  }
+  tr.phase .ph-name{font-size:12px; font-weight:700; letter-spacing:.06em; color:var(--text); text-transform:uppercase}
+  tr.phase .ph-note{font-size:10.5px; color:var(--text-3); font-style:italic; margin-left:10px; font-weight:400; text-transform:none; letter-spacing:0}
+
+  .id{font-family:'Consolas',monospace; font-size:11px; color:var(--gold); font-weight:600; white-space:nowrap}
+  .step{font-weight:600; color:var(--text); font-size:12px}
+  .step .eq{display:block; font-size:10px; color:var(--good); font-weight:600; margin-top:3px; letter-spacing:.03em}
+  .plain{color:var(--text-2); font-size:11.5px; line-height:1.6; background:rgba(78,201,161,.045)}
+  .plain .pend{color:var(--gold); font-style:italic}
+  .obj{color:var(--text-3); font-size:11.5px}
+  .what{color:var(--text-2); font-size:11.5px; line-height:1.5}
+  .out{color:var(--text-2); font-size:11.5px}
+  .in{color:var(--text-3); font-size:11.5px}
+  .pat{font-family:'Consolas',monospace; font-size:10.5px; color:var(--text-2); line-height:1.6}
+  .pat b{color:var(--gold); font-weight:600}
+  .pat .new{font-family:'Segoe UI',sans-serif; font-size:8px; letter-spacing:.06em; text-transform:uppercase;
+            color:var(--good); border:1px solid rgba(78,201,161,.4); border-radius:3px; padding:1px 4px; margin-left:3px}
+  .why{color:var(--text-3); font-size:11px; line-height:1.5}
+  .src{font-size:10px; color:var(--text-4); font-family:'Consolas',monospace; white-space:nowrap; line-height:1.6}
+  .src .c{color:var(--good)} .src .o{color:var(--info)} .src .pl{color:var(--text-3)} .src .q{color:var(--gold); font-weight:700}
+  .loop{color:var(--gold); font-weight:600}
+  td.actor{white-space:nowrap}
+
+  /* loops summary */
+  .loops{margin-top:30px; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:20px 24px}
+  .loops h2{font-size:14px; font-weight:600; margin-bottom:4px}
+  .loops .sub{font-size:11.5px; color:var(--text-3); margin-bottom:14px}
+  .loop-row{display:grid; grid-template-columns:230px 1fr; gap:14px; padding:9px 0; border-bottom:1px solid var(--border-soft); font-size:12px}
+  .loop-row:last-child{border-bottom:none}
+  .loop-row .ln{color:var(--gold); font-weight:600}
+  .loop-row .lp{font-family:'Consolas',monospace; font-size:10.5px; color:var(--text-3); display:block; margin-top:3px}
+  .loop-row .ld{color:var(--text-2)}
+
+  .foot{margin-top:26px; font-size:10.5px; color:var(--text-4); line-height:1.7; border-top:1px solid var(--border-soft); padding-top:14px}
+  .foot b{color:var(--text-3)}
+  .foot .q{color:var(--gold); font-weight:700}
+
+  /* decision inventory */
+  .decisions{margin-top:38px}
+  .sec-h{font-size:17px; font-weight:600; letter-spacing:-.01em; margin-bottom:5px}
+  .sec-sub{font-size:12px; color:var(--text-3); margin-bottom:16px; max-width:920px; line-height:1.6}
+  table.dec{min-width:1080px}
+  table.dec td{font-size:11.5px; vertical-align:top}
+  .dec .d-decision{color:var(--text); font-weight:600; font-size:12px}
+  .dec .d-decision small{display:block; color:var(--text-3); font-weight:400; font-size:11px; margin-top:5px; line-height:1.5}
+  .dec .d-rat{color:var(--text-2); line-height:1.5}
+  .dec .d-impl{color:var(--text-2); line-height:1.5}
+  .dec .d-impl b{color:var(--gold); font-weight:600}
+
+  .xnav{margin-bottom:18px; font-size:11px; color:var(--text-4)}
+  .xnav a{color:var(--text-3); text-decoration:none; border-bottom:1px dotted var(--border)}
+  .xnav a:hover{color:var(--gold)}
+
+  @media print{
+    body{background:#fff; color:#111; padding:0}
+    .toolbar{display:none}
+    .tbl-scroll{border:1px solid #999}
+    table{min-width:0; font-size:9px}
+    thead th{background:#eee; color:#111}
+    thead th.plain-h{color:#0a6b4e}
+    tr.phase td{background:#dde9ec}
+    tr.phase .ph-name{color:#111}
+    .step,.out,.what{color:#111} .obj,.why,.in,.src{color:#444}
+    .plain{color:#111; background:#f0f8f5}
+    .id,.pat b,.loop{color:#a8830a}
+    .glossary{border:1px solid #bbb} .glossary h2{color:#111} .gloss-item{color:#333} .gloss-item b{color:#a8830a}
+    .sec-h{color:#111} .sec-sub{color:#444}
+    .dec .d-decision{color:#111} .dec .d-decision small{color:#444}
+    .dec .d-rat,.dec .d-impl{color:#111} .dec .d-impl b{color:#a8830a}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="doc-head">
+    <div class="doc-eyebrow">Safwai &middot; ProductCopyOS &middot; VitaPet prospect (pet nutrition &mdash; retail + veterinary &mdash; de-identified)</div>
+    <h1>Full Process Table &mdash; from the internal claims spreadsheet to a validated, audited product passport</h1>
+    <div class="doc-sub">
+      The claim-parity variant. VitaPet ingests <b>no supplier feed</b> &mdash; product data originates <i>internally</i> in a claims spreadsheet,
+      and the engine feeds validated claims <b>back into the product passport (the PLM layer where claims originate)</b>. Its headline pain is
+      <b>translation</b>: claims, legal text and rationing are re-keyed by hand across FR / DE / US and drift between the packaging tool and the PIM.
+      So the spine foregrounds a <b>claim-parity lock</b> (regulated wording identical-in-substance across languages), the <b>nutrition-vs-medicinal</b>
+      boundary, and <b>live MSC validation</b> for marine claims. One SKU family carries two audiences: a veterinary renal diet and a breed-specific retail line.
+    </div>
+    <div class="doc-meta">
+      <span><b>Sources:</b> Yassine input 18 Jun 2026 [YI] &middot; VitaPet Tone-of-Voice one-pager [TOV] &middot; Pattern Library Master [PL] &middot; verified regulation [REG] &middot; our design [O]</span>
+      <span><b>Hero SKU:</b> veterinary renal diet (dog) + breed-specific retail line &middot; <b>Jurisdictions:</b> FR / DE / US (EU PARNUTs vs US AAFCO)</span>
+    </div>
+  </div>
+
+  <div class="xnav">Related: <a href="../_product/index.html">&larr; All process tables</a> &middot; <a href="../buildmart/BuildMart_process_table.html">BuildMart (building materials) &rarr;</a> &middot; <a href="../compass/Compass_process_table.html">Compass (catering)</a></div>
+
+  <div class="toolbar">
+    <button class="btn primary" onclick="window.print()">Download / Print (PDF)</button>
+    <button class="btn" onclick="downloadCSV()">Process CSV</button>
+    <button class="btn" onclick="downloadDecisionsCSV()">Decisions CSV</button>
+    <a class="btn" href="#decision-inventory">Design decisions &darr;</a>
+  </div>
+
+  <div class="glossary">
+    <h2>Key terms</h2>
+    <div class="gloss-grid">
+      <div class="gloss-item"><b>Claims spreadsheet</b> &mdash; the internal source-of-truth Excel where product claims originate (SKU, claim territory, claim text, analytical constituents, rationing, legal text). There is <i>no</i> supplier feed.</div>
+      <div class="gloss-item"><b>Product passport (PLM)</b> &mdash; the master / local product record that acts as the PLM layer where claims live. The engine feeds validated claims back into it &mdash; the architecture money-point.</div>
+      <div class="gloss-item"><b>Claim parity</b> &mdash; the same regulated claim must mean exactly the same thing in FR, DE and US; terminology is fixed, never creatively varied. Translation must not drift the claim.</div>
+      <div class="gloss-item"><b>Nutrition-vs-medicinal line</b> &mdash; the hard boundary: a feed may support function, never diagnose, treat or cure. The guardrail every vet claim is held against.</div>
+      <div class="gloss-item"><b>PARNUTs</b> &mdash; &ldquo;particular nutritional purposes&rdquo; &mdash; the EU intended-use wording for veterinary diets (Reg. 2020/354). The EU side of the FR/DE cards.</div>
+      <div class="gloss-item"><b>FEDIAF / 767/2009</b> &mdash; the EU pet-food nutritional &amp; labelling code and feed-labelling regulation. The core EU rule set; 1831/2003 governs additives.</div>
+      <div class="gloss-item"><b>AAFCO / FDA-CVM</b> &mdash; US model regulations, nutrient profiles and state feed control. The US card&rsquo;s regime &mdash; a real contrast with EU PARNUTs.</div>
+      <div class="gloss-item"><b>Analytical constituents</b> &mdash; the declared nutritional values (protein, phosphorus, etc.). Precise terms that must translate identically and pair with each benefit.</div>
+      <div class="gloss-item"><b>MSC</b> &mdash; Marine Stewardship Council certification for fish-based sourcing claims. Public API with an expiry cycle &mdash; the live-validation demo here.</div>
+      <div class="gloss-item"><b>Self-substantiation</b> &mdash; where a claim is not explicitly listed in the framework, the brand backs it with its own internal studies. The engine surfaces unsubstantiated claims for review, never generates around them.</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span class="lg"><span class="swatch sw-sys"></span> <span class="tag tag-sys">System</span> &nbsp;AI / automated</span>
+    <span class="lg"><span class="swatch sw-human"></span> <span class="tag tag-human">Human</span> &nbsp;named role accountable</span>
+    <span class="lg"><span class="src"><span class="pl">[PL Pxx]</span></span> &nbsp;pattern library</span>
+    <span class="lg"><span class="src"><span class="c">[YI] / [TOV]</span></span> &nbsp;prospect input</span>
+    <span class="lg"><span class="src"><span class="o">[O]</span></span> &nbsp;our design</span>
+    <span class="lg"><span class="src"><span class="pl">[REG]</span></span> &nbsp;verified regulation</span>
+    <span class="lg"><span class="loop">&#8635; loop</span> &nbsp;iteration point</span>
+  </div>
+
+  <div class="tbl-scroll">
+  <table id="proc">
+    <thead>
+      <tr>
+        <th style="width:38px">#</th>
+        <th style="width:132px">Step</th>
+        <th style="width:360px" class="plain-h">In plain English</th>
+        <th style="width:120px">Objective</th>
+        <th style="width:104px">Actor</th>
+        <th style="width:150px">In &mdash; info / decision</th>
+        <th style="width:200px">What happens</th>
+        <th style="width:150px">Output</th>
+        <th style="width:150px">Pattern</th>
+        <th style="width:175px">Why this pattern</th>
+        <th style="width:118px">Source</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr class="phase"><td colspan="11"><span class="ph-name">S &middot; Setup &mdash; rule sources &amp; spine</span><span class="ph-note">once per brand / jurisdiction set, not per SKU</span></td></tr>
+
+      <tr>
+        <td class="id">S1</td>
+        <td class="step">Index rule sources</td>
+        <td class="plain">Before it can check anything, the system reads every rulebook that touches a vet diet &mdash; EU feed labelling, additives, the FEDIAF code, the vet-diet intended-use list, the US AAFCO and FDA rules, the brand&rsquo;s own studies &mdash; and turns each clause into one citable rule.</td>
+        <td class="obj">Build the citable rule corpus everything reads against</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">767/2009; 1831/2003; FEDIAF; PARNUTs / 2020/354; US FDA-CVM + AAFCO; self-substantiation studies; VitaPet TOV</td>
+        <td class="what">Ingest + index all corpora; make each clause independently citable</td>
+        <td class="out">Indexed, citable rule set</td>
+        <td class="pat"><b>P01</b> Spine<br><b>P12</b> Rule-store<br><b>P16</b> Schema</td>
+        <td class="why">One indexed source read by generation, translation parity and validation alike</td>
+        <td class="src"><span class="pl">[PL P01/P12/P16]</span> &middot; <span class="c">[YI A.4]</span> &middot; <span class="pl">[REG]</span></td>
+      </tr>
+      <tr>
+        <td class="id">S2</td>
+        <td class="step">Maintain &amp; publish rules</td>
+        <td class="plain">A regulatory expert keeps the rulebook current &mdash; checking PARNUTs and AAFCO updates and in-force dates &mdash; and publishes the dated version everything cites. A named human owns the rules.</td>
+        <td class="obj">Keep a named human accountable for the rule set</td>
+        <td class="actor"><span class="tag tag-human">Human</span><br>Regulatory &amp; Compliance Lead</td>
+        <td class="in">Indexed rule set</td>
+        <td class="what">Confirm / override / cite; publish versioned store</td>
+        <td class="out">Published rule corpus</td>
+        <td class="pat"><b>P12</b> Rule-store<br><b>P15</b> Confirmation</td>
+        <td class="why">EU and US regimes both evolve; a named regulatory human owns the rule set</td>
+        <td class="src"><span class="pl">[PL P12/P15]</span> &middot; <span class="c">[YI B.1]</span></td>
+      </tr>
+
+      <tr class="phase"><td colspan="11"><span class="ph-name">A &middot; Intake &amp; Extract</span><span class="ph-note">per SKU &mdash; internal origin, no supplier feed</span></td></tr>
+
+      <tr>
+        <td class="id">A1</td>
+        <td class="step">Open claims spreadsheet</td>
+        <td class="plain">There is no supplier sending data here. The product&rsquo;s claims originate inside the company, in an Excel claims spreadsheet &mdash; the SKU, the claim territory, the claim text, the analytical constituents, the rationing values and the legal text. That is today&rsquo;s source of truth.</td>
+        <td class="obj">Get the internal source-of-truth claims in</td>
+        <td class="actor"><span class="tag tag-human">Human</span><br>Claims / Regulatory owner</td>
+        <td class="in">Internal Excel row: SKU | Claim territory | Claim text (EN) | Analytical constituents | Feeding/rationing | Legal text</td>
+        <td class="what">Provides the claims spreadsheet; no external supplier involved</td>
+        <td class="out">Received claims row</td>
+        <td class="pat"><b>P02</b> Multi-source ingestion</td>
+        <td class="why">Claims originate upstream internally; the input is held by an internal human, not a supplier</td>
+        <td class="src"><span class="pl">[PL P02]</span> &middot; <span class="c">[YI A.6/A.8]</span></td>
+      </tr>
+      <tr>
+        <td class="id">A2</td>
+        <td class="step">Ingest &amp; normalise</td>
+        <td class="plain">The system reads that spreadsheet row into clean, standard records, keeping a link back to the exact source cell for every claim and value, and tagging which territory each line is for.</td>
+        <td class="obj">Make the claims spreadsheet machine-usable</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Claims row</td>
+        <td class="what">Parse, normalise, keep cell-reference trace; territory-tag</td>
+        <td class="out">Normalised claim records</td>
+        <td class="pat"><b>P02</b> Multi-source ingestion</td>
+        <td class="why">The spreadsheet is unstructured today; it must be normalised before any rule can run</td>
+        <td class="src"><span class="pl">[PL P02]</span> &middot; <span class="c">[YI A.6]</span></td>
+      </tr>
+      <tr>
+        <td class="id">A3</td>
+        <td class="step">Extract &amp; route claims</td>
+        <td class="plain">It separates the claim text, the constituents and the legal text, and sends each to the rule that governs it &mdash; a therapeutic-sounding phrase to the medicinal boundary, a marine ingredient to the MSC check, a nutrient to the feed code.</td>
+        <td class="obj">Structure claims; pre-route them to their rules</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Normalised claim records</td>
+        <td class="what">Split claim / constituents / legal text; route (therapeutic&rarr;medicinal line, marine&rarr;MSC, nutrient&rarr;FEDIAF/AAFCO)</td>
+        <td class="out">Structured, routed claims</td>
+        <td class="pat"><b>P02</b> + <b>P16</b></td>
+        <td class="why">Claims must be explicit and bound to rules before validation or translation</td>
+        <td class="src"><span class="pl">[PL P02/P16]</span> &middot; <span class="c">[YI A.4/A.6]</span></td>
+      </tr>
+
+      <tr class="phase"><td colspan="11"><span class="ph-name">B &middot; Enrich, Translate &amp; Validate</span><span class="ph-note">advisory &mdash; P14 sandbox regime</span></td></tr>
+
+      <tr>
+        <td class="id">B1</td>
+        <td class="step">Enrich to brand voice</td>
+        <td class="plain">It drafts the copy in VitaPet&rsquo;s science-led, vet-credible voice &mdash; benefit paired with its nutritional reason, no anthropomorphism, the nutrition-vs-medicinal line respected &mdash; in two registers: technical for the vet line, accessible for the breed-retail line.</td>
+        <td class="obj">Produce brand-compliant draft copy, per audience</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Structured claims; VitaPet TOV</td>
+        <td class="what">Generate draft copy in brand voice; vet register vs retail register</td>
+        <td class="out">Draft brand copy (per audience)</td>
+        <td class="pat"><b>P14</b>&middot;sandbox over <b>P26</b><span class="new">new</span></td>
+        <td class="why">Runs as a private sandbox draft; one SKU family carries two distinct audiences</td>
+        <td class="src"><span class="pl">[PL P14/P26]</span> &middot; <span class="c">[TOV]</span> &middot; <span class="c">[YI A.1/A.2]</span></td>
+      </tr>
+      <tr>
+        <td class="id">B2</td>
+        <td class="step">Generate variants<span class="eq">audience &times; jurisdiction</span></td>
+        <td class="plain">From the draft it produces every version at once: the veterinary renal diet and the breed-specific retail line, each for FR, DE and US. Vet copy carries &ldquo;to be used under veterinary supervision&rdquo;; the US version follows AAFCO, the EU versions follow PARNUTs.</td>
+        <td class="obj">Produce variant-ready copy per audience &amp; market</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Draft copy; audience + jurisdiction rules</td>
+        <td class="what">Render {vet, breed-retail} &times; {FR, DE, US}; vet = supervision wording; EU PARNUTs vs US AAFCO</td>
+        <td class="out">Per-audience, per-market variants</td>
+        <td class="pat"><b>P26</b><span class="new">new</span> multi-variant generation</td>
+        <td class="why">EU &ldquo;particular nutritional purposes&rdquo; vs US AAFCO nutrient profiles is the core contrast</td>
+        <td class="src"><span class="pl">[PL P26]</span> &middot; <span class="c">[YI A.1/A.2/A.3]</span></td>
+      </tr>
+      <tr style="background:rgba(90,185,255,.06)">
+        <td class="id">B3</td>
+        <td class="step">Translate with claim-parity lock<span class="eq">= the headline: kill the re-keying</span></td>
+        <td class="plain">This is the pain it removes. The regulated wording &mdash; claims, legal text, rationing &mdash; is locked to mean exactly the same thing in FR, DE and US; the same nutritional term always translates the same way, and any drift is flagged. No more hand re-keying claims across languages and systems.</td>
+        <td class="obj">Keep every regulated claim identical-in-substance across markets</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Variants; fixed terminology; published rule corpus</td>
+        <td class="what">Lock regulated wording across FR/DE/US; fixed terminology; flag any parity drift</td>
+        <td class="out">Parity-locked multilingual copy</td>
+        <td class="pat"><b>P26</b>&middot;parity-lock<br><b>P22</b> x-lang consistency</td>
+        <td class="why">Translation is the #1 time sink and the desync root cause; parity is the wedge</td>
+        <td class="src"><span class="pl">[PL P12]</span> &middot; <span class="c">[YI B.4/B.5]</span> &middot; <span class="c">[TOV]</span></td>
+      </tr>
+      <tr>
+        <td class="id">B4</td>
+        <td class="step">Validate against feed / claim rules</td>
+        <td class="plain">It checks each claim against the feed and vet-diet rules in every market, holds the nutrition-vs-medicinal line, and &mdash; crucially &mdash; surfaces any claim that lacks substantiation for a human, rather than quietly writing around it.</td>
+        <td class="obj">Validate claims; hold the medicinal boundary</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Parity-locked copy; published rule corpus</td>
+        <td class="what">Match 767/2009 + FEDIAF + PARNUTs + 2020/354 + (US) FDA/AAFCO; flag unsubstantiated for review</td>
+        <td class="out">Validated / flagged claims + citations</td>
+        <td class="pat"><b>P12</b> + <b>P16</b></td>
+        <td class="why">Therapeutic-adjacent claims are the highest-load risk; unsubstantiated claims must surface, not hide</td>
+        <td class="src"><span class="pl">[PL P12/P16]</span> &middot; <span class="c">[YI A.4]</span> &middot; <span class="c">[TOV]</span></td>
+      </tr>
+      <tr>
+        <td class="id">B5</td>
+        <td class="step">Validate certificates live</td>
+        <td class="plain">For marine-ingredient claims it checks the MSC certificate against the public register in real time &mdash; because it expires on a cycle and a declared status isn&rsquo;t proof &mdash; plus manufacturing (ISO 22000) and any market ecolabels.</td>
+        <td class="obj">Block expired / unproven sourcing claims</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Declared certs; MSC public API; ecolabels</td>
+        <td class="what">Live MSC registry lookup; expiry-aware; check FSSC/ISO 22000, ecolabels; flag</td>
+        <td class="out">Validated / flagged certs</td>
+        <td class="pat"><b>P27</b><span class="new">new</span> Live registry<br><b>P16</b> Required-evidence</td>
+        <td class="why">MSC has a public API and an expiry cycle &mdash; the live-validation case for marine claims</td>
+        <td class="src"><span class="pl">[PL P16]</span> &middot; <span class="c">[YI A.7]</span></td>
+      </tr>
+      <tr>
+        <td class="id">B6</td>
+        <td class="step">Score confidence &amp; gate</td>
+        <td class="plain">It grades how confident it is, routes anything therapeutic-adjacent or unsubstantiated to the regulatory desk, sends everything to the brand desk, and lets clean items flow &mdash; so people focus where it matters.</td>
+        <td class="obj">Decide what each desk must see</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Validated copy; cert results; parity flags</td>
+        <td class="what">Confidence vs threshold; therapeutic / unsubstantiated &rarr; Regulatory; all &rarr; Brand</td>
+        <td class="out">Scored, gated variants</td>
+        <td class="pat"><b>P16</b> + <b>P15</b></td>
+        <td class="why">Claim sensitivity makes the regulatory desk the primary gate; confidence routes the rest</td>
+        <td class="src"><span class="pl">[PL P16/P15]</span> &middot; <span class="c">[YI B.1/A.4]</span></td>
+      </tr>
+
+      <tr class="phase"><td colspan="11"><span class="ph-name">C &middot; Substantiate &amp; Resolve</span><span class="ph-note">governed &mdash; owned via the cockpit</span></td></tr>
+
+      <tr>
+        <td class="id">C1</td>
+        <td class="step">Open substantiation request <span class="loop">&#8635;</span></td>
+        <td class="plain">When a claim lacks evidence or a translation has drifted from parity, it opens a tracked request, holds that variant, and chases &mdash; a workflow object, not a lost email.</td>
+        <td class="obj">Get evidence or fix the drift, on the record</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Unsubstantiated claim / parity drift</td>
+        <td class="what">Open P21 request; draft the ask; track SLA; hold the variant</td>
+        <td class="out">Outstanding request; held variant</td>
+        <td class="pat"><b>P21</b> Clarification<br><b>P20</b> Cockpit</td>
+        <td class="why">Self-substantiated claims need an evidence object; the chase gets a lifecycle</td>
+        <td class="src"><span class="pl">[PL P21/P20]</span> &middot; <span class="c">[YI A.4]</span></td>
+      </tr>
+      <tr>
+        <td class="id">C2</td>
+        <td class="step">Supply evidence / studies <span class="loop">&#8635;</span></td>
+        <td class="plain">Regulatory &amp; scientific affairs supplies the internal study, composition evidence or corrected legal text, and the variant picks up where it left off.</td>
+        <td class="obj">Close the evidence / parity gap</td>
+        <td class="actor"><span class="tag tag-human">Human</span><br>Regulatory &amp; Scientific Affairs</td>
+        <td class="in">Substantiation request</td>
+        <td class="what">Supplies study / composition note / corrected wording; item re-enters validation</td>
+        <td class="out">Evidentiary citation</td>
+        <td class="pat"><b>P21</b> Clarification</td>
+        <td class="why">The evidence is held by an internal expert; AI can request but not manufacture it</td>
+        <td class="src"><span class="pl">[PL P21]</span> &middot; <span class="c">[YI A.4/B.1]</span></td>
+      </tr>
+      <tr>
+        <td class="id">C3</td>
+        <td class="step">Re-validate <span class="loop">&#8635;</span></td>
+        <td class="plain">With the evidence attached or the wording corrected, it re-runs the claim, parity and certificate checks.</td>
+        <td class="obj">Clear the blocker</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Variant + new evidence / corrected wording</td>
+        <td class="what">Re-run B3 / B4 / B5 on the updated variant</td>
+        <td class="out">Re-validated variant</td>
+        <td class="pat"><b>P12</b> + <b>P22</b></td>
+        <td class="why">A material change triggers re-evaluation inside the governed track</td>
+        <td class="src"><span class="o">[O]</span></td>
+      </tr>
+
+      <tr class="phase"><td colspan="11"><span class="ph-name">D &middot; Review &amp; Sign-off</span><span class="ph-note">governed &mdash; two desks, regulatory-led; P14 flips to committing</span></td></tr>
+
+      <tr>
+        <td class="id">D1</td>
+        <td class="step">Regulatory / compliance review <span class="loop">&#8635;</span></td>
+        <td class="plain">The regulatory lead reviews the core claim wording, the legal text and the nutrition-vs-medicinal line across markets, and confirms, edits or queries. On claim-sensitive vet copy this is the primary gate &mdash; the human owns what is legally true.</td>
+        <td class="obj">Gate on claim validity &amp; the medicinal line</td>
+        <td class="actor"><span class="tag tag-human">Human</span><br>Sr. Regulatory &amp; Compliance Lead<br>(US + Global Data, EU)</td>
+        <td class="in">Flagged variants; citations; evidence</td>
+        <td class="what">Confirm / override / query core wording across FR/DE/US; capture markup</td>
+        <td class="out">Regulatory decision + note</td>
+        <td class="pat"><b>P19</b> + <b>P15</b> + <b>P23</b></td>
+        <td class="why">Legal/regulatory validates the core wording; claim sensitivity makes this the lead desk</td>
+        <td class="src"><span class="pl">[PL P19/P15/P23]</span> &middot; <span class="c">[YI B.1]</span></td>
+      </tr>
+      <tr>
+        <td class="id">D2</td>
+        <td class="step">Brand / portfolio sign-off <span class="loop">&#8635;</span></td>
+        <td class="plain">The brand / portfolio owner signs off the online and on-pack expression. This is the binding decision; nothing publishes until both desks agree.</td>
+        <td class="obj">Binding gate before publish</td>
+        <td class="actor"><span class="tag tag-human">Human</span><br>Pet-Owner Experience / Portfolio / Digital</td>
+        <td class="in">Regulatorily-cleared variants</td>
+        <td class="what">Approve / amend / reject the expression</td>
+        <td class="out">Brand decision</td>
+        <td class="pat"><b>P19</b> + <b>P15</b></td>
+        <td class="why">Marketing/digital owns the expression; binding approval is a human decision</td>
+        <td class="src"><span class="pl">[PL P19/P15]</span> &middot; <span class="c">[YI B.1]</span></td>
+      </tr>
+
+      <tr class="phase"><td colspan="11"><span class="ph-name">E &middot; Publish &amp; Sync</span><span class="ph-note">governed &mdash; committing</span></td></tr>
+
+      <tr>
+        <td class="id">E1</td>
+        <td class="step">Render final variants</td>
+        <td class="plain">Once approved, it produces the finished copy for every audience and market &mdash; on-pack legal text and online &mdash; for the vet and retail lines across FR, DE and US.</td>
+        <td class="obj">Output publish-ready variants</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Approved variants</td>
+        <td class="what">Render {vet, retail} &times; {FR, DE, US}; print packaging + online</td>
+        <td class="out">Final variants</td>
+        <td class="pat"><b>P01</b> Spine + <b>P26</b><span class="new">new</span></td>
+        <td class="why">Assembly off the spine; generation now in governed mode</td>
+        <td class="src"><span class="pl">[PL P01/P26]</span> &middot; <span class="c">[YI A.9]</span></td>
+      </tr>
+      <tr style="background:rgba(212,175,55,.06)">
+        <td class="id">E2</td>
+        <td class="step">Push back to PIM + product passport<span class="eq">= the &ldquo;feeds a PLM&rdquo; thesis</span></td>
+        <td class="plain">It writes the validated claims, legal text and an audit hash back into the PIM &mdash; and, crucially, feeds them back into the product passport (the PLM layer) where claims originate. That closes the packaging-tool-to-PIM desync that forced the hand re-keying.</td>
+        <td class="obj">Close the desync; update PIM and the passport at once</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Final variants; audit hash</td>
+        <td class="what">Push-back to PIM <b>and feed validated claims into the product passport (PLM)</b></td>
+        <td class="out">Updated PIM + product passport</td>
+        <td class="pat"><b>P10</b> + <b>P17</b></td>
+        <td class="why">Claims originate in the passport; feeding validated claims back upstream is the money-point</td>
+        <td class="src"><span class="pl">[PL P10/P17]</span> &middot; <span class="c">[YI A.8]</span></td>
+      </tr>
+      <tr>
+        <td class="id">E3</td>
+        <td class="step">Feed channels</td>
+        <td class="plain">The approved, validated copy flows on to every channel at once &mdash; retailer and marketplace feeds, pure-players, D2C, B2B, the .com site, the internal digital service layer and print packaging &mdash; across Europe, North America and beyond.</td>
+        <td class="obj">One validated claim to every channel and region</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Updated records</td>
+        <td class="what">Emit to retailer, marketplace, pure-player, D2C, B2B, .com, internal layer, print</td>
+        <td class="out">Downstream-ready copy</td>
+        <td class="pat"><b>P10</b> Continuous evidence</td>
+        <td class="why">Many channels and regions consume the same claim; it must be validated once, centrally</td>
+        <td class="src"><span class="pl">[PL P10]</span> &middot; <span class="c">[YI A.9]</span></td>
+      </tr>
+
+      <tr class="phase"><td colspan="11"><span class="ph-name">F &middot; Audit &amp; Passport</span><span class="ph-note">continuous A&ndash;E + on demand</span></td></tr>
+
+      <tr>
+        <td class="id">F1</td>
+        <td class="step">Record signed events</td>
+        <td class="plain">Throughout, every claim, translation, rule applied and decision made &mdash; and who made it &mdash; is logged in a tamper-proof, signed trail.</td>
+        <td class="obj">Audit trail that survives staff absence</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">All step events; overrides</td>
+        <td class="what">Append immutable, signed event to the chain</td>
+        <td class="out">Immutable audit trail</td>
+        <td class="pat"><b>P10</b> + <b>P15</b></td>
+        <td class="why">Success is defined as &ldquo;validated FR/DE/US with an audit trail&rdquo;, cutting the manual copy/paste</td>
+        <td class="src"><span class="pl">[PL P10/P15]</span> &middot; <span class="c">[YI B.10]</span></td>
+      </tr>
+      <tr>
+        <td class="id">F2</td>
+        <td class="step">Export audit pack</td>
+        <td class="plain">On demand it assembles a signed export &mdash; JSON / CSV / PDF &mdash; with every claim linked back to its rule and its substantiation evidence.</td>
+        <td class="obj">Compliance-grade evidence on demand</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Audit trail</td>
+        <td class="what">Assemble pack; sign with audit-id + reviewer hash; back-link claims to evidence</td>
+        <td class="out">Signed audit pack</td>
+        <td class="pat"><b>P17</b> Decision pack</td>
+        <td class="why">Inaccurate claim data live risks withdrawal and brand-trust damage on therapeutic claims</td>
+        <td class="src"><span class="pl">[PL P17]</span> &middot; <span class="c">[YI B.6/B.10]</span></td>
+      </tr>
+      <tr>
+        <td class="id">F3</td>
+        <td class="step">Compose DPP / QR payload <span class="loop">?</span></td>
+        <td class="plain">On demand it can assemble a passport / QR payload from the audit trail, each claim back-linked to rule and evidence. <span class="pend">Framed as &ldquo;coming&rdquo;, not a deadline: pet food isn&rsquo;t an ESPR front-runner, but sustainability commitments and MSC / marine claims create the adjacency.</span></td>
+        <td class="obj">Passport-ready payload (forward capability)</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Immutable audit trail</td>
+        <td class="what">Assemble DPP / QR payload; back-link each claim to rule + evidence</td>
+        <td class="out">Signed DPP / QR payload</td>
+        <td class="pat"><b>P17</b> Decision pack</td>
+        <td class="why">The audit trail is the passport substrate; DPP is adjacency here, not a deadline buy</td>
+        <td class="src"><span class="pl">[PL P17]</span> &middot; <span class="c">[YI B.7]</span> &middot; <span class="pl">[REG]</span></td>
+      </tr>
+
+    </tbody>
+  </table>
+  </div>
+
+  <div class="loops">
+    <h2>The iteration loops</h2>
+    <div class="sub">Where the process cycles back. Each loop is a real workflow object (P21), not an email thread &mdash; held in the system until resolved.</div>
+    <div class="loop-row">
+      <div><span class="ln">1 &middot; Substantiation loop</span><span class="lp">C1 / C2 / C3 &harr; B4</span></div>
+      <div class="ld">An unsubstantiated claim is <b>held</b> until internal evidence / a study arrives, then re-validates automatically. Surfaced for review, never generated around.</div>
+    </div>
+    <div class="loop-row">
+      <div><span class="ln">2 &middot; Parity drift</span><span class="lp">B3 &rarr; C1 &middot; D1 &rarr; B3</span></div>
+      <div class="ld">A translation that drifts from the locked claim re-enters the parity check and re-validates; a regulatory amend re-runs parity with the new citation. This is the loop that kills the re-keying.</div>
+    </div>
+    <div class="loop-row">
+      <div><span class="ln">3 &middot; Brand reject</span><span class="lp">D2 &rarr; B1 / B2</span></div>
+      <div class="ld">An expression reject sends the variant back to re-generation with the reviewer&rsquo;s note carried in as a hard constraint.</div>
+    </div>
+    <div class="loop-row">
+      <div><span class="ln">4 &middot; PLM sync (upstream)</span><span class="lp">E2 &rarr; product passport</span></div>
+      <div class="ld">Validated claims flow back <b>upstream</b> into the product passport where claims originate &mdash; closing the packaging-tool &harr; PIM desync that forced the hand re-keying.</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <b>The wedge:</b> translation is the #1 time sink &mdash; claims, legal text and rationing re-keyed by hand across FR/DE/US, drifting between the packaging tool and the PIM. The <b>claim-parity lock</b> (B3) holds regulated wording identical-in-substance across markets; the <b>PLM feedback</b> (E2) feeds validated claims back into the product passport where they originate. Together they remove the re-keying and the desync.<br>
+    <b>Two desks, regulatory-led:</b> Regulatory/Compliance (D1) owns the core claim wording and the nutrition-vs-medicinal line; Brand/Portfolio (D2) owns the expression. Claim sensitivity makes the regulatory desk the lead gate; P15 Confirm / Override / Query sits on every AI artefact.<br>
+    <b>Guardrail:</b> the nutrition-vs-medicinal line is hard &mdash; no diagnosis, treatment or cure; unsubstantiated claims are surfaced for review, never generated around. <b>New pattern:</b> <b>P27</b> live external-authority validation (MSC). <b>Reused:</b> <b>P26</b> multi-variant generation; claim-parity is a <i>specialisation</i> &mdash; <b>P26</b> canonical-claim-lock + a <b>P22</b> cross-language consistency category &mdash; not a new pattern. <b>DPP:</b> framed as &ldquo;coming&rdquo; (MSC / sustainability adjacency), not a deadline.<br>
+    <b>Commercial frame:</b> <span class="q">PoC &asymp; &euro;60&ndash;80k</span>, transformation-program funded; success = claims / legal text validated FR/DE/US flowing into the PIM + product passport with an audit trail, cutting the manual copy/paste; data-residency + security review heavy. <span class="c">[YI B.10]</span>
+  </div>
+
+  <div class="decisions" id="decision-inventory">
+    <div class="sec-h">Design decision inventory &mdash; why the process looks this way</div>
+    <div class="sec-sub">
+      The decisions that shaped the process above, each with its rationale, build implication, and source.
+      <span style="color:var(--good)">[YI] / [TOV]</span> = prospect input &middot; <span style="color:var(--text-3)">[PL] / [REG]</span> = pattern library / regulation &middot;
+      <span style="color:var(--info)">[O]</span> = our design.
+    </div>
+    <div class="tbl-scroll">
+    <table class="dec" id="dectbl">
+      <thead>
+        <tr>
+          <th style="width:42px">#</th>
+          <th style="width:330px">Design decision</th>
+          <th style="width:300px">Rationale</th>
+          <th style="width:330px">Implication for the build</th>
+          <th style="width:130px">Source</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="id">D1</td>
+          <td class="d-decision">Input is the internal claims spreadsheet, not a supplier feed<small>The product data originates inside the company.</small></td>
+          <td class="d-rat">This account doesn&rsquo;t ingest a supplier feed; claims originate internally in an Excel claims spreadsheet that is today&rsquo;s source of truth.</td>
+          <td class="d-impl"><b>A1</b> actor is an internal claims / regulatory owner, not a supplier; the whole intake screen inverts vs a feed-based case.</td>
+          <td class="src"><span class="c">[YI A.6]</span></td>
+        </tr>
+        <tr>
+          <td class="id">D2</td>
+          <td class="d-decision">Feed validated claims back into the product passport (PLM)<small>The architecture money-point.</small></td>
+          <td class="d-rat">The chain runs claims spreadsheet &rarr; MDM &rarr; packaging tool &rarr; PIM &rarr; syndication, with a product passport as the PLM where claims originate.</td>
+          <td class="d-impl"><b>E2</b> writes to the PIM <i>and</i> feeds validated claims upstream into the passport &mdash; closing the desync that forced re-keying.</td>
+          <td class="src"><span class="c">[YI A.8]</span></td>
+        </tr>
+        <tr>
+          <td class="id">D3</td>
+          <td class="d-decision">Translation / claim-parity is the headline workflow<small>The #1 time sink, not enrichment.</small></td>
+          <td class="d-rat">Claims + legal text + rationing are re-keyed by hand across languages, with tracking errors and packaging-tool &harr; PIM desync.</td>
+          <td class="d-impl"><b>B3</b> is a dedicated claim-parity lock &mdash; specialised from <b>P26</b> (canonical-claim-lock) + <b>P22</b> (cross-language consistency), not a new pattern: regulated wording identical-in-substance across FR/DE/US.</td>
+          <td class="src"><span class="c">[YI B.4/B.5]</span></td>
+        </tr>
+        <tr>
+          <td class="id">D4</td>
+          <td class="d-decision">Hold the nutrition-vs-medicinal line; surface, don&rsquo;t generate around<small>A hard guardrail on vet claims.</small></td>
+          <td class="d-rat">Vet diets are therapeutic-adjacent; a feed may support function but never diagnose, treat or cure, and unlisted claims are self-substantiated.</td>
+          <td class="d-impl"><b>B4</b> holds the boundary and surfaces unsubstantiated claims for human review rather than writing around them.</td>
+          <td class="src"><span class="c">[TOV]</span> &middot; <span class="c">[YI A.4]</span></td>
+        </tr>
+        <tr>
+          <td class="id">D5</td>
+          <td class="d-decision">Two desks, regulatory-led<small>Claim sensitivity inverts the desk order.</small></td>
+          <td class="d-rat">Legal/regulatory validates core wording; on claim-sensitive vet copy the regulatory desk is the primary gate, not a light first pass.</td>
+          <td class="d-impl"><b>D1</b> regulatory review is the lead gate; <b>D2</b> brand sign-off binds the expression; confidence (B6) routes each.</td>
+          <td class="src"><span class="c">[YI B.1]</span></td>
+        </tr>
+        <tr>
+          <td class="id">D6</td>
+          <td class="d-decision">One SKU family, two audiences<small>Vet (primary) + breed-retail (secondary).</small></td>
+          <td class="d-rat">Vet is where the compliance pain bites; the breed-retail line shows the retail-vs-vet contrast in tone and claim load.</td>
+          <td class="d-impl"><b>B1/B2</b> generate two registers (technical vs accessible) &times; FR/DE/US; generic retail is skipped for the demo.</td>
+          <td class="src"><span class="c">[YI A.1/A.2]</span></td>
+        </tr>
+        <tr>
+          <td class="id">D7</td>
+          <td class="d-decision">DPP framed as &ldquo;coming&rdquo;, not a deadline<small>Adjacency, not the wedge.</small></td>
+          <td class="d-rat">Pet food is not an ESPR front-runner; but corporate sustainability commitments and MSC / marine claims create adjacency.</td>
+          <td class="d-impl"><b>F3</b> is a forward capability off the same audit trail; the wedge here is parity + PLM feedback, not DPP.</td>
+          <td class="src"><span class="c">[YI B.7]</span> &middot; <span class="pl">[REG]</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function tableToCSV(tableId, headers){
+  var rows = document.querySelectorAll('#'+tableId+' tr');
+  var out = [headers.join(',')];
+  rows.forEach(function(r){
+    if(r.classList.contains('phase')){
+      var ph = r.querySelector('.ph-name');
+      if(ph){ out.push('"'+ph.textContent.trim().replace(/"/g,'""')+'"'+','.repeat(headers.length-1)); }
+      return;
+    }
+    var cells = r.querySelectorAll('td');
+    if(!cells.length) return;
+    var line = [];
+    cells.forEach(function(c){
+      var t = c.innerText.replace(/\s+/g,' ').trim();
+      line.push('"'+t.replace(/"/g,'""')+'"');
+    });
+    out.push(line.join(','));
+  });
+  return out.join('\n');
+}
+function saveCSV(name, text){
+  var blob = new Blob([text], {type:'text/csv;charset=utf-8;'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+function downloadCSV(){
+  saveCSV('ProductCopyOS_VitaPet_process_table.csv', tableToCSV('proc',
+    ['#','Step','In plain English','Objective','Actor','In','What happens','Output','Pattern','Why this pattern','Source']));
+}
+function downloadDecisionsCSV(){
+  saveCSV('ProductCopyOS_VitaPet_design_decisions.csv', tableToCSV('dectbl',
+    ['#','Design decision','Rationale','Implication','Source']));
+}
+</script>
+</body>
+</html>

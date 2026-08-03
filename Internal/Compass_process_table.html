@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProductCopyOS &times; Compass &mdash; Full Process Table</title>
+<style>
+  :root{
+    --bg:#002D49; --panel:#0a1e2e; --panel-2:#0d2030; --panel-3:#103048;
+    --border:#1A4A5C; --border-soft:#143845;
+    --text:#F7F6F3; --text-2:#cfe3ea; --text-3:#9ac8d8; --text-4:#5d8597;
+    --gold:#D4AF37; --teal:#0E5C4D; --good:#4ec9a1; --info:#5ab9ff;
+    --sys:#5ab9ff; --human:#D4AF37;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Segoe UI', Inter, system-ui, sans-serif; font-size:13px; line-height:1.5;
+    padding:34px 30px 80px;
+  }
+  .wrap{max-width:1760px; margin:0 auto}
+
+  /* header */
+  .doc-head{border-bottom:1px solid var(--border); padding-bottom:18px; margin-bottom:8px}
+  .doc-eyebrow{font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--text-4)}
+  h1{font-size:24px; font-weight:600; letter-spacing:-.01em; margin:8px 0 6px}
+  .doc-sub{font-size:13px; color:var(--text-3); max-width:1040px; line-height:1.6}
+  .doc-meta{margin-top:12px; font-size:11px; color:var(--text-4); display:flex; gap:18px; flex-wrap:wrap}
+  .doc-meta b{color:var(--text-3); font-weight:600}
+
+  /* toolbar */
+  .toolbar{display:flex; gap:10px; flex-wrap:wrap; margin:18px 0 22px}
+  .btn{
+    background:var(--panel-2); border:1px solid var(--border); color:var(--text-2);
+    font-size:11.5px; font-family:inherit; padding:8px 14px; border-radius:6px; cursor:pointer;
+    letter-spacing:.02em; transition:all .15s; text-decoration:none; display:inline-block;
+  }
+  .btn:hover{border-color:var(--gold); color:var(--text)}
+  .btn.primary{background:var(--gold); color:#06121b; border-color:var(--gold); font-weight:600}
+  .btn.primary:hover{filter:brightness(1.08)}
+
+  /* glossary */
+  .glossary{background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:16px 20px; margin-bottom:20px}
+  .glossary h2{font-size:13px; font-weight:600; margin-bottom:11px; color:var(--text); letter-spacing:.02em}
+  .gloss-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:9px 32px}
+  .gloss-item{font-size:11.5px; color:var(--text-2); line-height:1.5}
+  .gloss-item b{color:var(--gold)}
+  @media(max-width:900px){.gloss-grid{grid-template-columns:1fr}}
+
+  /* legend */
+  .legend{display:flex; gap:22px; flex-wrap:wrap; margin-bottom:18px; font-size:11px; color:var(--text-3)}
+  .lg{display:inline-flex; align-items:center; gap:7px}
+  .swatch{width:11px; height:11px; border-radius:3px}
+  .sw-sys{background:var(--sys)} .sw-human{background:var(--human)}
+  .tag{display:inline-block; font-size:9.5px; letter-spacing:.08em; text-transform:uppercase;
+       padding:2px 7px; border-radius:4px; font-weight:700}
+  .tag-sys{background:rgba(90,185,255,.14); color:var(--sys); border:1px solid rgba(90,185,255,.35)}
+  .tag-human{background:rgba(212,175,55,.14); color:var(--gold); border:1px solid rgba(212,175,55,.4)}
+
+  /* table */
+  .tbl-scroll{overflow-x:auto; border:1px solid var(--border); border-radius:10px}
+  table{border-collapse:collapse; width:100%; min-width:1680px}
+  thead th{
+    background:var(--panel-3); color:var(--text-2); text-align:left;
+    font-size:10px; letter-spacing:.1em; text-transform:uppercase; font-weight:700;
+    padding:11px 12px; border-bottom:2px solid var(--border); position:sticky; top:0; z-index:5;
+    vertical-align:bottom;
+  }
+  thead th.plain-h{color:var(--good)}
+  tbody td{padding:11px 12px; border-bottom:1px solid var(--border-soft); vertical-align:top; font-size:12px}
+  tbody tr:hover td{background:rgba(255,255,255,.025)}
+
+  /* phase band rows */
+  tr.phase td{
+    background:linear-gradient(90deg, var(--teal), transparent 80%);
+    border-top:1px solid var(--gold); border-bottom:1px solid var(--border);
+    padding:9px 12px;
+  }
+  tr.phase .ph-name{font-size:12px; font-weight:700; letter-spacing:.06em; color:var(--text); text-transform:uppercase}
+  tr.phase .ph-note{font-size:10.5px; color:var(--text-3); font-style:italic; margin-left:10px; font-weight:400; text-transform:none; letter-spacing:0}
+
+  .id{font-family:'Consolas',monospace; font-size:11px; color:var(--gold); font-weight:600; white-space:nowrap}
+  .step{font-weight:600; color:var(--text); font-size:12px}
+  .step .eq{display:block; font-size:10px; color:var(--good); font-weight:600; margin-top:3px; letter-spacing:.03em}
+  .plain{color:var(--text-2); font-size:11.5px; line-height:1.6; background:rgba(78,201,161,.045)}
+  .plain .pend{color:var(--gold); font-style:italic}
+  .obj{color:var(--text-3); font-size:11.5px}
+  .what{color:var(--text-2); font-size:11.5px; line-height:1.5}
+  .out{color:var(--text-2); font-size:11.5px}
+  .in{color:var(--text-3); font-size:11.5px}
+  .pat{font-family:'Consolas',monospace; font-size:10.5px; color:var(--text-2); line-height:1.6}
+  .pat b{color:var(--gold); font-weight:600}
+  .pat .new{font-family:'Segoe UI',sans-serif; font-size:8px; letter-spacing:.06em; text-transform:uppercase;
+            color:var(--good); border:1px solid rgba(78,201,161,.4); border-radius:3px; padding:1px 4px; margin-left:3px}
+  .why{color:var(--text-3); font-size:11px; line-height:1.5}
+  .src{font-size:10px; color:var(--text-4); font-family:'Consolas',monospace; white-space:nowrap; line-height:1.6}
+  .src .c{color:var(--good)} .src .o{color:var(--info)} .src .pl{color:var(--text-3)} .src .q{color:var(--gold); font-weight:700}
+  .loop{color:var(--gold); font-weight:600}
+  td.actor{white-space:nowrap}
+
+  /* loops summary */
+  .loops{margin-top:30px; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:20px 24px}
+  .loops h2{font-size:14px; font-weight:600; margin-bottom:4px}
+  .loops .sub{font-size:11.5px; color:var(--text-3); margin-bottom:14px}
+  .loop-row{display:grid; grid-template-columns:230px 1fr; gap:14px; padding:9px 0; border-bottom:1px solid var(--border-soft); font-size:12px}
+  .loop-row:last-child{border-bottom:none}
+  .loop-row .ln{color:var(--gold); font-weight:600}
+  .loop-row .lp{font-family:'Consolas',monospace; font-size:10.5px; color:var(--text-3); display:block; margin-top:3px}
+  .loop-row .ld{color:var(--text-2)}
+
+  .foot{margin-top:26px; font-size:10.5px; color:var(--text-4); line-height:1.7; border-top:1px solid var(--border-soft); padding-top:14px}
+  .foot b{color:var(--text-3)}
+  .foot .q{color:var(--gold); font-weight:700}
+
+  /* decision inventory */
+  .decisions{margin-top:38px}
+  .sec-h{font-size:17px; font-weight:600; letter-spacing:-.01em; margin-bottom:5px}
+  .sec-sub{font-size:12px; color:var(--text-3); margin-bottom:16px; max-width:920px; line-height:1.6}
+  table.dec{min-width:1080px}
+  table.dec td{font-size:11.5px; vertical-align:top}
+  .dec .d-decision{color:var(--text); font-weight:600; font-size:12px}
+  .dec .d-decision small{display:block; color:var(--text-3); font-weight:400; font-size:11px; margin-top:5px; line-height:1.5}
+  .dec .d-rat{color:var(--text-2); line-height:1.5}
+  .dec .d-impl{color:var(--text-2); line-height:1.5}
+  .dec .d-impl b{color:var(--gold); font-weight:600}
+
+  @media print{
+    body{background:#fff; color:#111; padding:0}
+    .toolbar{display:none}
+    .tbl-scroll{border:1px solid #999}
+    table{min-width:0; font-size:9px}
+    thead th{background:#eee; color:#111}
+    thead th.plain-h{color:#0a6b4e}
+    tr.phase td{background:#dde9ec}
+    tr.phase .ph-name{color:#111}
+    .step,.out,.what{color:#111} .obj,.why,.in,.src{color:#444}
+    .plain{color:#111; background:#f0f8f5}
+    .id,.pat b,.loop{color:#a8830a}
+    .glossary{border:1px solid #bbb} .glossary h2{color:#111} .gloss-item{color:#333} .gloss-item b{color:#a8830a}
+    .sec-h{color:#111} .sec-sub{color:#444}
+    .dec .d-decision{color:#111} .dec .d-decision small{color:#444}
+    .dec .d-rat,.dec .d-impl{color:#111} .dec .d-impl b{color:#a8830a}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="doc-head">
+    <div class="doc-eyebrow">Safwai &middot; ProductCopyOS &middot; Compass prospect (catering &amp; food procurement, FR)</div>
+    <h1>Full Process Table &mdash; from supplier feed to published, audited copy</h1>
+    <div class="doc-sub">
+      Every step from rule-store setup through the live per-SKU lifecycle. System (AI) and human steps are kept strictly
+      separate &mdash; each row has one actor. The <b>In plain English</b> column explains every step to a layman. This
+      engine both <b>generates</b> the copy (P26) and <b>evaluates</b> it (P12 / P16 / P22) under one governance regime
+      (P14 sandbox &rarr; governed). The wedge is orchestration, not storage: Compass's prior PIM failed on the workflow,
+      not the data.
+    </div>
+    <div class="doc-meta">
+      <span><b>Sources:</b> Mhamed meeting notes 14 Jun 2026 [MN] &middot; ProductCopyOS Product Spec v1 [PS] &middot; Pattern Library Master [PL] &middot; our design [O] &middot; unconfirmed [?]</span>
+      <span><b>Status:</b> Gate 2 render of the signed-off Gate-1 Markdown &mdash; B3 jurisdiction-copy depth unconfirmed <span style="color:var(--gold)">[?]</span> (Mhamed to confirm)</span>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn primary" onclick="window.print()">Download / Print (PDF)</button>
+    <button class="btn" onclick="downloadCSV()">Process CSV</button>
+    <button class="btn" onclick="downloadDecisionsCSV()">Decisions CSV</button>
+    <a class="btn" href="#decision-inventory">Design decisions &darr;</a>
+  </div>
+
+  <div class="glossary">
+    <h2>Key terms</h2>
+    <div class="gloss-grid">
+      <div class="gloss-item"><b>SKU database</b> &mdash; the single shared product database that feeds both internal operations and the SME portal. Currently updated by hand.</div>
+      <div class="gloss-item"><b>SME portal</b> &mdash; Compass's digital storefront where business customers order at contract pricing, drawing from the same SKU database.</div>
+      <div class="gloss-item"><b>PIM</b> &mdash; Product Information Management system. Compass tried one and it failed &mdash; on the workflow, not the data.</div>
+      <div class="gloss-item"><b>Rule store</b> &mdash; the published, versioned set of per-jurisdiction labelling rules + brand guidelines the engine writes against and checks against.</div>
+      <div class="gloss-item"><b>Completeness checklist</b> &mdash; the machine-readable list of what a complete product entry must contain; the system chases whatever is missing.</div>
+      <div class="gloss-item"><b>Review Coordinator</b> &mdash; the single human role owning routing, queues, supplier chasing and approval config. At Compass: the supplier-management / digital-commerce lead.</div>
+      <div class="gloss-item"><b>Sandbox vs governed</b> &mdash; sandbox = private draft generation &amp; scoring (not official); governed = the recorded, committing process from review onward.</div>
+      <div class="gloss-item"><b>Label Rouge / organic</b> &mdash; example certified claims that need a valid, current certificate before they can be published.</div>
+      <div class="gloss-item"><b>Jurisdiction-specific copy</b> &mdash; country-tailored product descriptions, not just translation. Whether Compass needs this is unconfirmed and flagged at B3.</div>
+      <div class="gloss-item"><b>P26</b> &mdash; the new pattern minted for this case: rule-bounded multi-variant content <i>generation</i> &mdash; the engine's first generative step.</div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span class="lg"><span class="swatch sw-sys"></span> <span class="tag tag-sys">System</span> &nbsp;AI / automated</span>
+    <span class="lg"><span class="swatch sw-human"></span> <span class="tag tag-human">Human</span> &nbsp;named role accountable</span>
+    <span class="lg"><span class="src"><span class="pl">[PL Pxx]</span></span> &nbsp;pattern library</span>
+    <span class="lg"><span class="src"><span class="c">[PS] / [MN]</span></span> &nbsp;canonical (sourced)</span>
+    <span class="lg"><span class="src"><span class="o">[O]</span></span> &nbsp;our design</span>
+    <span class="lg"><span class="src"><span class="q">[?]</span></span> &nbsp;unconfirmed</span>
+    <span class="lg"><span class="loop">&#8635; loop</span> &nbsp;iteration point</span>
+  </div>
+
+  <div class="tbl-scroll">
+  <table id="proc">
+    <thead>
+      <tr>
+        <th style="width:38px">#</th>
+        <th style="width:128px">Step</th>
+        <th style="width:360px" class="plain-h">In plain English</th>
+        <th style="width:120px">Objective</th>
+        <th style="width:96px">Actor</th>
+        <th style="width:150px">In &mdash; info / decision</th>
+        <th style="width:200px">What happens</th>
+        <th style="width:150px">Output</th>
+        <th style="width:150px">Pattern</th>
+        <th style="width:175px">Why this pattern</th>
+        <th style="width:118px">Source</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr class="phase"><td colspan="11"><span class="ph-name">S &middot; Setup &mdash; rule store &amp; brand spine</span><span class="ph-note">once per entity / jurisdiction set, not per SKU</span></td></tr>
+
+      <tr>
+        <td class="id">S1</td>
+        <td class="step">Encode spine &amp; derive rules</td>
+        <td class="plain">Before the system can write or check anything, it has to learn the rules. It reads each country's labelling law and the brand's style guide and turns them into one machine-readable rulebook plus a checklist of what a complete product entry needs.</td>
+        <td class="obj">Build the rule + brand schema everything else reads</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Regulations (DGCCRF / BVL / NVWA&hellip;), brand guidelines</td>
+        <td class="what">Encode spine; derive rule store + required-content schema</td>
+        <td class="out">Draft rule store + schema</td>
+        <td class="pat"><b>P01</b> Spine<br><b>P12</b> Rule-store<br><b>P16</b> Schema</td>
+        <td class="why">One spine read by every step; rules derived from sources, not hand-coded</td>
+        <td class="src"><span class="pl">[PL P01/P12/P16]</span></td>
+      </tr>
+      <tr>
+        <td class="id">S2</td>
+        <td class="step">Curate &amp; publish rules</td>
+        <td class="plain">A regulatory expert checks the machine's rulebook, fixes or removes anything wrong, and publishes a dated official version. A named human owns the rules before they go live.</td>
+        <td class="obj">Keep a named human accountable for the rule set</td>
+        <td class="actor"><span class="tag tag-human">Human</span><br>Regulatory lead</td>
+        <td class="in">Draft rule store</td>
+        <td class="what">Confirm / override / cite; publish versioned store</td>
+        <td class="out">Published rule store</td>
+        <td class="pat"><b>P12</b> Rule-store<br><b>P15</b> Confirmation</td>
+        <td class="why">P12 requires human curation before publish; P15 keeps accountability on a person</td>
+        <td class="src"><span class="pl">[PL P12/P15]</span></td>
+      </tr>
+
+      <tr class="phase"><td colspan="11"><span class="ph-name">A &middot; Intake &amp; Trigger</span><span class="ph-note">per SKU</span></td></tr>
+
+      <tr>
+        <td class="id">A1</td>
+        <td class="step">Submit feed</td>
+        <td class="plain">The supplier sends its weekly product spreadsheet exactly as it always has &mdash; no new portal to log into, no new format to learn.</td>
+        <td class="obj">Get raw supplier data in</td>
+        <td class="actor"><span class="tag tag-human">Human</span><br>Supplier</td>
+        <td class="in">Weekly Excel / CSV / XML feed</td>
+        <td class="what">Uploads or emails the file; no schema forced on them</td>
+        <td class="out">Received feed</td>
+        <td class="pat"><b>P02</b> Multi-source ingestion</td>
+        <td class="why">Meet the supplier where they are; the input is held by an external human</td>
+        <td class="src"><span class="pl">[PL P02]</span> &middot; <span class="c">[MN L49]</span></td>
+      </tr>
+      <tr>
+        <td class="id">A2</td>
+        <td class="step">Ingest &amp; normalise</td>
+        <td class="plain">The system reads that messy spreadsheet and turns it into clean, standard records, keeping a link back to the original row for every fact.</td>
+        <td class="obj">Make inconsistent feeds machine-usable</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Raw feed</td>
+        <td class="what">Parse, normalise, citation-index</td>
+        <td class="out">Normalised records</td>
+        <td class="pat"><b>P02</b> Multi-source ingestion</td>
+        <td class="why">Heterogeneous large + small suppliers send inconsistent files</td>
+        <td class="src"><span class="pl">[PL P02]</span> &middot; <span class="c">[MN L37]</span></td>
+      </tr>
+      <tr>
+        <td class="id">A3</td>
+        <td class="step">Open work-item &amp; checklist</td>
+        <td class="plain">For each product it opens a tracked to-do with a checklist of everything that product needs, and drops it in a shared queue &mdash; so the work lives in the system, not in one person's inbox.</td>
+        <td class="obj">Put state in the system, not in someone's head</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Normalised records; target markets / channels</td>
+        <td class="what">Create work-item; compute required-info checklist; place in queue</td>
+        <td class="out">Tracked work-item + checklist</td>
+        <td class="pat"><b>P16</b> Completeness<br><b>P20</b> Cockpit</td>
+        <td class="why">Schema-driven gap list + cockpit so nothing stalls unseen</td>
+        <td class="src"><span class="pl">[PL P16/P20]</span> &middot; <span class="c">[MN L53]</span></td>
+      </tr>
+
+      <tr class="phase"><td colspan="11"><span class="ph-name">B &middot; Enrich &amp; Validate</span><span class="ph-note">advisory &mdash; P14 sandbox regime</span></td></tr>
+
+      <tr>
+        <td class="id">B1</td>
+        <td class="step">Extract attributes</td>
+        <td class="plain">It pulls the actual facts out &mdash; ingredients, weights, claims &mdash; so they can be checked against the rules.</td>
+        <td class="obj">Structure attributes for checking</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Normalised records</td>
+        <td class="what">Attribute extraction</td>
+        <td class="out">Structured attributes</td>
+        <td class="pat"><b>P02</b> Multi-source ingestion</td>
+        <td class="why">Attributes must be explicit before any rule can match</td>
+        <td class="src"><span class="pl">[PL P02]</span></td>
+      </tr>
+      <tr style="background:rgba(90,185,255,.05)">
+        <td class="id">B2</td>
+        <td class="step">Enrich to brand voice<span class="eq">= generation engine (also E1)</span></td>
+        <td class="plain">It writes the product copy in the brand's voice, for each market &mdash; a first draft, generated privately so nothing is official yet.</td>
+        <td class="obj">Produce brand-compliant draft copy</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Structured attributes; brand spine (per entity)</td>
+        <td class="what">Generate draft copy in brand voice; multi-entity aware</td>
+        <td class="out">Draft brand copy</td>
+        <td class="pat"><b>P14</b>&middot;sandbox over <b>P26</b><span class="new">new</span></td>
+        <td class="why">Runs as a private sandbox draft; generation itself is the new library pattern</td>
+        <td class="src"><span class="pl">[PL P14/P26]</span> &middot; <span class="c">[PS &sect;3.6]</span></td>
+      </tr>
+      <tr style="background:rgba(212,175,55,.06)">
+        <td class="id">B3</td>
+        <td class="step">Match jurisdiction &amp; channel rules <span class="loop">?</span></td>
+        <td class="plain">It checks that draft against each market's labelling rules, online and print separately, and cites the rule behind every check. <span class="pend">Pending: we still need confirmation that Compass produces country-specific copy, not just translation.</span></td>
+        <td class="obj">Validate copy against per-market regulation</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Draft copy; published rule store</td>
+        <td class="what">Match per-jurisdiction, per-channel; cite the rule behind each check</td>
+        <td class="out">Rule-matched copy + citations</td>
+        <td class="pat"><b>P12</b> Rule-store match</td>
+        <td class="why">Applies the derived rule store; multi-country regulatory variance is the core pain</td>
+        <td class="src"><span class="pl">[PL P12]</span> &middot; <span class="c">[MN L9]</span> &middot; <span class="q">[?]</span></td>
+      </tr>
+      <tr>
+        <td class="id">B4</td>
+        <td class="step">Validate certificates &amp; claims</td>
+        <td class="plain">It confirms claims like Label Rouge or organic are real and still valid by checking the certificate against its register, flagging anything expired or unproven.</td>
+        <td class="obj">Block unsubstantiated / expired claims</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Claims; certificate registries</td>
+        <td class="what">Check claim against required cert evidence + external registry</td>
+        <td class="out">Validated / flagged claims</td>
+        <td class="pat"><b>P16</b> + <b>P12</b></td>
+        <td class="why">Required-evidence gate + rule check; certified claims need proof before publish</td>
+        <td class="src"><span class="pl">[PL P16/P12]</span> &middot; <span class="c">[MN L51]</span></td>
+      </tr>
+      <tr>
+        <td class="id">B5</td>
+        <td class="step">Score confidence &amp; gate</td>
+        <td class="plain">It grades how confident it is on each point and automatically holds back anything weak for a human to look at &mdash; so people only see what needs them.</td>
+        <td class="obj">Decide what a human must see</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Rule-matched copy; validations</td>
+        <td class="what">Confidence high / med / low vs threshold; gate low items</td>
+        <td class="out">Scored, gated variants</td>
+        <td class="pat"><b>P16</b> + <b>P15</b></td>
+        <td class="why">Confidence gates scoring and routes only uncertain items to people</td>
+        <td class="src"><span class="pl">[PL P16/P15]</span> &middot; <span class="c">[PS &sect;3.2]</span></td>
+      </tr>
+      <tr>
+        <td class="id">B6</td>
+        <td class="step">Surface inconsistencies</td>
+        <td class="plain">Separately from any rule, it checks the supplier's own data against itself &mdash; do the numbers and dates agree? &mdash; and raises a card for each contradiction.</td>
+        <td class="obj">Catch internal incoherence with zero rules</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Structured attributes; draft copy</td>
+        <td class="what">Consistency check (10-category taxonomy) &rarr; conflict cards</td>
+        <td class="out">Conflict cards</td>
+        <td class="pat"><b>P22</b> &rarr; <b>P05</b></td>
+        <td class="why">The always-deliverable floor &mdash; independent of how mature the rule store is</td>
+        <td class="src"><span class="pl">[PL P22/P05]</span></td>
+      </tr>
+
+      <tr class="phase"><td colspan="11"><span class="ph-name">C &middot; Orchestrate &amp; Chase</span><span class="ph-note">workflow &mdash; owned by the Review Coordinator</span></td></tr>
+
+      <tr>
+        <td class="id">C1</td>
+        <td class="step">Detect gaps <span class="loop">&#8635;</span></td>
+        <td class="plain">It works out exactly what's missing or failing for each product &mdash; a specific list, not a vague &ldquo;incomplete&rdquo;.</td>
+        <td class="obj">Identify blockers precisely</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Checklist; validations; conflicts</td>
+        <td class="what">Compare to schema; list missing docs / fields / failed claims</td>
+        <td class="out">Gap list</td>
+        <td class="pat"><b>P16</b> Completeness</td>
+        <td class="why">&ldquo;Waiting on missing documents&rdquo; was the PIM killer &mdash; name the gap precisely</td>
+        <td class="src"><span class="pl">[PL P16]</span> &middot; <span class="c">[MN L53]</span></td>
+      </tr>
+      <tr>
+        <td class="id">C2</td>
+        <td class="step">Open clarification &amp; chase <span class="loop">&#8635;</span></td>
+        <td class="plain">It automatically asks the supplier for the precise missing piece, chases with reminders, and holds the product until it arrives &mdash; the chase is now a tracked task, not a lost email.</td>
+        <td class="obj">Remove the human chasing that breaks when a liaison is out</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Gap list; supplier contact</td>
+        <td class="what">Open P21 request; draft the ask; track SLA; hold the item</td>
+        <td class="out">Outstanding request; blocked item</td>
+        <td class="pat"><b>P21</b> Clarification<br><b>P20</b> Cockpit</td>
+        <td class="why">The chase becomes a tracked object with a lifecycle, not a lost email</td>
+        <td class="src"><span class="pl">[PL P21/P20]</span> &middot; <span class="c">[MN L53/L55]</span></td>
+      </tr>
+      <tr>
+        <td class="id">C3</td>
+        <td class="step">Provide missing data <span class="loop">&#8635;</span></td>
+        <td class="plain">The supplier sends the missing document or data, and the product automatically picks up where it left off.</td>
+        <td class="obj">Close the gap</td>
+        <td class="actor"><span class="tag tag-human">Human</span><br>Supplier</td>
+        <td class="in">Clarification request</td>
+        <td class="what">Answers; item re-enters enrichment</td>
+        <td class="out">Completed input</td>
+        <td class="pat"><b>P21</b> Clarification</td>
+        <td class="why">The input is held by an external human; AI can chase but not manufacture it</td>
+        <td class="src"><span class="pl">[PL P21]</span></td>
+      </tr>
+      <tr>
+        <td class="id">C4</td>
+        <td class="step">Assign / route to desks</td>
+        <td class="plain">A human coordinator sends each product to the right desk &mdash; tricky ones to Legal, clean ones to Brand &mdash; with the system suggesting who, based on past cases.</td>
+        <td class="obj">Get the right people on the right case</td>
+        <td class="actor"><span class="tag tag-human">Human</span><br>Review Coordinator</td>
+        <td class="in">Scored variants; routing profiles</td>
+        <td class="what">Route low-confidence / flagged &rarr; Legal; clean &rarr; Brand (AI suggests)</td>
+        <td class="out">Routed review queue</td>
+        <td class="pat"><b>P18</b> Review assignment</td>
+        <td class="why">Human-owned routing; AI only suggests reviewers from precedent</td>
+        <td class="src"><span class="pl">[PL P18]</span> &middot; <span class="c">[PS &sect;3.4]</span></td>
+      </tr>
+
+      <tr class="phase"><td colspan="11"><span class="ph-name">D &middot; Review &amp; Sign-off</span><span class="ph-note">governed regime &mdash; P14 committing; two-desk gate</span></td></tr>
+
+      <tr>
+        <td class="id">D1</td>
+        <td class="step">Legal / regulatory review <span class="loop">&#8635;</span></td>
+        <td class="plain">A regulatory expert reviews the flagged claims and either confirms, edits, or queries them &mdash; the human, not the AI, owns what's legally true.</td>
+        <td class="obj">Gate on legal validity &amp; evidence</td>
+        <td class="actor"><span class="tag tag-human">Human</span><br>Legal / Regulatory reviewer</td>
+        <td class="in">Flagged variants; citations</td>
+        <td class="what">Confirm / override / query; capture markup, comments, meeting</td>
+        <td class="out">Legal decision + note</td>
+        <td class="pat"><b>P19</b> + <b>P15</b> + <b>P23</b></td>
+        <td class="why">Non-binding review phase with named accountability on every artefact</td>
+        <td class="src"><span class="pl">[PL P19/P15/P23]</span></td>
+      </tr>
+      <tr>
+        <td class="id">D2</td>
+        <td class="step">Brand approval <span class="loop">&#8635;</span></td>
+        <td class="plain">The brand owner signs off the tone and positioning. This is the binding decision; nothing publishes until both desks agree.</td>
+        <td class="obj">Binding gate before publish</td>
+        <td class="actor"><span class="tag tag-human">Human</span><br>Brand manager</td>
+        <td class="in">Legally-cleared variants</td>
+        <td class="what">Approve / amend / reject</td>
+        <td class="out">Brand decision</td>
+        <td class="pat"><b>P19</b> + <b>P15</b></td>
+        <td class="why">Binding approval is a human decision &mdash; the second of the two desks</td>
+        <td class="src"><span class="pl">[PL P19/P15]</span> &middot; <span class="c">[PS &sect;3.4]</span></td>
+      </tr>
+
+      <tr class="phase"><td colspan="11"><span class="ph-name">E &middot; Publish &amp; Sync</span><span class="ph-note">governed &mdash; committing</span></td></tr>
+
+      <tr style="background:rgba(90,185,255,.05)">
+        <td class="id">E1</td>
+        <td class="step">Generate final variants<span class="eq">= generation engine (also B2)</span></td>
+        <td class="plain">Once approved, the system produces the finished copy for every market and channel &mdash; print and online versions per country.</td>
+        <td class="obj">Output publish-ready variants</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Approved variants</td>
+        <td class="what">Render per jurisdiction &times; Print / Online</td>
+        <td class="out">Final variants</td>
+        <td class="pat"><b>P01</b> Spine + <b>P26</b><span class="new">new</span></td>
+        <td class="why">Assembly off the spine; generation is the new pattern, now in governed mode</td>
+        <td class="src"><span class="pl">[PL P01/P26]</span> &middot; <span class="c">[PS &sect;3.3]</span></td>
+      </tr>
+      <tr>
+        <td class="id">E2</td>
+        <td class="step">Sync to SKU database</td>
+        <td class="plain">It writes the approved copy back into the one shared product database, so both internal operations and the SME portal update at once, with an audit stamp.</td>
+        <td class="obj">Update operations + SME portal at once</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Final variants; audit hash</td>
+        <td class="what">Push-back to SKU DB with audit hash</td>
+        <td class="out">Updated SKU records</td>
+        <td class="pat"><b>P10</b> + <b>P17</b></td>
+        <td class="why">A single source feeds both channels; the push-back is audit-linked</td>
+        <td class="src"><span class="pl">[PL P10/P17]</span> &middot; <span class="c">[MN L59]</span></td>
+      </tr>
+      <tr>
+        <td class="id">E3</td>
+        <td class="step">Feed downstream</td>
+        <td class="plain">The clean product and pricing data flows on to the SAP / invoicing side &mdash; which is where today's reconciliation headaches come from.</td>
+        <td class="obj">Reduce invoicing &amp; reconciliation breaks</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Updated SKU records</td>
+        <td class="what">Emit clean product / pricing data downstream</td>
+        <td class="out">Downstream-ready records</td>
+        <td class="pat"><b>P10</b> Continuous evidence</td>
+        <td class="why">Fixing the upstream product data relieves the SAP reconciliation pain</td>
+        <td class="src"><span class="pl">[PL P10]</span> &middot; <span class="c">[MN L9/L69]</span></td>
+      </tr>
+
+      <tr class="phase"><td colspan="11"><span class="ph-name">F &middot; Audit &amp; Trace</span><span class="ph-note">continuous, cross-cutting A&ndash;E</span></td></tr>
+
+      <tr>
+        <td class="id">F1</td>
+        <td class="step">Record signed events</td>
+        <td class="plain">Throughout, every rule applied, every decision and who made it is logged in a tamper-proof trail &mdash; so when someone's away, the history is in the system, not in their head.</td>
+        <td class="obj">Audit trail that survives staff absence</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">All step events; overrides</td>
+        <td class="what">Append immutable, signed event to the chain</td>
+        <td class="out">Immutable audit trail</td>
+        <td class="pat"><b>P10</b> + <b>P15</b></td>
+        <td class="why">The audit trail is the institutional memory when a liaison is out</td>
+        <td class="src"><span class="pl">[PL P10/P15]</span> &middot; <span class="c">[MN L53]</span></td>
+      </tr>
+      <tr>
+        <td class="id">F2</td>
+        <td class="step">Compose export / DPP pack</td>
+        <td class="plain">On demand it assembles a signed export or a QR product passport, with every claim linked back to the rule and evidence behind it.</td>
+        <td class="obj">Compliance-grade evidence on demand</td>
+        <td class="actor"><span class="tag tag-sys">System</span></td>
+        <td class="in">Audit trail</td>
+        <td class="what">Assemble pack; back-link each claim to rule + evidence</td>
+        <td class="out">Signed export / DPP payload</td>
+        <td class="pat"><b>P17</b> Decision pack</td>
+        <td class="why">Decision-pack composition with full traceability for compliance</td>
+        <td class="src"><span class="pl">[PL P17]</span> &middot; <span class="c">[PS &sect;3.5]</span></td>
+      </tr>
+
+    </tbody>
+  </table>
+  </div>
+
+  <div class="loops">
+    <h2>The iteration loops</h2>
+    <div class="sub">Where the process cycles back. Each loop is a real workflow object (P21), not an email thread &mdash; held in the system until resolved.</div>
+    <div class="loop-row">
+      <div><span class="ln">1 &middot; Supplier chase</span><span class="lp">C2 / C3 &harr; A2 / B1</span></div>
+      <div class="ld">The item is <b>blocked</b> until the requested document or data arrives, then re-enters enrichment automatically. Replaces the liaison-driven email loop that broke when someone was absent.</div>
+    </div>
+    <div class="loop-row">
+      <div><span class="ln">2 &middot; Legal amend (governed)</span><span class="lp">D1 &rarr; B3</span></div>
+      <div class="ld">A regulatory amend triggers re-evaluation (P21 material edit); rule-matching re-runs with the new evidentiary citation. Stays inside the governed track.</div>
+    </div>
+    <div class="loop-row">
+      <div><span class="ln">3 &middot; Brand reject</span><span class="lp">D2 &rarr; B2</span></div>
+      <div class="ld">A reject sends the variant back to re-enrichment (P26 generation) with the reviewer's note carried in as a hard constraint.</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <b>Role note:</b> P18&ndash;P21 are owned by one <b>Review Coordinator</b> &mdash; at Compass, the supplier-management / digital-commerce lead. That single role plus the cockpit (P20) is the concrete answer to &ldquo;when a liaison is absent it's a mess&rdquo;: routing, queues and chase-state live in the system, not in the absent person.<br>
+    <b>Governance note:</b> the B-phase runs <b>advisory</b> under P14 sandbox; the regime flips to <b>governed / committing</b> at D2 sign-off; P15 Confirm / Override / Query sits on every AI artefact across A&ndash;F &mdash; the justifiable-reason backbone for every human row.<br>
+    <b>New pattern:</b> <b>P26</b> Rule-bounded multi-variant content generation (B2, E1) &mdash; the engine's first <i>generative</i> pattern; it produces the copy, where P12&ndash;P25 evaluate it. Generated spans are grounded + cited, then handed straight to P12 / P16 / P22.<br>
+    <b>Open item:</b> <span class="q">[?]</span> B3 &mdash; confirm whether Compass produces jurisdiction-specific copy or translation-only before locking the rule-matching depth (Mhamed to confirm; [MN L11 / L65]).
+  </div>
+
+  <div class="decisions" id="decision-inventory">
+    <div class="sec-h">Design decision inventory &mdash; why the process looks this way</div>
+    <div class="sec-sub">
+      The decisions that shaped the process above, each with its rationale, build implication, and source.
+      <span style="color:var(--good)">[MN] / [PS]</span> = canonical &middot; <span style="color:var(--text-3)">[PL]</span> = pattern library &middot;
+      <span style="color:var(--info)">[O]</span> = our design &middot; <span style="color:var(--gold)">[?]</span> = unconfirmed.
+    </div>
+    <div class="tbl-scroll">
+    <table class="dec" id="dectbl">
+      <thead>
+        <tr>
+          <th style="width:42px">#</th>
+          <th style="width:330px">Design decision</th>
+          <th style="width:300px">Rationale</th>
+          <th style="width:330px">Implication for the build</th>
+          <th style="width:130px">Source</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="id">D1</td>
+          <td class="d-decision">The spine is orchestration, not storage<small>Lead with the workflow layer (chase / queue / cockpit / audit), not a better database.</small></td>
+          <td class="d-rat">Compass's prior PIM failed on the <i>workflow</i> &mdash; absent liaisons, products bouncing back to start, missing documents &mdash; not on the data model.</td>
+          <td class="d-impl">Phase <b>C</b> (Orchestrate &amp; Chase) and phase <b>F</b> (Audit) carry the weight; a PIM stays in place beside the system.</td>
+          <td class="src"><span class="c">[MN L53]</span> &middot; <span class="o">[O]</span></td>
+        </tr>
+        <tr>
+          <td class="id">D2</td>
+          <td class="d-decision">One actor per row; humans only where justified<small>Legal accountability, externally-held input, binding decision, or brand taste.</small></td>
+          <td class="d-rat">Human-in-the-loop must have a reason (P15) &mdash; not capability. The AI does the reversible compute; humans own what's official.</td>
+          <td class="d-impl">AI acts at A2&ndash;B6, E1&ndash;F2; humans act at <b>S2, A1, C3, C4, D1, D2</b>. No human step without a stated justification.</td>
+          <td class="src"><span class="pl">[PL &sect;2.4 / P15]</span></td>
+        </tr>
+        <tr>
+          <td class="id">D3</td>
+          <td class="d-decision">Workflow is human-owned BPM, not AI<small>P18&ndash;P21 consolidated under a single Review Coordinator.</small></td>
+          <td class="d-rat">The library is explicit: workflow patterns are deterministic and AI-augmented, owned by one coordinating role &mdash; that is what makes them coherent.</td>
+          <td class="d-impl">A cockpit (P20) + assignment (P18) + clarification lifecycle (P21), not an &ldquo;AI does the chasing&rdquo; black box.</td>
+          <td class="src"><span class="pl">[PL &sect;2.4]</span> &middot; <span class="c">[MN L53]</span></td>
+        </tr>
+        <tr>
+          <td class="id">D4</td>
+          <td class="d-decision">Generation is a new pattern (P26); evaluation is reused<small>The library was an evaluation engine; ProductCopyOS adds production.</small></td>
+          <td class="d-rat">Writing brand-compliant copy is not covered by P01&ndash;P25 (P17 packages existing facts, it does not generate copy). It is genuinely net-new.</td>
+          <td class="d-impl"><b>B2 / E1</b> generate under rule + brand constraints, then hand straight to P12 / P16 / P22 to be evaluated &mdash; never trusted on generation confidence.</td>
+          <td class="src"><span class="o">[O]</span> &middot; <span class="c">[PS &sect;3.3 / 3.6]</span></td>
+        </tr>
+        <tr>
+          <td class="id">D5</td>
+          <td class="d-decision">Two-desk gate (Legal &rarr; Brand), governed regime<small>Non-binding regulatory review, then binding brand approval.</small></td>
+          <td class="d-rat">Legal drives core claim vocabulary; Brand owns tone and positioning (Product Spec A4 / A5). Both sign off before publish.</td>
+          <td class="d-impl"><b>D1</b> non-binding review (P19 review phase); <b>D2</b> binding approval (P19 approval phase); P15 confirm / override throughout.</td>
+          <td class="src"><span class="c">[PS &sect;3.4]</span> &middot; <span class="pl">[PL P19]</span></td>
+        </tr>
+        <tr>
+          <td class="id">D6</td>
+          <td class="d-decision">Leave B3 jurisdiction-copy depth unconfirmed<small>Load-bearing assumption for the whole pitch.</small></td>
+          <td class="d-rat">If the SME portal is translation-only, B3 narrows to translation + compliance and P26 has little per-jurisdiction work; if country-specific copy exists, the full case holds.</td>
+          <td class="d-impl">Rule-matching scope at <b>B3</b> is <b>not locked</b> until Mhamed confirms; the artefact flags it rather than assuming.</td>
+          <td class="src"><span class="c">[MN L11 / L65]</span> &middot; <span class="q">[?]</span></td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function tableToCSV(tableId, headers){
+  var rows = document.querySelectorAll('#'+tableId+' tr');
+  var out = [headers.join(',')];
+  rows.forEach(function(r){
+    if(r.classList.contains('phase')){
+      var ph = r.querySelector('.ph-name');
+      if(ph){ out.push('"'+ph.textContent.trim().replace(/"/g,'""')+'"'+','.repeat(headers.length-1)); }
+      return;
+    }
+    var cells = r.querySelectorAll('td');
+    if(!cells.length) return;
+    var line = [];
+    cells.forEach(function(c){
+      var t = c.innerText.replace(/\s+/g,' ').trim();
+      line.push('"'+t.replace(/"/g,'""')+'"');
+    });
+    out.push(line.join(','));
+  });
+  return out.join('\n');
+}
+function saveCSV(name, text){
+  var blob = new Blob([text], {type:'text/csv;charset=utf-8;'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+function downloadCSV(){
+  saveCSV('ProductCopyOS_Compass_process_table.csv', tableToCSV('proc',
+    ['#','Step','In plain English','Objective','Actor','In','What happens','Output','Pattern','Why this pattern','Source']));
+}
+function downloadDecisionsCSV(){
+  saveCSV('ProductCopyOS_Compass_design_decisions.csv', tableToCSV('dectbl',
+    ['#','Design decision','Rationale','Implication','Source']));
+}
+</script>
+</body>
+</html>
