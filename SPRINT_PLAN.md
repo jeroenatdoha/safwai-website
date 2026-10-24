@@ -239,6 +239,13 @@ Each sprint = one focused build session with Claude. Jeroen reviews visually at 
 |------|------|-------|
 | TXT | @ | v=spf1 include:spf.privateemail.com ~all |
 
+### DMARC record (Cloudflare)
+| Type | Name | Value |
+|------|------|-------|
+| TXT | _dmarc | v=DMARC1; p=reject; rua=mailto:contact@safwai.com |
+
+Changed from `p=none` to `p=reject` on 2026-10-24 after a phishing email was sent in the name of no-reply@safwai.com (received 2026-06-26). Confirmed live by DNS lookup the same day. Aggregate reports go to contact@safwai.com.
+
 ### DKIM public key (Cloudflare)
 Add as TXT record — name provided by Namecheap (typically `mail._domainkey`):
 
